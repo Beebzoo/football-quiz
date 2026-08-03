@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b140e">
+<title>BALL — The Football Quiz</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+  :root{
+    --pitch:#0b140e;
+    --pitch-2:#101b13;
+    --chalk:#f2f6ef;
+    --chalk-dim:#9db3a0;
+    --line:#243528;
+    --turf:#2e8f55;
+    --turf-deep:#1c5c37;
+    --card-y:#f0c419;
+    --card-r:#d84a35;
+    --gold:#e9b44c;
+    --blue:#4a90d9;
+    --violet:#a06bd8;
+    --ok:#3fae6a;
+    --bad:#d84a35;
+    --radius:14px;
+    --disp:800 1rem/1.1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(120% 60% at 50% -10%, #16261a 0%, var(--pitch) 60%),
+      var(--pitch);
+    color:var(--chalk);
+    font:400 1rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:flex;flex-direction:column;
+    max-width:480px;margin:0 auto;min-height:100dvh;
+    user-select:none;
+  }
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;touch-action:manipulation}
+  button:focus-visible{outline:3px solid var(--card-y);outline-offset:2px}
+
+  /* ---------- score bug ---------- */
+  #scorebug{
+    display:flex;gap:6px;padding:10px 10px 8px;
+    border-bottom:2px solid var(--line);
+    background:linear-gradient(#131f16,#0d1710);
+    position:sticky;top:0;z-index:5;
+  }
+  .bug{
+    flex:1;border-radius:10px;padding:7px 6px 6px;text-align:center;
+    background:#0a120d;border:1px solid var(--line);position:relative;
+  }
+  .bug.active{border-color:var(--turf);box-shadow:0 0 0 1px var(--turf),0 0 14px rgba(46,143,85,.35)}
+  .bug .nm{
+    font:700 .72rem/1.1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--chalk-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .bug.active .nm{color:var(--chalk)}
+  .bug .sc{
+    font:800 1.5rem/1.15 ui-monospace,"Cascadia Mono",Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .bug .sc.neg{color:var(--card-r)}
+  .bug .cards{min-height:12px;display:flex;gap:2px;justify-content:center;align-items:center}
+  .pip{width:7px;height:10px;border-radius:1.5px;background:var(--card-y);display:inline-block}
+  .pip.r{background:var(--card-r)}
+  .bug .book{
+    position:absolute;top:-6px;right:-4px;width:26px;height:26px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .bug .book::before{
+    content:"";width:12px;height:16px;border-radius:2px;background:var(--card-y);
+    box-shadow:0 1px 3px rgba(0,0,0,.6);transform:rotate(8deg);
+  }
+
+  /* ---------- stage ---------- */
+  #stage{flex:1;display:flex;flex-direction:column;padding:16px 14px 18px;gap:14px}
+  .kick{font:700 .7rem/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-dim)}
+  h1.title{
+    font:900 clamp(2.6rem,13vw,3.6rem)/0.95 system-ui,sans-serif;
+    letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;
+  }
+  h1.title .gold{color:var(--gold)}
+  .sub{color:var(--chalk-dim);max-width:34ch}
+
+  .bigbtn{
+    display:block;width:100%;padding:16px;border-radius:var(--radius);
+    background:var(--turf-deep);border:1px solid var(--turf);
+    font:800 1.05rem/1.2 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;
+    transition:transform .06s ease;
+  }
+  .bigbtn:active{transform:scale(.97)}
+  .bigbtn.ghost{background:transparent;border:1px solid var(--line);color:var(--chalk-dim);font-weight:600;text-transform:none;letter-spacing:0}
+
+  input.nm-in{
+    width:100%;padding:14px;border-radius:var(--radius);border:1px solid var(--line);
+    background:#0a120d;color:var(--chalk);font:600 1.05rem system-ui,sans-serif;
+  }
+  input.nm-in::placeholder{color:#54695a}
+  input.nm-in:focus{outline:2px solid var(--turf)}
+
+  /* difficulty buttons */
+  .diff{
+    display:flex;align-items:center;justify-content:space-between;
+    width:100%;padding:15px 16px;border-radius:var(--radius);
+    border:1px solid var(--dc,var(--line));background:#0d1710;
+    font:800 1.15rem/1 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--dc,var(--chalk));
+    transition:transform .06s ease;
+  }
+  .diff:active{transform:scale(.97)}
+  .diff .pts{
+    font:800 .8rem/1 ui-monospace,Consolas,monospace;
+    background:var(--dc);color:#08110b;padding:5px 9px;border-radius:99px;
+  }
+  .diff.ball{
+    background:linear-gradient(100deg,#241a08,#3a2a0c 45%,#241a08);
+    border-color:var(--gold);
+    box-shadow:0 0 18px rgba(233,180,76,.25);
+  }
+  .diff .left{display:flex;flex-direction:column;gap:3px;text-align:left}
+  .diff .cnt{font:500 .65rem/1 system-ui;letter-spacing:.1em;color:var(--chalk-dim);text-transform:none}
+
+  /* question card */
+  .qcard{
+    background:#0d1811;border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 16px;display:flex;flex-direction:column;gap:12px;
+  }
+  .qmeta{display:flex;justify-content:space-between;align-items:center}
+  .tierchip{
+    font:800 .7rem/1 system-ui;letter-spacing:.12em;text-transform:uppercase;
+    color:#08110b;background:var(--dc,var(--turf));padding:6px 10px;border-radius:99px;
+  }
+  .qtext{font:650 1.35rem/1.3 system-ui,sans-serif;text-wrap:balance}
+  .atext{
+    font:650 1.2rem/1.3 system-ui,sans-serif;color:var(--gold);
+    border-top:1px dashed var(--line);padding-top:12px;
+  }
+  .atext .lbl{display:block;font:700 .65rem/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:6px}
+
+  /* clock */
+  .clock{display:flex;flex-direction:column;gap:8px}
+  .clock .digits{
+    font:800 3rem/1 ui-monospace,"Cascadia Mono",Consolas,monospace;
+    font-variant-numeric:tabular-nums;text-align:center;
+  }
+  .clock.hot .digits{color:var(--card-r)}
+  .bar{height:10px;border-radius:99px;background:#0a120d;border:1px solid var(--line);overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--turf);border-radius:99px;transition:width .1s linear}
+  .clock.hot .bar i{background:var(--card-r)}
+  @media (prefers-reduced-motion:no-preference){
+    .clock.hot .digits{animation:pulse .5s infinite alternate}
+    @keyframes pulse{from{opacity:1}to{opacity:.55}}
+  }
+
+  .row2{display:flex;gap:10px}
+  .row2 .bigbtn{flex:1}
+  .bigbtn.ok{background:#153f27;border-color:var(--ok)}
+  .bigbtn.bad{background:#3d1712;border-color:var(--bad)}
+
+  .whobar{display:flex;flex-direction:column;gap:10px}
+  .stealbtn{
+    padding:22px;border-radius:var(--radius);
+    background:#102117;border:2px solid var(--blue);
+    font:900 1.4rem/1 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em;
+    transition:transform .06s ease;
+  }
+  .stealbtn:active{transform:scale(.96)}
+
+  .toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+    background:#183a26;border:1px solid var(--ok);color:var(--chalk);
+    padding:12px 20px;border-radius:99px;font:700 .95rem system-ui;
+    z-index:20;white-space:nowrap;opacity:0;pointer-events:none;
+    transition:opacity .25s;
+  }
+  .toast.bad{background:#3d1712;border-color:var(--bad)}
+  .toast.show{opacity:1}
+
+  /* overlay */
+  #overlay{
+    position:fixed;inset:0;background:rgba(4,8,5,.8);z-index:10;
+    display:none;align-items:flex-end;justify-content:center;padding:14px;
+  }
+  #overlay.show{display:flex}
+  .sheet{
+    width:100%;max-width:452px;background:#101b13;border:1px solid var(--line);
+    border-radius:18px;padding:20px 16px;display:flex;flex-direction:column;gap:12px;
+  }
+  .sheet h2{font:800 1.2rem system-ui;text-transform:uppercase;letter-spacing:.04em}
+  .sheet p{color:var(--chalk-dim)}
+
+  /* results */
+  .final{display:flex;flex-direction:column;gap:10px}
+  .frow{
+    display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--radius);
+    background:#0d1811;border:1px solid var(--line);
+  }
+  .frow .pos{font:900 1.3rem ui-monospace,Consolas,monospace;width:34px;color:var(--chalk-dim)}
+  .frow.w{border-color:var(--gold);box-shadow:0 0 16px rgba(233,180,76,.2)}
+  .frow.w .pos{color:var(--gold)}
+  .frow .fn{flex:1;font:800 1.15rem system-ui;text-transform:uppercase}
+  .frow .fs{font:800 1.4rem ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
+  .frow .fs.neg{color:var(--card-r)}
+  .loserbox{
+    border:2px solid var(--card-r);border-radius:var(--radius);padding:18px;text-align:center;
+    background:repeating-linear-gradient(-45deg,#2a100c,#2a100c 14px,#331410 14px,#331410 28px);
+  }
+  .loserbox .big{font:900 1.7rem/1.1 system-ui;text-transform:uppercase;color:var(--card-r);letter-spacing:.02em}
+  .loserbox p{margin-top:6px;color:var(--chalk)}
+
+  .foot{margin-top:auto;display:flex;gap:10px}
+  .foot .bigbtn{flex:1;padding:12px}
+  .hint{font:500 .8rem/1.4 system-ui;color:var(--chalk-dim)}
+  .spacer{flex:1}
+
+  /* keyboard hints: only on devices with a real pointer + keyboard */
+  kbd{
+    display:none;
+    font:700 .7rem/1 ui-monospace,Consolas,monospace;
+    background:#0a120d;border:1px solid var(--line);border-bottom-width:2px;
+    border-radius:5px;padding:2px 6px;color:var(--chalk-dim);
+    margin-left:8px;vertical-align:middle;
+  }
+  @media (hover:hover) and (pointer:fine){
+    kbd{display:inline-block}
+    body{
+      max-width:520px;
+      border-left:1px solid var(--line);border-right:1px solid var(--line);
+      min-height:100vh;
+    }
+    html{background:#060a07}
+  }
+</style>
+</head>
+<body>
+
+<div id="scorebug" hidden></div>
+<div id="stage"></div>
+<div id="overlay"></div>
+<div id="toast" class="toast"></div>
+
+<script>
+"use strict";
+/* ============================== QUESTION BANK ============================== */
+const TIERS = {
+  easy:   {label:"Easy",    pts:1,  color:"var(--turf)"},
+  normal: {label:"Normal",  pts:2,  color:"var(--blue)"},
+  hard:   {label:"Hard",    pts:5,  color:"var(--card-y)"},
+  extreme:{label:"Extreme", pts:10, color:"var(--card-r)"},
+  ball:   {label:"BALL",    pts:20, color:"var(--gold)"},
+};
+const BANK = {
+easy: [
+ {q:"How many players does each team have on the pitch?", a:"11"},
+ {q:"Which country won the 2022 World Cup?", a:"Argentina"},
+ {q:"What colour card sends a player off?", a:"Red"},
+ {q:"Which club plays its home games at Old Trafford?", a:"Manchester United"},
+ {q:"What nationality is Cristiano Ronaldo?", a:"Portuguese"},
+ {q:"Which country hosted the 2022 World Cup?", a:"Qatar"},
+ {q:"How many minutes does a standard match last, before stoppage time?", a:"90"},
+ {q:"Which country has won the most World Cups?", a:"Brazil (5)"},
+ {q:"Which MLS club did Lionel Messi join in 2023?", a:"Inter Miami"},
+ {q:"What do the letters VAR stand for?", a:"Video Assistant Referee"},
+ {q:"Which famous Dutch club plays in Amsterdam?", a:"Ajax"},
+ {q:"What colour is the card a referee shows for a booking?", a:"Yellow"},
+ {q:"Erling Haaland plays for which English club?", a:"Manchester City"},
+ {q:"Which country is Kylian Mbappé from?", a:"France"},
+ {q:"Which London club plays at the Emirates Stadium?", a:"Arsenal"},
+ {q:"How many teams play in the Premier League?", a:"20"},
+ {q:"Which country won Euro 2024?", a:"Spain"},
+ {q:"What is it called when you put the ball into your own net?", a:"An own goal"},
+ {q:"Which European club trophy is nicknamed 'Big Ears'?", a:"The Champions League trophy"},
+ {q:"Which country is Neymar from?", a:"Brazil"},
+ {q:"What is the name of Barcelona's stadium?", a:"Camp Nou"},
+ {q:"Which English club is nicknamed the Red Devils?", a:"Manchester United"},
+ {q:"Which part of the body may outfield players never use on purpose?", a:"Hands / arms"},
+ {q:"In which city do Real Madrid play their home games?", a:"Madrid"},
+],
+normal: [
+ {q:"Which club has won the most European Cups / Champions Leagues?", a:"Real Madrid (15)"},
+ {q:"Who won the 2025 Champions League final, 5-0?", a:"Paris Saint-Germain (vs Inter)"},
+ {q:"Which player has won the most Ballon d'Or awards?", a:"Lionel Messi (8)"},
+ {q:"Which country won the very first World Cup, in 1930?", a:"Uruguay"},
+ {q:"Dennis Bergkamp became a legend at which London club?", a:"Arsenal"},
+ {q:"Which Italian club is nicknamed 'the Old Lady'?", a:"Juventus"},
+ {q:"Anfield is the home ground of a club in which city?", a:"Liverpool"},
+ {q:"Who is the Premier League's all-time top scorer?", a:"Alan Shearer (260)"},
+ {q:"Which German club plays at the Allianz Arena?", a:"Bayern Munich"},
+ {q:"Who won the 2024 Ballon d'Or?", a:"Rodri"},
+ {q:"Which nation has won the most European Championships?", a:"Spain (4)"},
+ {q:"Which country is Zlatan Ibrahimović from?", a:"Sweden"},
+ {q:"Johan Cruyff starred for Ajax and which Spanish giant?", a:"Barcelona"},
+ {q:"Who scored the 'Hand of God' goal in 1986?", a:"Diego Maradona"},
+ {q:"Which country hosted Euro 2024?", a:"Germany"},
+ {q:"Which club won the 2024-25 Premier League title?", a:"Liverpool"},
+ {q:"Virgil van Dijk captains which English club?", a:"Liverpool"},
+ {q:"Which African nation reached the World Cup semi-finals in 2022?", a:"Morocco"},
+ {q:"Which two clubs share the San Siro in Milan?", a:"AC Milan and Inter"},
+ {q:"Which country does Mohamed Salah play for?", a:"Egypt"},
+ {q:"Feyenoord is based in which Dutch city?", a:"Rotterdam"},
+ {q:"Diego Maradona became a god at which Italian club?", a:"Napoli"},
+ {q:"Which English club went unbeaten through the 2003-04 league season?", a:"Arsenal (the Invincibles)"},
+ {q:"Which three countries co-host the 2026 World Cup?", a:"USA, Canada and Mexico"},
+],
+hard: [
+ {q:"Who scored the winning goal in the 2014 World Cup final?", a:"Mario Götze"},
+ {q:"Eric Cantona joined Manchester United from which club?", a:"Leeds United"},
+ {q:"Who is the all-time top scorer in World Cup history?", a:"Miroslav Klose (16)"},
+ {q:"In which year did Leicester City win the Premier League?", a:"2016 (the 2015-16 season)"},
+ {q:"Who won the Golden Boot at the 2022 World Cup?", a:"Kylian Mbappé (8 goals)"},
+ {q:"Which club won the first-ever Premier League title, in 1992-93?", a:"Manchester United"},
+ {q:"Who holds the record for most Premier League assists?", a:"Ryan Giggs (162)"},
+ {q:"Which nation won the Copa América in 2024?", a:"Argentina"},
+ {q:"Who scored the fastest Premier League hat-trick, in 2 minutes 56 seconds?", a:"Sadio Mané (for Southampton)"},
+ {q:"Which Dutch club won the European Cup in 1988?", a:"PSV"},
+ {q:"Who captained France to the 1998 World Cup title?", a:"Didier Deschamps"},
+ {q:"What was Pep Guardiola's first job as a head coach?", a:"Barcelona B"},
+ {q:"Which goalkeeper holds the Premier League clean-sheet record?", a:"Petr Čech (202)"},
+ {q:"Which was the first British club to win the European Cup?", a:"Celtic, in 1967"},
+ {q:"How many goals did Messi score at the 2022 World Cup?", a:"7"},
+ {q:"Which club has won the most Eredivisie titles?", a:"Ajax (36)"},
+ {q:"Who won the Golden Ball as best player of the 2018 World Cup?", a:"Luka Modrić"},
+ {q:"Who scored the winning penalty in the 2006 World Cup final shoot-out?", a:"Fabio Grosso"},
+ {q:"Who holds the record for most goals in a single Premier League season?", a:"Erling Haaland (36, in 2022-23)"},
+ {q:"Which country won men's football gold at the 2024 Olympics?", a:"Spain"},
+ {q:"Who was named Player of the Tournament at Euro 2024?", a:"Rodri"},
+ {q:"Which club did Arsène Wenger manage immediately before Arsenal?", a:"Nagoya Grampus Eight (Japan)"},
+ {q:"Who won the Golden Boot at Euro 2020?", a:"Cristiano Ronaldo"},
+ {q:"Who managed England to their 1966 World Cup win?", a:"Alf Ramsey"},
+],
+extreme: [
+ {q:"Who scored the fastest goal in World Cup history, after about 11 seconds in 2002?", a:"Hakan Şükür (Turkey)"},
+ {q:"Who refereed the 1986 'Hand of God' match?", a:"Ali Bin Nasser (Tunisia)"},
+ {q:"Which team did Denmark beat in the Euro 1992 final?", a:"Germany"},
+ {q:"Who scored the first-ever Premier League goal?", a:"Brian Deane (Sheffield United)"},
+ {q:"Which player has played the most World Cup matches?", a:"Lionel Messi (26)"},
+ {q:"What is the record score in an international match, set in 2001?", a:"Australia 31-0 American Samoa"},
+ {q:"Which Frenchman scored 13 goals at the 1958 World Cup?", a:"Just Fontaine"},
+ {q:"At which club did Diego Maradona start his career?", a:"Argentinos Juniors"},
+ {q:"Who did England play in the first-ever official international, in 1872?", a:"Scotland (0-0)"},
+ {q:"Who won the first-ever Ballon d'Or, in 1956?", a:"Stanley Matthews"},
+ {q:"In which stadium was the 1930 World Cup final played?", a:"Estadio Centenario, Montevideo"},
+ {q:"How many European Cups in a row did Real Madrid win from 1956?", a:"5"},
+ {q:"Who is the only African player to have won the Ballon d'Or?", a:"George Weah (1995)"},
+ {q:"What was Zlatan Ibrahimović's first professional club?", a:"Malmö FF"},
+ {q:"Who is the oldest goalscorer in World Cup history, at 42?", a:"Roger Milla (Cameroon, 1994)"},
+ {q:"Which club, founded in 1857, is recognised as the world's oldest?", a:"Sheffield FC"},
+ {q:"Which German coach led Greece to the Euro 2004 title?", a:"Otto Rehhagel"},
+ {q:"Who scored the first hat-trick in a World Cup final?", a:"Geoff Hurst (1966)"},
+ {q:"Johan Cruyff coached which club to the 1992 European Cup?", a:"Barcelona (the Dream Team)"},
+ {q:"Who scored the legendary volley in the Euro 1988 final?", a:"Marco van Basten"},
+ {q:"Which country broke Brazilian hearts in the 1950 'Maracanazo'?", a:"Uruguay"},
+ {q:"In which calendar year did Messi score his record 91 goals?", a:"2012"},
+ {q:"Which Czechoslovak player gave his name to the chipped penalty?", a:"Antonín Panenka"},
+ {q:"Which Colombian keeper pulled off the 'scorpion kick' at Wembley in 1995?", a:"René Higuita"},
+],
+ball: [
+ {q:"A 2002 match in Madagascar finished 149-0. Why?", a:"AS Adema's opponents (SO l'Emyrne) scored 149 own goals in protest at the referee"},
+ {q:"Who has scored the most own goals in Premier League history?", a:"Richard Dunne (10)"},
+ {q:"Who was the first-ever substitute in the English Football League, in 1965?", a:"Keith Peacock (Charlton Athletic)"},
+ {q:"Brazilian legend Sócrates came out of retirement in 2004 to play one match for which English non-league club?", a:"Garforth Town"},
+ {q:"The fastest red card in football history came after roughly 2 seconds. What did Lee Todd do?", a:"Swore at the kick-off whistle ('F*** me, that was loud')"},
+ {q:"Which goalkeeper scored over 130 career goals?", a:"Rogério Ceni (São Paulo)"},
+ {q:"Who refereed the 1966 World Cup final with its famous ghost goal?", a:"Gottfried Dienst (Switzerland)"},
+ {q:"Roughly how many people watched the 1950 World Cup decider at the Maracanã?", a:"About 200,000"},
+ {q:"In 2024 San Marino won a competitive match for the first time ever. Against whom?", a:"Liechtenstein (1-0)"},
+ {q:"Who scored San Marino's 8-second goal against England in 1993?", a:"Davide Gualtieri"},
+ {q:"Which Irishman invented the penalty kick in 1890?", a:"William McCrum"},
+ {q:"Which club were the original 'Invincibles', unbeaten in England's first league season, 1888-89?", a:"Preston North End"},
+ {q:"At the 1974 World Cup, which Zaire defender famously booted away Brazil's free kick before it was taken?", a:"Mwepu Ilunga"},
+ {q:"Who is the youngest player ever to appear at a World Cup, aged 17?", a:"Norman Whiteside (Northern Ireland, 1982)"},
+ {q:"The stolen World Cup trophy was found in a London hedge in 1966 by a dog. Its name?", a:"Pickles"},
+ {q:"The first World Cup penalty shoot-out was in 1982, between which two teams?", a:"West Germany and France"},
+ {q:"Who was the first man to win the World Cup as both player and manager?", a:"Mário Zagallo (Brazil)"},
+ {q:"Who won the first official Olympic football gold, in 1908?", a:"Great Britain"},
+ {q:"According to the famous (if not quite true) story, why did India withdraw from the 1950 World Cup?", a:"They were not allowed to play barefoot"},
+ {q:"Which animal correctly predicted eight results at the 2010 World Cup?", a:"Paul the Octopus (Germany)"},
+],
+};
+
+/* ============================== STATE ============================== */
+const SAVE_KEY = "ball-quiz-v1";
+const OFFENCE_PENALTY = n => n<=1 ? 0 : n===2 ? 1 : 2;
+
+let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stealer, timeUp, used:{tier:[i,..]}}
+
+function freshState(names){
+  return {
+    players: names.map(n=>({name:n, score:0, off:0})),
+    turn:0, round:1, phase:"pick",
+    tier:null, qi:null, stealer:null, timeUp:false,
+    used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
+  };
+}
+function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
+function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
+
+/* ============================== AUDIO ============================== */
+let AC=null;
+function audio(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
+function beep(freq,dur,type="square",gain=.06){
+  const ac=audio(); if(!ac) return;
+  const o=ac.createOscillator(), g=ac.createGain();
+  o.type=type; o.frequency.value=freq; g.gain.value=gain;
+  o.connect(g); g.connect(ac.destination);
+  o.start(); g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime+dur);
+  o.stop(ac.currentTime+dur);
+}
+const tick   = ()=>beep(880,.08,"square",.05);
+const buzzer = ()=>{beep(150,.5,"sawtooth",.1); setTimeout(()=>beep(110,.6,"sawtooth",.1),120);};
+const ching  = ()=>{beep(1047,.12,"sine",.09); setTimeout(()=>beep(1568,.25,"sine",.09),110);};
+
+/* ============================== TIMER ============================== */
+let T = {raf:null, deadline:0, total:0, onDone:null, lastWhole:99};
+function startTimer(seconds, onDone){
+  stopTimer();
+  T.total=seconds*1000; T.deadline=performance.now()+T.total; T.onDone=onDone; T.lastWhole=seconds+1;
+  T.raf=requestAnimationFrame(tickTimer);
+}
+function stopTimer(){ if(T.raf){cancelAnimationFrame(T.raf); T.raf=null;} }
+function tickTimer(){
+  const left=Math.max(0, T.deadline-performance.now());
+  const secs=left/1000;
+  const el=document.getElementById("clock");
+  if(el){
+    el.querySelector(".digits").textContent = secs.toFixed(1);
+    el.querySelector(".bar i").style.width = (left/T.total*100)+"%";
+    el.classList.toggle("hot", secs<=3.05);
+  }
+  const whole=Math.ceil(secs);
+  if(whole<T.lastWhole && whole<=3 && whole>0){ T.lastWhole=whole; tick(); }
+  if(left<=0){ T.raf=null; buzzer(); const f=T.onDone; T.onDone=null; if(f) f(); return; }
+  T.raf=requestAnimationFrame(tickTimer);
+}
+
+/* ============================== HELPERS ============================== */
+const $ = sel => document.querySelector(sel);
+const esc = s => s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(msg, bad){
+  const t=$("#toast"); t.textContent=msg; t.classList.toggle("bad",!!bad); t.classList.add("show");
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"), 2200);
+}
+function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
+function q(){ return BANK[S.tier][S.qi]; }
+function remaining(t){ return BANK[t].length - S.used[t].length; }
+async function wakeLock(){ try{ if(navigator.wakeLock) await navigator.wakeLock.request("screen"); }catch(e){} }
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wakeLock(); });
+
+/* ============================== RENDER ============================== */
+function renderBug(){
+  const bug=$("#scorebug");
+  if(!S || S.phase==="setup"){ bug.hidden=true; return; }
+  bug.hidden=false;
+  bug.innerHTML = S.players.map((p,i)=>{
+    const pips = p.off===0 ? "" :
+      Array.from({length:Math.min(p.off,5)},(_,k)=>`<span class="pip${k>=2?" r":""}"></span>`).join("") +
+      (p.off>5?`<span style="font:700 .6rem monospace;color:var(--chalk-dim)">+${p.off-5}</span>`:"");
+    return `<div class="bug${i===S.turn && S.phase!=="results" ?" active":""}">
+      <button class="book" aria-label="Book ${esc(p.name)}" onclick="askBook(${i})"></button>
+      <div class="nm">${esc(p.name)}</div>
+      <div class="sc${p.score<0?" neg":""}">${p.score}</div>
+      <div class="cards">${pips}</div>
+    </div>`;
+  }).join("");
+}
+
+function render(){
+  renderBug(); save();
+  const st=$("#stage");
+  const P=S ? S.players[S.turn] : null;
+
+  if(!S || S.phase==="setup"){ return renderSetup(st); }
+
+  if(S.phase==="pick"){
+    st.innerHTML = `
+      <div class="kick">Round ${S.round} · On the spot</div>
+      <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
+      <div class="hint">Pick your difficulty. Someone else reads the question out loud.</div>
+      ${Object.entries(TIERS).map(([k,t],ix)=>`
+        <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
+          <span class="left"><span>${t.label}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
+          <span class="pts">+${t.pts}</span>
+        </button>`).join("")}
+      <div class="foot">
+        <button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button>
+      </div>`;
+    return;
+  }
+
+  if(S.phase==="question" || S.phase==="steal_q"){
+    const stealing = S.phase==="steal_q";
+    const who = stealing ? S.players[S.stealer] : P;
+    const t=TIERS[S.tier];
+    st.innerHTML = `
+      <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
+      <div class="qcard" style="--dc:${t.color}">
+        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qtext">${esc(q().q)}</div>
+      </div>
+      <div class="clock" id="clock">
+        <div class="digits">${stealing?"5.0":"10.0"}</div>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="reveal()">Reveal answer<kbd>Space</kbd></button>
+      <div class="hint">Reveal stops the clock. Only the reader should be looking at the screen.</div>`;
+    startTimer(stealing?5:10, onTimeUp);
+    return;
+  }
+
+  if(S.phase==="judge" || S.phase==="steal_judge"){
+    const stealing = S.phase==="steal_judge";
+    const who = stealing ? S.players[S.stealer] : P;
+    const t=TIERS[S.tier];
+    st.innerHTML = `
+      <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
+      <div class="qcard" style="--dc:${t.color}">
+        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qtext">${esc(q().q)}</div>
+        <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+      </div>
+      ${S.timeUp?`<div class="hint" style="color:var(--card-r);font-weight:700">Time was already up. Only count an answer given before the buzzer.</div>`:""}
+      <div class="spacer"></div>
+      <div class="row2">
+        <button class="bigbtn ok" onclick="judge(true)">Correct +${t.pts}<kbd>C</kbd></button>
+        <button class="bigbtn bad" onclick="judge(false)">Wrong<kbd>W</kbd></button>
+      </div>`;
+    return;
+  }
+
+  if(S.phase==="steal_offer"){
+    const t=TIERS[S.tier];
+    st.innerHTML = `
+      <div class="kick">Question is loose!</div>
+      <h1 class="title" style="font-size:clamp(1.7rem,8.5vw,2.2rem)">Who steals<br>for +${t.pts}?</h1>
+      <div class="hint">First to shout it claims the 5-second steal. Tap their name.</div>
+      <div class="whobar">
+        ${others().map((i,ix)=>`<button class="stealbtn" onclick="claimSteal(${i})">${esc(S.players[i].name)}<kbd>${ix+1}</kbd></button>`).join("")}
+        <button class="bigbtn ghost" onclick="noSteal()">Nobody dares<kbd>N</kbd></button>
+      </div>`;
+    return;
+  }
+
+  if(S.phase==="deadq"){
+    const t=TIERS[S.tier];
+    st.innerHTML = `
+      <div class="kick">Nobody got it</div>
+      <div class="qcard" style="--dc:${t.color}">
+        <div class="qtext">${esc(q().q)}</div>
+        <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+      </div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="nextTurn()">Play on<kbd>Space</kbd></button>`;
+    return;
+  }
+
+  if(S.phase==="results"){
+    const order=[...S.players].map((p,i)=>({...p,i})).sort((a,b)=>b.score-a.score);
+    const losers=order.filter(p=>p.score<0);
+    st.innerHTML = `
+      <div class="kick">Full time · ${S.round} round${S.round>1?"s":""}</div>
+      <h1 class="title">Final<br><span class="gold">Whistle</span></h1>
+      <div class="final">
+        ${order.map((p,k)=>`
+          <div class="frow${k===0&&p.score>=0?" w":""}">
+            <span class="pos">${k+1}</span>
+            <span class="fn">${esc(p.name)}</span>
+            <span class="fs${p.score<0?" neg":""}">${p.score}</span>
+          </div>`).join("")}
+      </div>
+      ${losers.length?`
+        <div class="loserbox">
+          <div class="big">${esc(losers.map(l=>l.name).join(" & "))}<br>BIG LOSER${losers.length>1?"S":""}</div>
+          <p>Negative score. The rules are the rules: a round of shots, on ${losers.length>1?"them":"you"}. 🥃</p>
+        </div>`:`
+        <div class="hint" style="text-align:center">No BIG LOSERS today. The shots stay optional. Boring, honestly.</div>`}
+      <div class="spacer"></div>
+      <div class="row2">
+        <button class="bigbtn" onclick="rematch()">Rematch</button>
+        <button class="bigbtn ghost" onclick="fullReset()">New players</button>
+      </div>`;
+    return;
+  }
+}
+
+function renderSetup(st){
+  const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
+  st.innerHTML = `
+    <div class="kick">Three friends · one quizmaster app</div>
+    <h1 class="title">The<br>Football<br><span class="gold">Quiz</span></h1>
+    <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
+    ${saved?`<button class="bigbtn" style="border-color:var(--gold);background:#2b2110" onclick="resumeGame()">Resume match in progress</button>`:""}
+    <input class="nm-in" id="n0" placeholder="Player 1" maxlength="12" autocomplete="off">
+    <input class="nm-in" id="n1" placeholder="Player 2" maxlength="12" autocomplete="off">
+    <input class="nm-in" id="n2" placeholder="Player 3" maxlength="12" autocomplete="off">
+    <div class="spacer"></div>
+    <button class="bigbtn" onclick="startGame()">Kick off</button>
+    <div class="hint">Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Ten seconds to answer, five for a steal. Yellow card on a player's scoreboard tab books them: 1st a warning, 2nd −1, then −2 each.</div>`;
+}
+
+/* ============================== GAME FLOW ============================== */
+function startGame(){
+  audio(); wakeLock();
+  const names=[0,1,2].map(i=>{
+    const v=document.getElementById("n"+i).value.trim();
+    return v || "Player "+(i+1);
+  });
+  S=freshState(names);
+  render();
+}
+function resumeGame(){
+  audio(); wakeLock();
+  try{ S=JSON.parse(localStorage.getItem(SAVE_KEY)); }catch(e){ return; }
+  // never resume mid-clock; fall back to a safe phase
+  if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
+  if(["judge","steal_judge","deadq","steal_offer"].includes(S.phase) && S.qi==null) S.phase="pick";
+  render();
+}
+function pickTier(t){
+  audio();
+  const avail=BANK[t].map((_,i)=>i).filter(i=>!S.used[t].includes(i));
+  if(!avail.length){ toast("No "+TIERS[t].label+" questions left!", true); return; }
+  S.tier=t; S.qi=avail[Math.floor(Math.random()*avail.length)];
+  S.used[t].push(S.qi);
+  S.timeUp=false; S.stealer=null; S.phase="question";
+  render();
+}
+function onTimeUp(){
+  S.timeUp=true;
+  if(S.phase==="question"){ S.phase="steal_offer"; render(); }
+  else if(S.phase==="steal_q"){ S.phase="steal_judge"; render(); }
+}
+function reveal(){
+  stopTimer();
+  S.phase = S.phase==="steal_q" ? "steal_judge" : "judge";
+  render();
+}
+function judge(correct){
+  const pts=TIERS[S.tier].pts;
+  const stealing = S.phase==="steal_judge";
+  const who = stealing ? S.players[S.stealer] : S.players[S.turn];
+  if(correct){
+    who.score+=pts; ching();
+    toast(`${who.name} +${pts}${stealing?" — stolen!":""}`);
+    nextTurn();
+  }else if(!stealing){
+    S.phase="steal_offer"; render();
+  }else{
+    toast("Steal failed. No damage.", true);
+    S.phase="deadq"; render();
+  }
+}
+function claimSteal(i){
+  S.stealer=i; S.timeUp=false; S.phase="steal_q"; render();
+}
+function noSteal(){
+  S.phase="deadq"; render();
+}
+function nextTurn(){
+  stopTimer();
+  S.turn=(S.turn+1)%S.players.length;
+  if(S.turn===0) S.round++;
+  S.tier=null; S.qi=null; S.stealer=null; S.timeUp=false;
+  S.phase="pick";
+  render();
+}
+
+/* ============================== BOOKINGS ============================== */
+function askBook(i){
+  const p=S.players[i];
+  const nth=p.off+1;
+  const pen=OFFENCE_PENALTY(nth);
+  sheet(`
+    <h2>Book ${esc(p.name)}?</h2>
+    <p>Shouting at the quizmaster, insults, or arguing about difficulty. This would be offence #${nth}: ${pen===0?"an official warning, no points off.":"−"+pen+" point"+(pen>1?"s":"")+"."}</p>
+    <button class="bigbtn" style="background:#4a3a08;border-color:var(--card-y)" onclick="book(${i})">Show the card</button>
+    <button class="bigbtn ghost" onclick="closeSheet()">Let it slide</button>`);
+}
+function book(i){
+  const p=S.players[i];
+  p.off++;
+  const pen=OFFENCE_PENALTY(p.off);
+  p.score-=pen;
+  buzzer();
+  toast(pen===0 ? `${p.name}: official warning` : `${p.name} booked: −${pen}`, true);
+  closeSheet(); render();
+}
+
+/* ============================== END / SHEETS ============================== */
+function askEnd(){
+  sheet(`
+    <h2>Blow the full-time whistle?</h2>
+    <p>Ends the match and reveals who (if anyone) is the BIG LOSER.</p>
+    <button class="bigbtn bad" onclick="endGame()">End the match</button>
+    <button class="bigbtn ghost" onclick="closeSheet()">Keep playing</button>`);
+}
+function endGame(){ closeSheet(); stopTimer(); S.phase="results"; render(); }
+function rematch(){
+  const names=S.players.map(p=>p.name);
+  const used=S.used; // keep used questions so a rematch gets fresh ones
+  S=freshState(names); S.used=used;
+  render();
+}
+function fullReset(){ clearSave(); S=null; render(); }
+
+function sheet(html){
+  const o=$("#overlay");
+  o.innerHTML=`<div class="sheet">${html}</div>`;
+  o.classList.add("show");
+  o.onclick=e=>{ if(e.target===o) closeSheet(); };
+}
+function closeSheet(){ $("#overlay").classList.remove("show"); }
+
+/* ============================== KEYBOARD (desktop) ============================== */
+document.addEventListener("keydown", e=>{
+  if(e.target.tagName==="INPUT"){ if(e.key==="Enter") startGame(); return; }
+  if($("#overlay").classList.contains("show")){ if(e.key==="Escape") closeSheet(); return; }
+  if(!S){ if(e.key==="Enter") startGame(); return; }
+  const k=e.key.toLowerCase();
+  if(S.phase==="pick"){
+    const order=Object.keys(TIERS);
+    if(k>="1" && k<="5") pickTier(order[+k-1]);
+  }else if(S.phase==="question" || S.phase==="steal_q"){
+    if(k===" "||k==="r"){ e.preventDefault(); reveal(); }
+  }else if(S.phase==="judge" || S.phase==="steal_judge"){
+    if(k==="c") judge(true);
+    if(k==="w"||k==="x") judge(false);
+  }else if(S.phase==="steal_offer"){
+    const o=others();
+    if(k==="1") claimSteal(o[0]);
+    if(k==="2") claimSteal(o[1]);
+    if(k==="n") noSteal();
+  }else if(S.phase==="deadq"){
+    if(k===" "||k==="enter"){ e.preventDefault(); nextTurn(); }
+  }else if(S.phase==="results"){
+    if(k==="r") rematch();
+  }
+});
+
+/* ============================== BOOT ============================== */
+render();
+if("serviceWorker" in navigator && location.protocol==="https:"){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+</script>
+</body>
+</html>

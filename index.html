@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0b8250">
 <title>Gran Canaria - MVV Ultras</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
@@ -12,12 +12,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
   :root{
-    --bg:#f2f5f8;
+    --bg:#edf4ee;
     --card:#ffffff;
     --ink:#101c2b;
     --chalk:#101c2b;
-    --chalk-dim:#64748b;
-    --line:#e3e8ee;
+    --chalk-dim:#5f7264;
+    --line:#dde8de;
     --turf:#0a9e5c;
     --turf-deep:#08874f;
     --card-y:#eab308;
@@ -33,39 +33,63 @@
   html,body{height:100%}
   html{background:var(--bg)}
   body{
-    background:linear-gradient(#ffffff, var(--bg) 220px);
+    background:transparent;
     color:var(--ink);
     font:400 1rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     display:flex;flex-direction:column;
     max-width:480px;margin:0 auto;min-height:100dvh;
     user-select:none;
   }
+
+  /* ---------- the pitch under everything ---------- */
+  #pitchbg{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:repeating-linear-gradient(180deg,#e7f2e8 0 72px,#deecdf 72px 144px);
+  }
+  #pitchbg::before{ /* centre circle */
+    content:"";position:absolute;left:50%;top:150px;width:240px;height:240px;
+    transform:translateX(-50%);
+    border:3px solid rgba(255,255,255,.85);border-radius:50%;
+  }
+  #pitchbg::after{ /* halfway line */
+    content:"";position:absolute;left:0;right:0;top:268px;height:3px;
+    background:rgba(255,255,255,.85);
+  }
+  .cornerarc{
+    position:fixed;width:70px;height:70px;z-index:-1;pointer-events:none;
+    border:3px solid rgba(255,255,255,.7);border-radius:50%;
+  }
+  .cornerarc.tl{left:-35px;top:-35px}
+  .cornerarc.tr{right:-35px;top:-35px}
+  .cornerarc.bl{left:-35px;bottom:-35px}
+  .cornerarc.br{right:-35px;bottom:-35px}
   button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;touch-action:manipulation}
   button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
-  /* ---------- score bug ---------- */
+  /* ---------- score bug: broadcast green ---------- */
   #scorebug{
     display:flex;gap:8px;padding:10px 12px;
-    background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
+    background:linear-gradient(135deg,#0b8250,#0aa15e);
+    box-shadow:0 2px 10px rgba(11,130,80,.28);
     position:sticky;top:0;z-index:5;
   }
   .bug{
     flex:1;border-radius:12px;padding:8px 6px 6px;text-align:center;
-    background:var(--card);border:1px solid var(--line);position:relative;
-    box-shadow:0 1px 2px rgba(16,24,40,.04);
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);position:relative;
+    color:#fff;
   }
-  .bug.active{border-color:var(--turf);background:#effaf4;box-shadow:0 0 0 1px var(--turf)}
+  .bug.active{background:#fff;border-color:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(6,60,36,.35)}
   .bug .nm{
     font:600 .72rem/1.1 system-ui,sans-serif;letter-spacing:.02em;
-    color:var(--chalk-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
   .bug.active .nm{color:var(--turf-deep);font-weight:700}
   .bug .sc{
     font:700 1.5rem/1.15 system-ui,sans-serif;
     font-variant-numeric:tabular-nums;
   }
-  .bug .sc.neg{color:var(--card-r)}
+  .bug .sc.neg{color:#ffc4bb}
+  .bug.active .sc.neg{color:var(--card-r)}
   .bug .cards{min-height:12px;display:flex;gap:2px;justify-content:center;align-items:center}
   .pip{width:7px;height:10px;border-radius:1.5px;background:var(--card-y);display:inline-block}
   .pip.r{background:var(--card-r)}
@@ -189,14 +213,35 @@
 
   .toast{
     position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
-    background:#12263c;color:#fff;
-    padding:12px 20px;border-radius:99px;font:600 .95rem system-ui;
+    background:#0b8250;color:#fff;
+    padding:12px 20px;border-radius:99px;font:700 .95rem system-ui;
     box-shadow:0 6px 20px rgba(16,24,40,.25);
     z-index:20;white-space:nowrap;opacity:0;pointer-events:none;
     transition:opacity .25s;
   }
   .toast.bad{background:#7f1d1d}
   .toast.show{opacity:1}
+
+  /* goal celebration + red-card flash */
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
+  .confetti i{
+    position:absolute;left:50%;top:42%;width:9px;height:13px;border-radius:2px;
+    background:var(--c);font-style:normal;font-size:15px;line-height:1;
+    animation:fly 1.25s cubic-bezier(.2,.6,.4,1) forwards;
+  }
+  @keyframes fly{
+    from{transform:translate(-50%,-50%) rotate(0);opacity:1}
+    to{transform:translate(var(--dx),var(--dy)) rotate(var(--rr));opacity:0}
+  }
+  .redflash{
+    position:fixed;inset:0;pointer-events:none;z-index:29;
+    background:radial-gradient(ellipse at center,transparent 35%,rgba(220,38,38,.4));
+    animation:rf .55s ease-out forwards;
+  }
+  @keyframes rf{from{opacity:1}to{opacity:0}}
+  @media (prefers-reduced-motion:reduce){
+    .confetti,.redflash{display:none}
+  }
 
   /* overlay */
   #overlay{
@@ -259,6 +304,9 @@
 </head>
 <body>
 
+<div id="pitchbg"></div>
+<div class="cornerarc tl"></div><div class="cornerarc tr"></div>
+<div class="cornerarc bl"></div><div class="cornerarc br"></div>
 <div id="scorebug" hidden></div>
 <div id="stage"></div>
 <div id="overlay"></div>
@@ -465,6 +513,31 @@ function toast(msg, bad){
   const t=$("#toast"); t.textContent=msg; t.classList.toggle("bad",!!bad); t.classList.add("show");
   clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"), 2200);
 }
+const COLS=["#0a9e5c","#e9b84c","#2563eb","#dc2626","#ffffff"];
+function confetti(n){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c=document.createElement("div"); c.className="confetti";
+  for(let i=0;i<n;i++){
+    const s=document.createElement("i");
+    const a=Math.PI*2*i/n + (i%3)*.4;
+    const d=90+((i*53)%160);
+    s.style.setProperty("--dx",(Math.cos(a)*d-50)+"%");
+    s.style.setProperty("--dy",(Math.sin(a)*d*1.9-50)+"%");
+    s.style.setProperty("--rr",((i*97)%720-360)+"deg");
+    s.style.setProperty("--c",COLS[i%COLS.length]);
+    s.style.animationDelay=((i%5)*.05)+"s";
+    if(i%7===0){ s.textContent="⚽"; s.style.background="none"; }
+    c.appendChild(s);
+  }
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),1700);
+}
+function flashBad(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const f=document.createElement("div"); f.className="redflash";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),600);
+}
 function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
 function q(){ return BANK[S.tier][S.qi]; }
 function remaining(t){ return BANK[t].length - S.used[t].length; }
@@ -589,7 +662,7 @@ function render(){
         ${order.map((p,k)=>`
           <div class="frow${k===0&&p.score>=0?" w":""}">
             <span class="pos">${k+1}</span>
-            <span class="fn">${esc(p.name)}</span>
+            <span class="fn">${esc(p.name)}${k===0&&p.score>=0?" 🏆":""}</span>
             <span class="fs${p.score<0?" neg":""}">${p.score}</span>
           </div>`).join("")}
       </div>
@@ -618,7 +691,7 @@ const setupNames = ["","",""];
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
   st.innerHTML = `
-    <div class="kick">The football quiz</div>
+    <div class="kick">⚽ The football quiz</div>
     <h1 class="title">Gran Canaria<br><span class="gold">MVV Ultras</span></h1>
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
@@ -628,7 +701,7 @@ function renderSetup(st){
     </div>
     ${Array.from({length:setupCount},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     <div class="spacer"></div>
-    <button class="bigbtn" onclick="startGame()">Kick off</button>
+    <button class="bigbtn" onclick="startGame()">⚽ Kick off</button>
     <div class="hint">Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Ten seconds to answer, five for a steal. Yellow card on a player's scoreboard tab books them: 1st a warning, 2nd −1, then −2 each.</div>`;
 }
 
@@ -661,7 +734,7 @@ function pickTier(t){
   render();
 }
 function onTimeUp(){
-  S.timeUp=true;
+  S.timeUp=true; flashBad();
   if(S.phase==="question"){ S.phase="steal_offer"; render(); }
   else if(S.phase==="steal_q"){ S.phase="steal_judge"; render(); }
 }
@@ -676,11 +749,14 @@ function judge(correct){
   const who = stealing ? S.players[S.stealer] : S.players[S.turn];
   if(correct){
     who.score+=pts; ching();
-    toast(`${who.name} +${pts}${stealing?" — stolen!":""}`);
+    confetti(S.tier==="ball" ? 64 : 26);
+    toast(`⚽ GOAL! ${who.name} +${pts}${stealing?" (stolen!)":""}`);
     nextTurn();
   }else if(!stealing){
+    flashBad();
     S.phase="steal_offer"; render();
   }else{
+    flashBad();
     toast("Steal failed. No damage.", true);
     S.phase="deadq"; render();
   }
@@ -716,7 +792,7 @@ function book(i){
   p.off++;
   const pen=OFFENCE_PENALTY(p.off);
   p.score-=pen;
-  buzzer();
+  buzzer(); flashBad();
   toast(pen===0 ? `${p.name}: official warning` : `${p.name} booked: −${pen}`, true);
   closeSheet(); render();
 }
@@ -729,7 +805,10 @@ function askEnd(){
     <button class="bigbtn bad" onclick="endGame()">End the match</button>
     <button class="bigbtn ghost" onclick="closeSheet()">Keep playing</button>`);
 }
-function endGame(){ closeSheet(); stopTimer(); S.phase="results"; render(); }
+function endGame(){
+  closeSheet(); stopTimer(); S.phase="results"; render();
+  if(Math.max(...S.players.map(p=>p.score))>=0) confetti(48);
+}
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones

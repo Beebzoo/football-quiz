@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v4";
+const CACHE = "ball-quiz-v5";
 const ASSETS = [
   "./",
   "index.html",
@@ -8,6 +8,16 @@ const ASSETS = [
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/icon-180.png",
+  "assets/flags/nl.webp",
+  "assets/flags/gran-canaria.webp",
+  "assets/flags/morocco.webp",
+  "assets/players/zidane.png",
+  "assets/players/pedri.png",
+  "assets/players/sinkgraven.png",
+  "assets/players/deijl.png",
+  "assets/players/taarabt.png",
+  "assets/players/ajax.png",
+  "assets/players/mvv-hero.png",
 ];
 
 self.addEventListener("install", e => {

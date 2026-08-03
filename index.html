@@ -63,6 +63,26 @@
   .cornerarc.tr{right:-35px;top:-35px}
   .cornerarc.bl{left:-35px;bottom:-35px}
   .cornerarc.br{right:-35px;bottom:-35px}
+
+  /* touchline cutouts: only when there is room beside the app column */
+  .sideplayer{
+    position:fixed;bottom:0;z-index:0;display:none;pointer-events:none;
+    filter:drop-shadow(0 10px 16px rgba(10,45,25,.35));
+  }
+  .sideplayer.zidane{left:.5vw;height:44vh}
+  .sideplayer.sinkgraven{left:10vw;height:30vh}
+  .sideplayer.taarabt{left:2vw;bottom:46vh;height:16vh;transform:rotate(-6deg)}
+  .sideplayer.ajax{right:1vw;height:40vh}
+  .sideplayer.pedri{right:11vw;height:34vh}
+  .sideplayer.deijl{right:2.5vw;bottom:46vh;height:15vh;transform:rotate(6deg)}
+  @media (min-width:1050px){ .sideplayer{display:block} }
+
+  /* flags + lineup */
+  .flagrow{display:flex;gap:10px;align-items:center}
+  .flagrow img{height:26px;border-radius:5px;border:2px solid #fff;box-shadow:0 1px 5px rgba(16,24,40,.25)}
+  .lineup{display:flex;justify-content:center;align-items:flex-end}
+  .lineup img{height:96px;margin:0 -7px;filter:drop-shadow(0 4px 8px rgba(10,45,25,.3))}
+  .celebimg{align-self:center;height:110px;filter:drop-shadow(0 6px 12px rgba(10,45,25,.35))}
   button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;touch-action:manipulation}
   button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
@@ -307,6 +327,12 @@
 <div id="pitchbg"></div>
 <div class="cornerarc tl"></div><div class="cornerarc tr"></div>
 <div class="cornerarc bl"></div><div class="cornerarc br"></div>
+<img class="sideplayer zidane" src="assets/players/zidane.png" alt="Zinedine Zidane">
+<img class="sideplayer sinkgraven" src="assets/players/sinkgraven.png" alt="Daley Sinkgraven">
+<img class="sideplayer taarabt" src="assets/players/taarabt.png" alt="Adel Taarabt">
+<img class="sideplayer ajax" src="assets/players/ajax.png" alt="Ajax player">
+<img class="sideplayer pedri" src="assets/players/pedri.png" alt="Pedri">
+<img class="sideplayer deijl" src="assets/players/deijl.png" alt="Mats Deijl">
 <div id="scorebug" hidden></div>
 <div id="stage"></div>
 <div id="overlay"></div>
@@ -631,6 +657,7 @@ function render(){
     st.innerHTML = `
       <div class="kick">Question is loose!</div>
       <h1 class="title" style="font-size:clamp(1.7rem,8.5vw,2.2rem)">Who steals<br>for +${t.pts}?</h1>
+      <img class="celebimg" src="assets/players/taarabt.png" alt="">
       <div class="hint">First to shout it claims the 5-second steal. Tap their name.</div>
       <div class="whobar">
         ${others().map((i,ix)=>`<button class="stealbtn" onclick="claimSteal(${i})">${esc(S.players[i].name)}<kbd>${ix+1}</kbd></button>`).join("")}
@@ -658,6 +685,7 @@ function render(){
     st.innerHTML = `
       <div class="kick">Full time · ${S.round} round${S.round>1?"s":""}</div>
       <h1 class="title">Final<br><span class="gold">Whistle</span></h1>
+      <img class="celebimg" src="assets/players/mvv-hero.png" alt="">
       <div class="final">
         ${order.map((p,k)=>`
           <div class="frow${k===0&&p.score>=0?" w":""}">
@@ -691,8 +719,20 @@ const setupNames = ["","",""];
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
   st.innerHTML = `
-    <div class="kick">⚽ The football quiz</div>
+    <div class="flagrow">
+      <img src="assets/flags/nl.webp" alt="Netherlands">
+      <img src="assets/flags/gran-canaria.webp" alt="Gran Canaria">
+      <img src="assets/flags/morocco.webp" alt="Morocco">
+      <span class="kick" style="margin-left:4px">⚽ The football quiz</span>
+    </div>
     <h1 class="title">Gran Canaria<br><span class="gold">MVV Ultras</span></h1>
+    <div class="lineup">
+      <img src="assets/players/zidane.png" alt="Zidane">
+      <img src="assets/players/pedri.png" alt="Pedri">
+      <img src="assets/players/deijl.png" alt="Mats Deijl">
+      <img src="assets/players/sinkgraven.png" alt="Daley Sinkgraven">
+      <img src="assets/players/ajax.png" alt="Ajax player">
+    </div>
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
     <div class="row2">

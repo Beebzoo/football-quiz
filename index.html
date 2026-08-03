@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
-<title>BALL — The Football Quiz</title>
+<title>Gran Canaria - MVV Ultras</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -98,6 +98,7 @@
   .bigbtn:active{transform:scale(.98);filter:brightness(.95)}
   .bigbtn.ghost{background:var(--card);border:1px solid var(--line);color:var(--chalk-dim);font-weight:600;box-shadow:none}
   .bigbtn.gold{background:#fdf6e6;border-color:#e8cf96;color:#8a6414}
+  .bigbtn.sel{background:#effaf4;border-color:var(--turf);color:var(--turf-deep);font-weight:700}
   .bigbtn.warn{background:var(--card-y);border-color:#ca9a06;color:#3d2f02}
 
   input.nm-in{
@@ -607,16 +608,25 @@ function render(){
   }
 }
 
+let setupCount = 3;
+function setCount(n){
+  // keep whatever names are already typed when flipping the toggle
+  for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; }
+  setupCount=n; render();
+}
+const setupNames = ["","",""];
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
   st.innerHTML = `
-    <div class="kick">Three friends · one quizmaster app</div>
-    <h1 class="title">The<br>Football<br><span class="gold">Quiz</span></h1>
+    <div class="kick">The football quiz</div>
+    <h1 class="title">Gran Canaria<br><span class="gold">MVV Ultras</span></h1>
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
-    <input class="nm-in" id="n0" placeholder="Player 1" maxlength="12" autocomplete="off">
-    <input class="nm-in" id="n1" placeholder="Player 2" maxlength="12" autocomplete="off">
-    <input class="nm-in" id="n2" placeholder="Player 3" maxlength="12" autocomplete="off">
+    <div class="row2">
+      <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
+      <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
+    </div>
+    ${Array.from({length:setupCount},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()">Kick off</button>
     <div class="hint">Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Ten seconds to answer, five for a steal. Yellow card on a player's scoreboard tab books them: 1st a warning, 2nd −1, then −2 each.</div>`;
@@ -625,8 +635,9 @@ function renderSetup(st){
 /* ============================== GAME FLOW ============================== */
 function startGame(){
   audio(); wakeLock();
-  const names=[0,1,2].map(i=>{
-    const v=document.getElementById("n"+i).value.trim();
+  const names=Array.from({length:setupCount},(_,i)=>{
+    const el=document.getElementById("n"+i);
+    const v=el ? el.value.trim() : "";
     return v || "Player "+(i+1);
   });
   S=freshState(names);
@@ -752,7 +763,7 @@ document.addEventListener("keydown", e=>{
   }else if(S.phase==="steal_offer"){
     const o=others();
     if(k==="1") claimSteal(o[0]);
-    if(k==="2") claimSteal(o[1]);
+    if(k==="2" && o.length>1) claimSteal(o[1]);
     if(k==="n") noSteal();
   }else if(S.phase==="deadq"){
     if(k===" "||k==="enter"){ e.preventDefault(); nextTurn(); }

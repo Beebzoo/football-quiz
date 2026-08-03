@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v2";
+const CACHE = "ball-quiz-v3";
 const ASSETS = [
   "./",
   "index.html",

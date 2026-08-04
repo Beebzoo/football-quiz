@@ -238,6 +238,26 @@
   }
   .stealbtn:active{transform:scale(.97)}
 
+  /* written-mode answer rows */
+  .answrow{
+    display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;
+    padding:13px 15px;border-radius:var(--radius);
+    border:1px solid var(--line);background:var(--card);
+    box-shadow:var(--shadow);transition:transform .06s ease;
+  }
+  .answrow:active{transform:scale(.99)}
+  .answrow.got{border-color:var(--turf);background:#effaf4}
+  .answrow .an-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .answrow .an-nm{font:700 .95rem/1 system-ui;color:var(--chalk-dim)}
+  .answrow.got .an-nm{color:var(--turf-deep)}
+  .answrow .an-pts{
+    font:700 .72rem/1 system-ui;color:var(--chalk-dim);white-space:nowrap;
+    background:#eef2f6;padding:6px 10px;border-radius:99px;
+  }
+  .answrow.got .an-pts{background:var(--turf);color:#fff}
+  .answrow .an-ans{font:650 1.1rem/1.3 system-ui;color:var(--ink);word-break:break-word}
+  .answrow .an-ans.empty{color:#9aa7b5;font-weight:500;font-style:italic}
+
   .toast{
     position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
     background:#0b8250;color:#fff;
@@ -490,11 +510,12 @@ const OFFENCE_PENALTY = n => n<=1 ? 0 : n===2 ? 1 : 2;
 
 let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stealer, timeUp, used:{tier:[i,..]}}
 
-function freshState(names, timed=true){
+function freshState(names, timed=true, mode="classic"){
   return {
     players: names.map(n=>({name:n, score:0, off:0})),
     turn:0, round:1, phase:"pick",
-    tier:null, qi:null, stealer:null, timeUp:false, timed:timed,
+    tier:null, qi:null, stealer:null, timeUp:false, timed:timed, mode:mode,
+    wans:[], wgot:[], // written mode: typed answers + who was marked correct
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
 }
@@ -604,10 +625,11 @@ function render(){
   if(!S || S.phase==="setup"){ return renderSetup(st); }
 
   if(S.phase==="pick"){
+    const written = S.mode==="written";
     st.innerHTML = `
-      <div class="kick">Round ${S.round} · On the spot</div>
+      <div class="kick">Round ${S.round} · ${written?"Written round":"On the spot"}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
-      <div class="hint">Pick your difficulty. Someone else reads the question out loud.</div>
+      <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question.":"Pick your difficulty. Someone else reads the question out loud."}</div>
       ${Object.entries(TIERS).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
           <span class="left"><span>${t.label}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
@@ -616,6 +638,51 @@ function render(){
       <div class="foot">
         <button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button>
       </div>`;
+    return;
+  }
+
+  if(S.phase==="w_answer"){
+    const t=TIERS[S.tier];
+    st.innerHTML = `
+      <div class="kick">Round ${S.round} · everyone answers · +${t.pts}</div>
+      <div class="qcard" style="--dc:${t.color}">
+        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qtext">${esc(q().q)}</div>
+      </div>
+      ${S.players.map((p,i)=>`<input class="nm-in" id="wa${i}" placeholder="${esc(p.name)}'s answer" maxlength="60" autocomplete="off" value="${esc(S.wans[i]||"")}">`).join("")}
+      ${S.timed?`<div class="clock" id="clock">
+        <div class="digits">15.0</div>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>`:``}
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="wReveal()">Reveal answer<kbd>Space</kbd></button>
+      <div class="hint">${S.timed?"Fifteen seconds — type an answer for each player before the buzzer.":"Type an answer for each player, then hit Reveal."}</div>`;
+    if(S.timed) startTimer(15, wTimeUp);
+    return;
+  }
+
+  if(S.phase==="w_judge"){
+    const t=TIERS[S.tier];
+    st.innerHTML = `
+      <div class="kick">Round ${S.round} · who got it? · +${t.pts}</div>
+      <div class="qcard" style="--dc:${t.color}">
+        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qtext">${esc(q().q)}</div>
+        <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+      </div>
+      <div class="whobar">
+        ${S.players.map((p,i)=>`
+          <button class="answrow${S.wgot[i]?" got":""}" onclick="wToggle(${i})">
+            <span class="an-top">
+              <span class="an-nm">${esc(p.name)}<kbd>${i+1}</kbd></span>
+              <span class="an-pts">${S.wgot[i]?"✓ +"+t.pts:"tap if right"}</span>
+            </span>
+            <span class="an-ans${S.wans[i]?"":" empty"}">${S.wans[i]?esc(S.wans[i]):"no answer"}</span>
+          </button>`).join("")}
+      </div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="wNext()">Next question<kbd>Space</kbd></button>
+      <div class="hint">Tap everyone who got it right — they score +${t.pts} each. Tap again to undo.</div>`;
     return;
   }
 
@@ -721,10 +788,12 @@ function render(){
 
 let setupCount = 3;
 let setupTimed = true;
+let setupMode = "classic";
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
 function setCount(n){ snapshotNames(); setupCount=n; render(); }
 function setTimed(v){ snapshotNames(); setupTimed=v; render(); }
+function setMode(m){ snapshotNames(); setupMode=m; render(); }
 const setupNames = ["","",""];
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
@@ -750,13 +819,17 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
     </div>
     <div class="row2">
+      <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">🎙 Classic</button>
+      <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">✍️ Written</button>
+    </div>
+    <div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">⏱ With timer</button>
       <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">∞ No timer</button>
     </div>
     ${Array.from({length:setupCount},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()">⚽ Kick off</button>
-    <div class="hint">Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. With the timer on: fifteen seconds to read and answer, five for a steal — or switch it off to play at your own pace. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player: 1st a warning, 2nd −1, then −2 each.</div>`;
+    <div class="hint"><b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
 }
 
 /* ============================== GAME FLOW ============================== */
@@ -767,15 +840,18 @@ function startGame(){
     const v=el ? el.value.trim() : "";
     return v || "Player "+(i+1);
   });
-  S=freshState(names, setupTimed);
+  S=freshState(names, setupTimed, setupMode);
   render();
 }
 function resumeGame(){
   audio(); wakeLock();
   try{ S=JSON.parse(localStorage.getItem(SAVE_KEY)); }catch(e){ return; }
   if(S.timed===undefined) S.timed=true; // saves from before the timer toggle existed
+  if(S.mode===undefined) S.mode="classic"; // saves from before written mode existed
+  if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
+  if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
   if(["judge","steal_judge","deadq","steal_offer"].includes(S.phase) && S.qi==null) S.phase="pick";
   render();
 }
@@ -785,7 +861,37 @@ function pickTier(t){
   if(!avail.length){ toast("No "+TIERS[t].label+" questions left!", true); return; }
   S.tier=t; S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);
-  S.timeUp=false; S.stealer=null; S.phase="question";
+  S.timeUp=false; S.stealer=null;
+  if(S.mode==="written"){
+    S.wans=S.players.map(()=>"");
+    S.wgot=S.players.map(()=>false);
+    S.phase="w_answer";
+  }else{
+    S.phase="question";
+  }
+  render();
+}
+/* ----- written mode ----- */
+function wReveal(){
+  stopTimer();
+  S.wans=S.players.map((_,i)=>{ const el=document.getElementById("wa"+i); return el?el.value.trim():(S.wans[i]||""); });
+  S.phase="w_judge";
+  render();
+}
+function wTimeUp(){ if(S.phase==="w_answer") wReveal(); }
+function wToggle(i){
+  const pts=TIERS[S.tier].pts;
+  S.wgot[i]=!S.wgot[i];
+  if(S.wgot[i]){ S.players[i].score+=pts; ching(); confetti(S.tier==="ball"?48:18); }
+  else{ S.players[i].score-=pts; }
+  render();
+}
+function wNext(){
+  stopTimer();
+  S.turn=(S.turn+1)%S.players.length;
+  if(S.turn===0) S.round++;
+  S.tier=null; S.qi=null; S.wans=[]; S.wgot=[]; S.timeUp=false;
+  S.phase="pick";
   render();
 }
 function onTimeUp(){
@@ -889,7 +995,7 @@ function endGame(){
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
-  S=freshState(names, S.timed); S.used=used;
+  S=freshState(names, S.timed, S.mode); S.used=used;
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
@@ -904,7 +1010,7 @@ function closeSheet(){ $("#overlay").classList.remove("show"); }
 
 /* ============================== KEYBOARD (desktop) ============================== */
 document.addEventListener("keydown", e=>{
-  if(e.target.tagName==="INPUT"){ if(e.key==="Enter") startGame(); return; }
+  if(e.target.tagName==="INPUT"){ if(e.key==="Enter" && (!S || S.phase==="setup")) startGame(); return; }
   if($("#overlay").classList.contains("show")){ if(e.key==="Escape") closeSheet(); return; }
   if(!S){ if(e.key==="Enter") startGame(); return; }
   const k=e.key.toLowerCase();
@@ -913,6 +1019,11 @@ document.addEventListener("keydown", e=>{
     if(k>="1" && k<="5") pickTier(order[+k-1]);
   }else if(S.phase==="question" || S.phase==="steal_q"){
     if(k===" "||k==="r"){ e.preventDefault(); reveal(); }
+  }else if(S.phase==="w_answer"){
+    if(k===" "||k==="r"){ e.preventDefault(); wReveal(); }
+  }else if(S.phase==="w_judge"){
+    if(k===" "||k==="enter"){ e.preventDefault(); wNext(); }
+    else if(k>="1" && k<="3" && +k<=S.players.length) wToggle(+k-1);
   }else if(S.phase==="judge" || S.phase==="steal_judge"){
     if(k==="c") judge(true);
     if(k==="w"||k==="x") judge(false);

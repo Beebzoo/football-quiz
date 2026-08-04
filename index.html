@@ -1696,7 +1696,8 @@ function render(){
       </div>`:``}
       <div class="spacer"></div>
       <button class="bigbtn" onclick="wReveal()">Reveal answer<kbd>Space</kbd></button>
-      <div class="hint">${S.timed?"Fifteen seconds — type an answer for each player before the buzzer.":"Type an answer for each player, then hit Reveal."}</div>`;
+      <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question</button>
+      <div class="hint">${S.timed?"Fifteen seconds — type an answer for each player before the buzzer.":"Type an answer for each player, then hit Reveal."} Seen it before? Skip for a fresh one.</div>`;
     if(S.timed) startTimer(15, wTimeUp);
     return;
   }
@@ -1742,9 +1743,10 @@ function render(){
       </div>`:``}
       <div class="spacer"></div>
       <button class="bigbtn" onclick="reveal()">Reveal answer<kbd>Space</kbd></button>
+      <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question<kbd>S</kbd></button>
       <div class="hint">${S.timed
         ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer — the clock stops."
-        : "No timer — take your time. Read the question, let them answer, then hit Reveal to show the answer."}</div>`;
+        : "No timer — take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one — same difficulty, no points lost.</div>`;
     if(S.timed) startTimer(stealing?5:15, onTimeUp);
     return;
   }
@@ -1923,6 +1925,19 @@ function pickTier(t){
   }
   render();
 }
+// swap the current question for another fresh one in the same tier (e.g. a repeat)
+function skipQuestion(){
+  if(!["question","steal_q","w_answer"].includes(S.phase)) return;
+  const t=S.tier;
+  const avail=BANK[t].map((_,i)=>i).filter(i=>!S.used[t].includes(i));
+  if(!avail.length){ toast("No more "+TIERS[t].label+" questions to skip to!", true); return; }
+  S.qi=avail[Math.floor(Math.random()*avail.length)];
+  S.used[t].push(S.qi);
+  S.timeUp=false;
+  if(S.phase==="w_answer") S.wans=S.players.map(()=>""); // clear typed answers for the new question
+  tick();
+  render(); // re-render restarts the clock on the fresh question
+}
 /* ----- written mode ----- */
 function wReveal(){
   stopTimer();
@@ -2073,8 +2088,10 @@ document.addEventListener("keydown", e=>{
     if(k>="1" && k<="5") pickTier(order[+k-1]);
   }else if(S.phase==="question" || S.phase==="steal_q"){
     if(k===" "||k==="r"){ e.preventDefault(); reveal(); }
+    else if(k==="s") skipQuestion();
   }else if(S.phase==="w_answer"){
     if(k===" "||k==="r"){ e.preventDefault(); wReveal(); }
+    else if(k==="s") skipQuestion();
   }else if(S.phase==="w_judge"){
     if(k===" "||k==="enter"){ e.preventDefault(); wNext(); }
     else if(k>="1" && k<="3" && +k<=S.players.length) wToggle(+k-1);

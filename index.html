@@ -1500,14 +1500,31 @@ const OFFENCE_PENALTY = n => n<=1 ? 0 : n===2 ? 1 : 2;
 
 let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stealer, timeUp, used:{tier:[i,..]}}
 
-function freshState(names, timed=true, mode="classic"){
+function freshState(names, timed=true, mode="classic", target=100){
   return {
     players: names.map(n=>({name:n, score:0, off:0})),
     turn:0, round:1, phase:"pick",
     tier:null, qi:null, stealer:null, timeUp:false, timed:timed, mode:mode,
+    target:target, // first to this score wins; 0 = no limit
     wans:[], wgot:[], // written mode: typed answers + who was marked correct
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
+}
+// returns index of a player who has reached the win target, else -1 (highest wins ties)
+function targetReached(){
+  if(!S.target) return -1;
+  let best=-1, bs=-Infinity;
+  S.players.forEach((p,i)=>{ if(p.score>=S.target && p.score>bs){ bs=p.score; best=i; } });
+  return best;
+}
+// if someone has hit the target, end the match on a win; returns true if it ended
+function maybeFinish(){
+  if(targetReached()<0) return false;
+  stopTimer();
+  S.phase="results";
+  render();
+  confetti(64);
+  return true;
 }
 function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
 function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
@@ -1617,7 +1634,7 @@ function render(){
   if(S.phase==="pick"){
     const written = S.mode==="written";
     st.innerHTML = `
-      <div class="kick">Round ${S.round} · ${written?"Written round":"On the spot"}</div>
+      <div class="kick">Round ${S.round} · ${written?"Written round":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
       <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question.":"Pick your difficulty. Someone else reads the question out loud."}</div>
       ${Object.entries(TIERS).map(([k,t],ix)=>`
@@ -1749,9 +1766,11 @@ function render(){
   if(S.phase==="results"){
     const order=[...S.players].map((p,i)=>({...p,i})).sort((a,b)=>b.score-a.score);
     const losers=order.filter(p=>p.score<0);
+    const champ=order[0];
+    const hitTarget = S.target && champ.score>=S.target;
     st.innerHTML = `
-      <div class="kick">Full time · ${S.round} round${S.round>1?"s":""}</div>
-      <h1 class="title">Final<br><span class="gold">Whistle</span></h1>
+      <div class="kick">${hitTarget?`🏁 First to ${S.target}`:`Full time · ${S.round} round${S.round>1?"s":""}`}</div>
+      <h1 class="title">${hitTarget?`${esc(champ.name)}<br><span class="gold">wins!</span>`:`Final<br><span class="gold">Whistle</span>`}</h1>
       <img class="celebimg" src="assets/players/mvv-hero.png" alt="">
       <div class="final">
         ${order.map((p,k)=>`
@@ -1779,11 +1798,13 @@ function render(){
 let setupCount = 3;
 let setupTimed = true;
 let setupMode = "classic";
+let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
 function setCount(n){ snapshotNames(); setupCount=n; render(); }
 function setTimed(v){ snapshotNames(); setupTimed=v; render(); }
 function setMode(m){ snapshotNames(); setupMode=m; render(); }
+function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
 const setupNames = ["","",""];
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
@@ -1816,10 +1837,17 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">⏱ With timer</button>
       <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">∞ No timer</button>
     </div>
+    <div class="kick" style="margin-top:2px">🏁 First to… wins</div>
+    <div class="row2">
+      <button class="bigbtn ghost${setupTarget===50?" sel":""}" onclick="setTarget(50)">50</button>
+      <button class="bigbtn ghost${setupTarget===100?" sel":""}" onclick="setTarget(100)">100</button>
+      <button class="bigbtn ghost${setupTarget===200?" sel":""}" onclick="setTarget(200)">200</button>
+      <button class="bigbtn ghost${!setupTarget?" sel":""}" onclick="setTarget(0)">No limit</button>
+    </div>
     ${Array.from({length:setupCount},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()">⚽ Kick off</button>
-    <div class="hint"><b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
+    <div class="hint"><b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
 }
 
 /* ============================== GAME FLOW ============================== */
@@ -1830,7 +1858,7 @@ function startGame(){
     const v=el ? el.value.trim() : "";
     return v || "Player "+(i+1);
   });
-  S=freshState(names, setupTimed, setupMode);
+  S=freshState(names, setupTimed, setupMode, setupTarget);
   render();
 }
 function resumeGame(){
@@ -1838,6 +1866,7 @@ function resumeGame(){
   try{ S=JSON.parse(localStorage.getItem(SAVE_KEY)); }catch(e){ return; }
   if(S.timed===undefined) S.timed=true; // saves from before the timer toggle existed
   if(S.mode===undefined) S.mode="classic"; // saves from before written mode existed
+  if(S.target===undefined) S.target=0; // saves from before the win target existed
   if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
@@ -1877,6 +1906,7 @@ function wToggle(i){
   render();
 }
 function wNext(){
+  if(maybeFinish()) return; // someone hit the win target this round
   stopTimer();
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
@@ -1902,6 +1932,7 @@ function judge(correct){
     who.score+=pts; ching();
     confetti(S.tier==="ball" ? 64 : 26);
     toast(`⚽ GOAL! ${who.name} +${pts}${stealing?" (stolen!)":""}`);
+    if(maybeFinish()) return; // reached the win target
     nextTurn();
   }else if(!stealing){
     flashBad();
@@ -1985,7 +2016,7 @@ function endGame(){
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
-  S=freshState(names, S.timed, S.mode); S.used=used;
+  S=freshState(names, S.timed, S.mode, S.target); S.used=used;
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }

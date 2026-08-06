@@ -1,7 +1,9 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v6";
+const CACHE = "ball-quiz-v7";
 const CAREER_LOGOS = [
+  "mvv-maastricht","bordeaux","fleetwood-town","leicester","boulogne","al-ittihad",
+  "brescia","le-havre-ac","al-ahli",
   "ajax","al-hilal","al-nassr","al-qadsiah","anderlecht","arsenal","as-monaco",
   "as-saint-etienne","atletico-madrid","atletico-mineiro","barcelona","basel",
   "bayer-leverkusen","bayern-munchen","benfica","boca-juniors","borussia-dortmund",

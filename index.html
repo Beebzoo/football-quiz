@@ -253,11 +253,13 @@
   }
   h1.title .gold{color:var(--turf)}
   h1.title.ballhero, body.careermode h1.title.ballhero{
-    position:relative;text-align:center;text-transform:uppercase;
-    font-size:clamp(3.6rem,24vw,5.4rem);letter-spacing:.08em;
+    position:relative;text-transform:uppercase;
+    display:flex;align-items:center;justify-content:center;gap:.14em;
+    font-size:clamp(3.4rem,21vw,5.2rem);letter-spacing:.08em;
     color:#e9b84c;
     filter:drop-shadow(0 0 26px rgba(233,184,76,.45)) drop-shadow(0 4px 12px rgba(0,0,0,.5));
   }
+  .ballhero .ballimg{width:.84em;height:.84em;flex:0 0 auto}
   .ballhero .goldtext{
     display:inline-block;
     background:linear-gradient(105deg,#b8860b 10%,#e9b84c 28%,#ffefad 45%,#e9b84c 60%,#b8860b 88%);
@@ -2586,7 +2588,7 @@ function renderSetup(st){
       <img src="assets/flags/morocco.webp" alt="Morocco">
     </div>
     <div class="kick" style="text-align:center">Gran Canaria MVV Ultras</div>
-    <h1 class="title ballhero"><span class="goldtext">BALL</span></h1>
+    <h1 class="title ballhero"><span class="goldtext">BALL</span><img class="ballimg" src="assets/ball.png" alt=""></h1>
     ${logoTicker()}
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}

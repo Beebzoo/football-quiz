@@ -121,6 +121,8 @@
   body.careermode .clock.hot .digits{color:#ff8a7a}
   body.careermode .sub{color:#9fb8a6}
   body.careermode .diff{box-shadow:0 6px 18px rgba(0,0,0,.4)}
+  /* white cards keep dark ink even on the night pitch */
+  body.careermode .qcard, body.careermode .sheet, body.careermode .frow{color:var(--ink)}
   body.careermode #pitchbg{
     background:
       radial-gradient(95% 55% at 50% -5%, rgba(255,255,215,.12), transparent 60%),
@@ -2590,7 +2592,7 @@ function render(){
 
 let setupCount = 3;
 let setupTimed = true;
-let setupMode = "classic";
+let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -2607,9 +2609,9 @@ function logoTicker(){
   if(tickerHTML) return tickerHTML;
   const all=[...new Set(CAREERS.flatMap(c=>c.c))];
   for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]]; }
-  const rows=[all.slice(0,14), all.slice(14,28), all.slice(28,42)];
+  const rows=[all.slice(0,14), all.slice(14,28)];
   tickerHTML = `<div class="logoticker">` + rows.map((r,i)=>
-    `<div class="tickrow${i===1?" rev":i===2?" slow":""}">${[...r,...r].map(s=>
+    `<div class="tickrow${i===1?" rev":""}">${[...r,...r].map(s=>
       `<div class="tk"><img src="assets/logos/${s}.png" loading="lazy" alt=""></div>`).join("")}</div>`
   ).join("") + `</div>`;
   return tickerHTML;
@@ -2627,6 +2629,12 @@ function renderSetup(st){
     ${logoTicker()}
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
     <div class="row2">
+      <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
+      <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
+      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
+    </div>
+    ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div><div class="spacer"></div>`:`
+    <div class="row2">
       <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">${ico('users')}All play</button>
       <button class="bigbtn ghost${setupRef?" sel":""}" onclick="setRef(true)">${ico('card')}Referee mode</button>
     </div>
@@ -2634,15 +2642,10 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
     </div>`}
-    <div class="row2">
-      <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
-      <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
-      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
-    </div>
-    <div class="row2">
+    ${setupMode==="career"?"":`<div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">${ico('clock')}With timer</button>
       <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">${ico('inf')}No timer</button>
-    </div>
+    </div>`}
     <div class="kick" style="margin-top:2px">${ico('flag')}First to… wins</div>
     <div class="row2">
       <button class="bigbtn ghost${setupTarget===50?" sel":""}" onclick="setTarget(50)">50</button>
@@ -2653,7 +2656,7 @@ function renderSetup(st){
     ${Array.from({length:(setupRef?2:setupCount)},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
     <div class="spacer"></div>
-    <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>
+    <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
       <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
@@ -2662,6 +2665,7 @@ function renderSetup(st){
 
 /* ============================== GAME FLOW ============================== */
 function startGame(){
+  if(!setupMode) return;
   audio(); wakeLock();
   const count = setupRef ? 2 : setupCount;
   const names=Array.from({length:count},(_,i)=>{

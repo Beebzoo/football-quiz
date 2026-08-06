@@ -63,4 +63,14 @@ When a logo is found (256px PNG, transparent, kebab-case slug), drop it in
 | Al-Arabi (Qatar) | `al-arabi` | Verratti |
 | Al-Ahli Doha | `al-ahli-doha` | Draxler |
 
+| Racing Santander | `racing-santander` | Canales (bookends) |
+| Al-Rayyan / Lusail | `al-rayyan`, `lusail` | Rodrigo Moreno, Hierro |
+| Hereford United | `hereford` | Bowen |
+| Peterborough United | `peterborough` | Toney, Seaman |
+| Lumezzane / Al-Ittifaq Dubai | `lumezzane`, `al-ittifaq-dubai` | Balotelli |
+| Shanghai Shenhua | `shanghai-shenhua` | El Shaarawy, Anelka, Drogba, Tevez |
+| Al Ain | `al-ain` | Rui Patrício, Babel |
+| AlbinoLeffe | `albinoleffe` | Belotti |
+| Chieti | `chieti` | Grosso |
+
 Add rows when a new career hits a missing club.

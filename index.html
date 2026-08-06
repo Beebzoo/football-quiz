@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b8250">
-<title>Gran Canaria - MVV Ultras</title>
+<title>BALL — Gran Canaria MVV Ultras</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -252,6 +252,11 @@
     letter-spacing:-.03em;text-wrap:balance;
   }
   h1.title .gold{color:var(--turf)}
+  h1.title.ballhero{
+    color:#e9b84c;text-align:center;text-transform:uppercase;
+    font-size:clamp(3.6rem,24vw,5.4rem);letter-spacing:.08em;
+    text-shadow:0 0 34px rgba(233,184,76,.4), 0 4px 14px rgba(0,0,0,.5);
+  }
   .sub{color:var(--chalk-dim);max-width:36ch}
 
   .bigbtn{
@@ -2539,13 +2544,13 @@ function logoTicker(){
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
   st.innerHTML = `
-    <div class="flagrow">
+    <div class="flagrow" style="justify-content:center">
       <img src="assets/flags/nl.webp" alt="Netherlands">
       <img src="assets/flags/gran-canaria.webp" alt="Gran Canaria">
       <img src="assets/flags/morocco.webp" alt="Morocco">
-      <span class="kick" style="margin-left:4px">⚽ The football quiz</span>
     </div>
-    <h1 class="title">Gran Canaria<br><span class="gold">MVV Ultras</span></h1>
+    <div class="kick" style="text-align:center">Gran Canaria MVV Ultras</div>
+    <h1 class="title ballhero">BALL</h1>
     ${logoTicker()}
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}

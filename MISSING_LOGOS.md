@@ -73,4 +73,17 @@ When a logo is found (256px PNG, transparent, kebab-case slug), drop it in
 | AlbinoLeffe | `albinoleffe` | Belotti |
 | Chieti | `chieti` | Grosso |
 
+| Helsingborgs IF | `helsingborgs` | Henrik Larsson (bookends) |
+| CD Guadalajara (Chivas) | `guadalajara` | Chicharito (bookends) |
+| Widzew Łódź / Zawisza | `widzew-lodz` | Boniek |
+| Club León | `leon` | Donovan, Márquez |
+| Domžale | `domzale` | Šeško |
+| Brøndby | `brondby` | Both Laudrups, Peter Schmeichel |
+| Nîmes | `nimes` | Laurent Blanc |
+| Newcastle Jets | `newcastle-jets` | Heskey |
+| NY/NJ MetroStars | `metrostars` | Djorkaeff, Tim Howard, Matthäus |
+| Wydad Casablanca / Sepahan | `wydad`, `sepahan` | Ben Yedder |
+| RBC Roosendaal | `rbc-roosendaal` | Van Hooijdonk |
+| Campomaiorense | `campomaiorense` | Hasselbaink |
+
 Add rows when a new career hits a missing club.

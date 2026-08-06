@@ -1,6 +1,22 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v5";
+const CACHE = "ball-quiz-v6";
+const CAREER_LOGOS = [
+  "ajax","al-hilal","al-nassr","al-qadsiah","anderlecht","arsenal","as-monaco",
+  "as-saint-etienne","atletico-madrid","atletico-mineiro","barcelona","basel",
+  "bayer-leverkusen","bayern-munchen","benfica","boca-juniors","borussia-dortmund",
+  "celtic","chelsea","corinthians","cruzeiro","dinamo-zagreb","everton","fc-groningen",
+  "fc-kaiserslautern","fc-metz","fc-porto","fc-utrecht","fenerbahce","feyenoord",
+  "fiorentina","flamengo","fortuna-sittard","galatasaray","genk","gremio","guingamp",
+  "hamburger-sv","inter","inter-miami-cf","juventus","la-galaxy","las-palmas","lazio",
+  "le-mans","lech-poznan","lille","liverpool","los-angeles-fc","lyon","malmo","mallorca",
+  "manchester-city","manchester-united","marseille","milan","napoli","new-york-city-fc",
+  "new-york-red-bulls","newcastle","nice","orlando-city","palermo","paris-saint-germain",
+  "parma","psv","queens-park-rangers","rayo-vallecano","real-betis","real-madrid",
+  "real-sociedad","river-plate","roma","rosario-central","salzburg","sampdoria",
+  "santos","sao-paulo","sc-heerenveen","schalke-04","sevilla","southampton","sporting-cp",
+  "tottenham","twente","valencia","werder-bremen","west-ham","wolfsburg",
+];
 const ASSETS = [
   "./",
   "index.html",
@@ -8,6 +24,7 @@ const ASSETS = [
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/icon-180.png",
+  ...CAREER_LOGOS.map(s => "assets/logos/" + s + ".png"),
   "assets/flags/nl.webp",
   "assets/flags/gran-canaria.webp",
   "assets/flags/morocco.webp",

@@ -83,6 +83,23 @@
   .lineup{display:flex;justify-content:center;align-items:flex-end}
   .lineup img{height:96px;margin:0 -7px;filter:drop-shadow(0 4px 8px rgba(10,45,25,.3))}
   .celebimg{align-self:center;height:110px;filter:drop-shadow(0 6px 12px rgba(10,45,25,.35))}
+
+  /* guess the career */
+  .clubgrid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .clubcard{
+    width:80px;height:80px;background:#fff;border:1px solid var(--line);border-radius:14px;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);
+  }
+  .clubcard img{max-width:76%;max-height:76%}
+  .clubcard.mystery{
+    background:#eef5ef;border:2px dashed #bcd3c0;box-shadow:none;
+    color:var(--chalk-dim);font:800 1.5rem system-ui;
+  }
+  .potpill{
+    align-self:center;background:linear-gradient(115deg,#c9932e,#e3b453);color:#fff;
+    font:800 1rem system-ui;padding:8px 18px;border-radius:99px;box-shadow:var(--shadow);
+  }
+  .careername{font:800 1.7rem/1.2 system-ui;text-align:center;text-wrap:balance}
   button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;touch-action:manipulation}
   button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
@@ -1528,6 +1545,62 @@ ball: [
 };
 
 /* ============================== STATE ============================== */
+/* ============================== GUESS THE CAREER ==============================
+   Club logos revealed one by one, in career order. Anyone may shout a guess at
+   any point; fewer logos seen = bigger pot. Loans are mostly skipped. */
+const CAREERS = [
+ {n:"Daley Sinkgraven", c:["sc-heerenveen","ajax","bayer-leverkusen","las-palmas"]},
+ {n:"Adel Taarabt", c:["tottenham","queens-park-rangers","milan","benfica"], note:"Loans simplified"},
+ {n:"Hakim Ziyech", c:["sc-heerenveen","twente","ajax","chelsea","galatasaray"]},
+ {n:"Memphis Depay", c:["psv","manchester-united","lyon","barcelona","atletico-madrid","corinthians"]},
+ {n:"Arjen Robben", c:["fc-groningen","psv","chelsea","real-madrid","bayern-munchen"]},
+ {n:"Robin van Persie", c:["feyenoord","arsenal","manchester-united","fenerbahce","feyenoord"]},
+ {n:"Luis Suárez", c:["fc-groningen","ajax","liverpool","barcelona","atletico-madrid","inter-miami-cf"], note:"Started at Nacional (not shown)"},
+ {n:"Wesley Sneijder", c:["ajax","real-madrid","inter","galatasaray","nice"]},
+ {n:"Dirk Kuyt", c:["fc-utrecht","feyenoord","liverpool","fenerbahce","feyenoord"]},
+ {n:"Georginio Wijnaldum", c:["feyenoord","psv","newcastle","liverpool","paris-saint-germain"]},
+ {n:"Dennis Bergkamp", c:["ajax","inter","arsenal"]},
+ {n:"Ruud Gullit", c:["feyenoord","psv","milan","sampdoria","chelsea"], note:"Started at HFC Haarlem (not shown)"},
+ {n:"Marco van Basten", c:["ajax","milan"]},
+ {n:"Mark van Bommel", c:["fortuna-sittard","psv","barcelona","bayern-munchen","milan","psv"]},
+ {n:"Rafael van der Vaart", c:["ajax","hamburger-sv","real-madrid","tottenham","hamburger-sv","real-betis"]},
+ {n:"Klaas-Jan Huntelaar", c:["sc-heerenveen","ajax","real-madrid","milan","schalke-04","ajax"]},
+ {n:"Virgil van Dijk", c:["fc-groningen","celtic","southampton","liverpool"]},
+ {n:"Cristiano Ronaldo", c:["sporting-cp","manchester-united","real-madrid","juventus","manchester-united","al-nassr"]},
+ {n:"Lionel Messi", c:["barcelona","paris-saint-germain","inter-miami-cf"]},
+ {n:"Zlatan Ibrahimović", c:["malmo","ajax","juventus","inter","barcelona","milan","paris-saint-germain","manchester-united","la-galaxy","milan"]},
+ {n:"Neymar", c:["santos","barcelona","paris-saint-germain","al-hilal","santos"]},
+ {n:"Ronaldinho", c:["gremio","paris-saint-germain","barcelona","milan","flamengo","atletico-mineiro"]},
+ {n:"Ronaldo (R9)", c:["cruzeiro","psv","barcelona","inter","real-madrid","milan","corinthians"]},
+ {n:"Kaká", c:["sao-paulo","milan","real-madrid","milan","orlando-city"]},
+ {n:"David Beckham", c:["manchester-united","real-madrid","la-galaxy","milan","paris-saint-germain"], note:"Milan spells were loans"},
+ {n:"Thierry Henry", c:["as-monaco","juventus","arsenal","barcelona","new-york-red-bulls"]},
+ {n:"Didier Drogba", c:["le-mans","guingamp","marseille","chelsea","galatasaray"], note:"Shanghai + Montreal skipped"},
+ {n:"Ángel Di María", c:["rosario-central","benfica","real-madrid","manchester-united","paris-saint-germain","juventus","benfica","rosario-central"]},
+ {n:"Carlos Tevez", c:["boca-juniors","corinthians","west-ham","manchester-united","manchester-city","juventus","boca-juniors"], note:"Shanghai skipped"},
+ {n:"Edinson Cavani", c:["palermo","napoli","paris-saint-germain","manchester-united","valencia","boca-juniors"]},
+ {n:"Radamel Falcao", c:["river-plate","fc-porto","atletico-madrid","as-monaco","galatasaray","rayo-vallecano"], note:"Man Utd + Chelsea loans skipped"},
+ {n:"Kevin De Bruyne", c:["genk","chelsea","wolfsburg","manchester-city","napoli"]},
+ {n:"Vincent Kompany", c:["anderlecht","hamburger-sv","manchester-city","anderlecht"]},
+ {n:"Mohamed Salah", c:["basel","chelsea","fiorentina","roma","liverpool"]},
+ {n:"Sadio Mané", c:["fc-metz","salzburg","southampton","liverpool","bayern-munchen","al-nassr"]},
+ {n:"Andrea Pirlo", c:["inter","milan","juventus","new-york-city-fc"], note:"Early Brescia years skipped"},
+ {n:"Gianluigi Buffon", c:["parma","juventus","paris-saint-germain","juventus","parma"]},
+ {n:"David Silva", c:["valencia","manchester-city","real-sociedad"], note:"Born in Arguineguín, Gran Canaria"},
+ {n:"Pedri", c:["las-palmas","barcelona"]},
+ {n:"Gareth Bale", c:["southampton","tottenham","real-madrid","tottenham","los-angeles-fc"]},
+ {n:"Samuel Eto'o", c:["mallorca","barcelona","inter","chelsea","everton"], note:"Real Madrid youth + late clubs skipped"},
+ {n:"Eden Hazard", c:["lille","chelsea","real-madrid"]},
+ {n:"Antoine Griezmann", c:["real-sociedad","atletico-madrid","barcelona","atletico-madrid"]},
+ {n:"Pierre-Emerick Aubameyang", c:["as-saint-etienne","borussia-dortmund","arsenal","barcelona","chelsea","marseille","al-qadsiah"], note:"Milan youth skipped"},
+ {n:"Luka Modrić", c:["dinamo-zagreb","tottenham","real-madrid","milan"]},
+ {n:"Toni Kroos", c:["bayern-munchen","bayer-leverkusen","bayern-munchen","real-madrid"], note:"Leverkusen was a loan"},
+ {n:"Kylian Mbappé", c:["as-monaco","paris-saint-germain","real-madrid"]},
+ {n:"Robert Lewandowski", c:["lech-poznan","borussia-dortmund","bayern-munchen","barcelona"]},
+ {n:"Miroslav Klose", c:["fc-kaiserslautern","werder-bremen","bayern-munchen","lazio"]},
+ {n:"Sergio Ramos", c:["sevilla","real-madrid","paris-saint-germain","sevilla"], note:"Monterrey skipped"},
+];
+
 const SAVE_KEY = "ball-quiz-v1";
 const OFFENCE_PENALTY = n => n<=1 ? 0 : n===2 ? 1 : 2;
 
@@ -1540,6 +1613,7 @@ function freshState(names, timed=true, mode="classic", target=100){
     tier:null, qi:null, stealer:null, timeUp:false, timed:timed, mode:mode,
     target:target, // first to this score wins; 0 = no limit
     wans:[], wgot:[], // written mode: typed answers + who was marked correct
+    career:null, usedC:[], // career mode: current round + careers already played
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
 }
@@ -1798,6 +1872,63 @@ function render(){
     return;
   }
 
+  if(["c_play","c_who","c_judge","c_dead"].includes(S.phase)){
+    const C=CAREERS[S.career.ci];
+    const revealAll = S.phase==="c_judge" || S.phase==="c_dead";
+    const grid = C.c.map((slug,i)=> (revealAll || i<S.career.shown)
+      ? `<div class="clubcard"><img src="assets/logos/${slug}.png" alt=""></div>`
+      : `<div class="clubcard mystery">?</div>`).join("");
+
+    if(S.phase==="c_play"){
+      const locked=S.career.locked.map(i=>S.players[i].name);
+      st.innerHTML = `
+        <div class="kick">🕵️ Guess the career · Round ${S.round}</div>
+        <div class="potpill">Guess now: +${cpot()}</div>
+        <div class="clubgrid">${grid}</div>
+        <div class="hint" style="text-align:center">${C.c.length} clubs in this career, in order.${locked.length?` Locked out: ${esc(locked.join(", "))}.`:""}</div>
+        <div class="spacer"></div>
+        ${S.career.shown<C.c.length
+          ? `<button class="bigbtn" onclick="cNext()">Next club<kbd>Space</kbd></button>`
+          : `<div class="hint" style="text-align:center">Full career on the table. Last chance…</div>`}
+        <button class="bigbtn warn" onclick="cGuess()">🖐 Someone knows it!<kbd>G</kbd></button>
+        <button class="bigbtn ghost" onclick="cGiveUp()">Nobody knows — reveal</button>`;
+      return;
+    }
+    if(S.phase==="c_who"){
+      st.innerHTML = `
+        <div class="kick">Who says they know it?</div>
+        <div class="clubgrid">${grid}</div>
+        <div class="hint" style="text-align:center">Say the name out loud FIRST, then the reader checks. Right: +${cpot()}. Wrong: −2 and locked out of this career.</div>
+        <div class="whobar">
+          ${S.players.map((p,i)=>S.career.locked.includes(i)?"":`<button class="stealbtn" onclick="cPick(${i})">${esc(p.name)}</button>`).join("")}
+          <button class="bigbtn ghost" onclick="cBack()">Back</button>
+        </div>`;
+      return;
+    }
+    if(S.phase==="c_judge"){
+      st.innerHTML = `
+        <div class="kick">👀 Only the reader looks · judging ${esc(S.players[S.career.guesser].name)}</div>
+        <div class="careername">${esc(C.n)}</div>
+        ${C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
+        <div class="clubgrid">${grid}</div>
+        <div class="spacer"></div>
+        <div class="row2">
+          <button class="bigbtn ok" onclick="cJudge(true)">Correct +${cpot()}<kbd>C</kbd></button>
+          <button class="bigbtn bad" onclick="cJudge(false)">Wrong −2<kbd>W</kbd></button>
+        </div>`;
+      return;
+    }
+    // c_dead: nobody got it
+    st.innerHTML = `
+      <div class="kick">Nobody got it</div>
+      <div class="careername">${esc(C.n)}</div>
+      ${C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
+      <div class="clubgrid">${grid}</div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="cAfter()">Next career<kbd>Space</kbd></button>`;
+    return;
+  }
+
   if(S.phase==="results"){
     const order=[...S.players].map((p,i)=>({...p,i})).sort((a,b)=>b.score-a.score);
     const losers=order.filter(p=>p.score<0);
@@ -1867,6 +1998,7 @@ function renderSetup(st){
     <div class="row2">
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">🎙 Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">✍️ Written</button>
+      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">🕵️ Career</button>
     </div>
     <div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">⏱ With timer</button>
@@ -1882,7 +2014,7 @@ function renderSetup(st){
     ${Array.from({length:setupCount},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()">⚽ Kick off</button>
-    <div class="hint"><b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
+    <div class="hint"><b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
 }
 
 /* ============================== GAME FLOW ============================== */
@@ -1894,6 +2026,7 @@ function startGame(){
     return v || "Player "+(i+1);
   });
   S=freshState(names, setupTimed, setupMode, setupTarget);
+  if(S.mode==="career") newCareer();
   render();
 }
 function resumeGame(){
@@ -1903,10 +2036,13 @@ function resumeGame(){
   if(S.mode===undefined) S.mode="classic"; // saves from before written mode existed
   if(S.target===undefined) S.target=0; // saves from before the win target existed
   if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
+  if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
   if(["judge","steal_judge","deadq","steal_offer"].includes(S.phase) && S.qi==null) S.phase="pick";
+  if(["c_who","c_judge"].includes(S.phase)) S.phase="c_play";
+  if(S.mode==="career" && !S.career) newCareer();
   render();
 }
 function pickTier(t){
@@ -2006,6 +2142,47 @@ function nextTurn(){
   render();
 }
 
+/* ============================== CAREER MODE ============================== */
+function newCareer(){
+  let avail = CAREERS.map((_,i)=>i).filter(i=>!S.usedC.includes(i));
+  if(!avail.length){ toast("Whole career deck played — reshuffling!"); S.usedC=[]; avail=CAREERS.map((_,i)=>i); }
+  const ci = avail[Math.floor(Math.random()*avail.length)];
+  S.usedC.push(ci);
+  S.career = {ci, shown:1, locked:[], guesser:null};
+  S.turn = -1; // no player is "on the spot" in career mode
+  S.phase = "c_play";
+}
+function cpot(){ return Math.max(15 - 3*(S.career.shown-1), 3); }
+function cNext(){
+  const C=CAREERS[S.career.ci];
+  if(S.career.shown < C.c.length){ S.career.shown++; render(); }
+}
+function cGuess(){ S.phase="c_who"; render(); }
+function cPick(i){ S.career.guesser=i; S.phase="c_judge"; render(); }
+function cBack(){ S.phase="c_play"; render(); }
+function cJudge(correct){
+  const who=S.players[S.career.guesser];
+  if(correct){
+    const pts=cpot();
+    who.score+=pts; ching();
+    confetti(CAREERS[S.career.ci].c.length>=8 ? 64 : 30);
+    toast(`⚽ ${who.name} nails it! +${pts}`);
+    if(maybeFinish()) return;
+    S.round++;
+    newCareer(); render();
+  }else{
+    who.score-=2;
+    S.career.locked.push(S.career.guesser);
+    flashBad(); buzzer();
+    toast(`${who.name}: wrong! −2 and locked out`, true);
+    if(S.career.locked.length>=S.players.length){ S.phase="c_dead"; }
+    else S.phase="c_play";
+    render();
+  }
+}
+function cGiveUp(){ S.phase="c_dead"; render(); }
+function cAfter(){ S.round++; newCareer(); render(); }
+
 /* ============================== BOOKINGS ============================== */
 function askBook(i){
   const p=S.players[i];
@@ -2064,7 +2241,9 @@ function endGame(){
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
-  S=freshState(names, S.timed, S.mode, S.target); S.used=used;
+  const usedC=S.usedC;
+  S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC;
+  if(S.mode==="career") newCareer();
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
@@ -2103,6 +2282,18 @@ document.addEventListener("keydown", e=>{
     if(k==="1") claimSteal(o[0]);
     if(k==="2" && o.length>1) claimSteal(o[1]);
     if(k==="n") noSteal();
+  }else if(S.phase==="c_play"){
+    if(k===" "){ e.preventDefault(); cNext(); }
+    if(k==="g") cGuess();
+  }else if(S.phase==="c_who"){
+    const free=S.players.map((p,i)=>i).filter(i=>!S.career.locked.includes(i));
+    if(k>="1" && k<="3" && free.includes(+k-1)) cPick(+k-1);
+    if(k==="escape") cBack();
+  }else if(S.phase==="c_judge"){
+    if(k==="c") cJudge(true);
+    if(k==="w"||k==="x") cJudge(false);
+  }else if(S.phase==="c_dead"){
+    if(k===" "||k==="enter"){ e.preventDefault(); cAfter(); }
   }else if(S.phase==="deadq"){
     if(k===" "||k==="enter"){ e.preventDefault(); nextTurn(); }
   }else if(S.phase==="results"){

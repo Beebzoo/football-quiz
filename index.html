@@ -130,6 +130,12 @@
   body.careermode .stealbtn{background:#10251a;color:#8db8ff;border-color:#4a7fd9}
   body.careermode kbd{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#9fb8a6}
 
+  /* bigger cards on the night pitch */
+  body.careermode .clubcard{width:min(108px,27vw);height:min(108px,27vw)}
+  body.careermode .clubcard img{max-width:80%;max-height:80%}
+  body.careermode .clubcard.mystery{font-size:2rem}
+  body.careermode .clubgrid{gap:12px}
+
   /* logo pop-in */
   .clubcard.pop{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both}
   @keyframes cardpop{
@@ -137,8 +143,44 @@
     60%{opacity:1}
     to{transform:scale(1) rotate(0);opacity:1}
   }
+
+  /* centre-stage reveal: the new club slams in huge, then drops into its slot */
+  .bigreveal{
+    position:fixed;inset:0;z-index:40;pointer-events:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .bigreveal::before{
+    content:"";position:absolute;inset:0;background:rgba(3,9,5,.6);
+    animation:revealdim 1.25s ease both;
+  }
+  .bigreveal .flash{
+    position:absolute;width:130vmin;height:130vmin;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,215,.4), transparent 62%);
+    animation:flashpulse 1.25s ease-out both;
+  }
+  .bigreveal img{
+    position:relative;width:min(62vw,330px);max-height:44vh;object-fit:contain;
+    filter:drop-shadow(0 24px 48px rgba(0,0,0,.65));
+    animation:bigin 1.25s cubic-bezier(.22,1.35,.4,1) both;
+  }
+  @keyframes bigin{
+    0%{transform:scale(.04) rotate(-14deg);opacity:0}
+    38%{transform:scale(1.14) rotate(2deg);opacity:1}
+    52%{transform:scale(1) rotate(0)}
+    78%{transform:scale(1)}
+    100%{transform:scale(.2) translateY(36vh);opacity:0}
+  }
+  @keyframes flashpulse{
+    0%{transform:scale(.15);opacity:0}
+    35%{opacity:1}
+    100%{transform:scale(1.15);opacity:0}
+  }
+  @keyframes revealdim{
+    0%{opacity:0} 25%{opacity:1} 80%{opacity:1} 100%{opacity:0}
+  }
   @media (prefers-reduced-motion:reduce){
     .clubcard.pop{animation:none}
+    .bigreveal{display:none}
   }
   button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;touch-action:manipulation}
   button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
@@ -2142,6 +2184,7 @@ const tick   = ()=>beep(880,.08,"square",.05);
 const buzzer = ()=>{beep(150,.5,"sawtooth",.1); setTimeout(()=>beep(110,.6,"sawtooth",.1),120);};
 const ching  = ()=>{beep(1047,.12,"sine",.09); setTimeout(()=>beep(1568,.25,"sine",.09),110);};
 const popfx  = ()=>{beep(520,.07,"sine",.08); setTimeout(()=>beep(790,.1,"sine",.07),70);};
+const slamfx = ()=>{beep(150,.22,"sawtooth",.08); setTimeout(()=>beep(620,.08,"sine",.08),300); setTimeout(()=>beep(930,.12,"sine",.07),380);};
 
 /* ============================== TIMER ============================== */
 let T = {raf:null, deadline:0, total:0, onDone:null, lastWhole:99};
@@ -2369,6 +2412,7 @@ function render(){
     const C=CAREERS[S.career.ci];
     const revealAll = S.phase==="c_judge" || S.phase==="c_dead";
     const grid = C.c.map((slug,i)=>{
+      if(i===hideIdx) return `<div class="clubcard mystery">?</div>`;
       if(revealAll || i<S.career.shown){
         const fresh = (i===popIdx) || (revealAll && revealAnim && i>=S.career.shown);
         const delay = (revealAll && revealAnim && i>=S.career.shown) ? ` style="animation-delay:${(i-S.career.shown)*110}ms"` : "";
@@ -2644,6 +2688,18 @@ function nextTurn(){
 /* ============================== CAREER MODE ============================== */
 let popIdx = -1;      // which just-revealed card should pop in on the next render
 let revealAnim = false; // stagger-animate the hidden cards on full reveal
+let hideIdx = -1;     // card kept hidden while its centre-stage reveal plays
+let revealing = false; // guard against double-taps during the reveal
+function bigReveal(slug, done){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ done(); return; }
+  revealing = true;
+  slamfx();
+  const o=document.createElement("div");
+  o.className="bigreveal";
+  o.innerHTML=`<div class="flash"></div><img src="assets/logos/${slug}.png" alt="">`;
+  document.body.appendChild(o);
+  setTimeout(()=>{ o.remove(); revealing=false; done(); }, 1200);
+}
 function newCareer(){
   let avail = CAREERS.map((_,i)=>i).filter(i=>!S.usedC.includes(i));
   if(!avail.length){ toast("Whole career deck played — reshuffling!"); S.usedC=[]; avail=CAREERS.map((_,i)=>i); }
@@ -2652,12 +2708,20 @@ function newCareer(){
   S.career = {ci, shown:1, locked:[], guesser:null};
   S.turn = -1; // no player is "on the spot" in career mode
   S.phase = "c_play";
-  popIdx = 0; popfx();
+  hideIdx = 0;
+  const slug = CAREERS[ci].c[0];
+  setTimeout(()=>bigReveal(slug, ()=>{ hideIdx=-1; popIdx=0; render(); }), 60);
 }
 function cpot(){ return Math.max(15 - 3*(S.career.shown-1), 3); }
 function cNext(){
+  if(revealing) return;
   const C=CAREERS[S.career.ci];
-  if(S.career.shown < C.c.length){ S.career.shown++; popIdx=S.career.shown-1; popfx(); render(); }
+  if(S.career.shown < C.c.length){
+    S.career.shown++;
+    const idx=S.career.shown-1;
+    hideIdx=idx; render();
+    bigReveal(C.c[idx], ()=>{ hideIdx=-1; popIdx=idx; render(); });
+  }
 }
 function cGuess(){ S.phase="c_who"; render(); }
 function cPick(i){ S.career.guesser=i; S.phase="c_judge"; revealAnim=true; render(); }

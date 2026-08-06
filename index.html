@@ -77,11 +77,22 @@
   .sideplayer.deijl{right:2.5vw;bottom:46vh;height:15vh;transform:rotate(6deg)}
   @media (min-width:1050px){ .sideplayer{display:block} }
 
-  /* flags + lineup */
+  /* flags + the club-logo ticker on the front page */
   .flagrow{display:flex;gap:10px;align-items:center}
   .flagrow img{height:26px;border-radius:5px;border:2px solid #fff;box-shadow:0 1px 5px rgba(16,24,40,.25)}
-  .lineup{display:flex;justify-content:center;align-items:flex-end}
-  .lineup img{height:96px;margin:0 -7px;filter:drop-shadow(0 4px 8px rgba(10,45,25,.3))}
+  .logoticker{display:flex;flex-direction:column;gap:10px;overflow:hidden;margin:4px -16px}
+  .tickrow{display:flex;gap:10px;width:max-content;animation:tickmove 46s linear infinite}
+  .tickrow.rev{animation-direction:reverse;animation-duration:58s}
+  .tickrow.slow{animation-duration:70s}
+  .tickrow .tk{
+    width:54px;height:54px;flex:0 0 auto;border-radius:12px;
+    background:rgba(255,255,255,.93);border:1px solid rgba(255,255,255,.2);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 5px 12px rgba(0,0,0,.4);
+  }
+  .tickrow .tk img{max-width:76%;max-height:76%}
+  @keyframes tickmove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.tickrow{animation:none}}
   .celebimg{align-self:center;height:110px;filter:drop-shadow(0 6px 12px rgba(10,45,25,.35))}
 
   /* guess the career */
@@ -101,8 +112,13 @@
   }
   .careername{font:800 1.7rem/1.2 system-ui;text-align:center;text-wrap:balance}
 
-  /* career mode: the floodlights come on, the lights go down */
-  body.careermode{color:#eef5ef}
+  /* the floodlit night look — now the whole app's home kit */
+  html{background:#0d2013}
+  body.careermode{color:#eef5ef;border-color:rgba(255,255,255,.12)}
+  body.careermode .clock .digits{color:#eef5ef}
+  body.careermode .clock.hot .digits{color:#ff8a7a}
+  body.careermode .sub{color:#9fb8a6}
+  body.careermode .diff{box-shadow:0 6px 18px rgba(0,0,0,.4)}
   body.careermode #pitchbg{
     background:
       radial-gradient(95% 55% at 50% -5%, rgba(255,255,215,.12), transparent 60%),
@@ -448,17 +464,11 @@
   }
 </style>
 </head>
-<body>
+<body class="careermode">
 
 <div id="pitchbg"></div>
 <div class="cornerarc tl"></div><div class="cornerarc tr"></div>
 <div class="cornerarc bl"></div><div class="cornerarc br"></div>
-<img class="sideplayer zidane" src="assets/players/zidane.png" alt="Zinedine Zidane">
-<img class="sideplayer sinkgraven" src="assets/players/sinkgraven.png" alt="Daley Sinkgraven">
-<img class="sideplayer taarabt" src="assets/players/taarabt.png" alt="Adel Taarabt">
-<img class="sideplayer ajax" src="assets/players/ajax.png" alt="Ajax player">
-<img class="sideplayer pedri" src="assets/players/pedri.png" alt="Pedri">
-<img class="sideplayer deijl" src="assets/players/deijl.png" alt="Mats Deijl">
 <div id="scorebug" hidden></div>
 <div id="stage"></div>
 <div id="overlay"></div>
@@ -2268,7 +2278,6 @@ function renderBug(){
 
 function render(){
   renderBug(); save();
-  document.body.classList.toggle("careermode", !!S && ["c_play","c_who","c_judge","c_dead"].includes(S.phase));
   const st=$("#stage");
   const P=S ? S.players[S.turn] : null;
 
@@ -2515,6 +2524,18 @@ function setTimed(v){ snapshotNames(); setupTimed=v; render(); }
 function setMode(m){ snapshotNames(); setupMode=m; render(); }
 function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
 const setupNames = ["","",""];
+let tickerHTML = null; // built once per session so the rows don't reshuffle on re-render
+function logoTicker(){
+  if(tickerHTML) return tickerHTML;
+  const all=[...new Set(CAREERS.flatMap(c=>c.c))];
+  for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]]; }
+  const rows=[all.slice(0,14), all.slice(14,28), all.slice(28,42)];
+  tickerHTML = `<div class="logoticker">` + rows.map((r,i)=>
+    `<div class="tickrow${i===1?" rev":i===2?" slow":""}">${[...r,...r].map(s=>
+      `<div class="tk"><img src="assets/logos/${s}.png" loading="lazy" alt=""></div>`).join("")}</div>`
+  ).join("") + `</div>`;
+  return tickerHTML;
+}
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
   st.innerHTML = `
@@ -2525,13 +2546,7 @@ function renderSetup(st){
       <span class="kick" style="margin-left:4px">⚽ The football quiz</span>
     </div>
     <h1 class="title">Gran Canaria<br><span class="gold">MVV Ultras</span></h1>
-    <div class="lineup">
-      <img src="assets/players/zidane.png" alt="Zidane">
-      <img src="assets/players/pedri.png" alt="Pedri">
-      <img src="assets/players/deijl.png" alt="Mats Deijl">
-      <img src="assets/players/sinkgraven.png" alt="Daley Sinkgraven">
-      <img src="assets/players/ajax.png" alt="Ajax player">
-    </div>
+    ${logoTicker()}
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
     <div class="row2">

@@ -86,9 +86,11 @@
   .tickrow.slow{animation-duration:70s}
   .tickrow .tk{
     width:54px;height:54px;flex:0 0 auto;border-radius:12px;
-    background:rgba(255,255,255,.93);border:1px solid rgba(255,255,255,.2);
+    background:linear-gradient(160deg, rgba(215,240,225,.26), rgba(150,205,175,.12));
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(2px);
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 5px 12px rgba(0,0,0,.4);
+    box-shadow:0 5px 12px rgba(0,0,0,.35);
   }
   .tickrow .tk img{max-width:76%;max-height:76%}
   @keyframes tickmove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -142,6 +144,20 @@
   body.careermode .bigbtn.ghost{
     background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#cfe0d4;
   }
+  body.careermode .bigbtn.ghost.sel{
+    background:rgba(46,158,92,.28);border:2px solid #3fd685;color:#8df0b8;
+    font-weight:800;box-shadow:0 0 14px rgba(63,214,133,.3);
+  }
+  .rules{margin-top:4px}
+  .rules summary{
+    list-style:none;cursor:pointer;text-align:center;
+    font:700 .9rem system-ui;color:#cfe0d4;
+    padding:12px;border-radius:14px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);
+  }
+  .rules summary::-webkit-details-marker{display:none}
+  .rules[open] summary{border-color:#3fd685;color:#8df0b8}
+  .rules .hint{padding:10px 4px 2px}
   body.careermode .bigbtn.warn{box-shadow:0 0 22px rgba(240,196,25,.35)}
   body.careermode .stealbtn{background:#10251a;color:#8db8ff;border-color:#4a7fd9}
   body.careermode kbd{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#9fb8a6}
@@ -2473,7 +2489,7 @@ function render(){
     if(S.phase==="c_play"){
       const locked=S.career.locked.map(i=>S.players[i].name);
       st.innerHTML = `
-        <div class="kick">🕵️ Guess the career · Round ${S.round}</div>
+        <div class="kick">🕵️ Career Path · Round ${S.round}</div>
         <div class="potpill">Guess now: +${cpot()}</div>
         <div class="clubgrid">${grid}</div>
         <div class="hint" style="text-align:center">${C.c.length} clubs in this career, in order.${locked.length?` Locked out: ${esc(locked.join(", "))}.`:""}</div>
@@ -2590,7 +2606,6 @@ function renderSetup(st){
     <div class="kick" style="text-align:center">Gran Canaria MVV Ultras</div>
     <h1 class="title ballhero"><span class="goldtext">BALL</span><img class="ballimg" src="assets/ball.png" alt=""></h1>
     ${logoTicker()}
-    <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
     <div class="row2">
       <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">👥 All play</button>
@@ -2603,7 +2618,7 @@ function renderSetup(st){
     <div class="row2">
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">🎙 Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">✍️ Written</button>
-      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">🕵️ Career</button>
+      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">🕵️ Career Path</button>
     </div>
     <div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">⏱ With timer</button>
@@ -2620,7 +2635,10 @@ function renderSetup(st){
     ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
     <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()">⚽ Kick off</button>
-    <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
+    <details class="rules">
+      <summary>📖 Rules</summary>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+    </details>`;
 }
 
 /* ============================== GAME FLOW ============================== */

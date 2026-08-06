@@ -252,17 +252,21 @@
     letter-spacing:-.03em;text-wrap:balance;
   }
   h1.title .gold{color:var(--turf)}
-  h1.title.ballhero{
+  h1.title.ballhero, body.careermode h1.title.ballhero{
     position:relative;text-align:center;text-transform:uppercase;
     font-size:clamp(3.6rem,24vw,5.4rem);letter-spacing:.08em;
-    background:linear-gradient(110deg,#9a6a12 12%,#e9b84c 30%,#fff6cf 47%,#e9b84c 62%,#9a6a12 86%);
-    background-size:230% 100%;
-    -webkit-background-clip:text;background-clip:text;
-    color:transparent;-webkit-text-fill-color:transparent;
+    color:#e9b84c;
     filter:drop-shadow(0 0 26px rgba(233,184,76,.45)) drop-shadow(0 4px 12px rgba(0,0,0,.5));
-    animation:goldshimmer 3.4s linear infinite;
   }
-  @keyframes goldshimmer{from{background-position:220% 0}to{background-position:-220% 0}}
+  .ballhero .goldtext{
+    display:inline-block;
+    background:linear-gradient(105deg,#b8860b 10%,#e9b84c 28%,#ffefad 45%,#e9b84c 60%,#b8860b 88%);
+    background-size:250% 100%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    animation:goldshimmer 3.6s linear infinite;
+  }
+  @keyframes goldshimmer{from{background-position:200% 0}to{background-position:-200% 0}}
   .ballhero .sp{
     position:absolute;font-style:normal;pointer-events:none;
     color:#fff8dc;font-size:.32em;line-height:1;
@@ -279,7 +283,7 @@
     50%{opacity:1;transform:scale(1) rotate(45deg)}
   }
   @media (prefers-reduced-motion:reduce){
-    h1.title.ballhero{animation:none;background-position:50% 0}
+    .ballhero .goldtext{animation:none;background-position:50% 0}
     .ballhero .sp{animation:none;opacity:.7;transform:scale(.8)}
   }
   .sub{color:var(--chalk-dim);max-width:36ch}
@@ -2582,7 +2586,7 @@ function renderSetup(st){
       <img src="assets/flags/morocco.webp" alt="Morocco">
     </div>
     <div class="kick" style="text-align:center">Gran Canaria MVV Ultras</div>
-    <h1 class="title ballhero">BALL<i class="sp s1">✦</i><i class="sp s2">✦</i><i class="sp s3">✦</i><i class="sp s4">✦</i></h1>
+    <h1 class="title ballhero"><span class="goldtext">BALL</span><i class="sp s1">✦</i><i class="sp s2">✦</i><i class="sp s3">✦</i><i class="sp s4">✦</i></h1>
     ${logoTicker()}
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}

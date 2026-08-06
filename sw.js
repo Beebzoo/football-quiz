@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v12";
+const CACHE = "ball-quiz-v13";
 const CAREER_LOGOS = [
   "mvv-maastricht","bordeaux","fleetwood-town","leicester","boulogne","al-ittihad",
   "brescia","le-havre-ac","al-ahli",
@@ -25,6 +25,11 @@ const CAREER_LOGOS = [
   "charleroi","leganes","verona","albacete","farul-constanta","crvena-zvezda",
   "atalanta","pisa","maritimo","besiktas","vitoria-de-guimaraes","wolves","sc-braga",
   "velez-sarsfield","celta","watford","kasimpasa","reading","panathinaikos","burnley",
+  "livorno","bari","union-berlin","toronto-fc","pescara","torino","paris-fc",
+  "piacenza","perugia","rangers","salernitana","sion","swansea-city","eibar",
+  "nantes","spartak-moskva","dynamo-moscow","lorient","lecce","monterrey",
+  "portland-timbers","ado-den-haag","nec-nijmegen","middlesbrough","bournemouth",
+  "shakhtar","sassuolo","neom","olympiacos","guingamp","celtic","bolton",
   "ajax","al-hilal","al-nassr","al-qadsiah","anderlecht","arsenal","as-monaco",
   "as-saint-etienne","atletico-madrid","atletico-mineiro","barcelona","basel",
   "bayer-leverkusen","bayern-munchen","benfica","boca-juniors","borussia-dortmund",

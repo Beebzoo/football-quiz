@@ -396,6 +396,9 @@
 
   .row2{display:flex;gap:10px}
   .row2 .bigbtn{flex:1}
+  /* stadium mode */
+  .stadimg{display:block;width:100%;max-height:40vh;object-fit:cover;border-radius:12px;margin:0 0 10px;background:#0b1c12}
+  .pcredit{margin-top:8px;font-size:.62rem;opacity:.55;text-align:right}
   .bigbtn.ok{background:var(--ok);border-color:var(--turf-deep)}
   .bigbtn.bad{background:var(--bad);border-color:#b91c1c}
 
@@ -2207,6 +2210,32 @@ const OFFENCE_PENALTY = n => n<=1 ? 0 : n===2 ? 1 : 2;
 
 let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stealer, timeUp, used:{tier:[i,..]}}
 
+/* ============================== STADIUM BANK ==============================
+   300 photos in assets/stadiums/, curated from Wikimedia Commons (see
+   ATTRIBUTION.csv there). Tiers: 100 easy / 100 hard / 100 ball. */
+const COUNTRY_FIX = {
+  "People's Republic of China":"China",
+  "British Hong Kong":"Hong Kong",
+  "Soviet Union":"Kazakhstan", // Kazhimukan Munaitpasov Stadium, tagged by its 1958 build
+};
+let STAD=null; // {easy:[...],hard:[...],ball:[...]} once index.json is in
+fetch("assets/stadiums/index.json").then(r=>r.json()).then(rows=>{
+  STAD={easy:[],hard:[],ball:[]};
+  rows.forEach(r=>{
+    r.country=COUNTRY_FIX[r.country]||r.country;
+    if(STAD[r.difficulty]) STAD[r.difficulty].push(r);
+  });
+  if(!S || S.phase==="setup") render(); // un-grey the Stadium button
+}).catch(()=>{ /* offline first visit: mode stays disabled */ });
+function stadQ(){
+  const s=STAD[S.tier][S.qi];
+  const cap = s.capacity ? ` · holds ${s.capacity.toLocaleString("en-GB")}` : "";
+  const credit = `📷 ${s.author} · ${s.license}`;
+  return S.sguess==="country"
+    ? {q:"Which country is this stadium in?", a:`${s.country} (${s.name}${cap})`, img:"assets/stadiums/"+s.slug, credit}
+    : {q:"Name this stadium", a:`${s.name} — ${s.country}${cap}`, img:"assets/stadiums/"+s.slug, credit};
+}
+
 function freshState(names, timed=true, mode="classic", target=100){
   return {
     players: names.map(n=>({name:n, score:0, off:0})),
@@ -2215,6 +2244,7 @@ function freshState(names, timed=true, mode="classic", target=100){
     target:target, // first to this score wins; 0 = no limit
     wans:[], wgot:[], // written mode: typed answers + who was marked correct
     career:null, usedC:[], // career mode: current round + careers already played
+    sguess:"name", // stadium mode: guess the "name" or the "country"
     ref:null, // referee mode: the non-playing quizmaster's name
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
@@ -2294,6 +2324,7 @@ const IPATHS = {
   book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
   hand:'<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.51-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
   eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  cam:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
 };
 const ico = n => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IPATHS[n]}</svg>`;
 function toast(msg, bad){
@@ -2326,8 +2357,9 @@ function flashBad(){
   setTimeout(()=>f.remove(),600);
 }
 function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
-function q(){ return BANK[S.tier][S.qi]; }
-function remaining(t){ return BANK[t].length - S.used[t].length; }
+function bankFor(t){ return S.mode==="stadium" ? STAD[t] : BANK[t]; }
+function q(){ return S.mode==="stadium" ? stadQ() : BANK[S.tier][S.qi]; }
+function remaining(t){ return bankFor(t).length - S.used[t].length; }
 async function wakeLock(){ try{ if(navigator.wakeLock) await navigator.wakeLock.request("screen"); }catch(e){} }
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wakeLock(); });
 
@@ -2359,13 +2391,15 @@ function render(){
 
   if(S.phase==="pick"){
     const written = S.mode==="written";
+    const stad = S.mode==="stadium";
     st.innerHTML = `
-      <div class="kick">Round ${S.round} · ${written?"Written round":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="kick">Round ${S.round} · ${written?"Written round":stad?(S.sguess==="country"?"Guess the country":"Guess the stadium"):"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
       <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
+        :stad?"Pick your difficulty — a stadium photo appears, answer out loud."
         :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
         :"Pick your difficulty. Someone else reads the question out loud."}</div>
-      ${Object.entries(TIERS).map(([k,t],ix)=>`
+      ${Object.entries(TIERS).filter(([k])=>!stad || (STAD && STAD[k])).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
           <span class="left"><span>${t.label}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
           <span class="pts">+${t.pts}</span>
@@ -2430,6 +2464,7 @@ function render(){
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
       <div class="qcard" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         <div class="qtext">${esc(q().q)}</div>
       </div>
       ${S.timed?`<div class="clock" id="clock">
@@ -2454,8 +2489,10 @@ function render(){
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
       <div class="qcard" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+        ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
       </div>
       ${S.timeUp?`<div class="hint" style="color:var(--card-r);font-weight:700">Time was already up. Only count an answer given before the buzzer.</div>`:""}
       <div class="spacer"></div>
@@ -2485,8 +2522,10 @@ function render(){
     st.innerHTML = `
       <div class="kick">Nobody got it</div>
       <div class="qcard" style="--dc:${t.color}">
+        ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+        ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
       </div>
       <div class="spacer"></div>
       <button class="bigbtn" onclick="nextTurn()">Play on<kbd>Space</kbd></button>`;
@@ -2602,6 +2641,8 @@ function setRef(v){ snapshotNames(); setupRef=v; render(); }
 const reader = ()=> S && S.ref ? esc(S.ref) : "the reader";
 function setTimed(v){ snapshotNames(); setupTimed=v; render(); }
 function setMode(m){ snapshotNames(); setupMode=m; render(); }
+let setupStadGuess = "name";
+function setStadGuess(v){ snapshotNames(); setupStadGuess=v; render(); }
 function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
 const setupNames = ["","",""];
 let tickerHTML = null; // built once per session so the rows don't reshuffle on re-render
@@ -2631,8 +2672,15 @@ function renderSetup(st){
     <div class="row2">
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
-      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
     </div>
+    <div class="row2">
+      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
+      <button class="bigbtn ghost${setupMode==="stadium"?" sel":""}" onclick="setMode('stadium')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('cam')}Stadium</button>
+    </div>
+    ${setupMode==="stadium"?`<div class="row2">
+      <button class="bigbtn ghost${setupStadGuess==="name"?" sel":""}" onclick="setStadGuess('name')">Guess the stadium</button>
+      <button class="bigbtn ghost${setupStadGuess==="country"?" sel":""}" onclick="setStadGuess('country')">Guess the country</button>
+    </div>`:""}
     ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div><div class="spacer"></div>`:`
     <div class="row2">
       <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">${ico('users')}All play</button>
@@ -2659,7 +2707,7 @@ function renderSetup(st){
     <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears — name the stadium (or, in country mode, just the country it stands in). 300 grounds from Camp Nou to places only true BALL knowers recognise. Easy +1 · Hard +5 · BALL +20, steals work like Classic. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 
@@ -2673,7 +2721,9 @@ function startGame(){
     const v=el ? el.value.trim() : "";
     return v || "Player "+(i+1);
   });
+  if(setupMode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
+  S.sguess=setupStadGuess;
   if(setupRef){
     const el=document.getElementById("n2");
     S.ref=(el && el.value.trim()) || "The ref";
@@ -2690,6 +2740,8 @@ function resumeGame(){
   if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
+  if(!S.sguess) S.sguess="name"; // saves from before stadium mode existed
+  if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
@@ -2700,7 +2752,7 @@ function resumeGame(){
 }
 function pickTier(t){
   audio();
-  const avail=BANK[t].map((_,i)=>i).filter(i=>!S.used[t].includes(i));
+  const avail=bankFor(t).map((_,i)=>i).filter(i=>!S.used[t].includes(i));
   if(!avail.length){ toast("No "+TIERS[t].label+" questions left!", true); return; }
   S.tier=t; S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);
@@ -2718,7 +2770,7 @@ function pickTier(t){
 function skipQuestion(){
   if(!["question","steal_q","w_answer"].includes(S.phase)) return;
   const t=S.tier;
-  const avail=BANK[t].map((_,i)=>i).filter(i=>!S.used[t].includes(i));
+  const avail=bankFor(t).map((_,i)=>i).filter(i=>!S.used[t].includes(i));
   if(!avail.length){ toast("No more "+TIERS[t].label+" questions to skip to!", true); return; }
   S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);

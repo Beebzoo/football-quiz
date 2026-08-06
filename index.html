@@ -158,6 +158,8 @@
   .rules summary::-webkit-details-marker{display:none}
   .rules[open] summary{border-color:#3fd685;color:#8df0b8}
   .rules .hint{padding:10px 4px 2px}
+  .ic{width:1.06em;height:1.06em;display:inline-block;vertical-align:-.18em;margin-right:.3em}
+  img.ballic{width:1.05em;height:1.05em;vertical-align:-.18em;margin-right:.3em;border-radius:50%}
   body.careermode .bigbtn.warn{box-shadow:0 0 22px rgba(240,196,25,.35)}
   body.careermode .stealbtn{background:#10251a;color:#8db8ff;border-color:#4a7fd9}
   body.careermode kbd{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#9fb8a6}
@@ -2275,6 +2277,21 @@ function tickTimer(){
 /* ============================== HELPERS ============================== */
 const $ = sel => document.querySelector(sel);
 const esc = s => s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* flat inline icons (Feather-style, stroke = button text colour) */
+const IPATHS = {
+  users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  card:'<rect x="7.5" y="3.5" width="9" height="14" rx="1.5" fill="#f0c419" stroke="none" transform="rotate(8 12 10.5)"/>',
+  mic:'<path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/>',
+  pencil:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  route:'<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>',
+  inf:'<path d="M18.5 8.5a3.5 3.5 0 1 1 0 7c-3.5 0-6.5-7-10-7a3.5 3.5 0 1 0 0 7c3.5 0 6.5-7 10-7z"/>',
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+  book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  hand:'<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.51-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
+  eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+};
+const ico = n => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IPATHS[n]}</svg>`;
 function toast(msg, bad){
   const t=$("#toast"); t.textContent=msg; t.classList.toggle("bad",!!bad); t.classList.add("show");
   clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"), 2200);
@@ -2342,7 +2359,7 @@ function render(){
       <div class="kick">Round ${S.round} · ${written?"Written round":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
       <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
-        :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points. 🟨`
+        :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
         :"Pick your difficulty. Someone else reads the question out loud."}</div>
       ${Object.entries(TIERS).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
@@ -2489,7 +2506,7 @@ function render(){
     if(S.phase==="c_play"){
       const locked=S.career.locked.map(i=>S.players[i].name);
       st.innerHTML = `
-        <div class="kick">🕵️ Career Path · Round ${S.round}</div>
+        <div class="kick">${ico('route')}Career Path · Round ${S.round}</div>
         <div class="potpill">Guess now: +${cpot()}</div>
         <div class="clubgrid">${grid}</div>
         <div class="hint" style="text-align:center">${C.c.length} clubs in this career, in order.${locked.length?` Locked out: ${esc(locked.join(", "))}.`:""}</div>
@@ -2497,7 +2514,7 @@ function render(){
         ${S.career.shown<C.c.length
           ? `<button class="bigbtn" onclick="cNext()">Next club<kbd>Space</kbd></button>`
           : `<div class="hint" style="text-align:center">Full career on the table. Last chance…</div>`}
-        <button class="bigbtn warn" onclick="cGuess()">🖐 Someone knows it!<kbd>G</kbd></button>
+        <button class="bigbtn warn" onclick="cGuess()">${ico('hand')}Someone knows it!<kbd>G</kbd></button>
         <button class="bigbtn ghost" onclick="cGiveUp()">Nobody knows — reveal</button>`;
       return;
     }
@@ -2514,7 +2531,7 @@ function render(){
     }
     if(S.phase==="c_judge"){
       st.innerHTML = `
-        <div class="kick">👀 Only ${reader()} looks · judging ${esc(S.players[S.career.guesser].name)}</div>
+        <div class="kick">${ico('eye')}Only ${reader()} looks · judging ${esc(S.players[S.career.guesser].name)}</div>
         <div class="careername">${esc(C.n)}</div>
         ${C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
         <div class="clubgrid">${grid}</div>
@@ -2542,7 +2559,7 @@ function render(){
     const champ=order[0];
     const hitTarget = S.target && champ.score>=S.target;
     st.innerHTML = `
-      <div class="kick">${hitTarget?`🏁 First to ${S.target}`:`Full time · ${S.round} round${S.round>1?"s":""}`}</div>
+      <div class="kick">${hitTarget?`${ico('flag')}First to ${S.target}`:`Full time · ${S.round} round${S.round>1?"s":""}`}</div>
       <h1 class="title">${hitTarget?`${esc(champ.name)}<br><span class="gold">wins!</span>`:`Final<br><span class="gold">Whistle</span>`}</h1>
       <img class="celebimg" src="assets/players/mvv-hero.png" alt="">
       ${S.ref?`<div class="hint" style="text-align:center">🟨 Refereed by ${esc(S.ref)}</div>`:""}
@@ -2608,23 +2625,23 @@ function renderSetup(st){
     ${logoTicker()}
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
     <div class="row2">
-      <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">👥 All play</button>
-      <button class="bigbtn ghost${setupRef?" sel":""}" onclick="setRef(true)">🟨 Referee mode</button>
+      <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">${ico('users')}All play</button>
+      <button class="bigbtn ghost${setupRef?" sel":""}" onclick="setRef(true)">${ico('card')}Referee mode</button>
     </div>
     ${setupRef?"":`<div class="row2">
       <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
     </div>`}
     <div class="row2">
-      <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">🎙 Classic</button>
-      <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">✍️ Written</button>
-      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">🕵️ Career Path</button>
+      <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
+      <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
+      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
     </div>
     <div class="row2">
-      <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">⏱ With timer</button>
-      <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">∞ No timer</button>
+      <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">${ico('clock')}With timer</button>
+      <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">${ico('inf')}No timer</button>
     </div>
-    <div class="kick" style="margin-top:2px">🏁 First to… wins</div>
+    <div class="kick" style="margin-top:2px">${ico('flag')}First to… wins</div>
     <div class="row2">
       <button class="bigbtn ghost${setupTarget===50?" sel":""}" onclick="setTarget(50)">50</button>
       <button class="bigbtn ghost${setupTarget===100?" sel":""}" onclick="setTarget(100)">100</button>
@@ -2634,9 +2651,9 @@ function renderSetup(st){
     ${Array.from({length:(setupRef?2:setupCount)},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
     <div class="spacer"></div>
-    <button class="bigbtn" onclick="startGame()">⚽ Kick off</button>
+    <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>
     <details class="rules">
-      <summary>📖 Rules</summary>
+      <summary>${ico('book')}Rules</summary>
       <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }

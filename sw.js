@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v27";
+const CACHE = "ball-quiz-v28";
 const EXTRA_ASSETS = ["assets/ball.png"];
 const CAREER_LOGOS = [
   "mvv-maastricht","bordeaux","fleetwood-town","leicester","boulogne","al-ittihad",

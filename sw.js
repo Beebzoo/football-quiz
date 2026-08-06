@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v28";
+const CACHE = "ball-quiz-v29";
 const EXTRA_ASSETS = ["assets/ball.png"];
 const CAREER_LOGOS = [
   "mvv-maastricht","bordeaux","fleetwood-town","leicester","boulogne","al-ittihad",
@@ -37,6 +37,20 @@ const CAREER_LOGOS = [
   "young-boys","new-england-revolution","rangers","amiens","stade-lavallois",
   "northampton","exeter","al-ettifaq","sheffield-united","getafe","osasuna",
   "monterrey","monza","adana-demirspor","sion","empoli","venezia","charlton",
+  "real-zaragoza","colo-colo","heracles","hajduk-split","tours","osijek",
+  "pumas-unam","cannes","stuttgarter-kickers","al-sadd","penarol","fc-nordsjaelland",
+  "beijing-guoan","1860-munich","cartagena","recreativo-huelva","almere-city",
+  "apollon-limassol","melbourne-victory","western-sydney","sydney-fc","emirates-club",
+  "al-duhail","shandong-taishan","bate-borisov","kosice","pyunik","vojvodina",
+  "rnk-split","zeljeznicar","nk-zagreb","lokomotiva-zagreb","independiente-medellin",
+  "saprissa","nacional-uy","cerro","uniao-sao-joao","olimpija","chemnitzer-fc",
+  "melbourne-city","kickers-offenbach","bayer-uerdingen","partizan",
+  "universidad-catolica","atletico-junior","america-de-cali","koge","istres",
+  "asec-mimosas","al-shahania","queens-park-fc","atk","agf-aarhus","al-arabi",
+  "al-ahli-doha","racing-santander","al-rayyan","lusail","hereford","peterborough",
+  "lumezzane","shanghai-shenhua","al-ain","albinoleffe","chieti","helsingborgs",
+  "guadalajara","widzew-lodz","leon","domzale","brondby","nimes","newcastle-jets",
+  "wydad","sepahan","rbc-roosendaal","campomaiorense",
   "kashima-antlers","botafogo-sp","santos","guarani","kashiwa-reysol","pisa",
   "jubilo-iwata","reggiana","sport-recife","halmstad","seattle-sounders-fc",
   "copenhagen","notts-county","stromsgodset","cerezo-osaka","pachuca",

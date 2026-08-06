@@ -100,6 +100,46 @@
     font:800 1rem system-ui;padding:8px 18px;border-radius:99px;box-shadow:var(--shadow);
   }
   .careername{font:800 1.7rem/1.2 system-ui;text-align:center;text-wrap:balance}
+
+  /* career mode: the floodlights come on, the lights go down */
+  body.careermode{color:#eef5ef}
+  body.careermode #pitchbg{
+    background:
+      radial-gradient(95% 55% at 50% -5%, rgba(255,255,215,.12), transparent 60%),
+      repeating-linear-gradient(180deg,#122b1c 0 72px,#0d2315 72px 144px);
+  }
+  body.careermode #pitchbg::before{border-color:rgba(255,255,255,.22)}
+  body.careermode #pitchbg::after{background:rgba(255,255,255,.22)}
+  body.careermode .cornerarc{border-color:rgba(255,255,255,.16)}
+  body.careermode .kick{color:#9fb8a6}
+  body.careermode .hint{color:#8fae99}
+  body.careermode h1.title{color:#eef5ef}
+  body.careermode .careername{color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.5)}
+  body.careermode .clubcard{
+    border-color:rgba(255,255,255,.12);
+    box-shadow:0 6px 18px rgba(0,0,0,.45), 0 0 24px rgba(255,255,240,.08);
+  }
+  body.careermode .clubcard.mystery{
+    background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.28);
+    color:rgba(255,255,255,.55);box-shadow:none;
+  }
+  body.careermode .bigbtn.ghost{
+    background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#cfe0d4;
+  }
+  body.careermode .bigbtn.warn{box-shadow:0 0 22px rgba(240,196,25,.35)}
+  body.careermode .stealbtn{background:#10251a;color:#8db8ff;border-color:#4a7fd9}
+  body.careermode kbd{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#9fb8a6}
+
+  /* logo pop-in */
+  .clubcard.pop{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both}
+  @keyframes cardpop{
+    from{transform:scale(.15) rotate(-8deg);opacity:0}
+    60%{opacity:1}
+    to{transform:scale(1) rotate(0);opacity:1}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .clubcard.pop{animation:none}
+  }
   button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;touch-action:manipulation}
   button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
@@ -2101,6 +2141,7 @@ function beep(freq,dur,type="square",gain=.06){
 const tick   = ()=>beep(880,.08,"square",.05);
 const buzzer = ()=>{beep(150,.5,"sawtooth",.1); setTimeout(()=>beep(110,.6,"sawtooth",.1),120);};
 const ching  = ()=>{beep(1047,.12,"sine",.09); setTimeout(()=>beep(1568,.25,"sine",.09),110);};
+const popfx  = ()=>{beep(520,.07,"sine",.08); setTimeout(()=>beep(790,.1,"sine",.07),70);};
 
 /* ============================== TIMER ============================== */
 let T = {raf:null, deadline:0, total:0, onDone:null, lastWhole:99};
@@ -2184,6 +2225,7 @@ function renderBug(){
 
 function render(){
   renderBug(); save();
+  document.body.classList.toggle("careermode", !!S && ["c_play","c_who","c_judge","c_dead"].includes(S.phase));
   const st=$("#stage");
   const P=S ? S.players[S.turn] : null;
 
@@ -2326,9 +2368,15 @@ function render(){
   if(["c_play","c_who","c_judge","c_dead"].includes(S.phase)){
     const C=CAREERS[S.career.ci];
     const revealAll = S.phase==="c_judge" || S.phase==="c_dead";
-    const grid = C.c.map((slug,i)=> (revealAll || i<S.career.shown)
-      ? `<div class="clubcard"><img src="assets/logos/${slug}.png" alt=""></div>`
-      : `<div class="clubcard mystery">?</div>`).join("");
+    const grid = C.c.map((slug,i)=>{
+      if(revealAll || i<S.career.shown){
+        const fresh = (i===popIdx) || (revealAll && revealAnim && i>=S.career.shown);
+        const delay = (revealAll && revealAnim && i>=S.career.shown) ? ` style="animation-delay:${(i-S.career.shown)*110}ms"` : "";
+        return `<div class="clubcard${fresh?" pop":""}"${delay}><img src="assets/logos/${slug}.png" alt=""></div>`;
+      }
+      return `<div class="clubcard mystery">?</div>`;
+    }).join("");
+    popIdx=-1; revealAnim=false;
 
     if(S.phase==="c_play"){
       const locked=S.career.locked.map(i=>S.players[i].name);
@@ -2594,6 +2642,8 @@ function nextTurn(){
 }
 
 /* ============================== CAREER MODE ============================== */
+let popIdx = -1;      // which just-revealed card should pop in on the next render
+let revealAnim = false; // stagger-animate the hidden cards on full reveal
 function newCareer(){
   let avail = CAREERS.map((_,i)=>i).filter(i=>!S.usedC.includes(i));
   if(!avail.length){ toast("Whole career deck played — reshuffling!"); S.usedC=[]; avail=CAREERS.map((_,i)=>i); }
@@ -2602,14 +2652,15 @@ function newCareer(){
   S.career = {ci, shown:1, locked:[], guesser:null};
   S.turn = -1; // no player is "on the spot" in career mode
   S.phase = "c_play";
+  popIdx = 0; popfx();
 }
 function cpot(){ return Math.max(15 - 3*(S.career.shown-1), 3); }
 function cNext(){
   const C=CAREERS[S.career.ci];
-  if(S.career.shown < C.c.length){ S.career.shown++; render(); }
+  if(S.career.shown < C.c.length){ S.career.shown++; popIdx=S.career.shown-1; popfx(); render(); }
 }
 function cGuess(){ S.phase="c_who"; render(); }
-function cPick(i){ S.career.guesser=i; S.phase="c_judge"; render(); }
+function cPick(i){ S.career.guesser=i; S.phase="c_judge"; revealAnim=true; render(); }
 function cBack(){ S.phase="c_play"; render(); }
 function cJudge(correct){
   const who=S.players[S.career.guesser];
@@ -2631,7 +2682,7 @@ function cJudge(correct){
     render();
   }
 }
-function cGiveUp(){ S.phase="c_dead"; render(); }
+function cGiveUp(){ S.phase="c_dead"; revealAnim=true; render(); }
 function cAfter(){ S.round++; newCareer(); render(); }
 
 /* ============================== BOOKINGS ============================== */

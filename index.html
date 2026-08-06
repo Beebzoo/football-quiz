@@ -2162,6 +2162,7 @@ function freshState(names, timed=true, mode="classic", target=100){
     target:target, // first to this score wins; 0 = no limit
     wans:[], wgot:[], // written mode: typed answers + who was marked correct
     career:null, usedC:[], // career mode: current round + careers already played
+    ref:null, // referee mode: the non-playing quizmaster's name
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
 }
@@ -2293,7 +2294,9 @@ function render(){
     st.innerHTML = `
       <div class="kick">Round ${S.round} · ${written?"Written round":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
-      <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question.":"Pick your difficulty. Someone else reads the question out loud."}</div>
+      <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
+        :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points. 🟨`
+        :"Pick your difficulty. Someone else reads the question out loud."}</div>
       ${Object.entries(TIERS).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
           <span class="left"><span>${t.label}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
@@ -2455,7 +2458,7 @@ function render(){
       st.innerHTML = `
         <div class="kick">Who says they know it?</div>
         <div class="clubgrid">${grid}</div>
-        <div class="hint" style="text-align:center">Say the name out loud FIRST, then the reader checks. Right: +${cpot()}. Wrong: −2 and locked out of this career.</div>
+        <div class="hint" style="text-align:center">Say the name out loud FIRST, then ${reader()} checks. Right: +${cpot()}. Wrong: −2 and locked out of this career.</div>
         <div class="whobar">
           ${S.players.map((p,i)=>S.career.locked.includes(i)?"":`<button class="stealbtn" onclick="cPick(${i})">${esc(p.name)}</button>`).join("")}
           <button class="bigbtn ghost" onclick="cBack()">Back</button>
@@ -2464,7 +2467,7 @@ function render(){
     }
     if(S.phase==="c_judge"){
       st.innerHTML = `
-        <div class="kick">👀 Only the reader looks · judging ${esc(S.players[S.career.guesser].name)}</div>
+        <div class="kick">👀 Only ${reader()} looks · judging ${esc(S.players[S.career.guesser].name)}</div>
         <div class="careername">${esc(C.n)}</div>
         ${C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
         <div class="clubgrid">${grid}</div>
@@ -2495,6 +2498,7 @@ function render(){
       <div class="kick">${hitTarget?`🏁 First to ${S.target}`:`Full time · ${S.round} round${S.round>1?"s":""}`}</div>
       <h1 class="title">${hitTarget?`${esc(champ.name)}<br><span class="gold">wins!</span>`:`Final<br><span class="gold">Whistle</span>`}</h1>
       <img class="celebimg" src="assets/players/mvv-hero.png" alt="">
+      ${S.ref?`<div class="hint" style="text-align:center">🟨 Refereed by ${esc(S.ref)}</div>`:""}
       <div class="final">
         ${order.map((p,k)=>`
           <div class="frow${k===0&&p.score>=0?" w":""}">
@@ -2525,6 +2529,9 @@ let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
 function setCount(n){ snapshotNames(); setupCount=n; render(); }
+let setupRef = false;
+function setRef(v){ snapshotNames(); setupRef=v; render(); }
+const reader = ()=> S && S.ref ? esc(S.ref) : "the reader";
 function setTimed(v){ snapshotNames(); setupTimed=v; render(); }
 function setMode(m){ snapshotNames(); setupMode=m; render(); }
 function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
@@ -2555,9 +2562,13 @@ function renderSetup(st){
     <p class="sub">Pick a difficulty, beat the clock, steal what your mates drop. Finish negative and you are officially a BIG LOSER.</p>
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
     <div class="row2">
+      <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">👥 All play</button>
+      <button class="bigbtn ghost${setupRef?" sel":""}" onclick="setRef(true)">🟨 Referee mode</button>
+    </div>
+    ${setupRef?"":`<div class="row2">
       <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
-    </div>
+    </div>`}
     <div class="row2">
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">🎙 Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">✍️ Written</button>
@@ -2574,21 +2585,27 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupTarget===200?" sel":""}" onclick="setTarget(200)">200</button>
       <button class="bigbtn ghost${!setupTarget?" sel":""}" onclick="setTarget(0)">No limit</button>
     </div>
-    ${Array.from({length:setupCount},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
+    ${Array.from({length:(setupRef?2:setupCount)},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
+    ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
     <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()">⚽ Kick off</button>
-    <div class="hint"><b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
+    <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>`;
 }
 
 /* ============================== GAME FLOW ============================== */
 function startGame(){
   audio(); wakeLock();
-  const names=Array.from({length:setupCount},(_,i)=>{
+  const count = setupRef ? 2 : setupCount;
+  const names=Array.from({length:count},(_,i)=>{
     const el=document.getElementById("n"+i);
     const v=el ? el.value.trim() : "";
     return v || "Player "+(i+1);
   });
   S=freshState(names, setupTimed, setupMode, setupTarget);
+  if(setupRef){
+    const el=document.getElementById("n2");
+    S.ref=(el && el.value.trim()) || "The ref";
+  }
   if(S.mode==="career") newCareer();
   render();
 }
@@ -2600,6 +2617,7 @@ function resumeGame(){
   if(S.target===undefined) S.target=0; // saves from before the win target existed
   if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
+  if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
@@ -2827,8 +2845,8 @@ function endGame(){
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
-  const usedC=S.usedC;
-  S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC;
+  const usedC=S.usedC, ref=S.ref;
+  S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC; S.ref=ref;
   if(S.mode==="career") newCareer();
   render();
 }

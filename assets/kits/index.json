@@ -1,0 +1,410 @@
+{
+ "easy": [
+  {
+   "s": "ajax",
+   "n": "Ajax",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "feyenoord",
+   "n": "Feyenoord",
+   "c": "#FF0000"
+  },
+  {
+   "s": "psv",
+   "n": "PSV",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "las-palmas",
+   "n": "Las Palmas",
+   "c": "#FFFF00"
+  },
+  {
+   "s": "barcelona",
+   "n": "Barcelona",
+   "c": "#05003B"
+  },
+  {
+   "s": "real-madrid",
+   "n": "Real Madrid",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "atletico-madrid",
+   "n": "Atlético Madrid",
+   "c": "#FF0000"
+  },
+  {
+   "s": "sevilla",
+   "n": "Sevilla",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "valencia",
+   "n": "Valencia",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "manchester-united",
+   "n": "Manchester United",
+   "c": "#FF0000"
+  },
+  {
+   "s": "liverpool",
+   "n": "Liverpool",
+   "c": "#8F1E32"
+  },
+  {
+   "s": "arsenal",
+   "n": "Arsenal",
+   "c": "#F00000"
+  },
+  {
+   "s": "chelsea",
+   "n": "Chelsea",
+   "c": "#14349B"
+  },
+  {
+   "s": "manchester-city",
+   "n": "Manchester City",
+   "c": "#98C6EB"
+  },
+  {
+   "s": "tottenham",
+   "n": "Tottenham",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "bayern-munich",
+   "n": "Bayern Munich",
+   "c": "#FF0000"
+  },
+  {
+   "s": "borussia-dortmund",
+   "n": "Borussia Dortmund",
+   "c": "#FFE300"
+  },
+  {
+   "s": "inter",
+   "n": "Inter",
+   "c": "#000000"
+  },
+  {
+   "s": "paris-saint-germain",
+   "n": "Paris Saint-Germain",
+   "c": "#0000CC"
+  },
+  {
+   "s": "juventus",
+   "n": "Juventus",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "ac-milan",
+   "n": "AC Milan",
+   "c": "#000000"
+  }
+ ],
+ "normal": [
+  {
+   "s": "az",
+   "n": "AZ",
+   "c": "#FF0000"
+  },
+  {
+   "s": "twente",
+   "n": "Twente",
+   "c": "#FF0000"
+  },
+  {
+   "s": "fc-utrecht",
+   "n": "FC Utrecht",
+   "c": "#ED1A2F"
+  },
+  {
+   "s": "fc-groningen",
+   "n": "FC Groningen",
+   "c": "#000000"
+  },
+  {
+   "s": "cd-tenerife",
+   "n": "CD Tenerife",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "athletic-club",
+   "n": "Athletic Club",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "real-sociedad",
+   "n": "Real Sociedad",
+   "c": "#0042FF"
+  },
+  {
+   "s": "real-betis",
+   "n": "Real Betis",
+   "c": "#359B5C"
+  },
+  {
+   "s": "villarreal",
+   "n": "Villarreal",
+   "c": "#FFFF00"
+  },
+  {
+   "s": "everton",
+   "n": "Everton",
+   "c": "#0000FF"
+  },
+  {
+   "s": "newcastle",
+   "n": "Newcastle",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "leicester",
+   "n": "Leicester",
+   "c": "#0000FF"
+  },
+  {
+   "s": "aston-villa",
+   "n": "Aston Villa",
+   "c": "#69091C"
+  },
+  {
+   "s": "schalke-04",
+   "n": "Schalke 04",
+   "c": "#0000DD"
+  },
+  {
+   "s": "roma",
+   "n": "Roma",
+   "c": "#980729"
+  },
+  {
+   "s": "napoli",
+   "n": "Napoli",
+   "c": "#7EB3E5"
+  },
+  {
+   "s": "fiorentina",
+   "n": "Fiorentina",
+   "c": "#552A79"
+  },
+  {
+   "s": "marseille",
+   "n": "Marseille",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "lyon",
+   "n": "Lyon",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "monaco",
+   "n": "Monaco",
+   "c": "#FE0000"
+  },
+  {
+   "s": "benfica",
+   "n": "Benfica",
+   "c": "#FE0000"
+  },
+  {
+   "s": "porto",
+   "n": "Porto",
+   "c": "#0122EB"
+  },
+  {
+   "s": "sporting-cp",
+   "n": "Sporting CP",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "club-brugge",
+   "n": "Club Brugge",
+   "c": "#000000"
+  },
+  {
+   "s": "anderlecht",
+   "n": "Anderlecht",
+   "c": "#5C2195"
+  },
+  {
+   "s": "celtic",
+   "n": "Celtic",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "rangers",
+   "n": "Rangers",
+   "c": "#0000FF"
+  },
+  {
+   "s": "galatasaray",
+   "n": "Galatasaray",
+   "c": "#270E8B"
+  },
+  {
+   "s": "fenerbahce",
+   "n": "Fenerbahçe",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "hamburger-sv",
+   "n": "Hamburger SV",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "bayer-leverkusen",
+   "n": "Bayer Leverkusen",
+   "c": "#000000"
+  }
+ ],
+ "hard": [
+  {
+   "s": "go-ahead-eagles",
+   "n": "Go Ahead Eagles",
+   "c": "#FF0000"
+  },
+  {
+   "s": "nec",
+   "n": "NEC",
+   "c": "#008800"
+  },
+  {
+   "s": "sparta-rotterdam",
+   "n": "Sparta Rotterdam",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "fortuna-sittard",
+   "n": "Fortuna Sittard",
+   "c": "#FFFF00"
+  },
+  {
+   "s": "pec-zwolle",
+   "n": "PEC Zwolle",
+   "c": "#0000FF"
+  },
+  {
+   "s": "heracles",
+   "n": "Heracles",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "rkc-waalwijk",
+   "n": "RKC Waalwijk",
+   "c": "#FFFF00"
+  },
+  {
+   "s": "nac-breda",
+   "n": "NAC Breda",
+   "c": "#FFFF00"
+  },
+  {
+   "s": "ado-den-haag",
+   "n": "ADO Den Haag",
+   "c": "#FFFF00"
+  },
+  {
+   "s": "cambuur",
+   "n": "Cambuur",
+   "c": "#FFEE00"
+  },
+  {
+   "s": "fc-volendam",
+   "n": "FC Volendam",
+   "c": "#F97500"
+  },
+  {
+   "s": "excelsior",
+   "n": "Excelsior",
+   "c": "#000000"
+  },
+  {
+   "s": "espanyol",
+   "n": "Espanyol",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "celta-vigo",
+   "n": "Celta Vigo",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "rayo-vallecano",
+   "n": "Rayo Vallecano",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "getafe",
+   "n": "Getafe",
+   "c": "#0000FF"
+  },
+  {
+   "s": "osasuna",
+   "n": "Osasuna",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "mallorca",
+   "n": "Mallorca",
+   "c": "#FF0000"
+  },
+  {
+   "s": "alaves",
+   "n": "Alavés",
+   "c": "#0066E1"
+  },
+  {
+   "s": "real-zaragoza",
+   "n": "Real Zaragoza",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "deportivo-la-coruna",
+   "n": "Deportivo La Coruña",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "sporting-gijon",
+   "n": "Sporting Gijón",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "real-valladolid",
+   "n": "Real Valladolid",
+   "c": "#FFFFFF"
+  }
+ ],
+ "ball": [
+  {
+   "s": "heerenveen",
+   "n": "Heerenveen",
+   "c": "#FFFFFF"
+  },
+  {
+   "s": "mvv-maastricht",
+   "n": "MVV Maastricht",
+   "c": "#FF0000"
+  },
+  {
+   "s": "roda-jc",
+   "n": "Roda JC",
+   "c": "#E1AD00"
+  },
+  {
+   "s": "fc-den-bosch",
+   "n": "FC Den Bosch",
+   "c": "#0052AD"
+  },
+  {
+   "s": "de-graafschap",
+   "n": "De Graafschap",
+   "c": "#FFFFFF"
+  }
+ ]
+}

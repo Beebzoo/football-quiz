@@ -604,6 +604,24 @@
   .sheet .nm-in{background:#f4f6f5;border-color:#cfd8d2;color:var(--ink)}
   .sheet .nm-in::placeholder{color:#9aa7b5}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
+
+  /* Guess the Kit. The source graphics are tiny (38x59, they are meant to sit
+     in a Wikipedia infobox), so scale them with pixelated rendering: crisp
+     stripes beat a blurry smear. The base colour is masked to the shirt
+     silhouette, then the club's pattern goes over the top. */
+  .kitbox{
+    position:relative;width:min(210px,52vw);aspect-ratio:38/59;margin:6px auto 2px;
+    filter:drop-shadow(0 6px 18px rgba(0,0,0,.45));
+  }
+  .kitshirt{
+    position:absolute;inset:0;background:var(--kc);
+    -webkit-mask:url("assets/kits/_base.png") center/contain no-repeat;
+    mask:url("assets/kits/_base.png") center/contain no-repeat;
+  }
+  .kitpat{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+    image-rendering:pixelated;
+  }
   .bigbtn.ok.lesser{background:#0d7a48;font-size:1.05rem;padding:15px}
   .bigbtn.ok{background:var(--ok);border-color:var(--turf-deep)}
   .bigbtn.bad{background:var(--bad);border-color:#b91c1c}
@@ -2503,6 +2521,23 @@ fetch("assets/badges/index.json").then(r=>r.json()).then(b=>{
   BADGE=b;
   if(!S || S.phase==="setup") render();
 }).catch(()=>{});
+
+/* ============================== KIT BANK ==============================
+   Guess the club from its home shirt. Unlike the crests, these kit graphics
+   are user-drawn diagrams on Commons under CC0 or CC BY-SA, so they are
+   genuinely ours to redistribute (see ATTRIBUTION.csv in assets/kits).
+   A shirt is a base colour clipped to the shirt silhouette, with the club's
+   pattern laid over the top, which is how Wikipedia composes them. */
+let KIT=null;
+fetch("assets/kits/index.json").then(r=>r.json()).then(k=>{
+  KIT=k;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+function kitQ(){
+  const r=KIT[S.tier][S.qi];
+  return {q:"Name the club from the shirt", a:r.n, kit:{img:"assets/kits/"+r.s+".png", c:r.c}};
+}
+const kitHTML = k => `<div class="kitbox"><div class="kitshirt" style="--kc:${k.c}"></div><img class="kitpat" src="${k.img}" alt=""></div>`;
 function badgeQ(){
   const r=BADGE[S.tier][S.qi];
   const zx=12+(S.qi*37)%64, zy=15+(S.qi*53)%58; // deterministic crop per question
@@ -2856,7 +2891,7 @@ function mpGuestAnswerHTML(){
   const my=(localStorage.getItem("ball-mp-name")||"").trim();
   const idx=S.players.findIndex(p=>nameKey(p.name)===nameKey(my));
   const qcard=`
-    <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
+    <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
       <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
       <div class="qtext">${esc(q().q)}</div>
     </div>`;
@@ -3079,8 +3114,8 @@ function flashBad(){
   setTimeout(()=>f.remove(),600);
 }
 function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
-function bankFor(t){ return S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : S.mode==="badge" ? BADGE[t] : BANK[t]; }
-function q(){ return S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : S.mode==="badge" ? badgeQ() : BANK[S.tier][S.qi]; }
+function bankFor(t){ return S.mode==="kit" ? KIT[t] : S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : S.mode==="badge" ? BADGE[t] : BANK[t]; }
+function q(){ return S.mode==="kit" ? kitQ() : S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : S.mode==="badge" ? badgeQ() : BANK[S.tier][S.qi]; }
 function remaining(t){ return bankFor(t).length - S.used[t].length; }
 async function wakeLock(){ try{ if(navigator.wakeLock) await navigator.wakeLock.request("screen"); }catch(e){} }
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wakeLock(); });
@@ -3134,7 +3169,7 @@ function render(){
         :bdg?"Pick your difficulty — a crest appears zoomed right in (BALL: silhouette only). Name the club."
         :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
         :"Pick your difficulty. Someone else reads the question out loud."}</div>
-      ${Object.entries(TIERS).filter(([k])=> stad ? (STAD && STAD[k]) : nat ? (NAT && NAT[k]) : bdg ? (BADGE && BADGE[k]) : true).map(([k,t],ix)=>`
+      ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
           <span class="left"><span>${tlabel(k)}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
           <span class="pts">+${t.pts}</span>
@@ -3152,7 +3187,7 @@ function render(){
     S.players.forEach((p,i)=>{ const el=document.getElementById("wa"+i); if(el && !(S.wsub&&S.wsub[i])) S.wans[i]=el.value; });
     st.innerHTML = `
       <div class="kick">Round ${S.round} · everyone answers · +${t.pts}</div>
-      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
       </div>
@@ -3175,7 +3210,7 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Round ${S.round} · who got it? · +${t.pts}</div>
-      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
@@ -3203,7 +3238,7 @@ function render(){
     const sp = S.mode==="stadium" ? stadPts() : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
-      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
@@ -3212,7 +3247,7 @@ function render(){
             <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
-        ${q().badge?badgeHTML(q().badge,false):""}
+        ${q().badge?badgeHTML(q().badge,false):""}${q().kit?kitHTML(q().kit):""}
         <div class="qtext">${esc(q().q)}</div>
         ${sp?`<div class="ladder">Ground +${sp.name} · city +${sp.city} · country +${sp.country}</div>`:""}
       </div>
@@ -3242,7 +3277,7 @@ function render(){
     const s  = sp ? q().stad : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
-      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
@@ -3251,7 +3286,7 @@ function render(){
             <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
-        ${q().badge?badgeHTML(q().badge,true):""}
+        ${q().badge?badgeHTML(q().badge,true):""}${q().kit?kitHTML(q().kit):""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -3292,7 +3327,7 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Nobody got it</div>
-      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
           <div class="natrow">
@@ -3300,7 +3335,7 @@ function render(){
             <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
-        ${q().badge?badgeHTML(q().badge,true):""}
+        ${q().badge?badgeHTML(q().badge,true):""}${q().kit?kitHTML(q().kit):""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -3531,7 +3566,7 @@ let setupCount = 3;
 let setupTimed = true;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
-const MODE_META = {career:["route","Career Path","#e9b84c"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], hilo:["updown","Higher or Lower","#7fd4a3"], crev:["rewind","Career Reverse","#e8c47f"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"]};
+const MODE_META = {career:["route","Career Path","#e9b84c"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], hilo:["updown","Higher or Lower","#7fd4a3"], crev:["rewind","Career Reverse","#e8c47f"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -3549,7 +3584,7 @@ function modeDrawerHTML(){
   const btn = m && !modesOpen
     ? `<button class="bigbtn ghost sel modestoggle" onclick="toggleModes()"><span class="mico" style="color:${m[2]}">${ico(m[0])}</span>${m[1]}${chev}</button>`
     : `<button class="bigbtn ghost modestoggle" onclick="toggleModes()">${ico('grid')}More game modes${chev}</button>`;
-  const off = {stadium:!STAD, nations:!NAT, badge:!BADGE, hilo:!STAD, xi:!XI, tline:!TLINE};
+  const off = {kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, hilo:!STAD, xi:!XI, tline:!TLINE};
   const grid = modesOpen?`<div class="row2 modes">
       ${Object.entries(MODE_META).map(([k,[ic,label,ac]])=>
         `<button class="bigbtn ghost${setupMode===k?" sel":""}" onclick="setMode('${k}')" ${off[k]?"disabled style='opacity:.4'":""}><span class="mico" style="color:${ac}">${ico(ic)}</span>${label}</button>`).join("")}

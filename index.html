@@ -439,40 +439,45 @@
   /* stadium mode */
   .stadimg{display:block;width:100%;max-height:40vh;object-fit:cover;border-radius:12px;margin:0 0 10px;background:#0b1c12}
   .pcredit{margin-top:8px;font-size:.62rem;opacity:.55;text-align:right}
-  /* one & only mode: floodlit stage, crest + flag under their own lights */
-  .natstage{position:relative;padding-top:66px;margin:2px 0 8px}
-  .natrow{display:flex;gap:14px;justify-content:center}
+  /* one & only mode: no card, no props — the night pitch IS the stage */
+  .qcard.natq{
+    background:transparent;border:none;box-shadow:none;border-top:none;
+    color:#eef5ef;padding:6px 0;
+  }
+  .qcard.natq .qtext{
+    color:#eef5ef;text-align:center;font-size:clamp(1.15rem,4.6vw,1.4rem);
+    text-shadow:0 2px 14px rgba(0,0,0,.6);
+  }
+  .qcard.natq .qmeta{justify-content:center}
+  .qcard.natq .atext{
+    background:rgba(255,255,255,.09);color:#8df0b8;
+    border:1px solid rgba(255,255,255,.16);
+  }
+  .qcard.natq .atext .lbl{color:#9fb8a6}
+  .natstage{position:relative;margin:10px 0 14px;overflow:visible}
+  .natrow{display:flex;gap:min(22px,5vw);justify-content:center}
   .natcard{
-    width:min(104px,26vw);height:min(104px,26vw);border-radius:14px;
-    background:linear-gradient(160deg, rgba(208,240,220,.22), rgba(150,205,175,.09));
-    border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(2px);
-    display:flex;align-items:center;justify-content:center;position:relative;z-index:1;
-    box-shadow:0 8px 20px rgba(0,0,0,.4), 0 0 30px rgba(255,244,190,.12);
+    width:min(132px,34vw);height:min(132px,34vw);border-radius:18px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;position:relative;
+    overflow:visible;
+    box-shadow:0 12px 28px rgba(0,0,0,.5);
   }
-  .natcard img{max-width:78%;max-height:78%;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
-  .natcard.flagcard img{max-width:84%;max-height:64%;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
-  .floodhead{
-    position:absolute;top:0;width:54px;height:15px;border-radius:4px;z-index:2;
-    background:#16281d;border:1px solid rgba(255,255,255,.18);
-    display:flex;gap:4px;align-items:center;justify-content:center;
+  .natcard .halo{
+    position:absolute;inset:-32%;border-radius:50%;z-index:-1;pointer-events:none;
+    background:radial-gradient(circle, rgba(255,238,175,.30), transparent 62%);
+    animation:halopulse 2.8s ease-in-out infinite alternate;
   }
-  .floodhead i{width:9px;height:9px;border-radius:50%;background:#fff6cf;box-shadow:0 0 10px rgba(255,240,170,.95)}
-  .fh-l{left:calc(50% - 86px)}
-  .fh-r{right:calc(50% - 86px)}
-  .beam{
-    position:absolute;top:13px;bottom:-4px;width:150px;z-index:0;pointer-events:none;
-    background:linear-gradient(rgba(255,246,210,.30), rgba(255,246,210,.02));
-    clip-path:polygon(36% 0,64% 0,100% 100%,0 100%);
-  }
-  .bm-l{left:calc(50% - 134px)}
-  .bm-r{right:calc(50% - 134px)}
-  .fon{animation:lighton .5s both}
-  .fon2{animation:lighton .5s both;animation-delay:.7s}
-  @keyframes lighton{0%{opacity:0}45%{opacity:1}60%{opacity:.3}100%{opacity:1}}
-  .popA{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.25s}
-  .popB{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.95s}
+  .natcard.flagcard .halo{animation-delay:1.4s}
+  @keyframes halopulse{from{opacity:.55;transform:scale(.92)}to{opacity:1;transform:scale(1.06)}}
+  .natcard img{max-width:80%;max-height:80%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.55))}
+  .natcard.flagcard img{max-width:86%;max-height:64%;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.5)}
+  .popA{animation:cardpop .55s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.15s}
+  .popB{animation:cardpop .55s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.75s}
   @media (prefers-reduced-motion:reduce){
-    .fon,.fon2,.popA,.popB{animation:none}
+    .popA,.popB{animation:none}
+    .natcard .halo{animation:none;opacity:.7}
   }
   .row2.modes{flex-wrap:wrap}
   .row2.modes .bigbtn{flex:1 1 30%}
@@ -2334,8 +2339,8 @@ fetch("assets/nations/index.json").then(r=>r.json()).then(b=>{
 }).catch(()=>{});
 function natQ(){
   const r=NAT[S.tier][S.qi];
-  return {q:`Name the only ${r.country} player ever at ${r.club}`,
-          a:`${r.player} — the only ${r.country} in ${r.club}'s recorded history`,
+  return {q:`Name the only player from ${r.country} ever at ${r.club}`,
+          a:`${r.player} — the only player from ${r.country} in ${r.club}'s recorded history`,
           duo:{crest:"assets/logos/"+r.slug+".png", flag:"assets/natflags/"+r.flag+".png"}};
 }
 const tlabel = k => (S && S.mode==="nations" && k==="normal") ? "Medium" : TIERS[k].label;
@@ -2579,7 +2584,7 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Round ${S.round} · everyone answers · +${t.pts}</div>
-      <div class="qcard" style="--dc:${t.color}">
+      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
       </div>
@@ -2600,7 +2605,7 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Round ${S.round} · who got it? · +${t.pts}</div>
-      <div class="qcard" style="--dc:${t.color}">
+      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
@@ -2628,17 +2633,13 @@ function render(){
     const sp = S.mode==="stadium" ? stadPts() : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
-      <div class="qcard" style="--dc:${t.color}">
+      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
-          <div class="floodhead fh-l${natAnim?" fon":""}"><i></i><i></i><i></i></div>
-          <div class="floodhead fh-r${natAnim?" fon2":""}"><i></i><i></i><i></i></div>
-          <div class="beam bm-l${natAnim?" fon":""}"></div>
-          <div class="beam bm-r${natAnim?" fon2":""}"></div>
           <div class="natrow">
-            <div class="natcard${natAnim?" popA":""}"><img src="${q().duo.crest}" alt=""></div>
-            <div class="natcard flagcard${natAnim?" popB":""}"><img src="${q().duo.flag}" alt=""></div>
+            <div class="natcard${natAnim?" popA":""}"><span class="halo"></span><img src="${q().duo.crest}" alt=""></div>
+            <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
         <div class="qtext">${esc(q().q)}</div>
@@ -2670,17 +2671,13 @@ function render(){
     const s  = sp ? q().stad : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
-      <div class="qcard" style="--dc:${t.color}">
+      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
-          <div class="floodhead fh-l${natAnim?" fon":""}"><i></i><i></i><i></i></div>
-          <div class="floodhead fh-r${natAnim?" fon2":""}"><i></i><i></i><i></i></div>
-          <div class="beam bm-l${natAnim?" fon":""}"></div>
-          <div class="beam bm-r${natAnim?" fon2":""}"></div>
           <div class="natrow">
-            <div class="natcard${natAnim?" popA":""}"><img src="${q().duo.crest}" alt=""></div>
-            <div class="natcard flagcard${natAnim?" popB":""}"><img src="${q().duo.flag}" alt=""></div>
+            <div class="natcard${natAnim?" popA":""}"><span class="halo"></span><img src="${q().duo.crest}" alt=""></div>
+            <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
         <div class="qtext">${esc(q().q)}</div>
@@ -2723,16 +2720,12 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Nobody got it</div>
-      <div class="qcard" style="--dc:${t.color}">
+      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
-          <div class="floodhead fh-l${natAnim?" fon":""}"><i></i><i></i><i></i></div>
-          <div class="floodhead fh-r${natAnim?" fon2":""}"><i></i><i></i><i></i></div>
-          <div class="beam bm-l${natAnim?" fon":""}"></div>
-          <div class="beam bm-r${natAnim?" fon2":""}"></div>
           <div class="natrow">
-            <div class="natcard${natAnim?" popA":""}"><img src="${q().duo.crest}" alt=""></div>
-            <div class="natcard flagcard${natAnim?" popB":""}"><img src="${q().duo.flag}" alt=""></div>
+            <div class="natcard${natAnim?" popA":""}"><span class="halo"></span><img src="${q().duo.crest}" alt=""></div>
+            <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
         <div class="qtext">${esc(q().q)}</div>

@@ -408,6 +408,17 @@
   /* stadium mode */
   .stadimg{display:block;width:100%;max-height:40vh;object-fit:cover;border-radius:12px;margin:0 0 10px;background:#0b1c12}
   .pcredit{margin-top:8px;font-size:.62rem;opacity:.55;text-align:right}
+  /* one & only mode: club crest + flag side by side */
+  .natrow{display:flex;gap:14px;justify-content:center;margin:4px 0 10px}
+  .natcard{
+    width:min(104px,26vw);height:min(104px,26vw);background:#fff;border-radius:14px;
+    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);
+  }
+  .natcard img{max-width:78%;max-height:78%}
+  .natcard.flagcard img{max-width:84%;max-height:64%;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+  .row2.modes{flex-wrap:wrap}
+  .row2.modes .bigbtn{flex:1 1 30%}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
   .bigbtn.ok.lesser{background:#0d7a48;font-size:1.05rem;padding:15px}
   .bigbtn.ok{background:var(--ok);border-color:var(--turf-deep)}
@@ -2256,6 +2267,22 @@ function stadQ(){
           img:"assets/stadiums/"+s.slug, credit, stad:s};
 }
 
+/* ============================== ONE & ONLY BANK ==============================
+   1,311 unique nationality-club pairs from Wikidata: the only player of that
+   citizenship ever recorded at the club. Tiered by player fame (sitelinks). */
+let NAT=null; // {easy,normal,hard,ball} once index.json is in
+fetch("assets/nations/index.json").then(r=>r.json()).then(b=>{
+  NAT=b;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+function natQ(){
+  const r=NAT[S.tier][S.qi];
+  return {q:`Name the only ${r.country} player ever at ${r.club}`,
+          a:`${r.player} — the only ${r.country} in ${r.club}'s recorded history`,
+          duo:{crest:"assets/logos/"+r.slug+".png", flag:"assets/natflags/"+r.flag+".png"}};
+}
+const tlabel = k => (S && S.mode==="nations" && k==="normal") ? "Medium" : TIERS[k].label;
+
 function freshState(names, timed=true, mode="classic", target=100){
   return {
     players: names.map(n=>({name:n, score:0, off:0})),
@@ -2378,8 +2405,8 @@ function flashBad(){
   setTimeout(()=>f.remove(),600);
 }
 function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
-function bankFor(t){ return S.mode==="stadium" ? STAD[t] : BANK[t]; }
-function q(){ return S.mode==="stadium" ? stadQ() : BANK[S.tier][S.qi]; }
+function bankFor(t){ return S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : BANK[t]; }
+function q(){ return S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : BANK[S.tier][S.qi]; }
 function remaining(t){ return bankFor(t).length - S.used[t].length; }
 async function wakeLock(){ try{ if(navigator.wakeLock) await navigator.wakeLock.request("screen"); }catch(e){} }
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wakeLock(); });
@@ -2414,16 +2441,18 @@ function render(){
   if(S.phase==="pick"){
     const written = S.mode==="written";
     const stad = S.mode==="stadium";
+    const nat = S.mode==="nations";
     st.innerHTML = `
-      <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":nat?"The One & Only":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
       <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
         :stad?"Pick your difficulty — a stadium photo appears, answer out loud."
+        :nat?"Pick your difficulty — a club and a flag appear: name the only player of that nationality ever to wear the shirt."
         :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
         :"Pick your difficulty. Someone else reads the question out loud."}</div>
-      ${Object.entries(TIERS).filter(([k])=>!stad || (STAD && STAD[k])).map(([k,t],ix)=>`
+      ${Object.entries(TIERS).filter(([k])=> stad ? (STAD && STAD[k]) : nat ? (NAT && NAT[k]) : true).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
-          <span class="left"><span>${t.label}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
+          <span class="left"><span>${tlabel(k)}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
           <span class="pts">+${t.pts}</span>
         </button>`).join("")}
       <div class="foot">
@@ -2437,7 +2466,7 @@ function render(){
     st.innerHTML = `
       <div class="kick">Round ${S.round} · everyone answers · +${t.pts}</div>
       <div class="qcard" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
       </div>
       ${S.players.map((p,i)=>`<input class="nm-in" id="wa${i}" placeholder="${esc(p.name)}'s answer" maxlength="60" autocomplete="off" value="${esc(S.wans[i]||"")}">`).join("")}
@@ -2458,7 +2487,7 @@ function render(){
     st.innerHTML = `
       <div class="kick">Round ${S.round} · who got it? · +${t.pts}</div>
       <div class="qcard" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
       </div>
@@ -2486,8 +2515,9 @@ function render(){
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
       <div class="qcard" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${t.label} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
+        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
+        ${q().duo?`<div class="natrow"><div class="natcard"><img src="${q().duo.crest}" alt=""></div><div class="natcard flagcard"><img src="${q().duo.flag}" alt=""></div></div>`:""}
         <div class="qtext">${esc(q().q)}</div>
         ${sp?`<div class="ladder">Ground +${sp.name} · city +${sp.city} · country +${sp.country}</div>`:""}
       </div>
@@ -2514,8 +2544,9 @@ function render(){
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
       <div class="qcard" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${t.label} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
+        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
+        ${q().duo?`<div class="natrow"><div class="natcard"><img src="${q().duo.crest}" alt=""></div><div class="natcard flagcard"><img src="${q().duo.flag}" alt=""></div></div>`:""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -2558,6 +2589,7 @@ function render(){
       <div class="kick">Nobody got it</div>
       <div class="qcard" style="--dc:${t.color}">
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
+        ${q().duo?`<div class="natrow"><div class="natcard"><img src="${q().duo.crest}" alt=""></div><div class="natcard flagcard"><img src="${q().duo.flag}" alt=""></div></div>`:""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -2703,13 +2735,14 @@ function renderSetup(st){
     ${logoTicker()}
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="askCancelMatch()">Cancel match in progress</button>`:""}
-    <div class="row2">
+    <div class="row2 modes">
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
     </div>
     <div class="row2">
       <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
       <button class="bigbtn ghost${setupMode==="stadium"?" sel":""}" onclick="setMode('stadium')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('cam')}Stadium</button>
+      <button class="bigbtn ghost${setupMode==="nations"?" sel":""}" onclick="setMode('nations')" ${NAT?"":"disabled style='opacity:.4'"}>${ico('flag')}One &amp; Only</button>
     </div>
     ${setupMode==="stadium"?`<div class="hint" style="text-align:center">Name the ground for the full points, or take fewer for the city, fewer still for the country.</div>`:""}
     ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div><div class="spacer"></div>`:`
@@ -2738,7 +2771,7 @@ function renderSetup(st){
     <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 
@@ -2753,6 +2786,7 @@ function startGame(){
     return v || "Player "+(i+1);
   });
   if(setupMode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
+  if(setupMode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
@@ -2771,6 +2805,7 @@ function resumeGame(){
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
   if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
+  if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume

@@ -234,6 +234,15 @@
     color:#fff;
   }
   .bug.active{background:#fff;border-color:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(6,60,36,.35)}
+  /* home ball: lives in the top bar so it never covers a player's book or edit button */
+  .homeball{
+    flex:0 0 auto;width:40px;padding:5px;border-radius:12px;
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .06s ease,background .15s ease;
+  }
+  .homeball img{width:100%;height:auto;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
+  .homeball:active{transform:scale(.92);background:rgba(255,255,255,.26)}
   .bug .nm{
     font:600 .72rem/1.1 system-ui,sans-serif;letter-spacing:.02em;
     color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -2275,7 +2284,9 @@ function maybeFinish(){
   confetti(64);
   return true;
 }
-function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
+// never write a null state: render() saves on every pass, so dropping back to
+// the menu would otherwise stamp "null" over the match you meant to resume
+function save(){ if(!S) return; try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
 function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
 
 /* ============================== AUDIO ============================== */
@@ -2378,7 +2389,8 @@ function renderBug(){
   const bug=$("#scorebug");
   if(!S || S.phase==="setup"){ bug.hidden=true; return; }
   bug.hidden=false;
-  bug.innerHTML = S.players.map((p,i)=>{
+  const home = `<button class="homeball" onclick="toMenu()" aria-label="Back to the menu" title="Back to the menu"><img src="assets/ball.png" alt=""></button>`;
+  bug.innerHTML = home + S.players.map((p,i)=>{
     const pips = p.off===0 ? "" :
       Array.from({length:Math.min(p.off,5)},(_,k)=>`<span class="pip${k>=2?" r":""}"></span>`).join("") +
       (p.off>5?`<span style="font:700 .6rem monospace;color:var(--chalk-dim)">+${p.off-5}</span>`:"");
@@ -2995,6 +3007,15 @@ function rematch(){
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
+/* The ball in the top bar: park the match and go back to the menu. Deliberately
+   not a reset, the save stays put so "Resume match in progress" is waiting. */
+function toMenu(){
+  if(!S || S.phase==="setup") return;
+  stopTimer(); save();
+  const mid = S.phase!=="results";
+  S=null; render();
+  if(mid) toast("Match parked. Hit Resume to pick it up.");
+}
 
 function sheet(html){
   const o=$("#overlay");

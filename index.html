@@ -243,6 +243,37 @@
   }
   .homeball img{width:100%;height:auto;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
   .homeball:active{transform:scale(.92);background:rgba(255,255,255,.26)}
+
+  /* the record book */
+  .chiprow{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .chip{
+    padding:6px 11px;border-radius:999px;font:700 .78rem/1 system-ui,sans-serif;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:var(--chalk-dim);
+  }
+  .chip.on{background:var(--gold);border-color:var(--gold);color:#241a02}
+  .lbhead,.lbrow{
+    display:grid;grid-template-columns:26px 1fr 34px 34px 52px 48px;
+    align-items:center;gap:6px;padding:8px 10px;
+  }
+  .lbhead{font:700 .68rem/1 system-ui,sans-serif;opacity:.5;text-transform:uppercase;letter-spacing:.06em;padding-bottom:2px}
+  .lbhead span:not(:nth-child(2)){text-align:center}
+  .lbrow{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    border-radius:12px;font:800 1rem/1 system-ui,sans-serif;
+  }
+  .lbrow.top{background:rgba(201,147,46,.16);border-color:rgba(201,147,46,.5)}
+  .lbrow .pos{opacity:.55;font-size:.85rem;text-align:center}
+  .lbrow .fn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lbrow .num{text-align:center;font-variant-numeric:tabular-nums}
+  .lbrow .num.neg{color:var(--card-r)}
+  .lbsub{font:600 .68rem/1.3 system-ui,sans-serif;opacity:.55;padding:2px 12px 6px;margin-top:-2px}
+  .logrow{
+    background:rgba(255,255,255,.045);border-left:3px solid rgba(255,255,255,.22);
+    border-radius:8px;padding:7px 10px;margin-bottom:6px;
+  }
+  .logtop{font:700 .68rem/1.2 system-ui,sans-serif;opacity:.55;text-transform:uppercase;letter-spacing:.04em}
+  .logsc{font:800 .92rem/1.35 system-ui,sans-serif;margin-top:2px}
+  .logwin{font:600 .72rem/1.3 system-ui,sans-serif;opacity:.65;margin-top:2px}
   .bug .nm{
     font:600 .72rem/1.1 system-ui,sans-serif;letter-spacing:.02em;
     color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -2307,6 +2338,7 @@ function maybeFinish(){
   if(targetReached()<0) return false;
   stopTimer();
   S.phase="results";
+  recordMatch();
   render();
   confetti(64);
   return true;
@@ -2315,6 +2347,60 @@ function maybeFinish(){
 // the menu would otherwise stamp "null" over the match you meant to resume
 function save(){ if(!S) return; try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
 function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
+
+/* ============================ THE RECORD BOOK ============================
+   Every finished match gets filed here so there is a running table across
+   nights. Local to this phone, like everything else in the app. */
+const HIST_KEY = "ball-quiz-history-v1";
+const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only"};
+function history(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }catch(e){ return []; } }
+function putHistory(h){ try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }catch(e){} }
+function clearHistory(){ try{ localStorage.removeItem(HIST_KEY); }catch(e){} }
+const nameKey = n => String(n||"").trim().toLowerCase();
+
+// called the moment a match reaches the results screen, once and only once
+function recordMatch(){
+  if(!S || S.recorded) return;
+  S.recorded = true;
+  const order=[...S.players].sort((a,b)=>b.score-a.score);
+  const top=order[0];
+  // a tie at the top is a draw, nobody takes the win
+  const outright = top && top.score>=0 && order.filter(p=>p.score===top.score).length===1;
+  const h=history();
+  h.push({
+    ts: Date.now(),
+    mode: S.mode, ref: S.ref||null, target: S.target||0, rounds: S.round,
+    players: S.players.map(p=>({name:String(p.name||"").trim(), score:p.score, off:p.off||0})),
+    winner: outright ? String(top.name||"").trim() : null,
+    losers: S.players.filter(p=>p.score<0).map(p=>String(p.name||"").trim()),
+  });
+  if(h.length>300) h.splice(0, h.length-300); // a night out, not a database
+  putHistory(h);
+}
+
+// aggregate the log into a table; names matched case-insensitively so
+// "ale" and "Ale" are the same player
+function tally(mode){
+  const rows=new Map();
+  for(const m of history()){
+    if(mode && m.mode!==mode) continue;
+    for(const p of m.players){
+      const k=nameKey(p.name); if(!k) continue;
+      let r=rows.get(k);
+      if(!r){ r={name:p.name, played:0, pts:0, wins:0, best:null, worst:null, cards:0, shots:0, _spell:new Map()}; rows.set(k,r); }
+      // show the spelling used most often, so one lowercase night does not
+      // rename someone to "martijn" forever
+      r._spell.set(p.name, (r._spell.get(p.name)||0)+1);
+      r.name=[...r._spell.entries()].sort((a,b)=>b[1]-a[1])[0][0];
+      r.played++; r.pts+=p.score; r.cards+=p.off||0;
+      if(r.best===null || p.score>r.best) r.best=p.score;
+      if(r.worst===null || p.score<r.worst) r.worst=p.score;
+      if(m.winner && nameKey(m.winner)===k) r.wins++;
+      if((m.losers||[]).some(n=>nameKey(n)===k)) r.shots++;
+    }
+  }
+  return [...rows.values()].sort((a,b)=> b.wins-a.wins || b.pts-a.pts || a.played-b.played);
+}
 
 /* ============================== AUDIO ============================== */
 let AC=null;
@@ -2373,6 +2459,7 @@ const IPATHS = {
   hand:'<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.51-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
   eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
   cam:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  trophy:'<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3"/><path d="M7 5H4v2a3 3 0 0 0 3 3"/>',
 };
 const ico = n => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IPATHS[n]}</svg>`;
 function toast(msg, bad){
@@ -2436,7 +2523,7 @@ function render(){
   const st=$("#stage");
   const P=S ? S.players[S.turn] : null;
 
-  if(!S || S.phase==="setup"){ return renderSetup(st); }
+  if(!S || S.phase==="setup"){ return showBoard ? renderBoard(st) : renderSetup(st); }
 
   if(S.phase==="pick"){
     const written = S.mode==="written";
@@ -2691,7 +2778,8 @@ function render(){
       <div class="row2">
         <button class="bigbtn" onclick="rematch()">Rematch</button>
         <button class="bigbtn ghost" onclick="fullReset()">New players</button>
-      </div>`;
+      </div>
+      <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="fullReset(); openBoard()">${ico('trophy')}See the table</button>`;
     return;
   }
 }
@@ -2722,6 +2810,63 @@ function logoTicker(){
   ).join("") + `</div>`;
   return tickerHTML;
 }
+let showBoard=false, boardMode="";
+function openBoard(){ showBoard=true; boardMode=""; render(); }
+function closeBoard(){ showBoard=false; render(); }
+function setBoardMode(m){ boardMode=m; render(); }
+function askClearRecords(){
+  sheet(`
+    <h2>Wipe the record book?</h2>
+    <p>Deletes all ${history().length} recorded match${history().length===1?"":"es"} and the table with them. Nothing else is touched. No way back.</p>
+    <button class="bigbtn bad" onclick="doClearRecords()">Wipe it all</button>
+    <button class="bigbtn ghost" onclick="closeSheet()">Keep the records</button>`);
+}
+function doClearRecords(){ closeSheet(); clearHistory(); render(); toast("Record book wiped."); }
+
+function renderBoard(st){
+  const all=history();
+  const rows=tally(boardMode);
+  const log=all.filter(m=>!boardMode || m.mode===boardMode).slice().reverse();
+  const since = all.length ? new Date(all[0].ts).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) : null;
+  st.innerHTML = `
+    <div class="kick">${all.length} match${all.length===1?"":"es"} on record${since?` · since ${since}`:""}</div>
+    <h1 class="title" style="font-size:clamp(1.6rem,8vw,2.1rem)">The <span class="gold">Table</span></h1>
+    <div class="chiprow">
+      ${[["","All modes"],...Object.entries(MODE_LABEL)].map(([k,l])=>
+        `<button class="chip${boardMode===k?" on":""}" onclick="setBoardMode('${k}')">${l}</button>`).join("")}
+    </div>
+    ${rows.length?`
+      <div class="lbhead"><span>#</span><span>Player</span><span>P</span><span>W</span><span>Pts</span><span>Avg</span></div>
+      ${rows.map((r,i)=>`
+        <div class="lbrow${i===0?" top":""}">
+          <span class="pos">${i+1}</span>
+          <span class="fn">${esc(r.name)}${i===0?" 👑":""}</span>
+          <span class="num">${r.played}</span>
+          <span class="num">${r.wins}</span>
+          <span class="num${r.pts<0?" neg":""}">${r.pts}</span>
+          <span class="num">${(r.pts/r.played).toFixed(1)}</span>
+        </div>
+        <div class="lbsub">best ${r.best} · worst ${r.worst}${r.cards?` · 🟨 ${r.cards}`:""}${r.shots?` · 🥃 BIG LOSER ×${r.shots}`:""}</div>`).join("")}
+    `:`<div class="hint" style="text-align:center">Nothing recorded${boardMode?` in ${MODE_LABEL[boardMode]}`:""} yet. Play a match to the final whistle and it lands here.</div>`}
+    ${log.length?`
+      <div class="kick" style="margin-top:4px">Match log</div>
+      ${log.slice(0,30).map(m=>{
+        const d=new Date(m.ts).toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+        const line=[...m.players].sort((a,b)=>b.score-a.score)
+          .map(p=>`${esc(p.name)} ${p.score}`).join(" · ");
+        return `<div class="logrow">
+          <div class="logtop">${d} · ${MODE_LABEL[m.mode]||m.mode}${m.target?` · first to ${m.target}`:""}${m.ref?` · ref ${esc(m.ref)}`:""}</div>
+          <div class="logsc">${line}</div>
+          <div class="logwin">${m.winner?`🏆 ${esc(m.winner)}`:"drawn at the top"}${(m.losers||[]).length?` · 🥃 ${esc(m.losers.join(" & "))}`:""}</div>
+        </div>`;
+      }).join("")}
+      ${log.length>30?`<div class="hint" style="text-align:center">Showing the last 30 of ${log.length}.</div>`:""}
+    `:""}
+    <div class="spacer"></div>
+    <button class="bigbtn" onclick="closeBoard()">Back to the menu</button>
+    ${all.length?`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="askClearRecords()">Wipe the record book</button>`:""}`;
+}
+
 function renderSetup(st){
   const saved = (()=>{ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); return s && s.phase!=="setup" && s.phase!=="results" ? s : null; }catch(e){ return null; }})();
   st.innerHTML = `
@@ -2769,6 +2914,7 @@ function renderSetup(st){
     ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
     <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
+    ${history().length?`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
       <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
@@ -3043,7 +3189,7 @@ function askEnd(){
     <button class="bigbtn ghost" onclick="closeSheet()">Keep playing</button>`);
 }
 function endGame(){
-  closeSheet(); stopTimer(); S.phase="results"; render();
+  closeSheet(); stopTimer(); S.phase="results"; recordMatch(); render();
   if(Math.max(...S.players.map(p=>p.score))>=0) confetti(48);
 }
 function rematch(){

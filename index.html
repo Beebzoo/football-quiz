@@ -500,6 +500,40 @@
   .pips{display:flex;gap:8px;justify-content:center;margin-top:12px}
   .pip2{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25)}
   .pip2.on{background:#3fd685;box-shadow:0 0 10px rgba(63,214,133,.6)}
+  /* name the XI */
+  .xititle{text-align:center;font:800 1.05rem/1.3 system-ui;color:#f3d982;margin-top:8px}
+  .xisub{text-align:center;font:600 .78rem/1.3 system-ui;color:#9fb8a6;margin-top:2px}
+  .xipitch{
+    position:relative;width:100%;max-width:420px;margin:10px auto 0;aspect-ratio:10/12;
+    background:linear-gradient(180deg,#175327 0%,#11431f 48%,#175327 52%,#0e3a1b 100%);
+    border:1px solid rgba(255,255,255,.16);border-radius:16px;
+    box-shadow:0 12px 28px rgba(0,0,0,.5);overflow:hidden;
+  }
+  .xipitch::before{content:"";position:absolute;inset:3.5%;border:1.5px solid rgba(255,255,255,.14);border-radius:6px;pointer-events:none}
+  .xipitch::after{content:"";position:absolute;left:3.5%;right:3.5%;top:50%;border-top:1.5px solid rgba(255,255,255,.11);pointer-events:none}
+  .xspot{position:absolute;transform:translate(-50%,-50%);text-align:center;width:70px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .xshirt{
+    width:40px;height:38px;margin:0 auto;background:var(--kit,#888);
+    clip-path:polygon(30% 0,42% 9%,58% 9%,70% 0,100% 22%,86% 38%,78% 30%,78% 100%,22% 100%,22% 30%,14% 38%,0 22%);
+    display:flex;align-items:center;justify-content:center;
+    font:800 .95rem system-ui;color:var(--kink,#fff);
+  }
+  .xspot{filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+  .xspot:not(.open) .xshirt{opacity:.88}
+  .xspot.picked{filter:drop-shadow(0 0 10px #e9b84c)}
+  .xname{margin-top:2px;font:700 .58rem/1.15 system-ui;color:#eef5ef;text-shadow:0 1px 3px rgba(0,0,0,.85);min-height:1.3em;opacity:0}
+  .xspot.open .xname,.xspot.picked .xname{opacity:1;animation:cardpop .45s cubic-bezier(.2,1.7,.4,1) both}
+  .xichips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+  .xichips .bigbtn{width:auto;flex:1 1 28%;padding:12px}
+  /* timeline */
+  .tlwrap{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+  .tlrow{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+  }
+  .tlrow.pop{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both}
+  .tlyear{min-width:56px;text-align:center;font:800 .95rem ui-monospace,Consolas,monospace;color:#e9b84c;background:rgba(0,0,0,.25);border-radius:8px;padding:4px 6px}
+  .tlt{font:600 .92rem/1.3 system-ui;color:#eef5ef}
   .popA{animation:cardpop .55s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.15s}
   .popB{animation:cardpop .55s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.75s}
   @media (prefers-reduced-motion:reduce){
@@ -2378,6 +2412,16 @@ let natAnim = false; // entrance animation plays once per fresh One & Only quest
    2,588 crests from assets/logos: easy = the 70 One & Only clubs, hard = clubs
    from the career deck, BALL = the other ~2,200 (zoomed is mercy; BALL is a
    silhouette). */
+let XI=null;
+fetch("assets/xi/index.json").then(r=>r.json()).then(x=>{
+  XI=x;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+let TLINE=null;
+fetch("assets/timeline/index.json").then(r=>r.json()).then(x=>{
+  TLINE=x;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
 let BADGE=null;
 fetch("assets/badges/index.json").then(r=>r.json()).then(b=>{
   BADGE=b;
@@ -2472,6 +2516,77 @@ function crevNextPlayer(){
   newCrev(); render();
 }
 
+/* ============================== NAME THE XI ==============================
+   A famous final's formation appears as eleven shirts; the table fills them
+   in together, a point per shirt. Communal — the reader taps a shirt when
+   someone names its player, then hands out the point. */
+function newXI(){
+  let avail=XI.map((_,i)=>i).filter(i=>!S.usedX.includes(i));
+  if(!avail.length){ toast("Every final played — reshuffling!"); S.usedX=[]; avail=XI.map((_,i)=>i); }
+  const xi=avail[Math.floor(Math.random()*avail.length)];
+  S.usedX.push(xi);
+  S.xi={i:xi, got:Array(11).fill(null), pick:null}; // got[n] = player index, -1 = nobody, null = still hidden
+  S.turn=-1; // communal: no one is "on the spot"
+  S.phase="x_play";
+}
+// formation "4-2-3-1" -> eleven {x,y} pitch positions, GK first, defence to attack
+function xiSpots(f){
+  const rows=[1,...f.split("-").map(Number)];
+  const out=[];
+  rows.forEach((c,r)=>{
+    const y = 90 - r*(76/(rows.length-1));
+    for(let j=0;j<c;j++) out.push({x:100*(j+1)/(c+1), y});
+  });
+  return out;
+}
+const kitInk = k => { const c=parseInt(k.slice(1),16); return (0.299*(c>>16&255)+0.587*(c>>8&255)+0.114*(c&255))>150 ? "#17301f" : "#fff"; };
+function xiTap(i){
+  if(S.phase!=="x_play" || S.xi.got[i]!==null) return;
+  S.xi.pick = S.xi.pick===i ? null : i;
+  if(S.xi.pick!=null) popfx();
+  render();
+}
+function xiAward(p){
+  const i=S.xi.pick; if(i==null) return;
+  S.xi.got[i]=p; S.xi.pick=null;
+  if(p>=0){ S.players[p].score+=1; ching(); }
+  if(S.xi.got.every(g=>g!==null)){ S.phase="x_done"; confetti(40); }
+  render();
+}
+function xiRest(){ // give up on the stragglers: flip them, no points
+  S.xi.got=S.xi.got.map(g=>g===null?-1:g); S.xi.pick=null;
+  S.phase="x_done"; render();
+}
+function xiAfter(){ if(maybeFinish()) return; S.round++; newXI(); render(); }
+
+/* ============================== TIMELINE ==============================
+   Five moments, put them in chronological order out loud; the reveal shows
+   the years and the reader pays +1 per correctly placed event, +5 for all. */
+function newTL(){
+  let avail=TLINE.map((_,i)=>i).filter(i=>!S.usedT.includes(i));
+  if(!avail.length){ toast("Timeline deck exhausted — reshuffling!"); S.usedT=[]; avail=TLINE.map((_,i)=>i); }
+  const ti=avail[Math.floor(Math.random()*avail.length)];
+  S.usedT.push(ti);
+  const order=TLINE[ti].items.map((_,i)=>i);
+  for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+  if(order.every((v,i)=>v===i)) [order[0],order[1]]=[order[1],order[0]]; // never deal it pre-solved
+  S.tl={i:ti, order};
+  S.phase="tl_play";
+}
+function tlReveal(){ S.phase="tl_reveal"; render(); }
+function tlAward(pts){
+  const who=S.players[S.turn];
+  if(pts>0){
+    who.score+=pts;
+    if(pts>=5){ ching(); confetti(40); toast(`⚽ ${who.name} runs the timeline! +5`); }
+    else { popfx(); toast(`${who.name} +${pts}`); }
+  } else { buzzer(); flashBad(); toast(`${who.name}: nothing in place`, true); }
+  if(maybeFinish()) return;
+  S.turn=(S.turn+1)%S.players.length;
+  if(S.turn===0) S.round++;
+  newTL(); render();
+}
+
 function freshState(names, timed=true, mode="classic", target=100){
   return {
     players: names.map(n=>({name:n, score:0, off:0})),
@@ -2482,6 +2597,8 @@ function freshState(names, timed=true, mode="classic", target=100){
     career:null, usedC:[], // career mode: current round + careers already played
     hilo:null, usedH:[], // higher-or-lower: current run + grounds already shown
     crev:null, usedR:[], // career reverse: current run + careers already recited
+    xi:null, usedX:[], // name the XI: current board + finals already played
+    tl:null, usedT:[], // timeline: current question + ones already asked
     ref:null, // referee mode: the non-playing quizmaster's name
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
@@ -2512,7 +2629,7 @@ function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
    Every finished match gets filed here so there is a running table across
    nights. Local to this phone, like everything else in the app. */
 const HIST_KEY = "ball-quiz-history-v1";
-const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only"};
+const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", hilo:"Higher or Lower", crev:"Career Reverse", xi:"Name the XI", tline:"Timeline"};
 function history(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }catch(e){ return []; } }
 function putHistory(h){ try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }catch(e){} }
 function clearHistory(){ try{ localStorage.removeItem(HIST_KEY); }catch(e){} }
@@ -2609,6 +2726,8 @@ const esc = s => s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"'
 const IPATHS = {
   users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  shirt:'<path d="M15.5 3a3.5 3.5 0 0 1-7 0L3 6.5l2.5 4 2-1.2V21h9V9.3l2 1.2 2.5-4z"/>',
+  tl:'<line x1="2" y1="12" x2="22" y2="12"/><circle cx="6" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18" cy="12" r="1.8"/>',
   card:'<rect x="7.5" y="3.5" width="9" height="14" rx="1.5" fill="#f0c419" stroke="none" transform="rotate(8 12 10.5)"/>',
   mic:'<path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/>',
   pencil:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
@@ -2999,6 +3118,69 @@ function render(){
     return;
   }
 
+  if(S.phase==="x_play" || S.phase==="x_done"){
+    const F=XI[S.xi.i];
+    const spots=xiSpots(F.formation);
+    const done=S.phase==="x_done";
+    const gotN=S.xi.got.filter(g=>g!==null).length;
+    const shirts=spots.map((s,i)=>{
+      const p=F.players[i], open=S.xi.got[i]!==null;
+      return `<div class="xspot${open?" open":""}${S.xi.pick===i?" picked":""}" style="left:${s.x}%;top:${s.y}%" onclick="xiTap(${i})">
+        <div class="xshirt" style="--kit:${F.kit};--kink:${kitInk(F.kit)}">${p.num}</div>
+        <div class="xname">${open||S.xi.pick===i?esc(p.n)+(p.cap?" ©":""):"&nbsp;"}</div>
+      </div>`;
+    }).join("");
+    st.innerHTML = `
+      <div class="kick">Name the XI · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="xititle">${esc(F.title)}</div>
+      <div class="xisub">${esc(F.sub)} · ${esc(F.formation)}</div>
+      <div class="xipitch">${shirts}</div>
+      <div class="potpill">${gotN} / 11 shirts</div>
+      ${done?`
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="xiAfter()">Next final<kbd>Space</kbd></button>`
+      : S.xi.pick!=null?`
+      <div class="hint" style="text-align:center">Who named ${esc(F.players[S.xi.pick].n)}?</div>
+      <div class="xichips">
+        ${S.players.map((p,ix)=>`<button class="bigbtn ok" onclick="xiAward(${ix})">${esc(p.name)} +1</button>`).join("")}
+        <button class="bigbtn ghost" onclick="xiAward(-1)">Nobody</button>
+        <button class="bigbtn ghost" onclick="xiTap(${S.xi.pick})">✕</button>
+      </div>`
+      :`
+      <div class="hint" style="text-align:center">The whole table shouts. ${reader()} taps a shirt when someone names its player, then hands out the point.</div>
+      <div class="spacer"></div>
+      <button class="bigbtn ghost" onclick="xiRest()">Reveal the rest · no points</button>
+      <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
+    return;
+  }
+
+  if(S.phase==="tl_play" || S.phase==="tl_reveal"){
+    const T=TLINE[S.tl.i];
+    const rev=S.phase==="tl_reveal";
+    const rows = rev
+      ? T.items.map((it,i)=>`<div class="tlrow pop" style="animation-delay:${i*.15}s"><span class="tlyear">${it.y}</span><span class="tlt">${esc(it.t)}</span></div>`).join("")
+      : S.tl.order.map(ix=>`<div class="tlrow"><span class="tlyear">?</span><span class="tlt">${esc(T.items[ix].t)}</span></div>`).join("");
+    st.innerHTML = `
+      <div class="kick">Timeline · ${esc(S.players[S.turn].name)}'s call · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="xititle">${esc(T.q)}</div>
+      <div class="tlwrap">${rows}</div>
+      ${rev?`
+      <div class="hint" style="text-align:center">${reader()} pays +1 per event ${esc(S.players[S.turn].name)} had in the right spot, +5 for a perfect five.</div>
+      <div class="xichips">
+        <button class="bigbtn ghost" onclick="tlAward(0)">0</button>
+        <button class="bigbtn ghost" onclick="tlAward(1)">+1</button>
+        <button class="bigbtn ghost" onclick="tlAward(2)">+2</button>
+        <button class="bigbtn ghost" onclick="tlAward(3)">+3</button>
+        <button class="bigbtn ok" onclick="tlAward(5)">Perfect +5</button>
+      </div>`
+      :`
+      <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} puts them in order out loud, earliest first, then the years come out.</div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="tlReveal()">Reveal the years<kbd>Space</kbd></button>
+      <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
+    return;
+  }
+
   if(S.phase==="results"){
     const order=[...S.players].map((p,i)=>({...p,i})).sort((a,b)=>b.score-a.score);
     const losers=order.filter(p=>p.score<0);
@@ -3037,7 +3219,7 @@ let setupCount = 3;
 let setupTimed = true;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
-const MODE_META = {career:["route","Career Path"], stadium:["cam","Stadium"], nations:["flag","One &amp; Only"], badge:["zoom","Badge Zoom"], hilo:["updown","Higher or Lower"], crev:["rewind","Career Reverse"]};
+const MODE_META = {career:["route","Career Path"], stadium:["cam","Stadium"], nations:["flag","One &amp; Only"], badge:["zoom","Badge Zoom"], hilo:["updown","Higher or Lower"], crev:["rewind","Career Reverse"], xi:["shirt","Name the XI"], tline:["tl","Timeline"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -3061,6 +3243,8 @@ function modeDrawerHTML(){
       <button class="bigbtn ghost${setupMode==="badge"?" sel":""}" onclick="setMode('badge')" ${BADGE?"":"disabled style='opacity:.4'"}>${ico('zoom')}Badge Zoom</button>
       <button class="bigbtn ghost${setupMode==="hilo"?" sel":""}" onclick="setMode('hilo')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('updown')}Higher or Lower</button>
       <button class="bigbtn ghost${setupMode==="crev"?" sel":""}" onclick="setMode('crev')">${ico('rewind')}Career Reverse</button>
+      <button class="bigbtn ghost${setupMode==="xi"?" sel":""}" onclick="setMode('xi')" ${XI?"":"disabled style='opacity:.4'"}>${ico('shirt')}Name the XI</button>
+      <button class="bigbtn ghost${setupMode==="tline"?" sel":""}" onclick="setMode('tline')" ${TLINE?"":"disabled style='opacity:.4'"}>${ico('tl')}Timeline</button>
     </div>`:"";
   return btn+grid;
 }
@@ -3163,7 +3347,7 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
     </div>`}
-    ${["career","hilo","crev"].includes(setupMode)?"":`<div class="row2">
+    ${["career","hilo","crev","xi","tline"].includes(setupMode)?"":`<div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">${ico('clock')}With timer</button>
       <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">${ico('inf')}No timer</button>
     </div>`}
@@ -3181,7 +3365,7 @@ function renderSetup(st){
     ${history().length?`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history, put them in chronological order out loud, then the years are revealed — +1 per event you had in the right spot, a perfect five pays +5. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 
@@ -3199,6 +3383,8 @@ function startGame(){
   if(setupMode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
   if(setupMode==="badge" && !BADGE){ toast("Badge bank still loading — one second!", true); return; }
   if(setupMode==="hilo" && !STAD){ toast("Stadium data still loading — one second!", true); return; }
+  if(setupMode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
+  if(setupMode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
@@ -3207,6 +3393,8 @@ function startGame(){
   if(S.mode==="career") newCareer();
   if(S.mode==="hilo") newHilo();
   if(S.mode==="crev") newCrev();
+  if(S.mode==="xi") newXI();
+  if(S.mode==="tline") newTL();
   render();
 }
 function resumeGame(){
@@ -3219,12 +3407,17 @@ function resumeGame(){
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
   if(!S.usedH) S.usedH=[]; if(!S.usedR) S.usedR=[]; // saves from before hilo/crev existed
-  if(S.mode==="hilo" && !S.hilo) newHilo();
-  if(S.mode==="crev" && !S.crev) newCrev();
+  if(!S.usedX) S.usedX=[]; if(!S.usedT) S.usedT=[]; // saves from before xi/timeline existed
   if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
   if(S.mode==="badge" && !BADGE){ toast("Badge bank still loading — one second!", true); return; }
   if(S.mode==="hilo" && !STAD){ toast("Stadium data still loading — one second!", true); return; }
+  if(S.mode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
+  if(S.mode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
+  if(S.mode==="hilo" && !S.hilo) newHilo();
+  if(S.mode==="crev" && !S.crev) newCrev();
+  if(S.mode==="xi" && !S.xi) newXI();
+  if(S.mode==="tline" && !S.tl) newTL();
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
@@ -3470,12 +3663,14 @@ function endGame(){
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
-  const usedC=S.usedC, ref=S.ref, usedH=S.usedH, usedR=S.usedR;
+  const usedC=S.usedC, ref=S.ref, usedH=S.usedH, usedR=S.usedR, usedX=S.usedX, usedT=S.usedT;
   S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC; S.ref=ref;
-  S.usedH=usedH||[]; S.usedR=usedR||[];
+  S.usedH=usedH||[]; S.usedR=usedR||[]; S.usedX=usedX||[]; S.usedT=usedT||[];
   if(S.mode==="career") newCareer();
   if(S.mode==="hilo") newHilo();
   if(S.mode==="crev") newCrev();
+  if(S.mode==="xi") newXI();
+  if(S.mode==="tline") newTL();
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
@@ -3545,6 +3740,13 @@ document.addEventListener("keydown", e=>{
     if(k==="w"||k==="x") crevEnd();
   }else if(S.phase==="r_dead"){
     if(k===" "||k==="enter"){ e.preventDefault(); crevNextPlayer(); }
+  }else if(S.phase==="x_done"){
+    if(k===" "||k==="enter"){ e.preventDefault(); xiAfter(); }
+  }else if(S.phase==="tl_play"){
+    if(k===" "||k==="enter"){ e.preventDefault(); tlReveal(); }
+  }else if(S.phase==="tl_reveal"){
+    if(["0","1","2","3"].includes(k)) tlAward(+k);
+    if(k==="5") tlAward(5);
   }else if(S.phase==="c_dead"){
     if(k===" "||k==="enter"){ e.preventDefault(); cAfter(); }
   }else if(S.phase==="deadq"){

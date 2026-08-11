@@ -399,6 +399,8 @@
   /* stadium mode */
   .stadimg{display:block;width:100%;max-height:40vh;object-fit:cover;border-radius:12px;margin:0 0 10px;background:#0b1c12}
   .pcredit{margin-top:8px;font-size:.62rem;opacity:.55;text-align:right}
+  .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
+  .bigbtn.ok.lesser{background:#0d7a48;font-size:1.05rem;padding:15px}
   .bigbtn.ok{background:var(--ok);border-color:var(--turf-deep)}
   .bigbtn.bad{background:var(--bad);border-color:#b91c1c}
 
@@ -543,6 +545,15 @@ const TIERS = {
   extreme:{label:"Extreme", pts:10, color:"#dc2626"},
   ball:   {label:"BALL",    pts:20, color:"#c9932e"},
 };
+/* Stadium mode pays on a ladder instead of all-or-nothing: the ground's name
+   takes the lot, the city takes most of it, the country is the consolation.
+   Easy carries its own numbers because one point will not split three ways. */
+const STAD_PTS = {
+  easy: {name:3,  city:2,  country:1},
+  hard: {name:8,  city:5,  country:3},
+  ball: {name:20, city:12, country:6},
+};
+const stadPts = () => STAD_PTS[S.tier];
 const BANK = {
 easy: [
  {q:"How many players does each team have on the pitch?", a:"11"},
@@ -2231,9 +2242,9 @@ function stadQ(){
   const s=STAD[S.tier][S.qi];
   const cap = s.capacity ? ` · holds ${s.capacity.toLocaleString("en-GB")}` : "";
   const credit = `📷 ${s.author} · ${s.license}`;
-  return S.sguess==="country"
-    ? {q:"Which country is this stadium in?", a:`${s.country} (${s.name}${cap})`, img:"assets/stadiums/"+s.slug, credit}
-    : {q:"Name this stadium", a:`${s.name} — ${s.country}${cap}`, img:"assets/stadiums/"+s.slug, credit};
+  const where = s.city ? `${s.city}, ${s.country}` : s.country;
+  return {q:"Name this stadium", a:`${s.name} · ${where}${cap}`,
+          img:"assets/stadiums/"+s.slug, credit, stad:s};
 }
 
 function freshState(names, timed=true, mode="classic", target=100){
@@ -2244,7 +2255,6 @@ function freshState(names, timed=true, mode="classic", target=100){
     target:target, // first to this score wins; 0 = no limit
     wans:[], wgot:[], // written mode: typed answers + who was marked correct
     career:null, usedC:[], // career mode: current round + careers already played
-    sguess:"name", // stadium mode: guess the "name" or the "country"
     ref:null, // referee mode: the non-playing quizmaster's name
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
@@ -2393,7 +2403,7 @@ function render(){
     const written = S.mode==="written";
     const stad = S.mode==="stadium";
     st.innerHTML = `
-      <div class="kick">Round ${S.round} · ${written?"Written round":stad?(S.sguess==="country"?"Guess the country":"Guess the stadium"):"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
       <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
         :stad?"Pick your difficulty — a stadium photo appears, answer out loud."
@@ -2460,12 +2470,14 @@ function render(){
     const stealing = S.phase==="steal_q";
     const who = stealing ? S.players[S.stealer] : P;
     const t=TIERS[S.tier];
+    const sp = S.mode==="stadium" ? stadPts() : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
       <div class="qcard" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qmeta"><span class="tierchip">${t.label} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         <div class="qtext">${esc(q().q)}</div>
+        ${sp?`<div class="ladder">Ground +${sp.name} · city +${sp.city} · country +${sp.country}</div>`:""}
       </div>
       ${S.timed?`<div class="clock" id="clock">
         <div class="digits">${stealing?"5.0":"15.0"}</div>
@@ -2485,10 +2497,12 @@ function render(){
     const stealing = S.phase==="steal_judge";
     const who = stealing ? S.players[S.stealer] : P;
     const t=TIERS[S.tier];
+    const sp = S.mode==="stadium" ? stadPts() : null;
+    const s  = sp ? q().stad : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
       <div class="qcard" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${t.label} · +${t.pts}</span></div>
+        <div class="qmeta"><span class="tierchip">${t.label} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
@@ -2496,10 +2510,19 @@ function render(){
       </div>
       ${S.timeUp?`<div class="hint" style="color:var(--card-r);font-weight:700">Time was already up. Only count an answer given before the buzzer.</div>`:""}
       <div class="spacer"></div>
+      ${sp?`
+      <button class="bigbtn ok" onclick="judge(true,'name')">Got the ground +${sp.name}<kbd>C</kbd></button>
+      <div class="row2">
+        ${s&&s.city?`<button class="bigbtn ok lesser" onclick="judge(true,'city')">City +${sp.city}<kbd>2</kbd></button>`:""}
+        <button class="bigbtn ok lesser" onclick="judge(true,'country')">Country +${sp.country}<kbd>3</kbd></button>
+      </div>
+      <button class="bigbtn bad" style="padding:14px" onclick="judge(false)">Nothing<kbd>W</kbd></button>
+      <div class="hint">Pay the best rung they reached${s&&!s.city?". No city on file for this one, so it is the ground or the country.":"."}</div>`
+      :`
       <div class="row2">
         <button class="bigbtn ok" onclick="judge(true)">Correct +${t.pts}<kbd>C</kbd></button>
         <button class="bigbtn bad" onclick="judge(false)">Wrong<kbd>W</kbd></button>
-      </div>`;
+      </div>`}`;
     return;
   }
 
@@ -2641,8 +2664,6 @@ function setRef(v){ snapshotNames(); setupRef=v; render(); }
 const reader = ()=> S && S.ref ? esc(S.ref) : "the reader";
 function setTimed(v){ snapshotNames(); setupTimed=v; render(); }
 function setMode(m){ snapshotNames(); setupMode=m; render(); }
-let setupStadGuess = "name";
-function setStadGuess(v){ snapshotNames(); setupStadGuess=v; render(); }
 function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
 const setupNames = ["","",""];
 let tickerHTML = null; // built once per session so the rows don't reshuffle on re-render
@@ -2677,10 +2698,7 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
       <button class="bigbtn ghost${setupMode==="stadium"?" sel":""}" onclick="setMode('stadium')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('cam')}Stadium</button>
     </div>
-    ${setupMode==="stadium"?`<div class="row2">
-      <button class="bigbtn ghost${setupStadGuess==="name"?" sel":""}" onclick="setStadGuess('name')">Guess the stadium</button>
-      <button class="bigbtn ghost${setupStadGuess==="country"?" sel":""}" onclick="setStadGuess('country')">Guess the country</button>
-    </div>`:""}
+    ${setupMode==="stadium"?`<div class="hint" style="text-align:center">Name the ground for the full points, or take fewer for the city, fewer still for the country.</div>`:""}
     ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div><div class="spacer"></div>`:`
     <div class="row2">
       <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">${ico('users')}All play</button>
@@ -2707,7 +2725,7 @@ function renderSetup(st){
     <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears — name the stadium (or, in country mode, just the country it stands in). 300 grounds from Camp Nou to places only true BALL knowers recognise. Easy +1 · Hard +5 · BALL +20, steals work like Classic. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 
@@ -2723,7 +2741,6 @@ function startGame(){
   });
   if(setupMode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
-  S.sguess=setupStadGuess;
   if(setupRef){
     const el=document.getElementById("n2");
     S.ref=(el && el.value.trim()) || "The ref";
@@ -2740,7 +2757,6 @@ function resumeGame(){
   if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
-  if(!S.sguess) S.sguess="name"; // saves from before stadium mode existed
   if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
@@ -2813,14 +2829,18 @@ function reveal(){
   S.phase = S.phase==="steal_q" ? "steal_judge" : "judge";
   render();
 }
-function judge(correct){
-  const pts=TIERS[S.tier].pts;
+function judge(correct, level){
+  // stadium mode pays by rung; every other mode is all-or-nothing on the tier
+  const stad = S.mode==="stadium";
+  const rung = stad ? (level||"name") : null;
+  const pts = stad ? stadPts()[rung] : TIERS[S.tier].pts;
   const stealing = S.phase==="steal_judge";
   const who = stealing ? S.players[S.stealer] : S.players[S.turn];
   if(correct){
     who.score+=pts; ching();
-    confetti(S.tier==="ball" ? 64 : 26);
-    toast(`⚽ GOAL! ${who.name} +${pts}${stealing?" (stolen!)":""}`);
+    confetti(S.tier==="ball" && rung!=="country" ? 64 : 26);
+    const how = rung==="city" ? " (city)" : rung==="country" ? " (country only)" : "";
+    toast(`⚽ GOAL! ${who.name} +${pts}${how}${stealing?" (stolen!)":""}`);
     if(maybeFinish()) return; // reached the win target
     nextTurn();
   }else if(!stealing){
@@ -3003,7 +3023,9 @@ document.addEventListener("keydown", e=>{
     if(k===" "||k==="enter"){ e.preventDefault(); wNext(); }
     else if(k>="1" && k<="3" && +k<=S.players.length) wToggle(+k-1);
   }else if(S.phase==="judge" || S.phase==="steal_judge"){
-    if(k==="c") judge(true);
+    if(k==="c") judge(true,"name");
+    if(S.mode==="stadium" && k==="2" && q().stad?.city) judge(true,"city");
+    if(S.mode==="stadium" && k==="3") judge(true,"country");
     if(k==="w"||k==="x") judge(false);
   }else if(S.phase==="steal_offer"){
     const o=others();

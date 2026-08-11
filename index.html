@@ -364,12 +364,12 @@
   .bigbtn.warn{background:var(--card-y);border-color:#ca9a06;color:#3d2f02}
 
   input.nm-in{
-    width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);
-    background:var(--card);color:var(--ink);font:600 1.05rem system-ui,sans-serif;
-    box-shadow:0 1px 2px rgba(16,24,40,.04);
+    width:100%;padding:14px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.22);
+    background:rgba(255,255,255,.08);color:#eef5ef;font:600 1.05rem system-ui,sans-serif;
+    box-shadow:none;
   }
-  input.nm-in::placeholder{color:#9aa7b5;font-weight:500}
-  input.nm-in:focus{outline:2px solid var(--turf);border-color:var(--turf)}
+  input.nm-in::placeholder{color:#9fb8a6;font-weight:500}
+  input.nm-in:focus{outline:2px solid #e9b84c;border-color:#e9b84c;background:rgba(255,255,255,.12)}
 
   /* difficulty buttons */
   .diff{
@@ -556,6 +556,8 @@
   .row2.modes{flex-wrap:wrap}
   .row2.modes .bigbtn{flex:1 1 30%}
   .modestoggle .chev{opacity:.55;font-size:.75em;margin-left:7px}
+  .mico{display:contents}
+  .hint.lastline{text-align:center;color:#c8d8cc;margin-top:4px}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
   .bigbtn.ok.lesser{background:#0d7a48;font-size:1.05rem;padding:15px}
   .bigbtn.ok{background:var(--ok);border-color:var(--turf-deep)}
@@ -3267,7 +3269,7 @@ let setupCount = 3;
 let setupTimed = true;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
-const MODE_META = {career:["route","Career Path"], stadium:["cam","Stadium"], nations:["flag","One &amp; Only"], badge:["zoom","Badge Zoom"], hilo:["updown","Higher or Lower"], crev:["rewind","Career Reverse"], xi:["shirt","Name the XI"], tline:["tl","Timeline"]};
+const MODE_META = {career:["route","Career Path","#e9b84c"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], hilo:["updown","Higher or Lower","#7fd4a3"], crev:["rewind","Career Reverse","#e8c47f"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -3282,17 +3284,12 @@ function modeDrawerHTML(){
   const m = MODE_META[setupMode];
   const chev = `<span class="chev">${modesOpen?"▲":"▼"}</span>`;
   const btn = m && !modesOpen
-    ? `<button class="bigbtn ghost sel modestoggle" onclick="toggleModes()">${ico(m[0])}${m[1]}${chev}</button>`
+    ? `<button class="bigbtn ghost sel modestoggle" onclick="toggleModes()"><span class="mico" style="color:${m[2]}">${ico(m[0])}</span>${m[1]}${chev}</button>`
     : `<button class="bigbtn ghost modestoggle" onclick="toggleModes()">${ico('grid')}More game modes${chev}</button>`;
+  const off = {stadium:!STAD, nations:!NAT, badge:!BADGE, hilo:!STAD, xi:!XI, tline:!TLINE};
   const grid = modesOpen?`<div class="row2 modes">
-      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
-      <button class="bigbtn ghost${setupMode==="stadium"?" sel":""}" onclick="setMode('stadium')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('cam')}Stadium</button>
-      <button class="bigbtn ghost${setupMode==="nations"?" sel":""}" onclick="setMode('nations')" ${NAT?"":"disabled style='opacity:.4'"}>${ico('flag')}One &amp; Only</button>
-      <button class="bigbtn ghost${setupMode==="badge"?" sel":""}" onclick="setMode('badge')" ${BADGE?"":"disabled style='opacity:.4'"}>${ico('zoom')}Badge Zoom</button>
-      <button class="bigbtn ghost${setupMode==="hilo"?" sel":""}" onclick="setMode('hilo')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('updown')}Higher or Lower</button>
-      <button class="bigbtn ghost${setupMode==="crev"?" sel":""}" onclick="setMode('crev')">${ico('rewind')}Career Reverse</button>
-      <button class="bigbtn ghost${setupMode==="xi"?" sel":""}" onclick="setMode('xi')" ${XI?"":"disabled style='opacity:.4'"}>${ico('shirt')}Name the XI</button>
-      <button class="bigbtn ghost${setupMode==="tline"?" sel":""}" onclick="setMode('tline')" ${TLINE?"":"disabled style='opacity:.4'"}>${ico('tl')}Timeline</button>
+      ${Object.entries(MODE_META).map(([k,[ic,label,ac]])=>
+        `<button class="bigbtn ghost${setupMode===k?" sel":""}" onclick="setMode('${k}')" ${off[k]?"disabled style='opacity:.4'":""}><span class="mico" style="color:${ac}">${ico(ic)}</span>${label}</button>`).join("")}
     </div>`:"";
   return btn+grid;
 }
@@ -3386,7 +3383,8 @@ function renderSetup(st){
     </div>
     ${modeDrawerHTML()}
     ${setupMode==="stadium"?`<div class="hint" style="text-align:center">Name the ground for the full points, or take fewer for the city, fewer still for the country.</div>`:""}
-    ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div><div class="spacer"></div>`:`
+    ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div>`:`
+    <div class="kick" style="margin-top:2px">${ico('users')}Who's playing</div>
     <div class="row2">
       <button class="bigbtn ghost${!setupRef?" sel":""}" onclick="setRef(false)">${ico('users')}All play</button>
       <button class="bigbtn ghost${setupRef?" sel":""}" onclick="setRef(true)">${ico('card')}Referee mode</button>
@@ -3408,9 +3406,9 @@ function renderSetup(st){
     </div>
     ${Array.from({length:(setupRef?2:setupCount)},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
-    <div class="spacer"></div>
     <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
-    ${history().length?`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
+    ${history().length?`<div class="hint lastline">${(h=>{const m=h[h.length-1];return "Last match · "+m.players.map(p=>esc(p.name)+" "+p.score).join(" · ")+(m.winner?" · 🏆 "+esc(m.winner):" · draw");})(history())}</div>
+    <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
       <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>

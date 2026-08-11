@@ -238,6 +238,12 @@
     color:#fff;
   }
   .bug.active{background:#fff;border-color:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(6,60,36,.35)}
+  .bug.lead{
+    background:linear-gradient(160deg,rgba(233,184,76,.36),rgba(168,127,44,.22));
+    border-color:#e9b84c;color:#ffeeb8;box-shadow:0 0 12px rgba(233,184,76,.3);
+  }
+  .bug.lead.active{background:#fdf3d3;border-color:#e9b84c;color:#6b4e0e}
+  .leadball{width:.9em;height:.9em;vertical-align:-2px;margin-right:3px}
   /* home ball: lives in the top bar so it never covers a player's book or edit button */
   .homeball{
     flex:0 0 auto;width:40px;padding:5px;border-radius:12px;
@@ -265,7 +271,12 @@
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
     border-radius:12px;font:800 1rem/1 system-ui,sans-serif;
   }
-  .lbrow.top{background:rgba(201,147,46,.16);border-color:rgba(201,147,46,.5)}
+  .lbrow.top{
+    background:linear-gradient(160deg,rgba(233,184,76,.38),rgba(168,127,44,.24));
+    border:1.5px solid #e9b84c;color:#ffeeb8;
+    box-shadow:0 0 14px rgba(233,184,76,.25);
+  }
+  .lbrow.top .pos{opacity:.9;color:#f3d982}
   .lbrow .pos{opacity:.55;font-size:.85rem;text-align:center}
   .lbrow .fn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .lbrow .num{text-align:center;font-variant-numeric:tabular-nums}
@@ -2847,14 +2858,16 @@ function renderBug(){
   if(!S || S.phase==="setup"){ bug.hidden=true; return; }
   bug.hidden=false;
   const home = `<button class="homeball" onclick="toMenu()" aria-label="Back to the menu" title="Back to the menu"><img src="assets/ball.png" alt=""></button>`;
+  const best=Math.max(...S.players.map(p=>p.score));
+  const leadI = S.players.filter(p=>p.score===best).length===1 ? S.players.findIndex(p=>p.score===best) : -1;
   bug.innerHTML = home + S.players.map((p,i)=>{
     const pips = p.off===0 ? "" :
       Array.from({length:Math.min(p.off,5)},(_,k)=>`<span class="pip${k>=2?" r":""}"></span>`).join("") +
       (p.off>5?`<span style="font:700 .6rem monospace;color:var(--chalk-dim)">+${p.off-5}</span>`:"");
-    return `<div class="bug${i===S.turn && S.phase!=="results" ?" active":""}">
+    return `<div class="bug${i===S.turn && S.phase!=="results" ?" active":""}${i===leadI?" lead":""}">
       <button class="book" aria-label="Book ${esc(p.name)}" onclick="askBook(${i})"></button>
       <button class="edit" aria-label="Edit ${esc(p.name)}'s score" onclick="askAdjust(${i})">✏️</button>
-      <div class="nm">${esc(p.name)}</div>
+      <div class="nm">${i===leadI?`<img class="leadball" src="assets/ball.png" alt="">`:""}${esc(p.name)}</div>
       <div class="sc${p.score<0?" neg":""}">${p.score}</div>
       <div class="cards">${pips}</div>
     </div>`;
@@ -3343,7 +3356,7 @@ function renderBoard(st){
       ${rows.map((r,i)=>`
         <div class="lbrow${i===0?" top":""}">
           <span class="pos">${i+1}</span>
-          <span class="fn">${esc(r.name)}${i===0?" 👑":""}</span>
+          <span class="fn">${esc(r.name)}${i===0?` <img class="leadball" src="assets/ball.png" alt="">`:""}</span>
           <span class="num">${r.played}</span>
           <span class="num">${r.wins}</span>
           <span class="num${r.pts<0?" neg":""}">${r.pts}</span>

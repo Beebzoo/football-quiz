@@ -2701,7 +2701,8 @@ function renderSetup(st){
     <div class="kick" style="text-align:center">Gran Canaria MVV Ultras</div>
     <h1 class="title ballhero"><span class="goldtext">BALL</span><img class="ballimg" src="assets/ball.png" alt=""></h1>
     ${logoTicker()}
-    ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>`:""}
+    ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>
+    <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="askCancelMatch()">Cancel match in progress</button>`:""}
     <div class="row2">
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
@@ -2987,6 +2988,18 @@ function adjust(i,delta){
 }
 
 /* ============================== END / SHEETS ============================== */
+/* Binning a parked match is the one thing here you cannot undo, so show what
+   is about to be lost before doing it. */
+function askCancelMatch(){
+  let s=null; try{ s=JSON.parse(localStorage.getItem(SAVE_KEY)); }catch(e){}
+  const who = s&&s.players ? s.players.map(p=>`${esc(p.name)} ${p.score}`).join(" · ") : "";
+  sheet(`
+    <h2>Cancel the match in progress?</h2>
+    <p>Throws away the parked match${s&&s.round?`, round ${s.round}`:""}.${who?` Scores gone: <b>${who}</b>.`:""} No way back.</p>
+    <button class="bigbtn bad" onclick="cancelMatch()">Bin the match</button>
+    <button class="bigbtn ghost" onclick="closeSheet()">Keep it</button>`);
+}
+function cancelMatch(){ closeSheet(); clearSave(); S=null; render(); toast("Match cancelled."); }
 function askEnd(){
   sheet(`
     <h2>Blow the full-time whistle?</h2>

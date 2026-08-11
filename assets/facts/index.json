@@ -5,7 +5,59 @@
    "a": "PSV Eindhoven"
   },
   {
+   "q": "Who won the Eredivisie in 2024/25?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the Eredivisie in 2023/24?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the Eredivisie in 2022/23?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won the Eredivisie in 2021/22?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 2020/21?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 2018/19?",
+   "a": "AFC Ajax"
+  },
+  {
    "q": "Who won La Liga in 2025/26?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2024/25?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2023/24?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 2022/23?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2021/22?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 2020/21?",
+   "a": "Atlético Madrid"
+  },
+  {
+   "q": "Who won La Liga in 2019/20?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 2018/19?",
    "a": "Barcelona"
   },
   {
@@ -13,7 +65,43 @@
    "a": "Arsenal"
   },
   {
+   "q": "Who won the Premier League in 2024/25?",
+   "a": "Liverpool"
+  },
+  {
+   "q": "Who won the Premier League in 2023/24?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Who won the Premier League in 2022/23?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Who won the Premier League in 2021/22?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Who won the Premier League in 2020/21?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Who won the Premier League in 2019/20?",
+   "a": "Liverpool"
+  },
+  {
+   "q": "Who won the Premier League in 2018/19?",
+   "a": "Manchester City"
+  },
+  {
    "q": "Who won the Bundesliga in 2025/26?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2019/20?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2018/19?",
    "a": "Bayern Munich"
   },
   {
@@ -21,7 +109,59 @@
    "a": "Inter Milan"
   },
   {
+   "q": "Who won Serie A in 2024/25?",
+   "a": "SSC Napoli"
+  },
+  {
+   "q": "Who won Serie A in 2023/24?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won Serie A in 2022/23?",
+   "a": "SSC Napoli"
+  },
+  {
+   "q": "Who won Serie A in 2021/22?",
+   "a": "Milan"
+  },
+  {
+   "q": "Who won Serie A in 2020/21?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won Serie A in 2019/20?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Serie A in 2018/19?",
+   "a": "Juventus"
+  },
+  {
    "q": "Who won Ligue 1 in 2025/26?",
+   "a": "Paris Saint-Germain"
+  },
+  {
+   "q": "Who won Ligue 1 in 2023/24?",
+   "a": "Paris Saint-Germain"
+  },
+  {
+   "q": "Who won Ligue 1 in 2022/23?",
+   "a": "Paris Saint-Germain"
+  },
+  {
+   "q": "Who won Ligue 1 in 2021/22?",
+   "a": "Paris Saint-Germain"
+  },
+  {
+   "q": "Who won Ligue 1 in 2020/21?",
+   "a": "Lille OSC"
+  },
+  {
+   "q": "Who won Ligue 1 in 2019/20?",
+   "a": "Paris Saint-Germain"
+  },
+  {
+   "q": "Who won Ligue 1 in 2018/19?",
    "a": "Paris Saint-Germain"
   },
   {
@@ -29,47 +169,23 @@
    "a": "Porto"
   },
   {
+   "q": "Who won the Primeira Liga in 2022/23?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2021/22?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2020/21?",
+   "a": "Sporting CP"
+  },
+  {
    "q": "Who won the Champions League in 2025/26?",
    "a": "Paris Saint-Germain"
   },
   {
-   "q": "Who won the Eredivisie in 2024/25?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won La Liga in 2024/25?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2024/25?",
-   "a": "Liverpool"
-  },
-  {
-   "q": "Who won Serie A in 2024/25?",
-   "a": "SSC Napoli"
-  },
-  {
    "q": "Who won the Champions League in 2024/25?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Eredivisie in 2023/24?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won La Liga in 2023/24?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2023/24?",
-   "a": "Manchester City"
-  },
-  {
-   "q": "Who won Serie A in 2023/24?",
-   "a": "Inter Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2023/24?",
    "a": "Paris Saint-Germain"
   },
   {
@@ -77,172 +193,56 @@
    "a": "Real Madrid"
   },
   {
-   "q": "Who won the Eredivisie in 2022/23?",
-   "a": "Feyenoord Rotterdam"
-  },
-  {
-   "q": "Who won La Liga in 2022/23?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2022/23?",
-   "a": "Manchester City"
-  },
-  {
-   "q": "Who won Serie A in 2022/23?",
-   "a": "SSC Napoli"
-  },
-  {
-   "q": "Who won Ligue 1 in 2022/23?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2022/23?",
-   "a": "Benfica"
-  },
-  {
    "q": "Who won the Champions League in 2022/23?",
    "a": "Manchester City"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2022/23?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2022/23?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Eredivisie in 2021/22?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 2021/22?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2021/22?",
-   "a": "Manchester City"
-  },
-  {
-   "q": "Who won Serie A in 2021/22?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2021/22?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2021/22?",
-   "a": "Porto"
   },
   {
    "q": "Who won the Champions League in 2021/22?",
    "a": "Real Madrid"
   },
   {
-   "q": "Who won the KNVB Cup in 2021/22?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2021/22?",
-   "a": "Real Betis Balompié"
-  },
-  {
-   "q": "Who won the Eredivisie in 2020/21?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 2020/21?",
-   "a": "Atlético Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2020/21?",
-   "a": "Manchester City"
-  },
-  {
-   "q": "Who won Serie A in 2020/21?",
-   "a": "Inter Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2020/21?",
-   "a": "Lille OSC"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2020/21?",
-   "a": "Sporting CP"
-  },
-  {
    "q": "Who won the Champions League in 2020/21?",
    "a": "Chelsea"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2020/21?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2020/21?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won La Liga in 2019/20?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2019/20?",
-   "a": "Liverpool"
-  },
-  {
-   "q": "Who won the Bundesliga in 2019/20?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2019/20?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2019/20?",
-   "a": "Paris Saint-Germain"
   },
   {
    "q": "Who won the Champions League in 2019/20?",
    "a": "Bayern Munich"
   },
   {
-   "q": "Who won the Copa del Rey in 2019/20?",
-   "a": "Real Sociedad"
-  },
-  {
-   "q": "Who won the Eredivisie in 2018/19?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 2018/19?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2018/19?",
-   "a": "Manchester City"
-  },
-  {
-   "q": "Who won the Bundesliga in 2018/19?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2018/19?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2018/19?",
-   "a": "Paris Saint-Germain"
-  },
-  {
    "q": "Who won the Champions League in 2018/19?",
    "a": "Liverpool"
   },
   {
+   "q": "Who won the KNVB Cup in 2022/23?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2021/22?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2020/21?",
+   "a": "AFC Ajax"
+  },
+  {
    "q": "Who won the KNVB Cup in 2018/19?",
    "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2022/23?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2021/22?",
+   "a": "Real Betis Balompié"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2020/21?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2019/20?",
+   "a": "Real Sociedad"
   },
   {
    "q": "Who won the Copa del Rey in 2018/19?",
@@ -583,6 +583,106 @@
  ],
  "normal": [
   {
+   "q": "Who won the Eredivisie in 2017/18?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the Eredivisie in 2016/17?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won the Eredivisie in 2015/16?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the Eredivisie in 2014/15?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the Eredivisie in 2013/14?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 2012/13?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 2011/12?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 2010/11?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 2008/09?",
+   "a": "AZ Alkmaar"
+  },
+  {
+   "q": "Who won La Liga in 2017/18?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2016/17?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 2015/16?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2014/15?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2012/13?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2009/10?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Premier League in 2017/18?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Who won the Premier League in 2016/17?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Who won the Premier League in 2015/16?",
+   "a": "Leicester City"
+  },
+  {
+   "q": "Who won the Premier League in 2014/15?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Who won the Premier League in 2013/14?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Who won the Premier League in 2012/13?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 2011/12?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Who won the Premier League in 2010/11?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 2009/10?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Who won the Premier League in 2008/09?",
+   "a": "Manchester United"
+  },
+  {
    "q": "Who won the Bundesliga in 2024/25?",
    "a": "Bayern Munich"
   },
@@ -603,23 +703,31 @@
    "a": "Bayern Munich"
   },
   {
-   "q": "Who won the Primeira Liga in 2018/19?",
-   "a": "Benfica"
-  },
-  {
-   "q": "Who won the Eredivisie in 2017/18?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won La Liga in 2017/18?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2017/18?",
-   "a": "Manchester City"
-  },
-  {
    "q": "Who won the Bundesliga in 2017/18?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2016/17?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2015/16?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2014/15?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2013/14?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2011/12?",
+   "a": "Borussia Dortmund"
+  },
+  {
+   "q": "Who won the Bundesliga in 2009/10?",
    "a": "Bayern Munich"
   },
   {
@@ -627,356 +735,176 @@
    "a": "Juventus"
   },
   {
-   "q": "Who won Ligue 1 in 2017/18?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2017/18?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 2017/18?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2017/18?",
-   "a": "Feyenoord Rotterdam"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2017/18?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Eredivisie in 2016/17?",
-   "a": "Feyenoord Rotterdam"
-  },
-  {
-   "q": "Who won La Liga in 2016/17?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2016/17?",
-   "a": "Chelsea"
-  },
-  {
-   "q": "Who won the Bundesliga in 2016/17?",
-   "a": "Bayern Munich"
-  },
-  {
    "q": "Who won Serie A in 2016/17?",
    "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2016/17?",
-   "a": "Monaco"
-  },
-  {
-   "q": "Who won the Champions League in 2016/17?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2016/17?",
-   "a": "SBV Vitesse"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2016/17?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Eredivisie in 2015/16?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won La Liga in 2015/16?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2015/16?",
-   "a": "Leicester City"
-  },
-  {
-   "q": "Who won the Bundesliga in 2015/16?",
-   "a": "Bayern Munich"
   },
   {
    "q": "Who won Serie A in 2015/16?",
    "a": "Juventus"
   },
   {
-   "q": "Who won Ligue 1 in 2015/16?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Champions League in 2015/16?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2015/16?",
-   "a": "Feyenoord Rotterdam"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2015/16?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Eredivisie in 2014/15?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won La Liga in 2014/15?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2014/15?",
-   "a": "Chelsea"
-  },
-  {
-   "q": "Who won the Bundesliga in 2014/15?",
-   "a": "Bayern Munich"
-  },
-  {
    "q": "Who won Serie A in 2014/15?",
    "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2014/15?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Champions League in 2014/15?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2014/15?",
-   "a": "Groningen"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2014/15?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Eredivisie in 2013/14?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 2013/14?",
-   "a": "Atlético Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2013/14?",
-   "a": "Manchester City"
-  },
-  {
-   "q": "Who won the Bundesliga in 2013/14?",
-   "a": "Bayern Munich"
   },
   {
    "q": "Who won Serie A in 2013/14?",
    "a": "Juventus"
   },
   {
-   "q": "Who won Ligue 1 in 2013/14?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Champions League in 2013/14?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2013/14?",
-   "a": "PEC Zwolle"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2013/14?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Eredivisie in 2012/13?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 2012/13?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2012/13?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 2012/13?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2012/13?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2012/13?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2012/13?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 2012/13?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2012/13?",
-   "a": "AZ Alkmaar"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2012/13?",
-   "a": "Atlético Madrid"
-  },
-  {
-   "q": "Who won the Eredivisie in 2011/12?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 2011/12?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2011/12?",
-   "a": "Manchester City"
-  },
-  {
-   "q": "Who won the Bundesliga in 2011/12?",
-   "a": "Borussia Dortmund"
-  },
-  {
    "q": "Who won Serie A in 2011/12?",
    "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2011/12?",
-   "a": "Montpellier Hérault Sport Club"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2011/12?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 2011/12?",
-   "a": "Chelsea"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2011/12?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2011/12?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Eredivisie in 2010/11?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 2010/11?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2010/11?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 2010/11?",
-   "a": "Borussia Dortmund"
-  },
-  {
-   "q": "Who won Serie A in 2010/11?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2010/11?",
-   "a": "Lille OSC"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2010/11?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 2010/11?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the KNVB Cup in 2010/11?",
-   "a": "Twente"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2010/11?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Eredivisie in 2009/10?",
-   "a": "Twente"
-  },
-  {
-   "q": "Who won La Liga in 2009/10?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2009/10?",
-   "a": "Chelsea"
-  },
-  {
-   "q": "Who won the Bundesliga in 2009/10?",
-   "a": "Bayern Munich"
   },
   {
    "q": "Who won Serie A in 2009/10?",
    "a": "Inter Milan"
   },
   {
-   "q": "Who won Ligue 1 in 2009/10?",
-   "a": "Olympique de Marseille"
+   "q": "Who won Ligue 1 in 2017/18?",
+   "a": "Paris Saint-Germain"
   },
   {
-   "q": "Who won the Primeira Liga in 2009/10?",
-   "a": "Benfica"
+   "q": "Who won Ligue 1 in 2016/17?",
+   "a": "Monaco"
   },
   {
-   "q": "Who won the Champions League in 2009/10?",
-   "a": "Inter Milan"
+   "q": "Who won Ligue 1 in 2015/16?",
+   "a": "Paris Saint-Germain"
   },
   {
-   "q": "Who won the Copa del Rey in 2009/10?",
-   "a": "Sevilla"
+   "q": "Who won Ligue 1 in 2014/15?",
+   "a": "Paris Saint-Germain"
   },
   {
-   "q": "Who won the Eredivisie in 2008/09?",
-   "a": "AZ Alkmaar"
+   "q": "Who won Ligue 1 in 2013/14?",
+   "a": "Paris Saint-Germain"
   },
   {
-   "q": "Who won La Liga in 2008/09?",
-   "a": "Barcelona"
+   "q": "Who won Ligue 1 in 2012/13?",
+   "a": "Paris Saint-Germain"
   },
   {
-   "q": "Who won the Premier League in 2008/09?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 2008/09?",
-   "a": "VfL Wolfsburg"
-  },
-  {
-   "q": "Who won Serie A in 2008/09?",
-   "a": "Inter Milan"
+   "q": "Who won Ligue 1 in 2010/11?",
+   "a": "Lille OSC"
   },
   {
    "q": "Who won Ligue 1 in 2008/09?",
    "a": "Girondins de Bordeaux"
   },
   {
-   "q": "Who won the Primeira Liga in 2008/09?",
+   "q": "Who won the Primeira Liga in 2018/19?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2017/18?",
    "a": "Porto"
   },
   {
-   "q": "Who won the Champions League in 2008/09?",
+   "q": "Who won the Primeira Liga in 2012/13?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2011/12?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2009/10?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Champions League in 2017/18?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Champions League in 2016/17?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Champions League in 2015/16?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Champions League in 2014/15?",
    "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Champions League in 2013/14?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Champions League in 2011/12?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Who won the Champions League in 2009/10?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2017/18?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2016/17?",
+   "a": "SBV Vitesse"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2015/16?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2014/15?",
+   "a": "Groningen"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2013/14?",
+   "a": "PEC Zwolle"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2012/13?",
+   "a": "AZ Alkmaar"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2011/12?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the KNVB Cup in 2010/11?",
+   "a": "Twente"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2017/18?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2016/17?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2015/16?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2014/15?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2013/14?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2012/13?",
+   "a": "Atlético Madrid"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2011/12?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2010/11?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2009/10?",
+   "a": "Sevilla"
   },
   {
    "q": "Who won the Copa del Rey in 2008/09?",
@@ -1437,6 +1365,134 @@
  ],
  "hard": [
   {
+   "q": "Who won La Liga in 2007/08?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 2004/05?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 2002/03?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1999/00?",
+   "a": "Deportivo de A Coruña"
+  },
+  {
+   "q": "Who won La Liga in 1997/98?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Premier League in 2007/08?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 2006/07?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 2005/06?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Who won the Premier League in 2004/05?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Who won the Premier League in 2003/04?",
+   "a": "Arsenal"
+  },
+  {
+   "q": "Who won the Premier League in 2002/03?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 2001/02?",
+   "a": "Arsenal"
+  },
+  {
+   "q": "Who won the Premier League in 2000/01?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 1999/00?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 1998/99?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 1997/98?",
+   "a": "Arsenal"
+  },
+  {
+   "q": "Who won the Premier League in 1996/97?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Bundesliga in 2007/08?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2004/05?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2002/03?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 2000/01?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 1997/98?",
+   "a": "1. FC Kaiserslautern"
+  },
+  {
+   "q": "Who won Serie A in 2006/07?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won Serie A in 2004/05?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Serie A in 2001/02?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Serie A in 1999/00?",
+   "a": "Lazio"
+  },
+  {
+   "q": "Who won Serie A in 1996/97?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Ligue 1 in 2005/06?",
+   "a": "Olympique Lyonnais"
+  },
+  {
+   "q": "Who won Ligue 1 in 2003/04?",
+   "a": "Olympique Lyonnais"
+  },
+  {
+   "q": "Who won Ligue 1 in 2000/01?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Who won Ligue 1 in 1998/99?",
+   "a": "Girondins de Bordeaux"
+  },
+  {
+   "q": "Who won Ligue 1 in 1996/97?",
+   "a": "Monaco"
+  },
+  {
    "q": "Who won the Primeira Liga in 2016/17?",
    "a": "Benfica"
   },
@@ -1453,59 +1509,39 @@
    "a": "Benfica"
   },
   {
-   "q": "Who won La Liga in 2007/08?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2007/08?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 2007/08?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2007/08?",
-   "a": "Inter Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2007/08?",
-   "a": "Olympique Lyonnais"
-  },
-  {
    "q": "Who won the Primeira Liga in 2007/08?",
    "a": "Porto"
   },
   {
-   "q": "Who won the Champions League in 2007/08?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2007/08?",
-   "a": "Valencia CF"
-  },
-  {
-   "q": "Who won La Liga in 2006/07?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2006/07?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 2006/07?",
-   "a": "VfB Stuttgart"
-  },
-  {
-   "q": "Who won Serie A in 2006/07?",
-   "a": "Inter Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2006/07?",
-   "a": "Olympique Lyonnais"
-  },
-  {
    "q": "Who won the Primeira Liga in 2006/07?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2003/04?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2002/03?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2001/02?",
+   "a": "Sporting CP"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2000/01?",
+   "a": "Boavista"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1999/00?",
+   "a": "Sporting CP"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1998/99?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1996/97?",
    "a": "Porto"
   },
   {
@@ -1513,296 +1549,40 @@
    "a": "Milan"
   },
   {
-   "q": "Who won the Copa del Rey in 2006/07?",
-   "a": "Sevilla"
-  },
-  {
-   "q": "Who won La Liga in 2005/06?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2005/06?",
-   "a": "Chelsea"
-  },
-  {
-   "q": "Who won the Bundesliga in 2005/06?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2005/06?",
-   "a": "Inter Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2005/06?",
-   "a": "Olympique Lyonnais"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2005/06?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 2005/06?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2005/06?",
-   "a": "RCD Espanyol de Barcelona"
-  },
-  {
-   "q": "Who won La Liga in 2004/05?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 2004/05?",
-   "a": "Chelsea"
-  },
-  {
-   "q": "Who won the Bundesliga in 2004/05?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2004/05?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2004/05?",
-   "a": "Olympique Lyonnais"
-  },
-  {
    "q": "Who won the Champions League in 2004/05?",
    "a": "Liverpool"
-  },
-  {
-   "q": "Who won La Liga in 2003/04?",
-   "a": "Valencia CF"
-  },
-  {
-   "q": "Who won the Premier League in 2003/04?",
-   "a": "Arsenal"
-  },
-  {
-   "q": "Who won the Bundesliga in 2003/04?",
-   "a": "SV Werder Bremen"
-  },
-  {
-   "q": "Who won Serie A in 2003/04?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 2003/04?",
-   "a": "Olympique Lyonnais"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2003/04?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 2003/04?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won La Liga in 2002/03?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2002/03?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 2002/03?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2002/03?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2002/03?",
-   "a": "Olympique Lyonnais"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2002/03?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 2002/03?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2002/03?",
-   "a": "RCD Mallorca"
-  },
-  {
-   "q": "Who won La Liga in 2001/02?",
-   "a": "Valencia CF"
-  },
-  {
-   "q": "Who won the Premier League in 2001/02?",
-   "a": "Arsenal"
-  },
-  {
-   "q": "Who won the Bundesliga in 2001/02?",
-   "a": "Borussia Dortmund"
-  },
-  {
-   "q": "Who won Serie A in 2001/02?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 2001/02?",
-   "a": "Olympique Lyonnais"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2001/02?",
-   "a": "Sporting CP"
   },
   {
    "q": "Who won the Champions League in 2001/02?",
    "a": "Real Madrid"
   },
   {
-   "q": "Who won La Liga in 2000/01?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 2000/01?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 2000/01?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 2000/01?",
-   "a": "Roma"
-  },
-  {
-   "q": "Who won Ligue 1 in 2000/01?",
-   "a": "Nantes"
-  },
-  {
-   "q": "Who won the Primeira Liga in 2000/01?",
-   "a": "Boavista"
-  },
-  {
-   "q": "Who won the Champions League in 2000/01?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won the Copa del Rey in 2000/01?",
-   "a": "Real Zaragoza"
-  },
-  {
-   "q": "Who won La Liga in 1999/00?",
-   "a": "Deportivo de A Coruña"
-  },
-  {
-   "q": "Who won the Premier League in 1999/00?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 1999/00?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 1999/00?",
-   "a": "Lazio"
-  },
-  {
-   "q": "Who won Ligue 1 in 1999/00?",
-   "a": "Monaco"
-  },
-  {
-   "q": "Who won the Primeira Liga in 1999/00?",
-   "a": "Sporting CP"
-  },
-  {
    "q": "Who won the Champions League in 1999/00?",
    "a": "Real Madrid"
   },
   {
-   "q": "Who won La Liga in 1998/99?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 1998/99?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 1998/99?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 1998/99?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 1998/99?",
-   "a": "Girondins de Bordeaux"
-  },
-  {
-   "q": "Who won the Primeira Liga in 1998/99?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 1998/99?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won La Liga in 1997/98?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 1997/98?",
-   "a": "Arsenal"
-  },
-  {
-   "q": "Who won the Bundesliga in 1997/98?",
-   "a": "1. FC Kaiserslautern"
-  },
-  {
-   "q": "Who won Serie A in 1997/98?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 1997/98?",
-   "a": "Lens"
-  },
-  {
-   "q": "Who won the Primeira Liga in 1997/98?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 1997/98?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won La Liga in 1996/97?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 1996/97?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 1996/97?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 1996/97?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 1996/97?",
-   "a": "Monaco"
-  },
-  {
-   "q": "Who won the Primeira Liga in 1996/97?",
-   "a": "Porto"
-  },
-  {
    "q": "Who won the Champions League in 1996/97?",
    "a": "Borussia Dortmund"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2007/08?",
+   "a": "Valencia CF"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2006/07?",
+   "a": "Sevilla"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2005/06?",
+   "a": "RCD Espanyol de Barcelona"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2002/03?",
+   "a": "RCD Mallorca"
+  },
+  {
+   "q": "Who won the Copa del Rey in 2000/01?",
+   "a": "Real Zaragoza"
   },
   {
    "q": "Which club plays its home games at Asito Stadion?",
@@ -1951,115 +1731,7 @@
  ],
  "extreme": [
   {
-   "q": "Who won the Primeira Liga in 2004/05?",
-   "a": "Benfica"
-  },
-  {
-   "q": "Who won La Liga in 1995/96?",
-   "a": "Atlético Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 1995/96?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 1995/96?",
-   "a": "Borussia Dortmund"
-  },
-  {
-   "q": "Who won Serie A in 1995/96?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 1995/96?",
-   "a": "AJ Auxerre"
-  },
-  {
-   "q": "Who won the Primeira Liga in 1995/96?",
-   "a": "Porto"
-  },
-  {
-   "q": "Who won the Champions League in 1995/96?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won La Liga in 1994/95?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Premier League in 1994/95?",
-   "a": "Blackburn Rovers"
-  },
-  {
-   "q": "Who won the Bundesliga in 1994/95?",
-   "a": "Borussia Dortmund"
-  },
-  {
-   "q": "Who won Serie A in 1994/95?",
-   "a": "Juventus"
-  },
-  {
-   "q": "Who won Ligue 1 in 1994/95?",
-   "a": "Nantes"
-  },
-  {
-   "q": "Who won the Champions League in 1994/95?",
-   "a": "AFC Ajax"
-  },
-  {
-   "q": "Who won La Liga in 1993/94?",
-   "a": "Barcelona"
-  },
-  {
-   "q": "Who won the Premier League in 1993/94?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 1993/94?",
-   "a": "Bayern Munich"
-  },
-  {
-   "q": "Who won Serie A in 1993/94?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 1993/94?",
-   "a": "Paris Saint-Germain"
-  },
-  {
-   "q": "Who won the Champions League in 1993/94?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won the Premier League in 1992/93?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Who won the Bundesliga in 1992/93?",
-   "a": "SV Werder Bremen"
-  },
-  {
-   "q": "Who won Serie A in 1992/93?",
-   "a": "Milan"
-  },
-  {
-   "q": "Who won Ligue 1 in 1992/93?",
-   "a": "Olympique de Marseille"
-  },
-  {
-   "q": "Who won the Champions League in 1992/93?",
-   "a": "Olympique de Marseille"
-  },
-  {
-   "q": "Who won Ligue 1 in 1991/92?",
-   "a": "Olympique de Marseille"
-  },
-  {
    "q": "Who won the Eredivisie in 1988/89?",
-   "a": "PSV Eindhoven"
-  },
-  {
-   "q": "Who won the Eredivisie in 1987/88?",
    "a": "PSV Eindhoven"
   },
   {
@@ -2071,28 +1743,168 @@
    "a": "PSV Eindhoven"
   },
   {
-   "q": "Who won the Eredivisie in 1984/85?",
-   "a": "AFC Ajax"
-  },
-  {
    "q": "Who won the Eredivisie in 1983/84?",
    "a": "Feyenoord Rotterdam"
-  },
-  {
-   "q": "Who won the Copa del Rey in 1983/84?",
-   "a": "Athletic Club"
   },
   {
    "q": "Who won the Eredivisie in 1982/83?",
    "a": "AFC Ajax"
   },
   {
-   "q": "Who won the Eredivisie in 1981/82?",
+   "q": "Who won the Eredivisie in 1980/81?",
+   "a": "AZ Alkmaar"
+  },
+  {
+   "q": "Who won La Liga in 1994/95?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1992/93?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 1989/90?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1987/88?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1984/85?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won La Liga in 1982/83?",
+   "a": "Athletic Club"
+  },
+  {
+   "q": "Who won the Premier League in 1995/96?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 1994/95?",
+   "a": "Blackburn Rovers"
+  },
+  {
+   "q": "Who won the Premier League in 1993/94?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Premier League in 1992/93?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Bundesliga in 1995/96?",
+   "a": "Borussia Dortmund"
+  },
+  {
+   "q": "Who won the Bundesliga in 1993/94?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 1990/91?",
+   "a": "1. FC Kaiserslautern"
+  },
+  {
+   "q": "Who won the Bundesliga in 1988/89?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 1986/87?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 1983/84?",
+   "a": "VfB Stuttgart"
+  },
+  {
+   "q": "Who won the Bundesliga in 1981/82?",
+   "a": "Hamburger SV"
+  },
+  {
+   "q": "Who won Serie A in 1994/95?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Serie A in 1991/92?",
+   "a": "Milan"
+  },
+  {
+   "q": "Who won Serie A in 1989/90?",
+   "a": "SSC Napoli"
+  },
+  {
+   "q": "Who won Serie A in 1987/88?",
+   "a": "Milan"
+  },
+  {
+   "q": "Who won Serie A in 1984/85?",
+   "a": "Hellas Verona"
+  },
+  {
+   "q": "Who won Serie A in 1982/83?",
+   "a": "Roma"
+  },
+  {
+   "q": "Who won Ligue 1 in 1993/94?",
+   "a": "Paris Saint-Germain"
+  },
+  {
+   "q": "Who won Ligue 1 in 1991/92?",
+   "a": "Olympique de Marseille"
+  },
+  {
+   "q": "Who won Ligue 1 in 1988/89?",
+   "a": "Olympique de Marseille"
+  },
+  {
+   "q": "Who won Ligue 1 in 1986/87?",
+   "a": "Girondins de Bordeaux"
+  },
+  {
+   "q": "Who won Ligue 1 in 1984/85?",
+   "a": "Girondins de Bordeaux"
+  },
+  {
+   "q": "Who won Ligue 1 in 1981/82?",
+   "a": "Monaco"
+  },
+  {
+   "q": "Who won the Primeira Liga in 2004/05?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1994/95?",
+   "a": "Porto"
+  },
+  {
+   "q": "Who won the Champions League in 1994/95?",
    "a": "AFC Ajax"
   },
   {
-   "q": "Who won the Eredivisie in 1980/81?",
-   "a": "AZ Alkmaar"
+   "q": "Who won the Champions League in 1991/92?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who won the Champions League in 1989/90?",
+   "a": "Milan"
+  },
+  {
+   "q": "Who won the Champions League in 1987/88?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the Champions League in 1984/85?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won the Champions League in 1982/83?",
+   "a": "Hamburger SV"
+  },
+  {
+   "q": "Who won the Copa del Rey in 1983/84?",
+   "a": "Athletic Club"
   },
   {
    "q": "Which club plays its home games at Jan Louwers Stadion?",
@@ -2189,14 +2001,6 @@
    "a": "AFC Ajax"
   },
   {
-   "q": "Who won the Copa del Rey in 1979/80?",
-   "a": "Real Madrid"
-  },
-  {
-   "q": "Who won the Eredivisie in 1978/79?",
-   "a": "AFC Ajax"
-  },
-  {
    "q": "Who won the Eredivisie in 1977/78?",
    "a": "PSV Eindhoven"
   },
@@ -2209,16 +2013,228 @@
    "a": "PSV Eindhoven"
   },
   {
-   "q": "Who won the Eredivisie in 1974/75?",
-   "a": "PSV Eindhoven"
-  },
-  {
    "q": "Who won the Eredivisie in 1973/74?",
    "a": "Feyenoord Rotterdam"
   },
   {
    "q": "Who won the Eredivisie in 1972/73?",
    "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 1970/71?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won the Eredivisie in 1969/70?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 1966/67?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Eredivisie in 1964/65?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won the Eredivisie in 1962/63?",
+   "a": "PSV Eindhoven"
+  },
+  {
+   "q": "Who won the Eredivisie in 1961/62?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won La Liga in 1979/80?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1977/78?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1974/75?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1972/73?",
+   "a": "Atlético Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1969/70?",
+   "a": "Atlético Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1967/68?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1964/65?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won La Liga in 1962/63?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Who won the Bundesliga in 1979/80?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 1976/77?",
+   "a": "Borussia Mönchengladbach"
+  },
+  {
+   "q": "Who won the Bundesliga in 1974/75?",
+   "a": "Borussia Mönchengladbach"
+  },
+  {
+   "q": "Who won the Bundesliga in 1972/73?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Bundesliga in 1969/70?",
+   "a": "Borussia Mönchengladbach"
+  },
+  {
+   "q": "Who won the Bundesliga in 1967/68?",
+   "a": "1. FC Nürnberg"
+  },
+  {
+   "q": "Who won the Bundesliga in 1965/66?",
+   "a": "TSV 1860 Munich"
+  },
+  {
+   "q": "Who won Serie A in 1979/80?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won Serie A in 1977/78?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Serie A in 1974/75?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Serie A in 1972/73?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Who won Serie A in 1969/70?",
+   "a": "Cagliari Calcio"
+  },
+  {
+   "q": "Who won Serie A in 1967/68?",
+   "a": "Milan"
+  },
+  {
+   "q": "Who won Serie A in 1964/65?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won Serie A in 1962/63?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won Ligue 1 in 1979/80?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Who won Ligue 1 in 1976/77?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Who won Ligue 1 in 1974/75?",
+   "a": "Saint-Étienne"
+  },
+  {
+   "q": "Who won Ligue 1 in 1972/73?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Who won Ligue 1 in 1969/70?",
+   "a": "Saint-Étienne"
+  },
+  {
+   "q": "Who won Ligue 1 in 1967/68?",
+   "a": "Saint-Étienne"
+  },
+  {
+   "q": "Who won Ligue 1 in 1964/65?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Who won Ligue 1 in 1962/63?",
+   "a": "Monaco"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1972/73?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1971/72?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1970/71?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1968/69?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1966/67?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1965/66?",
+   "a": "Sporting CP"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1963/64?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Who won the Primeira Liga in 1961/62?",
+   "a": "Sporting CP"
+  },
+  {
+   "q": "Who won the Champions League in 1979/80?",
+   "a": "Nottingham Forest"
+  },
+  {
+   "q": "Who won the Champions League in 1977/78?",
+   "a": "Liverpool"
+  },
+  {
+   "q": "Who won the Champions League in 1974/75?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Who won the Champions League in 1972/73?",
+   "a": "AFC Ajax"
+  },
+  {
+   "q": "Who won the Champions League in 1969/70?",
+   "a": "Feyenoord Rotterdam"
+  },
+  {
+   "q": "Who won the Champions League in 1967/68?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Who won the Champions League in 1964/65?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Who won the Champions League in 1962/63?",
+   "a": "Milan"
+  },
+  {
+   "q": "Who won the Copa del Rey in 1979/80?",
+   "a": "Real Madrid"
   },
   {
    "q": "Who won the Copa del Rey in 1972/73?",

@@ -2397,6 +2397,20 @@ const OFFENCE_PENALTY = n => n<=1 ? 0 : n===2 ? 1 : 2;
 
 let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stealer, timeUp, used:{tier:[i,..]}}
 
+/* ===================== EXTRA CLASSIC QUESTIONS (Wikidata) =====================
+   Generated from Wikidata, which is CC0, so no attribution and no licence tail
+   unlike the photo banks. Home grounds, founding years and league winners.
+   APPENDED to each tier, never inserted: S.used holds indexes, so putting these
+   anywhere but the end would scramble a saved match's list of seen questions. */
+fetch("assets/facts/index.json").then(r=>r.json()).then(extra=>{
+  let n=0;
+  for(const [tier,rows] of Object.entries(extra)){
+    if(!Array.isArray(BANK[tier])) continue;
+    BANK[tier].push(...rows); n+=rows.length;
+  }
+  if(n && (!S || S.phase==="setup")) render(); // refresh the "n left" counts
+}).catch(()=>{ /* offline first run: Classic just runs on its built-in bank */ });
+
 /* ============================== STADIUM BANK ==============================
    300 photos in assets/stadiums/, curated from Wikimedia Commons (see
    ATTRIBUTION.csv there). Tiers: 100 easy / 100 hard / 100 ball. */

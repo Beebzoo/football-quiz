@@ -592,7 +592,15 @@
   }
   .buzzbtn:active{transform:scale(.94)}
   body.guest #stage{pointer-events:none}
+  body.guest.caninput #stage{pointer-events:auto}
   body.guest{padding-bottom:96px}
+  .lockedrow{
+    background:rgba(233,184,76,.12);border:1px dashed #e9b84c;border-radius:14px;
+    padding:13px 16px;color:#f3d982;font:600 .95rem system-ui,sans-serif;
+  }
+  .lockrow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .lockchip{font:700 .78rem system-ui,sans-serif;color:#9fb8a6;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 10px}
+  .lockchip.on{color:#3fd685;border-color:rgba(63,214,133,.6)}
   .sheet .nm-in{background:#f4f6f5;border-color:#cfd8d2;color:var(--ink)}
   .sheet .nm-in::placeholder{color:#9aa7b5}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
@@ -2753,10 +2761,14 @@ function mpClient(){
   return mpClient._c;
 }
 const roomCode = () => Array.from({length:4},()=>"ABCDEFGHJKLMNPQRSTUVWXYZ"[Math.floor(Math.random()*24)]).join("");
+function mpStatePayload(){
+  // while everyone is typing, the answers stay secret: strip them from the mirror
+  return (S && S.phase==="w_answer") ? {...S, wans:S.players.map(()=>"")} : S;
+}
 function mpQueueState(){
   if(!MP || MP.role!=="host" || !MP.ch) return;
   clearTimeout(mpTimer);
-  mpTimer=setTimeout(()=>{ try{ MP.ch.send({type:"broadcast", event:"state", payload:S}); }catch(e){} }, 120);
+  mpTimer=setTimeout(()=>{ try{ MP.ch.send({type:"broadcast", event:"state", payload:mpStatePayload()}); }catch(e){} }, 120);
 }
 function hostRoom(){
   const c=mpClient(); if(!c) return;
@@ -2767,7 +2779,17 @@ function hostRoom(){
   ch.on("broadcast", {event:"buzz"}, ({payload})=>{
     ching(); toast(`🔔 ${payload&&payload.name?payload.name:"Someone"} BUZZED!`);
   });
-  ch.on("broadcast", {event:"hello"}, ()=>{ if(S){ try{ ch.send({type:"broadcast", event:"state", payload:S}); }catch(e){} } });
+  ch.on("broadcast", {event:"hello"}, ()=>{ if(S){ try{ ch.send({type:"broadcast", event:"state", payload:mpStatePayload()}); }catch(e){} } });
+  ch.on("broadcast", {event:"wans"}, ({payload})=>{
+    if(!S || S.phase!=="w_answer" || S.mode!=="written" || !payload) return;
+    const i=S.players.findIndex(p=>nameKey(p.name)===nameKey(payload.name||""));
+    if(i<0) return;
+    if(!S.wsub) S.wsub=S.players.map(()=>false);
+    S.wans[i]=String(payload.text||"").slice(0,60);
+    S.wsub[i]=true;
+    ching(); toast(`🔒 ${S.players[i].name} locked their answer`);
+    render();
+  });
   ch.on("presence", {event:"sync"}, ()=>{ if(MP){ MP.n=Object.keys(ch.presenceState()).length; mpRenderBar(); } });
   ch.subscribe(st=>{
     if(st==="SUBSCRIBED"){ ch.track({role:"host"}); toast(`Room ${code} open — join on the other phones`); mpRenderBar(); }
@@ -2784,7 +2806,13 @@ function joinRoom(code){
   const ch=c.channel("ball:"+code, {config:{broadcast:{self:false}, presence:{key}}});
   MP={role:"guest", code, ch, n:1};
   document.body.classList.add("guest");
-  ch.on("broadcast", {event:"state"}, ({payload})=>{ S=payload; render(); });
+  ch.on("broadcast", {event:"state"}, ({payload})=>{
+    if(MP && payload){
+      if(payload.qi!==MP.lastQi){ MP.draft=""; MP.locked=false; MP.lastQi=payload.qi; }
+      if(payload.phase!=="w_answer") MP.locked=false;
+    }
+    S=payload; render();
+  });
   ch.on("presence", {event:"sync"}, ()=>{ if(MP){ MP.n=Object.keys(ch.presenceState()).length; mpRenderBar(); } });
   ch.subscribe(st=>{
     if(st==="SUBSCRIBED"){
@@ -2814,12 +2842,45 @@ function leaveRoom(){
 }
 function mpRenderBar(){
   const bar=$("#mpbar"); if(!bar) return;
+  const typing = !!(MP && MP.role==="guest" && S && S.phase==="w_answer" && S.mode==="written");
+  document.body.classList.toggle("caninput", typing);
   if(!MP){ bar.hidden=true; bar.innerHTML=""; return; }
   bar.hidden=false;
   bar.innerHTML = MP.role==="host"
     ? `<div class="mppill">📡 Room <b>${MP.code}</b> · ${MP.n} phone${MP.n===1?"":"s"}<button class="mpx" onclick="leaveRoom()" aria-label="Close room">✕</button></div>`
     : `<div class="mppill">📡 ${MP.code} · ${MP.n}<button class="mpx" onclick="leaveRoom()" aria-label="Leave room">✕</button></div>
-       <button class="buzzbtn" onclick="mpBuzz()">BUZZ</button>`;
+       ${typing?"":`<button class="buzzbtn" onclick="mpBuzz()">BUZZ</button>`}`;
+}
+function mpGuestAnswerHTML(){
+  const t=TIERS[S.tier];
+  const my=(localStorage.getItem("ball-mp-name")||"").trim();
+  const idx=S.players.findIndex(p=>nameKey(p.name)===nameKey(my));
+  const qcard=`
+    <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
+      <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
+      <div class="qtext">${esc(q().q)}</div>
+    </div>`;
+  if(idx<0) return `
+    <div class="kick">Round ${S.round} · written question</div>
+    ${qcard}
+    <div class="hint" style="text-align:center">Your name "${esc(my||"?")}" doesn't match a player on the host phone (${S.players.map(p=>esc(p.name)).join(", ")}). Leave the room via ✕, fix your name, rejoin — or answer out loud like it's 2025.</div>`;
+  const locks=S.players.map((p,i)=>`<span class="lockchip${S.wsub&&S.wsub[i]?" on":""}">${esc(p.name)}${S.wsub&&S.wsub[i]?" ✓":""}</span>`).join("");
+  return `
+    <div class="kick">Round ${S.round} · your answer, in secret · +${t.pts}</div>
+    ${qcard}
+    <input class="nm-in" id="mpans" placeholder="${esc(S.players[idx].name)}'s answer" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
+    <button class="bigbtn" onclick="mpSendAns()">${MP.locked?"Update answer":"Lock it in"}</button>
+    ${MP.locked?`<div class="hint" style="text-align:center">Locked ✓ — you can still change it until the reveal.</div>`:""}
+    <div class="lockrow">${locks}</div>`;
+}
+function mpSendAns(){
+  const el=document.getElementById("mpans");
+  const text=el?el.value.trim():"";
+  if(!text){ toast("Type something first!", true); return; }
+  MP.draft=text; MP.locked=true;
+  const name=(localStorage.getItem("ball-mp-name")||"");
+  try{ MP.ch.send({type:"broadcast", event:"wans", payload:{name, text}}); }catch(e){}
+  popfx(); render();
 }
 function askPlayTogether(){
   audio();
@@ -3022,6 +3083,12 @@ function render(){
   const st=$("#stage");
   const P=S ? S.players[S.turn] : null;
 
+  // guests answer written questions on their own phone, in secret
+  if(MP && MP.role==="guest" && S && S.phase==="w_answer" && S.mode==="written"){
+    st.innerHTML=mpGuestAnswerHTML();
+    return;
+  }
+
   if(!S || S.phase==="setup"){ return showBoard ? renderBoard(st) : renderSetup(st); }
 
   if(S.phase==="pick"){
@@ -3051,13 +3118,18 @@ function render(){
 
   if(S.phase==="w_answer"){
     const t=TIERS[S.tier];
+    // a guest locking in mid-round triggers a re-render: keep whatever is
+    // half-typed in the host inputs instead of wiping it
+    S.players.forEach((p,i)=>{ const el=document.getElementById("wa"+i); if(el && !(S.wsub&&S.wsub[i])) S.wans[i]=el.value; });
     st.innerHTML = `
       <div class="kick">Round ${S.round} · everyone answers · +${t.pts}</div>
       <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
       </div>
-      ${S.players.map((p,i)=>`<input class="nm-in" id="wa${i}" placeholder="${esc(p.name)}'s answer" maxlength="60" autocomplete="off" value="${esc(S.wans[i]||"")}">`).join("")}
+      ${S.players.map((p,i)=> S.wsub&&S.wsub[i]
+        ? `<div class="lockedrow">🔒 ${esc(p.name)} locked their answer in from their phone</div>`
+        : `<input class="nm-in" id="wa${i}" placeholder="${esc(p.name)}'s answer" maxlength="60" autocomplete="off" value="${esc(S.wans[i]||"")}">`).join("")}
       ${S.timed?`<div class="clock" id="clock">
         <div class="digits">15.0</div>
         <div class="bar"><i style="width:100%"></i></div>
@@ -3574,7 +3646,7 @@ function renderSetup(st){
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and runs everything, the others join with the room code for a live mirror and a BUZZ button — internet needed on every phone, and the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and runs everything, the others join with the room code for a live mirror and a BUZZ button — and in Written mode everyone types their answer secretly on their own phone (join with the same name the host gave you) and locks it in before the reveal. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 
@@ -3612,7 +3684,7 @@ function resumeGame(){
   if(S.timed===undefined) S.timed=true; // saves from before the timer toggle existed
   if(S.mode===undefined) S.mode="classic"; // saves from before written mode existed
   if(S.target===undefined) S.target=0; // saves from before the win target existed
-  if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
+  if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[]; if(!S.wsub) S.wsub=[];
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
   if(!S.usedH) S.usedH=[]; if(!S.usedR) S.usedR=[]; // saves from before hilo/crev existed
@@ -3647,6 +3719,7 @@ function pickTier(t){
   if(S.mode==="written"){
     S.wans=S.players.map(()=>"");
     S.wgot=S.players.map(()=>false);
+    S.wsub=S.players.map(()=>false); // answers locked in from other phones
     S.phase="w_answer";
   }else{
     S.phase="question";
@@ -3662,7 +3735,7 @@ function skipQuestion(){
   S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);
   S.timeUp=false;
-  if(S.phase==="w_answer") S.wans=S.players.map(()=>""); // clear typed answers for the new question
+  if(S.phase==="w_answer"){ S.wans=S.players.map(()=>""); S.wsub=S.players.map(()=>false); } // clear typed answers for the new question
   if(S.mode==="nations" && S.phase==="question") natAnim=true;
   tick();
   render(); // re-render restarts the clock on the fresh question
@@ -3670,7 +3743,10 @@ function skipQuestion(){
 /* ----- written mode ----- */
 function wReveal(){
   stopTimer();
-  S.wans=S.players.map((_,i)=>{ const el=document.getElementById("wa"+i); return el?el.value.trim():(S.wans[i]||""); });
+  S.wans=S.players.map((_,i)=>{
+    if(S.wsub && S.wsub[i]) return S.wans[i]; // locked in from another phone, keep it
+    const el=document.getElementById("wa"+i); return el?el.value.trim():(S.wans[i]||"");
+  });
   S.phase="w_judge";
   render();
 }

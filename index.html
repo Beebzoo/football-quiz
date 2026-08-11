@@ -232,6 +232,7 @@
     box-shadow:0 2px 10px rgba(11,130,80,.28);
     position:sticky;top:0;z-index:5;
   }
+  #scorebug[hidden]{display:none} /* author display:flex beats the UA hidden rule without this */
   .bug{
     flex:1;border-radius:12px;padding:8px 6px 6px;text-align:center;
     background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);position:relative;
@@ -2855,7 +2856,7 @@ document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wak
 /* ============================== RENDER ============================== */
 function renderBug(){
   const bug=$("#scorebug");
-  if(!S || S.phase==="setup"){ bug.hidden=true; return; }
+  if(!S || S.phase==="setup"){ bug.hidden=true; bug.innerHTML=""; return; }
   bug.hidden=false;
   const home = `<button class="homeball" onclick="toMenu()" aria-label="Back to the menu" title="Back to the menu"><img src="assets/ball.png" alt=""></button>`;
   const best=Math.max(...S.players.map(p=>p.score));

@@ -473,6 +473,33 @@
   @keyframes halopulse{from{opacity:.55;transform:scale(.92)}to{opacity:1;transform:scale(1.06)}}
   .natcard img{max-width:80%;max-height:80%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.55))}
   .natcard.flagcard img{max-width:86%;max-height:64%;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.5)}
+  /* badge zoom */
+  .badgebox{
+    width:min(210px,60vw);height:min(210px,60vw);margin:6px auto 4px;
+    border-radius:18px;overflow:hidden;position:relative;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 12px 28px rgba(0,0,0,.5);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .badgebox img{width:78%;height:78%;object-fit:contain}
+  .badgebox img.sil{filter:brightness(0) opacity(.92);}
+  .badgebox.reveal{overflow:visible;background:rgba(255,255,255,.9)}
+  /* higher or lower */
+  .hilorow{display:flex;gap:10px;align-items:stretch;justify-content:center;margin-top:6px}
+  .hilocard{
+    flex:1;max-width:44%;border-radius:16px;overflow:hidden;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 10px 24px rgba(0,0,0,.45);text-align:center;padding-bottom:10px;
+  }
+  .hilocard img{width:100%;height:110px;object-fit:cover;display:block;margin-bottom:8px}
+  .hilocard .hn{font:700 .85rem/1.2 system-ui;padding:0 8px;color:#eef5ef}
+  .hilocard .hc{font:800 1.15rem/1.4 system-ui;font-variant-numeric:tabular-nums;color:#e9b84c}
+  .hilocard .hc.revealed{color:var(--card-r)}
+  .hilovs{align-self:center;font:900 1.2rem system-ui;color:#9fb8a6}
+  .hilovs.bust{color:var(--card-r);font-size:1.8rem}
+  .pips{display:flex;gap:8px;justify-content:center;margin-top:12px}
+  .pip2{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25)}
+  .pip2.on{background:#3fd685;box-shadow:0 0 10px rgba(63,214,133,.6)}
   .popA{animation:cardpop .55s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.15s}
   .popB{animation:cardpop .55s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.75s}
   @media (prefers-reduced-motion:reduce){
@@ -2344,7 +2371,105 @@ function natQ(){
           duo:{crest:"assets/logos/"+r.slug+".png", flag:"assets/natflags/"+r.flag+".png"}};
 }
 const tlabel = k => (S && S.mode==="nations" && k==="normal") ? "Medium" : TIERS[k].label;
-let natAnim = false; // floodlight entrance plays once per fresh One & Only question
+let natAnim = false; // entrance animation plays once per fresh One & Only question
+
+/* ============================== BADGE ZOOM BANK ==============================
+   2,588 crests from assets/logos: easy = the 70 One & Only clubs, hard = clubs
+   from the career deck, BALL = the other ~2,200 (zoomed is mercy; BALL is a
+   silhouette). */
+let BADGE=null;
+fetch("assets/badges/index.json").then(r=>r.json()).then(b=>{
+  BADGE=b;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+function badgeQ(){
+  const r=BADGE[S.tier][S.qi];
+  const zx=12+(S.qi*37)%64, zy=15+(S.qi*53)%58; // deterministic crop per question
+  return {q:"Name this club", a:r.n,
+          badge:{img:"assets/logos/"+r.s+".png", sil:S.tier==="ball",
+                 zoom:S.tier==="easy"?2.1:3.3, zx, zy}};
+}
+const badgeHTML = (b, revealed) => revealed
+  ? `<div class="badgebox reveal"><img src="${b.img}" alt=""></div>`
+  : b.sil
+    ? `<div class="badgebox"><img class="sil" src="${b.img}" alt=""></div>`
+    : `<div class="badgebox"><img style="transform:scale(${b.zoom});transform-origin:${b.zx}% ${b.zy}%" src="${b.img}" alt=""></div>`;
+
+/* ============================== HIGHER OR LOWER ==============================
+   Stadium capacities, five correct calls in a row for +10. The app judges. */
+function hiloPool(){
+  return ["easy","hard","ball"].flatMap(t=>STAD[t]||[]).filter(s=>s.capacity);
+}
+function pickH(){
+  const pool=hiloPool();
+  let avail=pool.filter(s=>!S.usedH.includes(s.slug));
+  if(!avail.length){ S.usedH=[]; avail=pool; }
+  const s=avail[Math.floor(Math.random()*avail.length)];
+  S.usedH.push(s.slug);
+  return s;
+}
+function newHilo(){
+  S.hilo={cur:pickH(), nxt:pickH(), streak:0};
+  S.phase="h_play";
+}
+function hiloGuess(dir){
+  const {cur,nxt}=S.hilo;
+  const correct = dir==="hi" ? nxt.capacity>=cur.capacity : nxt.capacity<=cur.capacity;
+  if(correct){
+    S.hilo.streak++; popfx();
+    if(S.hilo.streak>=5){
+      S.players[S.turn].score+=10; ching(); confetti(40);
+      toast(`⚽ ${S.players[S.turn].name} survives all five! +10`);
+      if(maybeFinish()) return;
+      hiloNextPlayer();
+    }else{
+      S.hilo.cur=nxt; S.hilo.nxt=pickH(); render();
+    }
+  }else{
+    buzzer(); flashBad();
+    S.phase="h_bust"; render();
+  }
+}
+function hiloNextPlayer(){
+  S.turn=(S.turn+1)%S.players.length;
+  if(S.turn===0) S.round++;
+  newHilo(); render();
+}
+
+/* ============================== CAREER REVERSE ==============================
+   The player's name appears; recite the career in order. +1 per club, +3 for
+   running the whole board. First mistake ends the run. */
+function newCrev(){
+  let avail=CAREERS.map((_,i)=>i).filter(i=>!S.usedR.includes(i));
+  if(!avail.length){ toast("Career deck exhausted — reshuffling!"); S.usedR=[]; avail=CAREERS.map((_,i)=>i); }
+  const ci=avail[Math.floor(Math.random()*avail.length)];
+  S.usedR.push(ci);
+  S.crev={ci, got:0};
+  S.phase="r_play";
+}
+function crevOk(){
+  const C=CAREERS[S.crev.ci];
+  S.crev.got++; popfx();
+  if(S.crev.got>=C.c.length){
+    const pts=S.crev.got+3;
+    S.players[S.turn].score+=pts; ching(); confetti(46);
+    toast(`⚽ Full career! ${S.players[S.turn].name} +${pts}`);
+    if(maybeFinish()) return;
+    crevNextPlayer();
+  }else render();
+}
+function crevEnd(){
+  const pts=S.crev.got;
+  if(pts>0){ S.players[S.turn].score+=pts; ching(); toast(`${S.players[S.turn].name} +${pts}`); }
+  else { buzzer(); flashBad(); }
+  if(maybeFinish()) return;
+  S.phase="r_dead"; render();
+}
+function crevNextPlayer(){
+  S.turn=(S.turn+1)%S.players.length;
+  if(S.turn===0) S.round++;
+  newCrev(); render();
+}
 
 function freshState(names, timed=true, mode="classic", target=100){
   return {
@@ -2354,6 +2479,8 @@ function freshState(names, timed=true, mode="classic", target=100){
     target:target, // first to this score wins; 0 = no limit
     wans:[], wgot:[], // written mode: typed answers + who was marked correct
     career:null, usedC:[], // career mode: current round + careers already played
+    hilo:null, usedH:[], // higher-or-lower: current run + grounds already shown
+    crev:null, usedR:[], // career reverse: current run + careers already recited
     ref:null, // referee mode: the non-playing quizmaster's name
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
@@ -2490,6 +2617,9 @@ const IPATHS = {
   book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
   hand:'<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.51-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
   eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  zoom:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>',
+  updown:'<polyline points="8 7 12 3 16 7"/><line x1="12" y1="3" x2="12" y2="11"/><polyline points="16 17 12 21 8 17"/><line x1="12" y1="13" x2="12" y2="21"/>',
+  rewind:'<polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/>',
   cam:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
   trophy:'<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3"/><path d="M7 5H4v2a3 3 0 0 0 3 3"/>',
 };
@@ -2524,8 +2654,8 @@ function flashBad(){
   setTimeout(()=>f.remove(),600);
 }
 function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
-function bankFor(t){ return S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : BANK[t]; }
-function q(){ return S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : BANK[S.tier][S.qi]; }
+function bankFor(t){ return S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : S.mode==="badge" ? BADGE[t] : BANK[t]; }
+function q(){ return S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : S.mode==="badge" ? badgeQ() : BANK[S.tier][S.qi]; }
 function remaining(t){ return bankFor(t).length - S.used[t].length; }
 async function wakeLock(){ try{ if(navigator.wakeLock) await navigator.wakeLock.request("screen"); }catch(e){} }
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wakeLock(); });
@@ -2561,15 +2691,17 @@ function render(){
     const written = S.mode==="written";
     const stad = S.mode==="stadium";
     const nat = S.mode==="nations";
+    const bdg = S.mode==="badge";
     st.innerHTML = `
-      <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":nat?"The One & Only":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":nat?"The One & Only":bdg?"Badge Zoom":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
       <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
         :stad?"Pick your difficulty — a stadium photo appears, answer out loud."
         :nat?"Pick your difficulty — a club and a flag appear: name the only player of that nationality ever to wear the shirt."
+        :bdg?"Pick your difficulty — a crest appears zoomed right in (BALL: silhouette only). Name the club."
         :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
         :"Pick your difficulty. Someone else reads the question out loud."}</div>
-      ${Object.entries(TIERS).filter(([k])=> stad ? (STAD && STAD[k]) : nat ? (NAT && NAT[k]) : true).map(([k,t],ix)=>`
+      ${Object.entries(TIERS).filter(([k])=> stad ? (STAD && STAD[k]) : nat ? (NAT && NAT[k]) : bdg ? (BADGE && BADGE[k]) : true).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
           <span class="left"><span>${tlabel(k)}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
           <span class="pts">+${t.pts}</span>
@@ -2584,7 +2716,7 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Round ${S.round} · everyone answers · +${t.pts}</div>
-      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
       </div>
@@ -2605,7 +2737,7 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Round ${S.round} · who got it? · +${t.pts}</div>
-      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
@@ -2633,7 +2765,7 @@ function render(){
     const sp = S.mode==="stadium" ? stadPts() : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
-      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
@@ -2642,6 +2774,7 @@ function render(){
             <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
+        ${q().badge?badgeHTML(q().badge,false):""}
         <div class="qtext">${esc(q().q)}</div>
         ${sp?`<div class="ladder">Ground +${sp.name} · city +${sp.city} · country +${sp.country}</div>`:""}
       </div>
@@ -2671,7 +2804,7 @@ function render(){
     const s  = sp ? q().stad : null;
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
-      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
@@ -2680,6 +2813,7 @@ function render(){
             <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
+        ${q().badge?badgeHTML(q().badge,true):""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -2720,7 +2854,7 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Nobody got it</div>
-      <div class="qcard${q().duo?" natq":""}" style="--dc:${t.color}">
+      <div class="qcard${(q().duo||q().badge)?" natq":""}" style="--dc:${t.color}">
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
           <div class="natrow">
@@ -2728,6 +2862,7 @@ function render(){
             <div class="natcard flagcard${natAnim?" popB":""}"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
           </div>
         </div>`:""}
+        ${q().badge?badgeHTML(q().badge,true):""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -2798,6 +2933,67 @@ function render(){
       <div class="clubgrid">${grid}</div>
       <div class="spacer"></div>
       <button class="bigbtn" onclick="cAfter()">Next career<kbd>Space</kbd></button>`;
+    return;
+  }
+
+  if(S.phase==="h_play" || S.phase==="h_bust"){
+    const {cur,nxt,streak}=S.hilo;
+    const bust = S.phase==="h_bust";
+    const pips = Array.from({length:5},(_,i)=>`<span class="pip2${i<streak?" on":""}"></span>`).join("");
+    st.innerHTML = `
+      <div class="kick">Higher or Lower · ${esc(S.players[S.turn].name)}'s run · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="hilorow">
+        <div class="hilocard">
+          <img src="assets/stadiums/${cur.slug}" alt="">
+          <div class="hn">${esc(cur.name)}</div>
+          <div class="hc">${cur.capacity.toLocaleString("en-GB")}</div>
+        </div>
+        <div class="hilovs${bust?" bust":""}">${bust?"✗":"VS"}</div>
+        <div class="hilocard">
+          <img src="assets/stadiums/${nxt.slug}" alt="">
+          <div class="hn">${esc(nxt.name)}</div>
+          <div class="hc${bust?" revealed":""}">${bust?nxt.capacity.toLocaleString("en-GB"):"???"}</div>
+        </div>
+      </div>
+      <div class="pips">${pips}</div>
+      ${bust?`
+      <div class="hint" style="text-align:center;color:var(--card-r);font-weight:700">Busted at ${streak} — no points this run.</div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="hiloNextPlayer()">Next player<kbd>Space</kbd></button>`
+      :`
+      <div class="hint" style="text-align:center">Does ${esc(nxt.name)} hold more or fewer than ${esc(cur.name)}? Five in a row pays +10 — the app judges, no arguing.</div>
+      <div class="spacer"></div>
+      <div class="row2">
+        <button class="bigbtn ok" onclick="hiloGuess('hi')">⬆ Higher<kbd>H</kbd></button>
+        <button class="bigbtn bad" onclick="hiloGuess('lo')">⬇ Lower<kbd>L</kbd></button>
+      </div>
+      <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
+    return;
+  }
+
+  if(S.phase==="r_play" || S.phase==="r_dead"){
+    const C=CAREERS[S.crev.ci];
+    const done = S.phase==="r_dead";
+    const cards = C.c.map((slug,i)=> (i<S.crev.got || done)
+      ? `<div class="clubcard${done&&i>=S.crev.got?" pop":""}"><img src="assets/logos/${slug}.png" alt=""></div>`
+      : `<div class="clubcard mystery">?</div>`).join("");
+    st.innerHTML = `
+      <div class="kick">Career Reverse · ${esc(S.players[S.turn].name)} reciting · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="careername">${esc(C.n)}</div>
+      ${done&&C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
+      <div class="clubgrid">${cards}</div>
+      <div class="potpill">${S.crev.got} / ${C.c.length} clubs${done||S.crev.got===C.c.length?"":" · full career pays +"+(C.c.length+3)}</div>
+      ${done?`
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="crevNextPlayer()">Next player<kbd>Space</kbd></button>`
+      :`
+      <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} names the clubs in career order, out loud. ${reader()} confirms each before revealing.</div>
+      <div class="spacer"></div>
+      <div class="row2">
+        <button class="bigbtn ok" onclick="crevOk()">✓ Named it +1<kbd>C</kbd></button>
+        <button class="bigbtn bad" onclick="crevEnd()">✗ Wrong / stop<kbd>W</kbd></button>
+      </div>
+      <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
     return;
   }
 
@@ -2939,6 +3135,9 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
       <button class="bigbtn ghost${setupMode==="stadium"?" sel":""}" onclick="setMode('stadium')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('cam')}Stadium</button>
       <button class="bigbtn ghost${setupMode==="nations"?" sel":""}" onclick="setMode('nations')" ${NAT?"":"disabled style='opacity:.4'"}>${ico('flag')}One &amp; Only</button>
+      <button class="bigbtn ghost${setupMode==="badge"?" sel":""}" onclick="setMode('badge')" ${BADGE?"":"disabled style='opacity:.4'"}>${ico('zoom')}Badge Zoom</button>
+      <button class="bigbtn ghost${setupMode==="hilo"?" sel":""}" onclick="setMode('hilo')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('updown')}Higher or Lower</button>
+      <button class="bigbtn ghost${setupMode==="crev"?" sel":""}" onclick="setMode('crev')">${ico('rewind')}Career Reverse</button>
     </div>
     ${setupMode==="stadium"?`<div class="hint" style="text-align:center">Name the ground for the full points, or take fewer for the city, fewer still for the country.</div>`:""}
     ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div><div class="spacer"></div>`:`
@@ -2950,7 +3149,7 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
     </div>`}
-    ${setupMode==="career"?"":`<div class="row2">
+    ${["career","hilo","crev"].includes(setupMode)?"":`<div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">${ico('clock')}With timer</button>
       <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">${ico('inf')}No timer</button>
     </div>`}
@@ -2968,7 +3167,7 @@ function renderSetup(st){
     ${history().length?`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 
@@ -2984,12 +3183,16 @@ function startGame(){
   });
   if(setupMode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   if(setupMode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
+  if(setupMode==="badge" && !BADGE){ toast("Badge bank still loading — one second!", true); return; }
+  if(setupMode==="hilo" && !STAD){ toast("Stadium data still loading — one second!", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
     S.ref=(el && el.value.trim()) || "The ref";
   }
   if(S.mode==="career") newCareer();
+  if(S.mode==="hilo") newHilo();
+  if(S.mode==="crev") newCrev();
   render();
 }
 function resumeGame(){
@@ -3001,8 +3204,13 @@ function resumeGame(){
   if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[];
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
+  if(!S.usedH) S.usedH=[]; if(!S.usedR) S.usedR=[]; // saves from before hilo/crev existed
+  if(S.mode==="hilo" && !S.hilo) newHilo();
+  if(S.mode==="crev" && !S.crev) newCrev();
   if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
+  if(S.mode==="badge" && !BADGE){ toast("Badge bank still loading — one second!", true); return; }
+  if(S.mode==="hilo" && !STAD){ toast("Stadium data still loading — one second!", true); return; }
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
@@ -3248,9 +3456,12 @@ function endGame(){
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
-  const usedC=S.usedC, ref=S.ref;
+  const usedC=S.usedC, ref=S.ref, usedH=S.usedH, usedR=S.usedR;
   S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC; S.ref=ref;
+  S.usedH=usedH||[]; S.usedR=usedR||[];
   if(S.mode==="career") newCareer();
+  if(S.mode==="hilo") newHilo();
+  if(S.mode==="crev") newCrev();
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
@@ -3310,6 +3521,16 @@ document.addEventListener("keydown", e=>{
   }else if(S.phase==="c_judge"){
     if(k==="c") cJudge(true);
     if(k==="w"||k==="x") cJudge(false);
+  }else if(S.phase==="h_play"){
+    if(k==="h") hiloGuess('hi');
+    if(k==="l") hiloGuess('lo');
+  }else if(S.phase==="h_bust"){
+    if(k===" "||k==="enter"){ e.preventDefault(); hiloNextPlayer(); }
+  }else if(S.phase==="r_play"){
+    if(k==="c") crevOk();
+    if(k==="w"||k==="x") crevEnd();
+  }else if(S.phase==="r_dead"){
+    if(k===" "||k==="enter"){ e.preventDefault(); crevNextPlayer(); }
   }else if(S.phase==="c_dead"){
     if(k===" "||k==="enter"){ e.preventDefault(); cAfter(); }
   }else if(S.phase==="deadq"){

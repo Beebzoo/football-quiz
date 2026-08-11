@@ -530,8 +530,21 @@
   .tlrow{
     display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
     background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+    transition:transform .16s ease;
   }
+  .tlrow.draggable{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+  .tlrow.dragging{
+    transition:none;position:relative;z-index:5;cursor:grabbing;
+    background:rgba(255,255,255,.15);border-color:#e9b84c;
+    box-shadow:0 14px 30px rgba(0,0,0,.55);
+  }
+  .grip{color:#9fb8a6;font-size:1.05rem;line-height:1;opacity:.8}
   .tlrow.pop{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both}
+  .tlrow.tlok{border-color:rgba(63,214,133,.65)}
+  .tlrow.tlbad{border-color:rgba(217,74,74,.6);opacity:.85}
+  .tlmark{margin-left:auto;font-weight:800}
+  .tlok .tlmark{color:#3fd685}
+  .tlbad .tlmark{color:var(--card-r)}
   .tlyear{min-width:56px;text-align:center;font:800 .95rem ui-monospace,Consolas,monospace;color:#e9b84c;background:rgba(0,0,0,.25);border-radius:8px;padding:4px 6px}
   .tlt{font:600 .92rem/1.3 system-ui;color:#eef5ef}
   .popA{animation:cardpop .55s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.15s}
@@ -2573,8 +2586,45 @@ function newTL(){
   S.tl={i:ti, order};
   S.phase="tl_play";
 }
-function tlReveal(){ S.phase="tl_reveal"; render(); }
-function tlAward(pts){
+/* drag-to-reorder: transforms only while dragging, the order commits on drop.
+   render() is never called mid-drag or the captured element would vanish. */
+let tlDrag=null;
+function tlDown(e,pos){
+  if(!S || S.phase!=="tl_play") return;
+  e.preventDefault();
+  const el=e.currentTarget;
+  try{ el.setPointerCapture(e.pointerId); }catch(_){}
+  tlDrag={el, pos, to:pos, y0:e.clientY, h:el.offsetHeight+8, rows:[...el.parentNode.children]};
+  el.classList.add("dragging");
+}
+function tlDragMove(e){
+  if(!tlDrag) return;
+  const dy=e.clientY-tlDrag.y0;
+  tlDrag.el.style.transform=`translateY(${dy}px)`;
+  const to=Math.max(0, Math.min(tlDrag.rows.length-1, tlDrag.pos+Math.round(dy/tlDrag.h)));
+  if(to!==tlDrag.to){
+    tlDrag.to=to; popfx();
+    tlDrag.rows.forEach((r,i)=>{
+      if(r===tlDrag.el) return;
+      let shift=0;
+      if(tlDrag.pos<to && i>tlDrag.pos && i<=to) shift=-tlDrag.h;
+      if(tlDrag.pos>to && i>=to && i<tlDrag.pos) shift=tlDrag.h;
+      r.style.transform = shift ? `translateY(${shift}px)` : "";
+    });
+  }
+}
+function tlDragEnd(){
+  if(!tlDrag) return;
+  const {pos,to}=tlDrag;
+  tlDrag=null;
+  if(to!==pos){ const o=S.tl.order, [it]=o.splice(pos,1); o.splice(to,0,it); }
+  render();
+}
+function tlReveal(){
+  const right=S.tl.order.map((v,i)=>v===i);
+  const pts=right.filter(Boolean).length; // 4 is impossible: 4 right means all 5
+  S.tl.right=right; S.tl.score=pts;
+  S.phase="tl_reveal";
   const who=S.players[S.turn];
   if(pts>0){
     who.score+=pts;
@@ -2582,6 +2632,9 @@ function tlAward(pts){
     else { popfx(); toast(`${who.name} +${pts}`); }
   } else { buzzer(); flashBad(); toast(`${who.name}: nothing in place`, true); }
   if(maybeFinish()) return;
+  render();
+}
+function tlNext(){
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
   newTL(); render();
@@ -3158,25 +3211,20 @@ function render(){
     const T=TLINE[S.tl.i];
     const rev=S.phase==="tl_reveal";
     const rows = rev
-      ? T.items.map((it,i)=>`<div class="tlrow pop" style="animation-delay:${i*.15}s"><span class="tlyear">${it.y}</span><span class="tlt">${esc(it.t)}</span></div>`).join("")
-      : S.tl.order.map(ix=>`<div class="tlrow"><span class="tlyear">?</span><span class="tlt">${esc(T.items[ix].t)}</span></div>`).join("");
+      ? S.tl.order.map((ix,p)=>`<div class="tlrow pop ${S.tl.right[p]?"tlok":"tlbad"}" style="animation-delay:${p*.12}s"><span class="tlyear">${T.items[ix].y}</span><span class="tlt">${esc(T.items[ix].t)}</span><span class="tlmark">${S.tl.right[p]?"✓":"✗"}</span></div>`).join("")
+      : S.tl.order.map((ix,p)=>`<div class="tlrow draggable" onpointerdown="tlDown(event,${p})" onpointermove="tlDragMove(event)" onpointerup="tlDragEnd()" onpointercancel="tlDragEnd()"><span class="grip">⠿</span><span class="tlyear">?</span><span class="tlt">${esc(T.items[ix].t)}</span></div>`).join("");
     st.innerHTML = `
       <div class="kick">Timeline · ${esc(S.players[S.turn].name)}'s call · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
       <div class="xititle">${esc(T.q)}</div>
       <div class="tlwrap">${rows}</div>
       ${rev?`
-      <div class="hint" style="text-align:center">${reader()} pays +1 per event ${esc(S.players[S.turn].name)} had in the right spot, +5 for a perfect five.</div>
-      <div class="xichips">
-        <button class="bigbtn ghost" onclick="tlAward(0)">0</button>
-        <button class="bigbtn ghost" onclick="tlAward(1)">+1</button>
-        <button class="bigbtn ghost" onclick="tlAward(2)">+2</button>
-        <button class="bigbtn ghost" onclick="tlAward(3)">+3</button>
-        <button class="bigbtn ok" onclick="tlAward(5)">Perfect +5</button>
-      </div>`
-      :`
-      <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} puts them in order out loud, earliest first, then the years come out.</div>
+      <div class="potpill">${S.tl.score} / 5 in the right spot${S.tl.score===5?" · perfect!":""}</div>
       <div class="spacer"></div>
-      <button class="bigbtn" onclick="tlReveal()">Reveal the years<kbd>Space</kbd></button>
+      <button class="bigbtn" onclick="tlNext()">Next timeline<kbd>Space</kbd></button>`
+      :`
+      <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} drags the events into order, earliest on top, then locks it in. The app pays +1 per correct spot, +5 for a perfect five.</div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="tlReveal()">Lock it in<kbd>Space</kbd></button>
       <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
     return;
   }
@@ -3365,7 +3413,7 @@ function renderSetup(st){
     ${history().length?`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history, put them in chronological order out loud, then the years are revealed — +1 per event you had in the right spot, a perfect five pays +5. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in (BALL tier: a black silhouette) — name the club, 2,588 badges deep. <b>Higher or Lower:</b> stadium capacities, call five in a row for +10 — the app judges, so no yellow cards for arguing. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 
@@ -3418,6 +3466,7 @@ function resumeGame(){
   if(S.mode==="crev" && !S.crev) newCrev();
   if(S.mode==="xi" && !S.xi) newXI();
   if(S.mode==="tline" && !S.tl) newTL();
+  if(S.phase==="tl_reveal" && S.tl && !S.tl.right) S.phase="tl_play"; // saves from before drag scoring
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
@@ -3745,8 +3794,7 @@ document.addEventListener("keydown", e=>{
   }else if(S.phase==="tl_play"){
     if(k===" "||k==="enter"){ e.preventDefault(); tlReveal(); }
   }else if(S.phase==="tl_reveal"){
-    if(["0","1","2","3"].includes(k)) tlAward(+k);
-    if(k==="5") tlAward(5);
+    if(k===" "||k==="enter"){ e.preventDefault(); tlNext(); }
   }else if(S.phase==="c_dead"){
     if(k===" "||k==="enter"){ e.preventDefault(); cAfter(); }
   }else if(S.phase==="deadq"){

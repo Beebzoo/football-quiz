@@ -439,15 +439,41 @@
   /* stadium mode */
   .stadimg{display:block;width:100%;max-height:40vh;object-fit:cover;border-radius:12px;margin:0 0 10px;background:#0b1c12}
   .pcredit{margin-top:8px;font-size:.62rem;opacity:.55;text-align:right}
-  /* one & only mode: club crest + flag side by side */
-  .natrow{display:flex;gap:14px;justify-content:center;margin:4px 0 10px}
+  /* one & only mode: floodlit stage, crest + flag under their own lights */
+  .natstage{position:relative;padding-top:66px;margin:2px 0 8px}
+  .natrow{display:flex;gap:14px;justify-content:center}
   .natcard{
-    width:min(104px,26vw);height:min(104px,26vw);background:#fff;border-radius:14px;
-    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
-    box-shadow:var(--shadow);
+    width:min(104px,26vw);height:min(104px,26vw);border-radius:14px;
+    background:linear-gradient(160deg, rgba(208,240,220,.22), rgba(150,205,175,.09));
+    border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(2px);
+    display:flex;align-items:center;justify-content:center;position:relative;z-index:1;
+    box-shadow:0 8px 20px rgba(0,0,0,.4), 0 0 30px rgba(255,244,190,.12);
   }
-  .natcard img{max-width:78%;max-height:78%}
+  .natcard img{max-width:78%;max-height:78%;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
   .natcard.flagcard img{max-width:84%;max-height:64%;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+  .floodhead{
+    position:absolute;top:0;width:54px;height:15px;border-radius:4px;z-index:2;
+    background:#16281d;border:1px solid rgba(255,255,255,.18);
+    display:flex;gap:4px;align-items:center;justify-content:center;
+  }
+  .floodhead i{width:9px;height:9px;border-radius:50%;background:#fff6cf;box-shadow:0 0 10px rgba(255,240,170,.95)}
+  .fh-l{left:calc(50% - 86px)}
+  .fh-r{right:calc(50% - 86px)}
+  .beam{
+    position:absolute;top:13px;bottom:-4px;width:150px;z-index:0;pointer-events:none;
+    background:linear-gradient(rgba(255,246,210,.30), rgba(255,246,210,.02));
+    clip-path:polygon(36% 0,64% 0,100% 100%,0 100%);
+  }
+  .bm-l{left:calc(50% - 134px)}
+  .bm-r{right:calc(50% - 134px)}
+  .fon{animation:lighton .5s both}
+  .fon2{animation:lighton .5s both;animation-delay:.7s}
+  @keyframes lighton{0%{opacity:0}45%{opacity:1}60%{opacity:.3}100%{opacity:1}}
+  .popA{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.25s}
+  .popB{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both;animation-delay:.95s}
+  @media (prefers-reduced-motion:reduce){
+    .fon,.fon2,.popA,.popB{animation:none}
+  }
   .row2.modes{flex-wrap:wrap}
   .row2.modes .bigbtn{flex:1 1 30%}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
@@ -2313,6 +2339,7 @@ function natQ(){
           duo:{crest:"assets/logos/"+r.slug+".png", flag:"assets/natflags/"+r.flag+".png"}};
 }
 const tlabel = k => (S && S.mode==="nations" && k==="normal") ? "Medium" : TIERS[k].label;
+let natAnim = false; // floodlight entrance plays once per fresh One & Only question
 
 function freshState(names, timed=true, mode="classic", target=100){
   return {
@@ -2604,7 +2631,16 @@ function render(){
       <div class="qcard" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
-        ${q().duo?`<div class="natrow"><div class="natcard"><img src="${q().duo.crest}" alt=""></div><div class="natcard flagcard"><img src="${q().duo.flag}" alt=""></div></div>`:""}
+        ${q().duo?`<div class="natstage">
+          <div class="floodhead fh-l${natAnim?" fon":""}"><i></i><i></i><i></i></div>
+          <div class="floodhead fh-r${natAnim?" fon2":""}"><i></i><i></i><i></i></div>
+          <div class="beam bm-l${natAnim?" fon":""}"></div>
+          <div class="beam bm-r${natAnim?" fon2":""}"></div>
+          <div class="natrow">
+            <div class="natcard${natAnim?" popA":""}"><img src="${q().duo.crest}" alt=""></div>
+            <div class="natcard flagcard${natAnim?" popB":""}"><img src="${q().duo.flag}" alt=""></div>
+          </div>
+        </div>`:""}
         <div class="qtext">${esc(q().q)}</div>
         ${sp?`<div class="ladder">Ground +${sp.name} · city +${sp.city} · country +${sp.country}</div>`:""}
       </div>
@@ -2619,6 +2655,10 @@ function render(){
         ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer — the clock stops."
         : "No timer — take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one — same difficulty, no points lost.</div>`;
     if(S.timed) startTimer(stealing?5:15, onTimeUp);
+    if(S.mode==="nations" && natAnim && !matchMedia("(prefers-reduced-motion: reduce)").matches){
+      setTimeout(popfx, 300); setTimeout(popfx, 1000);
+    }
+    natAnim=false;
     return;
   }
 
@@ -2633,7 +2673,16 @@ function render(){
       <div class="qcard" style="--dc:${t.color}">
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
-        ${q().duo?`<div class="natrow"><div class="natcard"><img src="${q().duo.crest}" alt=""></div><div class="natcard flagcard"><img src="${q().duo.flag}" alt=""></div></div>`:""}
+        ${q().duo?`<div class="natstage">
+          <div class="floodhead fh-l${natAnim?" fon":""}"><i></i><i></i><i></i></div>
+          <div class="floodhead fh-r${natAnim?" fon2":""}"><i></i><i></i><i></i></div>
+          <div class="beam bm-l${natAnim?" fon":""}"></div>
+          <div class="beam bm-r${natAnim?" fon2":""}"></div>
+          <div class="natrow">
+            <div class="natcard${natAnim?" popA":""}"><img src="${q().duo.crest}" alt=""></div>
+            <div class="natcard flagcard${natAnim?" popB":""}"><img src="${q().duo.flag}" alt=""></div>
+          </div>
+        </div>`:""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -2676,7 +2725,16 @@ function render(){
       <div class="kick">Nobody got it</div>
       <div class="qcard" style="--dc:${t.color}">
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
-        ${q().duo?`<div class="natrow"><div class="natcard"><img src="${q().duo.crest}" alt=""></div><div class="natcard flagcard"><img src="${q().duo.flag}" alt=""></div></div>`:""}
+        ${q().duo?`<div class="natstage">
+          <div class="floodhead fh-l${natAnim?" fon":""}"><i></i><i></i><i></i></div>
+          <div class="floodhead fh-r${natAnim?" fon2":""}"><i></i><i></i><i></i></div>
+          <div class="beam bm-l${natAnim?" fon":""}"></div>
+          <div class="beam bm-r${natAnim?" fon2":""}"></div>
+          <div class="natrow">
+            <div class="natcard${natAnim?" popA":""}"><img src="${q().duo.crest}" alt=""></div>
+            <div class="natcard flagcard${natAnim?" popB":""}"><img src="${q().duo.flag}" alt=""></div>
+          </div>
+        </div>`:""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
@@ -2967,6 +3025,7 @@ function pickTier(t){
   S.tier=t; S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);
   S.timeUp=false; S.stealer=null;
+  if(S.mode==="nations"){ natAnim=true; slamfx(); }
   if(S.mode==="written"){
     S.wans=S.players.map(()=>"");
     S.wgot=S.players.map(()=>false);
@@ -2986,6 +3045,7 @@ function skipQuestion(){
   S.used[t].push(S.qi);
   S.timeUp=false;
   if(S.phase==="w_answer") S.wans=S.players.map(()=>""); // clear typed answers for the new question
+  if(S.mode==="nations" && S.phase==="question") natAnim=true;
   tick();
   render(); // re-render restarts the clock on the fresh question
 }

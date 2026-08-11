@@ -508,6 +508,7 @@
   }
   .row2.modes{flex-wrap:wrap}
   .row2.modes .bigbtn{flex:1 1 30%}
+  .modestoggle .chev{opacity:.55;font-size:.75em;margin-left:7px}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
   .bigbtn.ok.lesser{background:#0d7a48;font-size:1.05rem;padding:15px}
   .bigbtn.ok{background:var(--ok);border-color:var(--turf-deep)}
@@ -2607,6 +2608,7 @@ const esc = s => s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"'
 /* flat inline icons (Feather-style, stroke = button text colour) */
 const IPATHS = {
   users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
   card:'<rect x="7.5" y="3.5" width="9" height="14" rx="1.5" fill="#f0c419" stroke="none" transform="rotate(8 12 10.5)"/>',
   mic:'<path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/>',
   pencil:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
@@ -3034,6 +3036,8 @@ function render(){
 let setupCount = 3;
 let setupTimed = true;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
+let modesOpen = false; // the specialty-mode drawer on the menu
+const MODE_META = {career:["route","Career Path"], stadium:["cam","Stadium"], nations:["flag","One &amp; Only"], badge:["zoom","Badge Zoom"], hilo:["updown","Higher or Lower"], crev:["rewind","Career Reverse"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -3042,7 +3046,24 @@ let setupRef = false;
 function setRef(v){ snapshotNames(); setupRef=v; render(); }
 const reader = ()=> S && S.ref ? esc(S.ref) : "the reader";
 function setTimed(v){ snapshotNames(); setupTimed=v; render(); }
-function setMode(m){ snapshotNames(); setupMode=m; render(); }
+function setMode(m){ snapshotNames(); setupMode=m; modesOpen=false; render(); }
+function toggleModes(){ snapshotNames(); modesOpen=!modesOpen; render(); }
+function modeDrawerHTML(){
+  const m = MODE_META[setupMode];
+  const chev = `<span class="chev">${modesOpen?"▲":"▼"}</span>`;
+  const btn = m && !modesOpen
+    ? `<button class="bigbtn ghost sel modestoggle" onclick="toggleModes()">${ico(m[0])}${m[1]}${chev}</button>`
+    : `<button class="bigbtn ghost modestoggle" onclick="toggleModes()">${ico('grid')}More game modes${chev}</button>`;
+  const grid = modesOpen?`<div class="row2 modes">
+      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
+      <button class="bigbtn ghost${setupMode==="stadium"?" sel":""}" onclick="setMode('stadium')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('cam')}Stadium</button>
+      <button class="bigbtn ghost${setupMode==="nations"?" sel":""}" onclick="setMode('nations')" ${NAT?"":"disabled style='opacity:.4'"}>${ico('flag')}One &amp; Only</button>
+      <button class="bigbtn ghost${setupMode==="badge"?" sel":""}" onclick="setMode('badge')" ${BADGE?"":"disabled style='opacity:.4'"}>${ico('zoom')}Badge Zoom</button>
+      <button class="bigbtn ghost${setupMode==="hilo"?" sel":""}" onclick="setMode('hilo')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('updown')}Higher or Lower</button>
+      <button class="bigbtn ghost${setupMode==="crev"?" sel":""}" onclick="setMode('crev')">${ico('rewind')}Career Reverse</button>
+    </div>`:"";
+  return btn+grid;
+}
 function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
 const setupNames = ["","",""];
 let tickerHTML = null; // built once per session so the rows don't reshuffle on re-render
@@ -3131,14 +3152,7 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
     </div>
-    <div class="row2">
-      <button class="bigbtn ghost${setupMode==="career"?" sel":""}" onclick="setMode('career')">${ico('route')}Career Path</button>
-      <button class="bigbtn ghost${setupMode==="stadium"?" sel":""}" onclick="setMode('stadium')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('cam')}Stadium</button>
-      <button class="bigbtn ghost${setupMode==="nations"?" sel":""}" onclick="setMode('nations')" ${NAT?"":"disabled style='opacity:.4'"}>${ico('flag')}One &amp; Only</button>
-      <button class="bigbtn ghost${setupMode==="badge"?" sel":""}" onclick="setMode('badge')" ${BADGE?"":"disabled style='opacity:.4'"}>${ico('zoom')}Badge Zoom</button>
-      <button class="bigbtn ghost${setupMode==="hilo"?" sel":""}" onclick="setMode('hilo')" ${STAD?"":"disabled style='opacity:.4'"}>${ico('updown')}Higher or Lower</button>
-      <button class="bigbtn ghost${setupMode==="crev"?" sel":""}" onclick="setMode('crev')">${ico('rewind')}Career Reverse</button>
-    </div>
+    ${modeDrawerHTML()}
     ${setupMode==="stadium"?`<div class="hint" style="text-align:center">Name the ground for the full points, or take fewer for the city, fewer still for the country.</div>`:""}
     ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div><div class="spacer"></div>`:`
     <div class="row2">

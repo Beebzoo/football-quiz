@@ -2882,6 +2882,35 @@ function mpSendAns(){
   try{ MP.ch.send({type:"broadcast", event:"wans", payload:{name, text}}); }catch(e){}
   popfx(); render();
 }
+/* ---------- install as an app ---------- */
+let installEv=null;
+window.addEventListener("beforeinstallprompt", e=>{
+  e.preventDefault(); installEv=e;
+  if(!S || S.phase==="setup") render();
+});
+window.addEventListener("appinstalled", ()=>{ installEv=null; toast("BALL is on your home screen ⚽"); render(); });
+const isStandalone = () => (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone===true;
+function installApp(){
+  audio();
+  if(installEv){
+    const ev=installEv;
+    ev.prompt();
+    ev.userChoice.then(()=>{ installEv=null; render(); }).catch(()=>{});
+    return;
+  }
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent)){
+    sheet(`
+      <h2>Put BALL on your home screen</h2>
+      <p>In Safari: tap the <b>Share</b> button (the square with the arrow pointing up), scroll down, and hit <b>Add to Home Screen</b>. The golden ball lands between your apps and opens full screen, no browser bars.</p>
+      <button class="bigbtn ghost" onclick="closeSheet()">Got it</button>`);
+    return;
+  }
+  sheet(`
+    <h2>Install BALL as an app</h2>
+    <p>Open the browser menu (⋮ or the address bar) and pick <b>Install app</b> or <b>Add to home screen</b>. BALL gets its own icon and opens full screen, works offline too.</p>
+    <button class="bigbtn ghost" onclick="closeSheet()">Got it</button>`);
+}
+
 function askPlayTogether(){
   audio();
   sheet(`
@@ -3617,6 +3646,7 @@ function renderSetup(st){
     </div>
     ${modeDrawerHTML()}
     ${MP?"":`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="askPlayTogether()">📡 Play together</button>`}
+    ${isStandalone()?"":`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="installApp()">📲 Get BALL on your home screen</button>`}
     ${setupMode==="stadium"?`<div class="hint" style="text-align:center">Name the ground for the full points, or take fewer for the city, fewer still for the country.</div>`:""}
     ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div>`:`
     <div class="kick" style="margin-top:2px">${ico('users')}Who's playing</div>

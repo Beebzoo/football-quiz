@@ -107,7 +107,7 @@ function makeInstance(label) {
     requestAnimationFrame: cb => setTimeout(() => cb(Date.now()), 16),
     cancelAnimationFrame: id => clearTimeout(id),
     fetch: () => Promise.reject(new Error("offline in test")),
-    console, Math, JSON, Date, String, Number, Array, Object, Set, Map, Promise, Error,
+    performance: { now: () => Date.now() }, console, Math, JSON, Date, String, Number, Array, Object, Set, Map, Promise, Error,
     __label: label, __els: els,
   };
   ctx.globalThis = ctx;
@@ -276,6 +276,28 @@ const score    = (ctx, i) => ev(ctx, `S.players[${i}].score`);
   check("solo steal scored", score(solo, 1) === 1, score(solo, 1));
   check("solo saves normally", !!solo.localStorage.getItem("ball-quiz-v1"));
   check("solo screen never locks", !canInput(solo));
+
+  console.log("\n--- the clock restarts when it should, and only then ---");
+  const clk = makeInstance("clock"); await tick();
+  const left = () => ev(clk, "T.deadline") - Date.now();
+  run(clk, 'S = freshState(["A","B"], true, "classic", 0); pickTier("easy");'); await tick(1500);
+  const q1 = left();
+  check("a new question starts a 15s clock", q1 > 12000 && q1 < 14000, (q1 / 1000).toFixed(1) + "s");
+
+  run(clk, "render()"); await tick(600);          // a plain repaint, nothing changed
+  check("a plain repaint does not reset it", left() < q1 - 400, (left() / 1000).toFixed(1) + "s vs " + (q1 / 1000).toFixed(1) + "s");
+
+  run(clk, 'skipQuestion()'); await tick(300);
+  check("skipping to a fresh question restarts it", left() > 14000, (left() / 1000).toFixed(1) + "s");
+
+  run(clk, "reveal(); judge(false);"); await tick(300);
+  run(clk, "claimSteal(1)"); await tick(300);
+  const st = left();
+  check("a steal gets its own 5 second clock", st > 4000 && st < 5100, (st / 1000).toFixed(1) + "s");
+
+  run(clk, "reveal(); judge(true);"); await tick(300);
+  run(clk, 'pickTier("easy")'); await tick(300);
+  check("the next player gets a full clock", left() > 14000, (left() / 1000).toFixed(1) + "s");
 
   console.log(fails ? `\n${fails} FAILING CHECK(S)` : "\nAll checks passed.");
   process.exit(fails ? 1 : 0);

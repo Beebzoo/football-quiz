@@ -3244,12 +3244,19 @@ const slamfx = ()=>{beep(150,.22,"sawtooth",.08); setTimeout(()=>beep(620,.08,"s
 
 /* ============================== TIMER ============================== */
 let T = {raf:null, deadline:0, total:0, onDone:null, lastWhole:99};
-function startTimer(seconds, onDone){
+/* The key is what the clock is counting down for. render() runs again for
+   plenty of reasons that are not a new question: pulling the badge camera
+   back, a state broadcast landing on a guest phone. Those must not hand out a
+   fresh fifteen seconds. Only a genuinely different key restarts the clock. */
+const clockKey = () => `${S.phase}:${S.tier}:${S.qi}:${S.stealer}:${S.round}`;
+function startTimer(seconds, onDone, key){
+  if(key!=null && T.key===key) return; // same question, clock keeps running
   stopTimer();
   T.total=seconds*1000; T.deadline=performance.now()+T.total; T.onDone=onDone; T.lastWhole=seconds+1;
+  T.key=key;
   T.raf=requestAnimationFrame(tickTimer);
 }
-function stopTimer(){ if(T.raf){cancelAnimationFrame(T.raf); T.raf=null;} }
+function stopTimer(){ if(T.raf){cancelAnimationFrame(T.raf); T.raf=null;} T.key=null; }
 function tickTimer(){
   const left=Math.max(0, T.deadline-performance.now());
   const secs=left/1000;
@@ -3372,7 +3379,7 @@ function render(){
   if(grole==="wans"){ st.innerHTML=mpGuestAnswerHTML(); return; }
   if(grole==="answer"){
     st.innerHTML=mpAnswerHTML();
-    if(S.timed) startTimer(S.phase==="steal_q"?5:15, onTimeUp);
+    if(S.timed) startTimer(S.phase==="steal_q"?5:15, onTimeUp, clockKey());
     return;
   }
   if(grole==="steal"){ st.innerHTML=mpStealHTML(); return; }
@@ -3390,7 +3397,7 @@ function render(){
       <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
         :stad?"Pick your difficulty — a stadium photo appears, answer out loud."
         :nat?"Pick your difficulty — a club and a flag appear: name the only player of that nationality ever to wear the shirt."
-        :bdg?"Pick your difficulty — a crest appears zoomed right in (BALL: silhouette only). Name the club."
+        :bdg?"Pick your difficulty — a crest appears zoomed right in. Name the club. On BALL you can trade points for a wider shot."
         :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
         :"Pick your difficulty. Someone else reads the question out loud."}</div>
       ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn — pick your difficulty</div>`:""}
@@ -3428,7 +3435,7 @@ function render(){
       <button class="bigbtn" onclick="wReveal()">Reveal answer<kbd>Space</kbd></button>
       <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question</button>
       <div class="hint">${S.timed?"Fifteen seconds — type an answer for each player before the buzzer.":"Type an answer for each player, then hit Reveal."} Seen it before? Skip for a fresh one.</div>`;
-    if(S.timed) startTimer(15, wTimeUp);
+    if(S.timed) startTimer(15, wTimeUp, clockKey());
     return;
   }
 
@@ -3492,7 +3499,7 @@ function render(){
         : `<div class="hint">${S.timed
             ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer — the clock stops."
             : "No timer — take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one — same difficulty, no points lost.${isBadgeBall()?" Nobody recognising it? Pull the camera back for a wider shot, at the cost of points, and the clock starts again.":""}</div>`}`;
-    if(S.timed) startTimer(stealing?5:15, onTimeUp);
+    if(S.timed) startTimer(stealing?5:15, onTimeUp, clockKey());
     if(S.mode==="nations" && natAnim && !matchMedia("(prefers-reduced-motion: reduce)").matches){
       setTimeout(popfx, 300); setTimeout(popfx, 1000);
     }

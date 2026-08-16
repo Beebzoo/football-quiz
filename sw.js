@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v64";
+const CACHE = "ball-quiz-v65";
 const NATFLAGS = "ad,ae,af,ag,al,am,ao,ar,at,au,az,ba,be,bf,bg,bi,bj,bm,bn,bo,br,by,ca,cd,cf,cg,ch,ci,cl,cm,cn,co,cr,cu,cv,cy,cz,de,dk,do,dz,ec,ee,eg,es,et,fi,fr,ga,gb,gd,ge,gh,gm,gn,gq,gr,gt,gw,gy,hn,hr,ht,hu,id,ie,il,in,iq,ir,is,it,jm,jo,jp,ke,kn,kr,kw,kz,lb,lc,li,lk,lr,lt,lu,lv,ly,ma,md,me,mg,mk,ml,mr,mt,mu,mw,mx,my,mz,na,ne,ng,nl,no,nz,pa,pe,ph,pk,pl,pt,py,qa,ro,rs,ru,rw,sa,sc,sd,se,si,sk,sl,sm,sn,so,sr,st,sv,sy,sz,td,tg,th,tl,tm,tn,tr,tt,tz,ua,ug,us,uy,uz,ve,vn,ws,xk,za,zm,zw".split(",");
 const EXTRA_ASSETS = ["assets/ball.png", "assets/stadiums/index.json", "assets/facts/index.json", "assets/deep/index.json", "assets/kits/index.json", "assets/kits/_base.png", "assets/nations/index.json",
   "assets/badges/index.json",
@@ -164,8 +164,25 @@ const ASSETS = [
   "assets/players/mvv-hero.png",
 ];
 
+/* The kit deck is a thousand small files and grows every time the bank does,
+   so it is cached from its own index instead of a hand-kept list here. Each
+   shirt is added on its own and allowed to fail: addAll is all-or-nothing, and
+   one missing kit must not take the whole install down with it. */
+async function cacheKits(cache) {
+  try {
+    const res = await fetch("assets/kits/index.json");
+    if (!res.ok) return;
+    const bank = await res.json();
+    const urls = Object.values(bank).flat().map(k => "assets/kits/" + k.s + ".png");
+    for (const u of urls) await cache.add(u).catch(() => {});
+  } catch (e) { /* offline install: the shirts fill in as they are played */ }
+}
+
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // skipWaiting before the kits so a new build takes over straight away
+  // rather than sitting behind a thousand shirt downloads
+  e.waitUntil(caches.open(CACHE)
+    .then(c => c.addAll(ASSETS).then(() => { self.skipWaiting(); return cacheKits(c); })));
 });
 
 self.addEventListener("activate", e => {

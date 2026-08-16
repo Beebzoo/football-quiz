@@ -498,8 +498,8 @@
     box-shadow:0 12px 28px rgba(0,0,0,.5);
     display:flex;align-items:center;justify-content:center;
   }
-  .badgebox img{width:78%;height:78%;object-fit:contain}
-  .badgebox img.sil{filter:brightness(0) opacity(.92);}
+  .badgebox img{width:78%;height:78%;object-fit:contain;transition:transform .45s cubic-bezier(.22,.8,.3,1)}
+  @media (prefers-reduced-motion: reduce){ .badgebox img{transition:none} }
   .badgebox.reveal{overflow:visible;background:rgba(255,255,255,.9)}
   /* higher or lower */
   .hilorow{display:flex;gap:10px;align-items:stretch;justify-content:center;margin-top:6px}
@@ -601,6 +601,23 @@
   .lockrow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px}
   .lockchip{font:700 .78rem system-ui,sans-serif;color:#9fb8a6;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 10px}
   .lockchip.on{color:#3fd685;border-color:rgba(63,214,133,.6)}
+  /* the remote turn: whoever is answering drives from their own phone */
+  .yourturn{
+    background:linear-gradient(160deg,rgba(233,184,76,.2),rgba(233,184,76,.04));
+    border:1px solid rgba(233,184,76,.55);border-radius:14px;padding:11px 14px;
+    color:#f3d982;font:800 .82rem/1.3 system-ui,sans-serif;letter-spacing:.07em;
+    text-transform:uppercase;text-align:center;
+  }
+  .atext.said{background:#fff6e0;color:#5b4108}
+  .atext.said .lbl{color:#b08a2e}
+  .stealbig{
+    width:100%;background:linear-gradient(160deg,#e9b84c,#c8963a);
+    border:2px solid #f3d982;color:#2b1f04;font:900 1.6rem/1 system-ui,sans-serif;
+    padding:28px 20px;border-radius:20px;box-shadow:0 12px 28px rgba(233,184,76,.35);
+  }
+  .stealbig:active{transform:scale(.97)}
+  .mppill.warn{border-color:#e0857a;color:#f2b2a9}
+  .hint.waitline{color:#e9b84c;font-weight:700;text-align:center}
   .sheet .nm-in{background:#f4f6f5;border-color:#cfd8d2;color:var(--ink)}
   .sheet .nm-in::placeholder{color:#9aa7b5}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
@@ -778,6 +795,11 @@ const STAD_PTS = {
   ball: {name:20, city:12, country:6},
 };
 const stadPts = () => STAD_PTS[S.tier];
+/* Badge Zoom BALL used to be a flat black silhouette of a club nobody has heard
+   of, which is not a question, it is a coin toss. It now shows the real crest in
+   colour, cropped tight, and the reader can pull the camera back twice. Every
+   step out costs points, same ladder shape as Stadium. */
+const BADGE_BALL = [{zoom:5, pts:20}, {zoom:3, pts:12}, {zoom:1, pts:6}];
 const BANK = {
 easy: [
  {q:"How many players does each team have on the pitch?", a:"11"},
@@ -2504,8 +2526,8 @@ let natAnim = false; // entrance animation plays once per fresh One & Only quest
 
 /* ============================== BADGE ZOOM BANK ==============================
    2,588 crests from assets/logos: easy = the 70 One & Only clubs, hard = clubs
-   from the career deck, BALL = the other ~2,200 (zoomed is mercy; BALL is a
-   silhouette). */
+   from the career deck, BALL = the other ~2,200. BALL crops in hard and pays on
+   the BADGE_BALL ladder, so the reader can trade points for a wider shot. */
 let XI=null;
 fetch("assets/xi/index.json").then(r=>r.json()).then(x=>{
   XI=x;
@@ -2538,18 +2560,39 @@ function kitQ(){
   return {q:"Name the club from the shirt", a:r.n, kit:{img:"assets/kits/"+r.s+".png", c:r.c}};
 }
 const kitHTML = k => `<div class="kitbox"><div class="kitshirt" style="--kc:${k.c}"></div><img class="kitpat" src="${k.img}" alt=""></div>`;
+const isBadgeBall = () => !!S && S.mode==="badge" && S.tier==="ball";
+// how far the BALL camera has been pulled back on this question: 0, 1 or 2
+const bzStep = () => isBadgeBall() ? Math.min(S.bz||0, BADGE_BALL.length-1) : 0;
+const badgePts = () => BADGE_BALL[bzStep()].pts;
+// what the question on screen is worth right now, for the tier chip on every phone
+const ptsLabel = () => S.mode==="stadium" ? `+${stadPts().name}/${stadPts().city}/${stadPts().country}`
+                     : isBadgeBall() ? `+${badgePts()}`
+                     : `+${TIERS[S.tier].pts}`;
 function badgeQ(){
   const r=BADGE[S.tier][S.qi];
-  const zx=12+(S.qi*37)%64, zy=15+(S.qi*53)%58; // deterministic crop per question
+  const ball=S.tier==="ball";
+  /* Deterministic crop per question. BALL keeps nearer the middle: at 5x a crop
+     out by the edge lands on the empty corner of a crest and shows nothing. */
+  const zx = ball ? 34+(S.qi*37)%32 : 12+(S.qi*37)%64;
+  const zy = ball ? 36+(S.qi*53)%28 : 15+(S.qi*53)%58;
   return {q:"Name this club", a:r.n,
-          badge:{img:"assets/logos/"+r.s+".png", sil:S.tier==="ball",
-                 zoom:S.tier==="easy"?2.1:3.3, zx, zy}};
+          badge:{img:"assets/logos/"+r.s+".png",
+                 zoom: ball ? BADGE_BALL[bzStep()].zoom : (S.tier==="easy"?2.1:3.3), zx, zy}};
 }
 const badgeHTML = (b, revealed) => revealed
   ? `<div class="badgebox reveal"><img src="${b.img}" alt=""></div>`
-  : b.sil
-    ? `<div class="badgebox"><img class="sil" src="${b.img}" alt=""></div>`
-    : `<div class="badgebox"><img style="transform:scale(${b.zoom});transform-origin:${b.zx}% ${b.zy}%" src="${b.img}" alt=""></div>`;
+  : `<div class="badgebox"><img style="transform:scale(${b.zoom});transform-origin:${b.zx}% ${b.zy}%" src="${b.img}" alt=""></div>`;
+/* Trade points for a wider shot. Costs nothing but the payout, and the reader
+   can never go back in, so the table has to decide together. */
+function bzPull(){
+  if(!isBadgeBall() || !["question","steal_q"].includes(S.phase)) return;
+  if(bzStep() >= BADGE_BALL.length-1) return;
+  if(isGuest()) return mpAct("bzPull",[]);
+  S.bz = bzStep()+1;
+  audio(); tick();
+  toast(`Camera pulls back — this one now pays +${BADGE_BALL[bzStep()].pts}`);
+  render();
+}
 
 /* ============================== HIGHER OR LOWER ==============================
    Stadium capacities, five correct calls in a row for +10. The app judges. */
@@ -2745,12 +2788,14 @@ function freshState(names, timed=true, mode="classic", target=100){
     tier:null, qi:null, stealer:null, timeUp:false, timed:timed, mode:mode,
     target:target, // first to this score wins; 0 = no limit
     wans:[], wgot:[], // written mode: typed answers + who was marked correct
+    ans:"", asub:false, // the answer the player on the hook locked in from their own phone
     career:null, usedC:[], // career mode: current round + careers already played
     hilo:null, usedH:[], // higher-or-lower: current run + grounds already shown
     crev:null, usedR:[], // career reverse: current run + careers already recited
     xi:null, usedX:[], // name the XI: current board + finals already played
     tl:null, usedT:[], // timeline: current question + ones already asked
     ref:null, // referee mode: the non-playing quizmaster's name
+    bz:0, // badge zoom BALL: how far the camera has been pulled back this question
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
 }
@@ -2796,6 +2841,75 @@ function mpClient(){
   return mpClient._c;
 }
 const roomCode = () => Array.from({length:4},()=>"ABCDEFGHJKLMNPQRSTUVWXYZ"[Math.floor(Math.random()*24)]).join("");
+
+/* ---------- who is this phone, and is it allowed to touch anything ----------
+   A guest is tied to a player by the name they typed on joining: it has to
+   match a name on the host phone. No match means spectator: watch and buzz. */
+const isGuest = () => !!(MP && MP.role==="guest");
+const isHost  = () => !!(MP && MP.role==="host");
+const mpName  = () => (localStorage.getItem("ball-mp-name")||"").trim();
+const myIdx   = () => (S && S.players) ? S.players.findIndex(p=>nameKey(p.name)===nameKey(mpName())) : -1;
+// the player on the hook right now: the stealer during a steal, otherwise whoever's turn it is
+const answerIdx = () => (S.phase==="steal_q"||S.phase==="steal_judge") ? S.stealer : S.turn;
+// is this player sitting on their own phone? (host-side, from presence)
+function remotePlayer(i){
+  return !!(isHost() && MP.claimed && S && S.players[i] && MP.claimed.has(nameKey(S.players[i].name)));
+}
+/* What this guest is allowed to do in the phase on screen. null = just watch.
+   Everything here is also still tappable on the host phone as an override. */
+function guestRole(){
+  if(!isGuest() || !S) return null;
+  const me=myIdx(); if(me<0) return null;
+  switch(S.phase){
+    case "w_answer":   return S.mode==="written" ? "wans" : null;
+    case "pick":       return me===S.turn ? "pick" : null;
+    case "question":
+    case "steal_q":    return me===answerIdx() ? "answer" : null;
+    case "judge":
+    case "steal_judge":return me===answerIdx() ? "judge" : null;
+    case "steal_offer":return me!==S.turn ? "steal" : null;
+    case "deadq":      return "play";
+    default:           return null;
+  }
+}
+// guest -> host: an intent, never a state change. The host decides if it counts.
+function mpAct(fn, args){
+  if(!MP || !MP.ch) return;
+  try{ MP.ch.send({type:"broadcast", event:"act", payload:{name:mpName(), fn, args:args||[]}}); }catch(e){}
+  popfx();
+}
+/* host side: run a guest's intent, but only if that guest is actually the one
+   whose move it is. A stolen tap on someone else's button dies here. */
+function mpDoAct(p){
+  if(!S || !p || !p.fn) return;
+  const i=S.players.findIndex(pl=>nameKey(pl.name)===nameKey(p.name||""));
+  if(i<0) return;
+  const ph=S.phase, a=answerIdx(), args=Array.isArray(p.args)?p.args:[];
+  const allowed =
+    p.fn==="pickTier"     ? ph==="pick" && i===S.turn && !!TIERS[args[0]] :
+    p.fn==="lockAns"      ? (ph==="question"||ph==="steal_q") && i===a :
+    p.fn==="skipQuestion" ? (ph==="question"||ph==="steal_q") && i===a :
+    p.fn==="bzPull"       ? (ph==="question"||ph==="steal_q") && i===a :
+    p.fn==="judge"        ? (ph==="judge"||ph==="steal_judge") && i===a :
+    p.fn==="claimSteal"   ? ph==="steal_offer" && i!==S.turn :
+    p.fn==="noSteal"      ? ph==="steal_offer" :
+    p.fn==="nextTurn"     ? ph==="deadq" : false;
+  if(!allowed) return;
+  switch(p.fn){
+    case "pickTier": pickTier(String(args[0])); break;
+    case "lockAns":
+      S.ans=String(args[0]||"").slice(0,60); S.asub=true;
+      ching(); toast(`🔒 ${S.players[i].name}: "${S.ans}"`);
+      reveal();
+      break;
+    case "skipQuestion": skipQuestion(); break;
+    case "bzPull": bzPull(); break;
+    case "judge": judge(!!args[0], ["name","city","country"].includes(args[1]) ? args[1] : undefined); break;
+    case "claimSteal": claimSteal(i); break; // forced to the sender, never the arg
+    case "noSteal": noSteal(); break;
+    case "nextTurn": nextTurn(); break;
+  }
+}
 function mpStatePayload(){
   // while everyone is typing, the answers stay secret: strip them from the mirror
   return (S && S.phase==="w_answer") ? {...S, wans:S.players.map(()=>"")} : S;
@@ -2825,7 +2939,19 @@ function hostRoom(){
     ching(); toast(`🔒 ${S.players[i].name} locked their answer`);
     render();
   });
-  ch.on("presence", {event:"sync"}, ()=>{ if(MP){ MP.n=Object.keys(ch.presenceState()).length; mpRenderBar(); } });
+  ch.on("broadcast", {event:"act"}, ({payload})=>mpDoAct(payload));
+  ch.on("presence", {event:"sync"}, ()=>{
+    if(!MP) return;
+    const ps=ch.presenceState();
+    MP.n=Object.keys(ps).length;
+    // which player names are being driven from someone else's phone
+    MP.claimed=new Set();
+    Object.values(ps).forEach(arr=>(arr||[]).forEach(m=>{
+      if(m && m.role==="guest" && m.name) MP.claimed.add(nameKey(m.name));
+    }));
+    mpRenderBar();
+    if(S && S.phase!=="setup") render(); // repaint the "on their own phone" hints
+  });
   ch.subscribe(st=>{
     if(st==="SUBSCRIBED"){ ch.track({role:"host"}); toast(`Room ${code} open — join on the other phones`); mpRenderBar(); }
     if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ toast("Room connection lost — check internet", true); }
@@ -2842,18 +2968,24 @@ function joinRoom(code){
   MP={role:"guest", code, ch, n:1};
   document.body.classList.add("guest");
   ch.on("broadcast", {event:"state"}, ({payload})=>{
-    if(MP && payload){
-      if(payload.qi!==MP.lastQi){ MP.draft=""; MP.locked=false; MP.lastQi=payload.qi; }
-      if(payload.phase!=="w_answer") MP.locked=false;
+    if(!MP || !payload) return;
+    // a fresh question wipes whatever was half-typed for the last one
+    if(payload.qi!==MP.lastQi || payload.tier!==MP.lastTier){
+      MP.draft=""; MP.locked=false; MP.lastQi=payload.qi; MP.lastTier=payload.tier;
     }
-    S=payload; render();
+    if(payload.phase!=="w_answer") MP.locked=false;
+    const sameQ = S && S.phase===payload.phase && S.qi===payload.qi && S.tier===payload.tier;
+    const typing = document.activeElement && document.activeElement.id==="mpans";
+    S=payload;
+    if(sameQ && typing) return; // don't yank the keyboard away mid-word
+    render();
   });
   ch.on("presence", {event:"sync"}, ()=>{ if(MP){ MP.n=Object.keys(ch.presenceState()).length; mpRenderBar(); } });
   ch.subscribe(st=>{
     if(st==="SUBSCRIBED"){
-      ch.track({role:"guest"});
+      ch.track({role:"guest", name:mpName()});
       try{ ch.send({type:"broadcast", event:"hello", payload:{}}); }catch(e){}
-      toast(`In room ${code} — mirroring the host`);
+      toast(`In room ${code} as ${mpName()||"a spectator"}`);
       mpRenderBar();
     }
     if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ toast("Room connection lost — check internet", true); }
@@ -2877,14 +3009,85 @@ function leaveRoom(){
 }
 function mpRenderBar(){
   const bar=$("#mpbar"); if(!bar) return;
-  const typing = !!(MP && MP.role==="guest" && S && S.phase==="w_answer" && S.mode==="written");
-  document.body.classList.toggle("caninput", typing);
+  // the guest screen is locked by default; unlock it exactly when it's their move
+  const acting = !!guestRole();
+  document.body.classList.toggle("caninput", acting);
   if(!MP){ bar.hidden=true; bar.innerHTML=""; return; }
   bar.hidden=false;
-  bar.innerHTML = MP.role==="host"
-    ? `<div class="mppill">📡 Room <b>${MP.code}</b> · ${MP.n} phone${MP.n===1?"":"s"}<button class="mpx" onclick="leaveRoom()" aria-label="Close room">✕</button></div>`
+  if(MP.role==="host"){
+    bar.innerHTML = `<div class="mppill">📡 Room <b>${MP.code}</b> · ${MP.n} phone${MP.n===1?"":"s"}<button class="mpx" onclick="leaveRoom()" aria-label="Close room">✕</button></div>`;
+    return;
+  }
+  // in a live match with a name that matches nobody, you can only spectate: say so
+  const stray = !!(S && S.players && S.phase!=="setup" && myIdx()<0);
+  bar.innerHTML = stray
+    ? `<div class="mppill warn" onclick="renameGuest()">⚠ "${esc(mpName()||"no name")}" isn't a player — tap to fix</div>
+       <button class="buzzbtn" onclick="mpBuzz()">BUZZ</button>`
     : `<div class="mppill">📡 ${MP.code} · ${MP.n}<button class="mpx" onclick="leaveRoom()" aria-label="Leave room">✕</button></div>
-       ${typing?"":`<button class="buzzbtn" onclick="mpBuzz()">BUZZ</button>`}`;
+       ${acting?"":`<button class="buzzbtn" onclick="mpBuzz()">BUZZ</button>`}`;
+}
+// joined under the wrong name: pick the right player without leaving the room
+function renameGuest(){
+  const names = (S && S.players) ? S.players.map(p=>p.name) : [];
+  sheet(`
+    <h2>Which player are you?</h2>
+    <p>Your name has to match one on the host phone, otherwise the app can't hand you your turn.</p>
+    ${names.map((n,i)=>`<button class="bigbtn ghost" onclick="setGuestName(${i})">${esc(n)}</button>`).join("")}
+    <button class="bigbtn ghost" onclick="closeSheet()">I'm just watching</button>`);
+}
+function setGuestName(i){
+  const n = (S && S.players && S.players[i]) ? S.players[i].name : "";
+  if(!n) return;
+  localStorage.setItem("ball-mp-name", n);
+  if(MP && MP.ch){ try{ MP.ch.track({role:"guest", name:n}); }catch(e){} }
+  closeSheet(); toast(`You're ${n}`); render();
+}
+/* Your turn, on your own phone: the question, the clock, and a box to commit an
+   answer to. Locking it in reveals the real answer on every phone at once, so
+   nobody can quietly upgrade what they said after seeing it. */
+function mpAnswerHTML(){
+  const t=TIERS[S.tier], Q=q();
+  const stealing = S.phase==="steal_q";
+  const sp = S.mode==="stadium" ? stadPts() : null;
+  const pts = ptsLabel();
+  return `
+    <div class="kick">${stealing?"Your steal":"Round "+S.round} · ${tlabel(S.tier)} · ${pts}</div>
+    <div class="yourturn">⚽ You're up${stealing?" — five seconds":""}</div>
+    <div class="qcard${(Q.duo||Q.badge||Q.kit)?" natq":""}" style="--dc:${t.color}">
+      <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${pts}</span></div>
+      ${qVisual(false)}
+      <div class="qtext">${esc(Q.q)}</div>
+      ${sp?`<div class="ladder">Ground +${sp.name} · city +${sp.city} · country +${sp.country}</div>`:""}
+      ${isBadgeBall()?`<div class="ladder">Tight +${BADGE_BALL[0].pts} · wider +${BADGE_BALL[1].pts} · whole crest +${BADGE_BALL[2].pts}</div>`:""}
+    </div>
+    ${S.timed?`<div class="clock" id="clock">
+      <div class="digits">${stealing?"5.0":"15.0"}</div>
+      <div class="bar"><i style="width:100%"></i></div>
+    </div>`:``}
+    <input class="nm-in" id="mpans" placeholder="Your answer" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
+    <button class="bigbtn" onclick="mpLockAnswer()">Lock it in — reveal</button>
+    ${isBadgeBall() && bzStep()<BADGE_BALL.length-1
+      ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back — drops to +${BADGE_BALL[bzStep()+1].pts}</button>`:""}
+    ${stealing?"":`<button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question</button>`}
+    <div class="hint">Type your answer and lock it in. The real answer then shows on every phone and you call it yourself: got it or not.${isBadgeBall()?" Stuck on the crest? Pull the camera back for a wider shot and fewer points.":""}</div>`;
+}
+function mpLockAnswer(){
+  const el=document.getElementById("mpans");
+  const text=(el?el.value.trim():"") || "—"; // no idea is a valid answer, it just loses
+  MP.draft=text;
+  mpAct("lockAns",[text]);
+  if(el) el.blur();
+}
+/* The question came loose. Every other phone races for one button. */
+function mpStealHTML(){
+  const t=TIERS[S.tier];
+  return `
+    <div class="kick">Question is loose!</div>
+    <h1 class="title" style="font-size:clamp(1.7rem,8.5vw,2.2rem)">Steal it<br>for ${ptsLabel()}?</h1>
+    <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} missed it. First phone to tap gets five seconds.</div>
+    <div class="spacer"></div>
+    <button class="stealbig" onclick="claimSteal(${myIdx()})">STEAL IT</button>
+    <button class="bigbtn ghost" style="margin-top:10px" onclick="noSteal()">Not a clue</button>`;
 }
 function mpGuestAnswerHTML(){
   const t=TIERS[S.tier];
@@ -2950,7 +3153,8 @@ function askPlayTogether(){
   audio();
   sheet(`
     <h2>Play together <span style="font-size:.6em;opacity:.6">beta</span></h2>
-    <p>One phone hosts and runs the game exactly like normal. The others join with the room code and get a live mirror of the host screen plus a BUZZ button. Internet needed on every phone.</p>
+    <p>One phone hosts and keeps the score. Everyone else joins with the room code and plays their own turn from their own phone: pick the difficulty, type the answer, see how you did, call it yourself. When someone misses, the other phones race for the steal.</p>
+    <p style="opacity:.75">Type your name exactly as it is on the host phone, otherwise you just get to watch and buzz. Internet needed on every phone.</p>
     <button class="bigbtn" onclick="hostRoom()">Host a room</button>
     <div class="kick" style="margin:12px 0 6px">Or join one</div>
     <input class="nm-in" id="mpname" placeholder="Your name" maxlength="12" autocomplete="off" value="${esc(localStorage.getItem("ball-mp-name")||"")}">
@@ -3142,16 +3346,33 @@ function renderBug(){
   }).join("");
 }
 
+// the picture half of a question card: photo, crest+flag, zoomed badge or shirt
+function qVisual(revealed){
+  const Q=q();
+  return `${Q.img?`<img class="stadimg" src="${Q.img}" alt="">`:""}
+    ${Q.duo?`<div class="natstage"><div class="natrow">
+      <div class="natcard"><span class="halo"></span><img src="${Q.duo.crest}" alt=""></div>
+      <div class="natcard flagcard"><span class="halo"></span><img src="${Q.duo.flag}" alt=""></div>
+    </div></div>`:""}
+    ${Q.badge?badgeHTML(Q.badge,revealed):""}${Q.kit?kitHTML(Q.kit):""}`;
+}
+
 function render(){
   renderBug(); mpRenderBar(); save();
   const st=$("#stage");
   const P=S ? S.players[S.turn] : null;
 
-  // guests answer written questions on their own phone, in secret
-  if(MP && MP.role==="guest" && S && S.phase==="w_answer" && S.mode==="written"){
-    st.innerHTML=mpGuestAnswerHTML();
+  /* A guest's own phone drives their turn. Roles the host screen already
+     covers (picking, judging, playing on) fall through to the shared markup
+     and just get unlocked; these two need a screen of their own. */
+  const grole=guestRole();
+  if(grole==="wans"){ st.innerHTML=mpGuestAnswerHTML(); return; }
+  if(grole==="answer"){
+    st.innerHTML=mpAnswerHTML();
+    if(S.timed) startTimer(S.phase==="steal_q"?5:15, onTimeUp);
     return;
   }
+  if(grole==="steal"){ st.innerHTML=mpStealHTML(); return; }
 
   if(!S || S.phase==="setup"){ return showBoard ? renderBoard(st) : renderSetup(st); }
 
@@ -3169,6 +3390,8 @@ function render(){
         :bdg?"Pick your difficulty — a crest appears zoomed right in (BALL: silhouette only). Name the club."
         :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
         :"Pick your difficulty. Someone else reads the question out loud."}</div>
+      ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn — pick your difficulty</div>`:""}
+      ${remotePlayer(S.turn)?`<div class="hint waitline">⌛ ${esc(P.name)} is picking on their own phone.</div>`:""}
       ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
           <span class="left"><span>${tlabel(k)}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
@@ -3239,7 +3462,7 @@ function render(){
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
+        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${ptsLabel()}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
           <div class="natrow">
@@ -3250,6 +3473,7 @@ function render(){
         ${q().badge?badgeHTML(q().badge,false):""}${q().kit?kitHTML(q().kit):""}
         <div class="qtext">${esc(q().q)}</div>
         ${sp?`<div class="ladder">Ground +${sp.name} · city +${sp.city} · country +${sp.country}</div>`:""}
+        ${isBadgeBall()?`<div class="ladder">Tight +${BADGE_BALL[0].pts} · wider +${BADGE_BALL[1].pts} · whole crest +${BADGE_BALL[2].pts}</div>`:""}
       </div>
       ${S.timed?`<div class="clock" id="clock">
         <div class="digits">${stealing?"5.0":"15.0"}</div>
@@ -3257,10 +3481,14 @@ function render(){
       </div>`:``}
       <div class="spacer"></div>
       <button class="bigbtn" onclick="reveal()">Reveal answer<kbd>Space</kbd></button>
+      ${isBadgeBall() && bzStep()<BADGE_BALL.length-1
+        ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back — drops to +${BADGE_BALL[bzStep()+1].pts}<kbd>Z</kbd></button>`:""}
       <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question<kbd>S</kbd></button>
-      <div class="hint">${S.timed
-        ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer — the clock stops."
-        : "No timer — take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one — same difficulty, no points lost.</div>`;
+      ${remotePlayer(stealing?S.stealer:S.turn)
+        ? `<div class="hint waitline">⌛ ${esc(who.name)} is typing their answer in on their own phone. Only reveal here if they'd rather shout it.</div>`
+        : `<div class="hint">${S.timed
+            ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer — the clock stops."
+            : "No timer — take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one — same difficulty, no points lost.${isBadgeBall()?" Nobody recognising it? Pull the camera back for a wider shot, at the cost of points, and the clock starts again.":""}</div>`}`;
     if(S.timed) startTimer(stealing?5:15, onTimeUp);
     if(S.mode==="nations" && natAnim && !matchMedia("(prefers-reduced-motion: reduce)").matches){
       setTimeout(popfx, 300); setTimeout(popfx, 1000);
@@ -3278,7 +3506,7 @@ function render(){
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
-        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${sp?`+${sp.name}/${sp.city}/${sp.country}`:`+${t.pts}`}</span></div>
+        <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${ptsLabel()}</span></div>
         ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
         ${q().duo?`<div class="natstage">
           <div class="natrow">
@@ -3289,9 +3517,12 @@ function render(){
         ${q().badge?badgeHTML(q().badge,true):""}${q().kit?kitHTML(q().kit):""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+        ${S.ans?`<div class="atext said"><span class="lbl">${esc(who.name)} locked in</span>${esc(S.ans)}</div>`:""}
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
       </div>
       ${S.timeUp?`<div class="hint" style="color:var(--card-r);font-weight:700">Time was already up. Only count an answer given before the buzzer.</div>`:""}
+      ${grole==="judge"?`<div class="yourturn">Your call — did you get it?</div>`:""}
+      ${remotePlayer(answerIdx())?`<div class="hint waitline">⌛ ${esc(who.name)} is calling it on their own phone. These buttons still work if they freeze.</div>`:""}
       <div class="spacer"></div>
       ${sp?`
       <button class="bigbtn ok" onclick="judge(true,'name')">Got the ground +${sp.name}<kbd>C</kbd></button>
@@ -3303,7 +3534,7 @@ function render(){
       <div class="hint">Pay the best rung they reached${s&&!s.city?". No city on file for this one, so it is the ground or the country.":"."}</div>`
       :`
       <div class="row2">
-        <button class="bigbtn ok" onclick="judge(true)">Correct +${t.pts}<kbd>C</kbd></button>
+        <button class="bigbtn ok" onclick="judge(true)">Correct ${ptsLabel()}<kbd>C</kbd></button>
         <button class="bigbtn bad" onclick="judge(false)">Wrong<kbd>W</kbd></button>
       </div>`}`;
     return;
@@ -3313,9 +3544,9 @@ function render(){
     const t=TIERS[S.tier];
     st.innerHTML = `
       <div class="kick">Question is loose!</div>
-      <h1 class="title" style="font-size:clamp(1.7rem,8.5vw,2.2rem)">Who steals<br>for +${t.pts}?</h1>
+      <h1 class="title" style="font-size:clamp(1.7rem,8.5vw,2.2rem)">Who steals<br>for ${ptsLabel()}?</h1>
       <img class="celebimg" src="assets/players/taarabt.png" alt="">
-      <div class="hint">First to shout it claims the 5-second steal. Tap their name.</div>
+      <div class="hint">First to shout it claims the 5-second steal. Tap their name.${isHost()&&MP.claimed&&MP.claimed.size?" They can also hit STEAL IT on their own phone.":""}</div>
       <div class="whobar">
         ${others().map((i,ix)=>`<button class="stealbtn" onclick="claimSteal(${i})">${esc(S.players[i].name)}<kbd>${ix+1}</kbd></button>`).join("")}
         <button class="bigbtn ghost" onclick="noSteal()">Nobody dares<kbd>N</kbd></button>
@@ -3773,13 +4004,17 @@ function resumeGame(){
   if(S.mode==="career" && !S.career) newCareer();
   render();
 }
+/* Every function below that changes the score or the phase is host-only. On a
+   guest phone the same tap becomes an intent sent to the host, which checks it
+   is that guest's move and then runs this exact code. One source of truth. */
 function pickTier(t){
   audio();
+  if(isGuest()) return mpAct("pickTier",[t]);
   const avail=bankFor(t).map((_,i)=>i).filter(i=>!S.used[t].includes(i));
   if(!avail.length){ toast("No "+TIERS[t].label+" questions left!", true); return; }
   S.tier=t; S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);
-  S.timeUp=false; S.stealer=null;
+  S.timeUp=false; S.stealer=null; S.ans=""; S.asub=false; S.bz=0;
   if(S.mode==="nations"){ natAnim=true; slamfx(); }
   if(S.mode==="written"){
     S.wans=S.players.map(()=>"");
@@ -3794,12 +4029,13 @@ function pickTier(t){
 // swap the current question for another fresh one in the same tier (e.g. a repeat)
 function skipQuestion(){
   if(!["question","steal_q","w_answer"].includes(S.phase)) return;
+  if(isGuest()) return mpAct("skipQuestion",[]);
   const t=S.tier;
   const avail=bankFor(t).map((_,i)=>i).filter(i=>!S.used[t].includes(i));
   if(!avail.length){ toast("No more "+TIERS[t].label+" questions to skip to!", true); return; }
   S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);
-  S.timeUp=false;
+  S.timeUp=false; S.ans=""; S.asub=false; S.bz=0; // fresh crest, camera back to the tight shot
   if(S.phase==="w_answer"){ S.wans=S.players.map(()=>""); S.wsub=S.players.map(()=>false); } // clear typed answers for the new question
   if(S.mode==="nations" && S.phase==="question") natAnim=true;
   tick();
@@ -3815,7 +4051,7 @@ function wReveal(){
   S.phase="w_judge";
   render();
 }
-function wTimeUp(){ if(S.phase==="w_answer") wReveal(); }
+function wTimeUp(){ if(isGuest()){ flashBad(); return; } if(S.phase==="w_answer") wReveal(); }
 function wToggle(i){
   const pts=TIERS[S.tier].pts;
   S.wgot[i]=!S.wgot[i];
@@ -3833,7 +4069,9 @@ function wNext(){
   render();
 }
 function onTimeUp(){
-  S.timeUp=true; flashBad();
+  flashBad();
+  if(isGuest()) return; // the host owns the clock; the new phase arrives by broadcast
+  S.timeUp=true;
   if(S.phase==="question"){ S.phase="steal_offer"; render(); }
   else if(S.phase==="steal_q"){ S.phase="steal_judge"; render(); }
 }
@@ -3843,16 +4081,19 @@ function reveal(){
   render();
 }
 function judge(correct, level){
-  // stadium mode pays by rung; every other mode is all-or-nothing on the tier
+  if(isGuest()) return mpAct("judge",[!!correct, level||null]);
+  // stadium pays by rung, badge BALL by how far the camera was pulled back;
+  // every other mode is all-or-nothing on the tier
   const stad = S.mode==="stadium";
   const rung = stad ? (level||"name") : null;
-  const pts = stad ? stadPts()[rung] : TIERS[S.tier].pts;
+  const pts = stad ? stadPts()[rung] : isBadgeBall() ? badgePts() : TIERS[S.tier].pts;
   const stealing = S.phase==="steal_judge";
   const who = stealing ? S.players[S.stealer] : S.players[S.turn];
   if(correct){
     who.score+=pts; ching();
-    confetti(S.tier==="ball" && rung!=="country" ? 64 : 26);
-    const how = rung==="city" ? " (city)" : rung==="country" ? " (country only)" : "";
+    confetti(S.tier==="ball" && rung!=="country" ? (isBadgeBall()&&bzStep()===2 ? 26 : 64) : 26);
+    const how = rung==="city" ? " (city)" : rung==="country" ? " (country only)"
+              : isBadgeBall() && bzStep() ? ` (pulled back ${bzStep()===1?"once":"twice"})` : "";
     toast(`⚽ GOAL! ${who.name} +${pts}${how}${stealing?" (stolen!)":""}`);
     if(maybeFinish()) return; // reached the win target
     nextTurn();
@@ -3866,16 +4107,19 @@ function judge(correct, level){
   }
 }
 function claimSteal(i){
-  S.stealer=i; S.timeUp=false; S.phase="steal_q"; render();
+  if(isGuest()) return mpAct("claimSteal",[i]);
+  S.stealer=i; S.timeUp=false; S.ans=""; S.asub=false; S.phase="steal_q"; render();
 }
 function noSteal(){
+  if(isGuest()) return mpAct("noSteal",[]);
   S.phase="deadq"; render();
 }
 function nextTurn(){
+  if(isGuest()) return mpAct("nextTurn",[]);
   stopTimer();
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
-  S.tier=null; S.qi=null; S.stealer=null; S.timeUp=false;
+  S.tier=null; S.qi=null; S.stealer=null; S.timeUp=false; S.ans=""; S.asub=false;
   S.phase="pick";
   render();
 }
@@ -4001,6 +4245,7 @@ function askCancelMatch(){
 }
 function cancelMatch(){ closeSheet(); clearSave(); S=null; render(); toast("Match cancelled."); }
 function askEnd(){
+  if(isGuest()){ toast("Only the host phone can blow the whistle.", true); return; }
   sheet(`
     <h2>Blow the full-time whistle?</h2>
     <p>Ends the match and reveals who (if anyone) is the BIG LOSER.</p>

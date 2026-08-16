@@ -46,6 +46,7 @@ function boot() {
   check("every tier has questions", TIERS.every(t => counts[t] > 0), JSON.stringify(counts));
   check("the deep pack reached Hard", counts.hard >= 500, counts.hard);
   check("the deep pack reached BALL", counts.ball >= 350, counts.ball);
+  check("the deep pack reached Extreme", counts.extreme >= 480, counts.extreme);
 
   console.log("\n--- nothing asked twice ---");
   const all = [];

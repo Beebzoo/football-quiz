@@ -602,6 +602,16 @@
   .stealbig:active{transform:scale(.97)}
   .mppill.warn{border-color:#e0857a;color:#f2b2a9}
   .hint.waitline{color:#e9b84c;font-weight:700;text-align:center}
+  /* the reveal portrait: a face lands better than a name on its own */
+  .face{
+    display:block;margin:0 auto 10px;width:132px;height:132px;object-fit:cover;
+    object-position:center 22%;   /* Commons shots are full-body as often as not */
+    border-radius:50%;border:3px solid #e9b84c;
+    box-shadow:0 8px 22px rgba(0,0,0,.45);background:#0d2418;
+    animation:facein .38s cubic-bezier(.22,.8,.3,1) both;
+  }
+  @keyframes facein{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+  @media (prefers-reduced-motion: reduce){ .face{animation:none} }
   .sheet .nm-in{background:#f4f6f5;border-color:#cfd8d2;color:var(--ink)}
   .sheet .nm-in::placeholder{color:#9aa7b5}
   .ladder{margin-top:8px;font-size:.78rem;font-weight:700;opacity:.72;letter-spacing:.02em}
@@ -2607,6 +2617,17 @@ fetch("assets/managers/index.json").then(r=>r.json()).then(m=>{
   if(!S || S.phase==="setup") render();
 }).catch(()=>{});
 
+/* ---------- the faces ----------
+   221 of the 227 dugout careers have a freely licensed portrait on Wikimedia
+   Commons, pulled by _tools/build-faces.js with every photographer credited in
+   assets/faces/ATTRIBUTION.csv. They show on the reveal only, so the guessing
+   is still done off the crests. Deliberately NOT in the service worker's
+   precache list: 19MB would triple the install. They cache as they are seen. */
+let FACES=null;
+fetch("assets/faces/index.json").then(r=>r.json()).then(f=>{ FACES=f; }).catch(()=>{});
+const faceHTML = name => (FACES && FACES[name])
+  ? `<img class="face" src="assets/faces/${FACES[name]}" alt="" loading="lazy">` : "";
+
 /* ============================== CAREER REVERSE ==============================
    The player's name appears; recite the career in order. +1 per club, +3 for
    running the whole board. First mistake ends the run. */
@@ -3599,6 +3620,7 @@ function render(){
     if(S.phase==="c_judge"){
       st.innerHTML = `
         <div class="kick">${ico('eye')}Only ${reader()} looks · judging ${esc(S.players[S.career.guesser].name)}</div>
+        ${faceHTML(C.n)}
         <div class="careername">${esc(C.n)}</div>
         ${C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
         <div class="clubgrid">${grid}</div>
@@ -3612,6 +3634,7 @@ function render(){
     // c_dead: nobody got it
     st.innerHTML = `
       <div class="kick">Nobody got it</div>
+      ${faceHTML(C.n)}
       <div class="careername">${esc(C.n)}</div>
       ${C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
       <div class="clubgrid">${grid}</div>

@@ -1,0 +1,1606 @@
+{
+ "hard": [
+  {
+   "q": "Which country did the Netherlands beat in the 1988 European Championship final?",
+   "a": "the Soviet Union (2-0)"
+  },
+  {
+   "q": "Who scored the volley in the 1988 European Championship final?",
+   "a": "Marco van Basten"
+  },
+  {
+   "q": "Which stadium hosted the 1988 European Championship final?",
+   "a": "the Olympiastadion, Munich"
+  },
+  {
+   "q": "Who captained the Netherlands to their 1988 European Championship title?",
+   "a": "Ruud Gullit"
+  },
+  {
+   "q": "Which country knocked the Netherlands out of the 1990 World Cup?",
+   "a": "West Germany"
+  },
+  {
+   "q": "Which two players were sent off in the Netherlands v West Germany second-round tie at the 1990 World Cup?",
+   "a": "Frank Rijkaard and Rudi Völler"
+  },
+  {
+   "q": "Who missed the decisive penalty for the Netherlands in the Euro 2000 semi-final shoot-out against Italy?",
+   "a": "Paul Bosvelt (Frank de Boer and Jaap Stam also missed)"
+  },
+  {
+   "q": "How many penalties did the Netherlands miss in total against Italy at Euro 2000, in normal time and the shoot-out?",
+   "a": "Five"
+  },
+  {
+   "q": "Which country beat the Netherlands in the 1998 World Cup semi-final?",
+   "a": "Brazil, on penalties"
+  },
+  {
+   "q": "Who scored the last-minute goal against Argentina in the 1998 World Cup quarter-final?",
+   "a": "Dennis Bergkamp"
+  },
+  {
+   "q": "Who crossed for Bergkamp's famous goal against Argentina in 1998?",
+   "a": "Frank de Boer"
+  },
+  {
+   "q": "How many minutes into the 1974 World Cup final did Johan Neeskens score his penalty?",
+   "a": "Inside the second minute, before West Germany had touched the ball"
+  },
+  {
+   "q": "Which Dutch player hit the post in the last minute of normal time in the 1978 World Cup final?",
+   "a": "Rob Rensenbrink"
+  },
+  {
+   "q": "Why did Johan Cruyff not play at the 1978 World Cup?",
+   "a": "He withdrew from the squad; he later cited a kidnapping attempt on his family in Barcelona"
+  },
+  {
+   "q": "Which country did the Netherlands lose to in the 2010 World Cup final?",
+   "a": "Spain"
+  },
+  {
+   "q": "Who scored the winning goal in the 2010 World Cup final?",
+   "a": "Andrés Iniesta"
+  },
+  {
+   "q": "Which Dutch player was shown a yellow card for a chest-high challenge on Xabi Alonso in the 2010 World Cup final?",
+   "a": "Nigel de Jong"
+  },
+  {
+   "q": "What was the score when the Netherlands beat Spain in their opening game of the 2014 World Cup?",
+   "a": "5-1"
+  },
+  {
+   "q": "Who scored the diving header against Spain at the 2014 World Cup?",
+   "a": "Robin van Persie"
+  },
+  {
+   "q": "Which goalkeeper did Louis van Gaal bring on for the last seconds of extra time against Costa Rica at the 2014 World Cup?",
+   "a": "Tim Krul"
+  },
+  {
+   "q": "Which country knocked the Netherlands out of the 2014 World Cup?",
+   "a": "Argentina, on penalties in the semi-final"
+  },
+  {
+   "q": "Who is the Netherlands' all-time leading goalscorer?",
+   "a": "Robin van Persie"
+  },
+  {
+   "q": "Which Dutchman won the Ballon d'Or three times?",
+   "a": "Johan Cruyff"
+  },
+  {
+   "q": "Which Dutch defender won the Ballon d'Or in 1987?",
+   "a": "Ruud Gullit"
+  },
+  {
+   "q": "How many Ballons d'Or did Marco van Basten win?",
+   "a": "Three (1988, 1989, 1992)"
+  },
+  {
+   "q": "Which injury ended Marco van Basten's playing career?",
+   "a": "A chronic right ankle injury"
+  },
+  {
+   "q": "At what age did Marco van Basten play his last competitive match?",
+   "a": "28"
+  },
+  {
+   "q": "Which Dutch manager coined the term 'Total Football' in practice at Ajax in the early 1970s?",
+   "a": "Rinus Michels"
+  },
+  {
+   "q": "Which club won the European Cup three years running from 1971 to 1973?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Who did PSV beat in the 1988 European Cup final, and how?",
+   "a": "Benfica, on penalties after 0-0"
+  },
+  {
+   "q": "Which trophy did Ajax win in 1995, beating Milan in the final?",
+   "a": "The Champions League"
+  },
+  {
+   "q": "Who scored the winning goal for Ajax in the 1995 Champions League final?",
+   "a": "Patrick Kluivert"
+  },
+  {
+   "q": "How old was Patrick Kluivert when he scored the 1995 Champions League final winner?",
+   "a": "18"
+  },
+  {
+   "q": "Which club beat Ajax on penalties in the 1996 Champions League final?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Which English club won the European Cup in 1979 and 1980?",
+   "a": "Nottingham Forest"
+  },
+  {
+   "q": "Which manager led Nottingham Forest to their two European Cups?",
+   "a": "Brian Clough"
+  },
+  {
+   "q": "Which club won the first five European Cups?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "What was the score in the 1960 European Cup final at Hampden Park?",
+   "a": "Real Madrid 7-3 Eintracht Frankfurt"
+  },
+  {
+   "q": "Who scored four goals in the 1960 European Cup final?",
+   "a": "Ferenc Puskás"
+  },
+  {
+   "q": "Which club did Celtic beat to become the first British winners of the European Cup, in 1967?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "What nickname was given to Celtic's 1967 European Cup-winning side?",
+   "a": "The Lisbon Lions"
+  },
+  {
+   "q": "Which Dutch club were the first from the Netherlands to win the European Cup?",
+   "a": "Feyenoord, in 1970"
+  },
+  {
+   "q": "Who did Feyenoord beat in the 1970 European Cup final?",
+   "a": "Celtic"
+  },
+  {
+   "q": "Which club won the Champions League in 2005 after being 3-0 down at half time?",
+   "a": "Liverpool"
+  },
+  {
+   "q": "Which club did Liverpool beat in the 2005 Champions League final?",
+   "a": "Milan"
+  },
+  {
+   "q": "Where was the 2005 Champions League final played?",
+   "a": "Istanbul"
+  },
+  {
+   "q": "Which goalkeeper saved Andriy Shevchenko's penalty in the 2005 Champions League shoot-out?",
+   "a": "Jerzy Dudek"
+  },
+  {
+   "q": "Which club has won the most European Cups and Champions Leagues?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which German club won the European Cup three years running from 1974 to 1976?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Which disaster led to English clubs being banned from European competition in 1985?",
+   "a": "The Heysel Stadium disaster"
+  },
+  {
+   "q": "How many years did the ban on English clubs in Europe last?",
+   "a": "Five years (six for Liverpool)"
+  },
+  {
+   "q": "Which competition did Ajax win in 1987, beating Lokomotive Leipzig in the final?",
+   "a": "The European Cup Winners' Cup"
+  },
+  {
+   "q": "Which European competition was abolished in 1999?",
+   "a": "The Cup Winners' Cup"
+  },
+  {
+   "q": "Which Dutch club won the UEFA Cup in 1992?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which Dutch club won the UEFA Cup in 2002?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "In which stadium did Feyenoord win the 2002 UEFA Cup final?",
+   "a": "De Kuip, their own ground"
+  },
+  {
+   "q": "Which club won the first Europa Conference League, in 2022?",
+   "a": "Roma"
+  },
+  {
+   "q": "Which Dutch club lost the 2022 Europa Conference League final?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "Which club did Ajax beat 5-1 on aggregate in the 2019 Champions League last 16?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which club knocked Ajax out in the 2019 Champions League semi-final, with a last-minute goal?",
+   "a": "Tottenham"
+  },
+  {
+   "q": "Who scored the hat-trick that took Tottenham past Ajax in 2019?",
+   "a": "Lucas Moura"
+  },
+  {
+   "q": "Which three clubs have won every Eredivisie title but a handful since it began in 1956?",
+   "a": "Ajax, PSV and Feyenoord"
+  },
+  {
+   "q": "Which club won the first Eredivisie title, in 1956/57?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which club broke the Ajax, PSV and Feyenoord grip on the Eredivisie in 2009/10?",
+   "a": "Twente"
+  },
+  {
+   "q": "Which manager led Twente to the 2010 Eredivisie title?",
+   "a": "Steve McClaren"
+  },
+  {
+   "q": "Which club from Alkmaar won the Eredivisie in 1980/81 and 2008/09?",
+   "a": "AZ"
+  },
+  {
+   "q": "Which manager won the Eredivisie with AZ in 2009?",
+   "a": "Louis van Gaal"
+  },
+  {
+   "q": "What is the name of Ajax's stadium, opened in 1996?",
+   "a": "The Johan Cruijff ArenA (originally the Amsterdam ArenA)"
+  },
+  {
+   "q": "What was Ajax's home ground before the ArenA?",
+   "a": "De Meer Stadion"
+  },
+  {
+   "q": "What is Feyenoord's stadium properly called?",
+   "a": "Stadion Feijenoord, known as De Kuip"
+  },
+  {
+   "q": "What does 'De Kuip' mean?",
+   "a": "The Tub"
+  },
+  {
+   "q": "What is PSV's stadium called?",
+   "a": "The Philips Stadion"
+  },
+  {
+   "q": "Which company founded PSV?",
+   "a": "Philips"
+  },
+  {
+   "q": "What do the letters PSV stand for?",
+   "a": "Philips Sport Vereniging"
+  },
+  {
+   "q": "Which Dutch club is nicknamed 'de Godenzonen'?",
+   "a": "sc Heerenveen"
+  },
+  {
+   "q": "Which Dutch club plays in the Galgenwaard stadium?",
+   "a": "FC Utrecht"
+  },
+  {
+   "q": "In which city do Vitesse play?",
+   "a": "Arnhem"
+  },
+  {
+   "q": "Which Dutch club plays at the Euroborg?",
+   "a": "FC Groningen"
+  },
+  {
+   "q": "Which Dutch club is nicknamed 'de Superboeren'?",
+   "a": "De Graafschap"
+  },
+  {
+   "q": "What is the Dutch domestic cup called?",
+   "a": "The KNVB Beker (KNVB Cup)"
+  },
+  {
+   "q": "What is the Dutch season-opening match between the league and cup winners called?",
+   "a": "The Johan Cruijff Schaal"
+  },
+  {
+   "q": "What is the name of the fixture between Ajax and Feyenoord?",
+   "a": "De Klassieker"
+  },
+  {
+   "q": "Which Ajax youth academy produced Cruyff, Bergkamp and Kluivert?",
+   "a": "De Toekomst"
+  },
+  {
+   "q": "What does 'De Toekomst' mean?",
+   "a": "The Future"
+  },
+  {
+   "q": "Which club did Johan Cruyff join in 1983, having left Ajax?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "What did Johan Cruyff win with Feyenoord in his single season there?",
+   "a": "The league and cup double, in 1983/84"
+  },
+  {
+   "q": "Which shirt number did Johan Cruyff make famous?",
+   "a": "14"
+  },
+  {
+   "q": "Why did Cruyff wear two stripes rather than three on his Netherlands shirt?",
+   "a": "He had a personal deal with a rival sportswear brand to Adidas"
+  },
+  {
+   "q": "Which Dutch club did Ronald Koeman play for before joining PSV?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Who scored the free kick that won Barcelona their first European Cup, in 1992?",
+   "a": "Ronald Koeman"
+  },
+  {
+   "q": "Where was the 1992 European Cup final played?",
+   "a": "Wembley"
+  },
+  {
+   "q": "Which Dutch goalkeeper played over 100 times for the Netherlands?",
+   "a": "Edwin van der Sar"
+  },
+  {
+   "q": "Which two Dutch brothers both played in the 1998 World Cup?",
+   "a": "Frank and Ronald de Boer"
+  },
+  {
+   "q": "Which Dutch twins played together for PSV and the Netherlands in the 1970s?",
+   "a": "Willy and René van de Kerkhof"
+  },
+  {
+   "q": "Which Dutch striker was known as 'the Non-Flying Dutchman' for his fear of flying?",
+   "a": "Dennis Bergkamp"
+  },
+  {
+   "q": "Which club did Daley Sinkgraven join after leaving Ajax?",
+   "a": "Bayer Leverkusen"
+  },
+  {
+   "q": "Which club did Michel Vorm join after leaving Swansea City?",
+   "a": "Tottenham"
+  },
+  {
+   "q": "Which club did Rio Ferdinand join after leaving Leeds United?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Which club did Bruno Martins Indi join after leaving Stoke City?",
+   "a": "AZ Alkmaar"
+  },
+  {
+   "q": "Which club did Kalidou Koulibaly join after leaving Genk?",
+   "a": "Napoli"
+  },
+  {
+   "q": "Which club did Jermain Defoe join after leaving Bournemouth?",
+   "a": "Rangers"
+  },
+  {
+   "q": "Which club did Leroy Sané join after leaving Manchester City?",
+   "a": "Bayern München"
+  },
+  {
+   "q": "Which club did Damien Duff join after leaving Chelsea?",
+   "a": "Newcastle"
+  },
+  {
+   "q": "Which club did Jude Bellingham join after leaving Borussia Dortmund?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which club did Niklas Süle join after leaving Bayern München?",
+   "a": "Borussia Dortmund"
+  },
+  {
+   "q": "Which club did Xavi Simons join after leaving RB Leipzig?",
+   "a": "Tottenham"
+  },
+  {
+   "q": "Which club did Bruno Guimarães join after leaving Athletico Paranaense?",
+   "a": "Lyon"
+  },
+  {
+   "q": "Which club did Rudi Völler join after leaving 1860 Munich?",
+   "a": "Werder Bremen"
+  },
+  {
+   "q": "Which club did Marc Overmars join after leaving Arsenal?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which club did Ronald de Boer join after leaving Ajax?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which club did Nathan Aké join after leaving Bournemouth?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Which club did Christian Ziege join after leaving Bayern München?",
+   "a": "Milan"
+  },
+  {
+   "q": "Which club did Robert Pirès join after leaving FC Metz?",
+   "a": "Marseille"
+  },
+  {
+   "q": "Which club did Steve McManaman join after leaving Real Madrid?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Which club did Alexandre Lacazette join after leaving Arsenal?",
+   "a": "Lyon"
+  },
+  {
+   "q": "Which club did Juan Román Riquelme join after leaving Barcelona?",
+   "a": "Villarreal"
+  },
+  {
+   "q": "Which club did Didier Deschamps join after leaving Nantes?",
+   "a": "Marseille"
+  },
+  {
+   "q": "Which club did Fernando Hierro join after leaving Valladolid?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which club did Patrick Kluivert join after leaving Valencia?",
+   "a": "PSV"
+  },
+  {
+   "q": "Which club did Gianluca Zambrotta join after leaving Juventus?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which club did Thibaut Courtois join after leaving Genk?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Which club did Donyell Malen join after leaving Borussia Dortmund?",
+   "a": "Aston Villa"
+  },
+  {
+   "q": "Which club did Deco join after leaving Barcelona?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Which club did Steven Bergwijn join after leaving PSV?",
+   "a": "Tottenham"
+  },
+  {
+   "q": "Which club did Sergio Agüero join after leaving Atletico Madrid?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "Which club did Shinji Kagawa join after leaving Borussia Dortmund?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Which club did Álvaro Morata join after leaving Juventus?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which club did Sergio Ramos join after leaving Sevilla?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which club did Kasper Schmeichel join after leaving Anderlecht?",
+   "a": "Celtic"
+  },
+  {
+   "q": "Which club did Rodrigo Moreno play for last, after leaving Al Rayyan?",
+   "a": "Lusail"
+  },
+  {
+   "q": "Which club did Diego Milito play for last, after leaving Inter?",
+   "a": "Racing"
+  },
+  {
+   "q": "Which club did Emmanuel Adebayor play for last, after leaving Crystal Palace?",
+   "a": "Basaksehir"
+  },
+  {
+   "q": "Which club did Bruno Martins Indi play for last, after leaving AZ Alkmaar?",
+   "a": "Sparta Rotterdam"
+  },
+  {
+   "q": "Which club did Santi Cazorla play for last, after leaving Al Sadd?",
+   "a": "Oviedo"
+  },
+  {
+   "q": "Which club did Kalidou Koulibaly play for last, after leaving Chelsea?",
+   "a": "Al Hilal"
+  },
+  {
+   "q": "Which club did Damien Duff play for last, after leaving Melbourne City?",
+   "a": "Shamrock Rovers"
+  },
+  {
+   "q": "Which club did Bas Dost play for last, after leaving FC Utrecht?",
+   "a": "NEC Nijmegen"
+  },
+  {
+   "q": "Which club did Patrick Kluivert play for last, after leaving PSV?",
+   "a": "Lille"
+  },
+  {
+   "q": "Which club did Shinji Kagawa play for last, after leaving Borussia Dortmund?",
+   "a": "Cerezo Osaka"
+  },
+  {
+   "q": "Which club did Álvaro Morata play for last, after leaving Milan?",
+   "a": "Como 1907"
+  },
+  {
+   "q": "Which club did Sergio Ramos play for last, after leaving Sevilla?",
+   "a": "Monterrey"
+  },
+  {
+   "q": "Which club did Ricardo Quaresma play for last, after leaving Besiktas?",
+   "a": "Vitoria De Guimaraes"
+  },
+  {
+   "q": "Which club did Davor Šuker play for last, after leaving West Ham?",
+   "a": "1860 Munich"
+  },
+  {
+   "q": "Which club did Cláudio Taffarel play for last, after leaving Galatasaray?",
+   "a": "Parma"
+  },
+  {
+   "q": "Which club did Rui Patrício play for last, after leaving Atalanta?",
+   "a": "Al Ain"
+  },
+  {
+   "q": "Which club did Hatem Ben Arfa play for last, after leaving Bordeaux?",
+   "a": "Lille"
+  },
+  {
+   "q": "Which club did Didier Drogba play for last, after leaving Chelsea?",
+   "a": "CF Montreal"
+  },
+  {
+   "q": "Which club did Axel Witsel play for last, after leaving Atletico Madrid?",
+   "a": "Girona"
+  },
+  {
+   "q": "Which club did Antonio Cassano play for last, after leaving Parma?",
+   "a": "Sampdoria"
+  },
+  {
+   "q": "Which club did Hernán Crespo play for last, after leaving Genoa?",
+   "a": "Parma"
+  },
+  {
+   "q": "Which club did Miralem Sulejmani play for last, after leaving Benfica?",
+   "a": "Young Boys"
+  },
+  {
+   "q": "Which club did Rubén Castro play for last, after leaving Cartagena?",
+   "a": "Malaga"
+  },
+  {
+   "q": "Which club did David Villa play for last, after leaving New York City FC?",
+   "a": "Vissel Kobe"
+  },
+  {
+   "q": "Which club did Marc Degryse play for last, after leaving PSV?",
+   "a": "Gent"
+  },
+  {
+   "q": "Which club did Nwankwo Kanu play for last, after leaving West Bromwich Albion?",
+   "a": "Portsmouth"
+  },
+  {
+   "q": "Which club did Mario Götze play for last, after leaving PSV?",
+   "a": "Eintracht Frankfurt"
+  },
+  {
+   "q": "Which club did Laurent Koscielny play for last, after leaving Arsenal?",
+   "a": "Bordeaux"
+  },
+  {
+   "q": "Which club did Thiago Silva play for last, after leaving FC Porto?",
+   "a": "Fluminense"
+  },
+  {
+   "q": "Which club did Jean-Pierre Papin play for last, after leaving Bordeaux?",
+   "a": "Guingamp"
+  },
+  {
+   "q": "Which club did Juan Cuadrado play for last, after leaving Atalanta?",
+   "a": "Pisa"
+  },
+  {
+   "q": "Which club did Blaise Matuidi play for last, after leaving Juventus?",
+   "a": "Inter Miami CF"
+  },
+  {
+   "q": "Which club did Cristiano Ronaldo play for last, after leaving Manchester United?",
+   "a": "Al Nassr"
+  },
+  {
+   "q": "Which club did Gary Medel play for last, after leaving Boca Juniors?",
+   "a": "Universidad Catolica"
+  },
+  {
+   "q": "Which club did Diego Milito leave to sign for Inter?",
+   "a": "Genoa"
+  },
+  {
+   "q": "Which club did Jarrod Bowen leave to sign for West Ham?",
+   "a": "Hull City"
+  },
+  {
+   "q": "Which club did Emmanuel Adebayor leave to sign for AS Monaco?",
+   "a": "FC Metz"
+  },
+  {
+   "q": "Which club did Michel Vorm leave to sign for Tottenham?",
+   "a": "Swansea City"
+  },
+  {
+   "q": "Which club did Bruno Martins Indi leave to sign for AZ Alkmaar?",
+   "a": "Stoke City"
+  },
+  {
+   "q": "Which club did Santi Cazorla leave to sign for Villarreal?",
+   "a": "Recreativo Huelva"
+  },
+  {
+   "q": "Which club did Kalidou Koulibaly leave to sign for Napoli?",
+   "a": "Genk"
+  },
+  {
+   "q": "Which club did Gianluca Vialli leave to sign for Juventus?",
+   "a": "Sampdoria"
+  },
+  {
+   "q": "Which club did Jermain Defoe leave to sign for Tottenham?",
+   "a": "Portsmouth"
+  },
+  {
+   "q": "Which club did Damien Duff leave to sign for Chelsea?",
+   "a": "Blackburn Rovers"
+  },
+  {
+   "q": "Which club did Jude Bellingham leave to sign for Borussia Dortmund?",
+   "a": "Birmingham"
+  },
+  {
+   "q": "Which club did Dominik Szoboszlai leave to sign for Liverpool?",
+   "a": "RB Leipzig"
+  },
+  {
+   "q": "Which club did Niklas Süle leave to sign for Bayern München?",
+   "a": "Hoffenheim"
+  },
+  {
+   "q": "Which club did Xavi Simons leave to sign for Tottenham?",
+   "a": "RB Leipzig"
+  },
+  {
+   "q": "Which club did Bruno Guimarães leave to sign for Lyon?",
+   "a": "Athletico Paranaense"
+  },
+  {
+   "q": "Which club did Rudi Völler leave to sign for Werder Bremen?",
+   "a": "1860 Munich"
+  },
+  {
+   "q": "Which club did Marc Overmars leave to sign for Ajax?",
+   "a": "Willem Ii"
+  },
+  {
+   "q": "Which club did Nathan Aké leave to sign for Manchester City?",
+   "a": "Bournemouth"
+  },
+  {
+   "q": "Which club did Christian Ziege leave to sign for Liverpool?",
+   "a": "Middlesbrough"
+  },
+  {
+   "q": "Which club did Bas Dost leave to sign for SC Heerenveen?",
+   "a": "Heracles"
+  },
+  {
+   "q": "Which club did Robert Pirès leave to sign for Marseille?",
+   "a": "FC Metz"
+  },
+  {
+   "q": "Which club did Henrikh Mkhitaryan leave to sign for Borussia Dortmund?",
+   "a": "Shakhtar"
+  },
+  {
+   "q": "Which club did Sylvain Wiltord leave to sign for Arsenal?",
+   "a": "Bordeaux"
+  },
+  {
+   "q": "Which club did Didier Deschamps leave to sign for Marseille?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Which club did Fernando Hierro leave to sign for Real Madrid?",
+   "a": "Valladolid"
+  },
+  {
+   "q": "Which club did Bryan Mbeumo leave to sign for Manchester United?",
+   "a": "Brentford"
+  },
+  {
+   "q": "Which club did Gianluca Zambrotta leave to sign for Juventus?",
+   "a": "Bari"
+  },
+  {
+   "q": "Which club did Thibaut Courtois leave to sign for Chelsea?",
+   "a": "Genk"
+  },
+  {
+   "q": "Which club did Sergio Agüero leave to sign for Atletico Madrid?",
+   "a": "Independiente"
+  },
+  {
+   "q": "Which club did Shinji Kagawa leave to sign for Borussia Dortmund?",
+   "a": "Cerezo Osaka"
+  },
+  {
+   "q": "Which club did Kasper Schmeichel leave to sign for Leeds United?",
+   "a": "Notts County"
+  },
+  {
+   "q": "Which club did Davor Šuker leave to sign for Sevilla?",
+   "a": "Dinamo Zagreb"
+  },
+  {
+   "q": "Which club did Riyad Mahrez leave to sign for Manchester City?",
+   "a": "Leicester"
+  },
+  {
+   "q": "Which club did Cláudio Taffarel leave to sign for Galatasaray?",
+   "a": "Atletico Mineiro"
+  },
+  {
+   "q": "Who wore number 10 for Brazil, World Cup final 1970?",
+   "a": "Pelé"
+  },
+  {
+   "q": "Brazil, World Cup final 1970 lined up in which formation?",
+   "a": "4-2-4"
+  },
+  {
+   "q": "Who wore number 10 for Ajax, Champions League final 1995?",
+   "a": "Jari Litmanen"
+  }
+ ],
+ "ball": [
+  {
+   "q": "The Jules Rimet trophy was stolen in England in 1966. Who found it?",
+   "a": "A dog called Pickles, wrapped in newspaper under a hedge in south London"
+  },
+  {
+   "q": "Brazil were given the Jules Rimet trophy permanently in 1970. What happened to it in 1983?",
+   "a": "It was stolen in Rio and never recovered, most likely melted down"
+  },
+  {
+   "q": "Which country hosted and won the first World Cup, in 1930?",
+   "a": "Uruguay"
+  },
+  {
+   "q": "Why did only four European teams travel to the 1930 World Cup?",
+   "a": "The boat crossing to Uruguay took weeks, so most European nations refused to go"
+  },
+  {
+   "q": "Two different balls were used in the 1930 World Cup final. Why?",
+   "a": "Argentina and Uruguay each wanted their own, so they used one per half"
+  },
+  {
+   "q": "What is the 1950 defeat of Brazil by Uruguay in the deciding match at the Maracanã known as?",
+   "a": "The Maracanazo"
+  },
+  {
+   "q": "Which country did England lose 1-0 to at the 1950 World Cup, in one of the great upsets?",
+   "a": "the United States"
+  },
+  {
+   "q": "Who scored the goal that knocked Italy out of the 1966 World Cup?",
+   "a": "Pak Doo-ik of North Korea"
+  },
+  {
+   "q": "Which Zaire player famously charged out of the wall to boot away a Brazilian free kick in 1974?",
+   "a": "Mwepu Ilunga"
+  },
+  {
+   "q": "Which country beat West Germany 1-0 in the group stage of the 1974 World Cup, on West German soil?",
+   "a": "East Germany"
+  },
+  {
+   "q": "Who scored East Germany's winner against West Germany in 1974?",
+   "a": "Jürgen Sparwasser"
+  },
+  {
+   "q": "What is the West Germany v Austria game at the 1982 World Cup remembered as?",
+   "a": "The Disgrace of Gijón, after a result that suited both sides led to 80 minutes of nothing"
+  },
+  {
+   "q": "What rule change did the Disgrace of Gijón bring about?",
+   "a": "Final group matches are now played simultaneously"
+  },
+  {
+   "q": "Which African side beat holders Argentina in the opening game of the 1990 World Cup?",
+   "a": "Cameroon"
+  },
+  {
+   "q": "How old was Roger Milla when he scored at the 1994 World Cup, making him the oldest scorer in the tournament's history?",
+   "a": "42"
+  },
+  {
+   "q": "What did Roger Milla do at the corner flag after scoring?",
+   "a": "He danced"
+  },
+  {
+   "q": "Which country reached the 2002 World Cup semi-finals as co-hosts?",
+   "a": "South Korea"
+  },
+  {
+   "q": "Which country did Luis Suárez deny with a handball on the line at the 2010 World Cup?",
+   "a": "Ghana"
+  },
+  {
+   "q": "Who missed the resulting penalty for Ghana?",
+   "a": "Asamoah Gyan, in the last minute of extra time"
+  },
+  {
+   "q": "What message was on the shirt Andrés Iniesta revealed after scoring the 2010 World Cup final winner?",
+   "a": "A tribute to Dani Jarque, his friend who had died the year before"
+  },
+  {
+   "q": "What was the score when Germany beat Brazil in the 2014 World Cup semi-final?",
+   "a": "7-1"
+  },
+  {
+   "q": "How many goals did Germany score in the first half hour against Brazil in 2014?",
+   "a": "Five"
+  },
+  {
+   "q": "Which country did Iceland knock out of Euro 2016?",
+   "a": "England"
+  },
+  {
+   "q": "Which country won Euro 1992 after being called up as a late replacement?",
+   "a": "Denmark, who came in when Yugoslavia were excluded"
+  },
+  {
+   "q": "Which country won Euro 2004 at odds of 150-1?",
+   "a": "Greece"
+  },
+  {
+   "q": "Who managed Greece to the Euro 2004 title?",
+   "a": "Otto Rehhagel"
+  },
+  {
+   "q": "Which country did Greece beat in both the opening game and the final of Euro 2004?",
+   "a": "Portugal"
+  },
+  {
+   "q": "Who scored the penalty that won Czechoslovakia Euro 1976, and how did he take it?",
+   "a": "Antonín Panenka, with a chipped penalty down the middle"
+  },
+  {
+   "q": "Which country did Czechoslovakia beat in the Euro 1976 final?",
+   "a": "West Germany"
+  },
+  {
+   "q": "What did Marco Tardelli do after scoring in the 1982 World Cup final?",
+   "a": "He ran off screaming, in one of football's most famous celebrations"
+  },
+  {
+   "q": "What was Bebeto's celebration at the 1994 World Cup?",
+   "a": "Rocking an imaginary baby, for his newborn son"
+  },
+  {
+   "q": "Who saved a Pelé header at the 1970 World Cup in what is often called the greatest save ever?",
+   "a": "Gordon Banks"
+  },
+  {
+   "q": "What did Pelé attempt from the halfway line against Czechoslovakia in 1970?",
+   "a": "A shot from inside his own half, which drifted just wide"
+  },
+  {
+   "q": "Which goalkeeper saved all four penalties in the 1986 European Cup final shoot-out?",
+   "a": "Helmuth Duckadam of Steaua Bucharest"
+  },
+  {
+   "q": "Which club did Steaua Bucharest beat to win the 1986 European Cup?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which Yugoslav club won the European Cup in 1991, just before the country broke apart?",
+   "a": "Red Star Belgrade"
+  },
+  {
+   "q": "How did Red Star Belgrade win the 1991 European Cup final?",
+   "a": "On penalties after a goalless 120 minutes against Marseille"
+  },
+  {
+   "q": "Which club won the 1983 European Cup, beating a Juventus side full of Italy's World Cup winners?",
+   "a": "Hamburg"
+  },
+  {
+   "q": "Who came on for Aston Villa after nine minutes of the 1982 European Cup final, having played once before?",
+   "a": "Nigel Spink"
+  },
+  {
+   "q": "Which manager ran down the Old Trafford touchline celebrating a late Porto goal in 2004?",
+   "a": "José Mourinho"
+  },
+  {
+   "q": "Which club knocked Manchester United out on that night in 2004?",
+   "a": "Porto"
+  },
+  {
+   "q": "Which club came back from 3-0 down against Milan to win the 2004 Champions League quarter-final 4-0 at home?",
+   "a": "Deportivo La Coruña"
+  },
+  {
+   "q": "What is the Barcelona 6-1 win over PSG in 2017 usually called?",
+   "a": "La Remontada"
+  },
+  {
+   "q": "Who scored Barcelona's sixth goal against PSG in 2017, in the 95th minute?",
+   "a": "Sergi Roberto"
+  },
+  {
+   "q": "Which club beat Barcelona 4-0 at Anfield in 2019 to overturn a 3-0 first leg?",
+   "a": "Liverpool"
+  },
+  {
+   "q": "How was Liverpool's fourth goal against Barcelona in 2019 created?",
+   "a": "Trent Alexander-Arnold's quickly taken corner, finished by Divock Origi"
+  },
+  {
+   "q": "Which club knocked Barcelona out in 2018 after losing the first leg 4-1?",
+   "a": "Roma"
+  },
+  {
+   "q": "Which English club won the league in 2016 having started the season at 5000-1?",
+   "a": "Leicester City"
+  },
+  {
+   "q": "Which two Manchester United players scored in stoppage time of the 1999 Champions League final?",
+   "a": "Teddy Sheringham and Ole Gunnar Solskjær"
+  },
+  {
+   "q": "Which club did Manchester United beat in the 1999 Champions League final?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "What ruling in 1995 allowed players to leave at the end of a contract for no fee?",
+   "a": "The Bosman ruling"
+  },
+  {
+   "q": "Which player gave his name to that ruling, and which club was he trying to leave?",
+   "a": "Jean-Marc Bosman, at RFC Liège"
+  },
+  {
+   "q": "How long did the Bosman case take to reach its conclusion?",
+   "a": "Five years, from 1990 to 1995"
+  },
+  {
+   "q": "Which curse is Benfica said to be under, and who is said to have laid it?",
+   "a": "The Curse of Béla Guttmann, the manager who left in 1962 after being refused a pay rise"
+  },
+  {
+   "q": "What did Béla Guttmann reportedly say when he left Benfica?",
+   "a": "That Benfica would not win a European trophy again for 100 years"
+  },
+  {
+   "q": "Which goalkeeper played on with a broken neck to finish the 1956 FA Cup final?",
+   "a": "Bert Trautmann of Manchester City"
+  },
+  {
+   "q": "What was unusual about Bert Trautmann's background as a Manchester City hero?",
+   "a": "He had been a German paratrooper and a prisoner of war in England"
+  },
+  {
+   "q": "Which club's team was destroyed in the Superga air disaster of 1949?",
+   "a": "Torino, who had won five straight Italian titles"
+  },
+  {
+   "q": "Which club lost eight players in the Munich air disaster of 1958?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "What were the young Manchester United side of the 1950s known as?",
+   "a": "The Busby Babes"
+  },
+  {
+   "q": "Which manager survived the Munich air disaster and rebuilt Manchester United to win the 1968 European Cup?",
+   "a": "Matt Busby"
+  },
+  {
+   "q": "Which club did Manchester United beat in the 1968 European Cup final?",
+   "a": "Benfica"
+  },
+  {
+   "q": "Which Hungarian side beat England 6-3 at Wembley in 1953?",
+   "a": "Hungary, the Magical Magyars"
+  },
+  {
+   "q": "What was the score in the return match in Budapest in 1954?",
+   "a": "Hungary 7-1 England"
+  },
+  {
+   "q": "Which country did Hungary lose to in the 1954 World Cup final, having beaten them 8-3 in the group stage?",
+   "a": "West Germany"
+  },
+  {
+   "q": "What is the 1954 World Cup final known as in Germany?",
+   "a": "Das Wunder von Bern, the Miracle of Bern"
+  },
+  {
+   "q": "Which Hungarian forward joined Real Madrid in 1958 after fleeing the 1956 uprising?",
+   "a": "Ferenc Puskás"
+  },
+  {
+   "q": "What was Ferenc Puskás nicknamed?",
+   "a": "The Galloping Major"
+  },
+  {
+   "q": "Which award is named after Ferenc Puskás?",
+   "a": "The FIFA award for the best goal of the year"
+  },
+  {
+   "q": "Which Swedish defender was on the wrong end of the Cruyff turn at the 1974 World Cup?",
+   "a": "Jan Olsson"
+  },
+  {
+   "q": "In which match did Johan Cruyff first perform the Cruyff turn?",
+   "a": "Netherlands v Sweden at the 1974 World Cup"
+  },
+  {
+   "q": "Which Ajax side went a whole Eredivisie season unbeaten?",
+   "a": "Louis van Gaal's Ajax, in 1994/95"
+  },
+  {
+   "q": "Which trophy did that unbeaten Ajax side also win in 1995?",
+   "a": "The Champions League"
+  },
+  {
+   "q": "Which Finn was the leading scorer of that great mid-1990s Ajax side?",
+   "a": "Jari Litmanen"
+  },
+  {
+   "q": "Which goalkeeper played in the 1995 Champions League final for Ajax at the age of 24?",
+   "a": "Edwin van der Sar"
+  },
+  {
+   "q": "Which Ajax winger of the 1990s was known for his pace and later joined Arsenal?",
+   "a": "Marc Overmars"
+  },
+  {
+   "q": "Which two Dutch clubs did Johan Cruyff win league titles with as a player?",
+   "a": "Ajax and Feyenoord"
+  },
+  {
+   "q": "How did Ajax fans react when Cruyff signed for Feyenoord in 1983?",
+   "a": "With fury; he then won the double with Feyenoord that season"
+  },
+  {
+   "q": "Which Dutch club reached the Champions League group stage in 1999/2000 as a surprise qualifier from Tilburg?",
+   "a": "Willem II"
+  },
+  {
+   "q": "Which Limburg club won the KNVB Cup in 1997 and 2000?",
+   "a": "Roda JC Kerkrade"
+  },
+  {
+   "q": "Which two clubs merged in 1962 to form Roda JC?",
+   "a": "Rapid JC and Roda Sport"
+  },
+  {
+   "q": "Which Limburg club did Mark van Bommel start his senior career at?",
+   "a": "Fortuna Sittard"
+  },
+  {
+   "q": "Willy Brokamp is an MVV legend. Which club did he leave MVV for, before returning?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which amateur club did Willy Brokamp start at, before MVV?",
+   "a": "RKVV Chèvremont, in Kerkrade"
+  },
+  {
+   "q": "Bert van Marwijk managed the Netherlands to the 2010 World Cup final. Which two clubs did he play for at the end of his career?",
+   "a": "MVV Maastricht and Fortuna Sittard"
+  },
+  {
+   "q": "Which Japanese playmaker began his European career at VVV-Venlo?",
+   "a": "Keisuke Honda"
+  },
+  {
+   "q": "What is MVV Maastricht's stadium called?",
+   "a": "De Geusselt"
+  },
+  {
+   "q": "In which year was MVV Maastricht founded?",
+   "a": "1902"
+  },
+  {
+   "q": "Which three professional clubs represent the province of Limburg?",
+   "a": "MVV Maastricht, Roda JC Kerkrade and Fortuna Sittard (VVV-Venlo is the fourth)"
+  },
+  {
+   "q": "Which Dutch manager took Feyenoord to the 2002 UEFA Cup, won in their own stadium?",
+   "a": "Bert van Marwijk"
+  },
+  {
+   "q": "Who scored twice for Feyenoord in the 2002 UEFA Cup final?",
+   "a": "Pierre van Hooijdonk"
+  },
+  {
+   "q": "Which club did Feyenoord beat in the 2002 UEFA Cup final?",
+   "a": "Borussia Dortmund"
+  },
+  {
+   "q": "Which Dutch striker scored a famous free kick for Nottingham Forest and later won the UEFA Cup with Feyenoord?",
+   "a": "Pierre van Hooijdonk"
+  },
+  {
+   "q": "Which Dutch club has won the Eredivisie the most times?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which Dutchman managed Barcelona to their first European Cup, and in what year?",
+   "a": "Johan Cruyff, in 1992"
+  },
+  {
+   "q": "What was Cruyff's great Barcelona side of the early 1990s called?",
+   "a": "The Dream Team"
+  },
+  {
+   "q": "Which Dutch manager won the Champions League with Ajax in 1995 and later managed Barcelona and Bayern Munich?",
+   "a": "Louis van Gaal"
+  },
+  {
+   "q": "Which manager led PSV to the 1988 European Cup?",
+   "a": "Guus Hiddink"
+  },
+  {
+   "q": "PSV won a treble in 1988. What were the three trophies?",
+   "a": "The European Cup, the Eredivisie and the KNVB Cup"
+  },
+  {
+   "q": "Which Dutch club side did Guus Hiddink later take to a World Cup semi-final as a national manager?",
+   "a": "South Korea, in 2002"
+  },
+  {
+   "q": "Which country did Guus Hiddink take to the Euro 2008 semi-finals?",
+   "a": "Russia"
+  },
+  {
+   "q": "Which Dutch defender captained Milan and later managed the Netherlands?",
+   "a": "Frank Rijkaard"
+  },
+  {
+   "q": "Which three Dutchmen formed Milan's famous trio in the late 1980s?",
+   "a": "Ruud Gullit, Marco van Basten and Frank Rijkaard"
+  },
+  {
+   "q": "How many foreign players were Italian clubs allowed at the time the Dutch trio played for Milan?",
+   "a": "Three"
+  },
+  {
+   "q": "Which Dutch club did Ruud Gullit leave to join PSV in 1985?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "Which Dutch player was sold by Ajax to Milan in 1987 and won three Ballons d'Or there?",
+   "a": "Marco van Basten"
+  },
+  {
+   "q": "What did Johan Cruyff famously say about playing simple football?",
+   "a": "That playing simple football is the hardest thing there is"
+  },
+  {
+   "q": "Which number did Dennis Bergkamp wear at Arsenal?",
+   "a": "10"
+  },
+  {
+   "q": "Why is Dennis Bergkamp said to be named after a Manchester United player?",
+   "a": "After Denis Law; the extra n was added because Dutch registrars would not accept Denis"
+  },
+  {
+   "q": "Which Dutch club did Luis Suárez play for before Ajax?",
+   "a": "FC Groningen"
+  },
+  {
+   "q": "Which Dutch club did Arjen Robben play for before PSV?",
+   "a": "FC Groningen"
+  },
+  {
+   "q": "Which Dutch club sold both Arjen Robben and Luis Suárez early in their careers?",
+   "a": "FC Groningen"
+  },
+  {
+   "q": "Which Eredivisie club is based in Deventer and is one of the oldest in the Netherlands?",
+   "a": "Go Ahead Eagles"
+  },
+  {
+   "q": "Which Dutch club plays in Rotterdam alongside Feyenoord and Excelsior?",
+   "a": "Sparta Rotterdam"
+  },
+  {
+   "q": "Which is the oldest professional football club in the Netherlands?",
+   "a": "Sparta Rotterdam, founded 1888"
+  },
+  {
+   "q": "Which club did Rodrigo Moreno join after leaving Leeds United?",
+   "a": "Al Rayyan"
+  },
+  {
+   "q": "Which club did Diego Milito join after leaving Real Zaragoza?",
+   "a": "Genoa"
+  },
+  {
+   "q": "Which club did Jarrod Bowen join after leaving Hereford?",
+   "a": "Hull City"
+  },
+  {
+   "q": "Which club did Emmanuel Adebayor join after leaving Crystal Palace?",
+   "a": "Basaksehir"
+  },
+  {
+   "q": "Which club did Santi Cazorla join after leaving Al Sadd?",
+   "a": "Oviedo"
+  },
+  {
+   "q": "Which club did Cristhian Stuani join after leaving Espanyol?",
+   "a": "Middlesbrough"
+  },
+  {
+   "q": "Which club did Arne Slot join after leaving Pec Zwolle?",
+   "a": "NAC Breda"
+  },
+  {
+   "q": "Which club did Gianluca Vialli join after leaving Cremonese?",
+   "a": "Sampdoria"
+  },
+  {
+   "q": "Which club did Dominik Szoboszlai join after leaving Salzburg?",
+   "a": "RB Leipzig"
+  },
+  {
+   "q": "Which club did Bas Dost join after leaving FC Emmen?",
+   "a": "Heracles"
+  },
+  {
+   "q": "Which club did Henrikh Mkhitaryan join after leaving Pyunik?",
+   "a": "Shakhtar"
+  },
+  {
+   "q": "Which club did Sylvain Wiltord join after leaving Rennes?",
+   "a": "Bordeaux"
+  },
+  {
+   "q": "Which club did Bryan Mbeumo join after leaving Troyes?",
+   "a": "Brentford"
+  },
+  {
+   "q": "Which club did Davor Šuker join after leaving West Ham?",
+   "a": "1860 Munich"
+  },
+  {
+   "q": "Which club did Riyad Mahrez join after leaving Le Havre AC?",
+   "a": "Leicester"
+  },
+  {
+   "q": "Which club did Cláudio Taffarel join after leaving Parma?",
+   "a": "Reggiana"
+  },
+  {
+   "q": "Which club did Rui Patrício join after leaving Sporting CP?",
+   "a": "Wolves"
+  },
+  {
+   "q": "Which club did Hatem Ben Arfa join after leaving Valladolid?",
+   "a": "Bordeaux"
+  },
+  {
+   "q": "Which club did Didier Drogba join after leaving Chelsea?",
+   "a": "CF Montreal"
+  },
+  {
+   "q": "Which club did Axel Witsel join after leaving Benfica?",
+   "a": "Zenit"
+  },
+  {
+   "q": "Which club did Hernán Crespo join after leaving Genoa?",
+   "a": "Parma"
+  },
+  {
+   "q": "Which club did Ivan Toney join after leaving Peterborough?",
+   "a": "Brentford"
+  },
+  {
+   "q": "Which club did Andy Cole join after leaving Manchester United?",
+   "a": "Blackburn Rovers"
+  },
+  {
+   "q": "Which club did Alan Shearer join after leaving Southampton?",
+   "a": "Blackburn Rovers"
+  },
+  {
+   "q": "Which club did David Villa join after leaving New York City FC?",
+   "a": "Vissel Kobe"
+  },
+  {
+   "q": "Which club did Jack Wilshere join after leaving West Ham?",
+   "a": "Bournemouth"
+  },
+  {
+   "q": "Which club did Marco Verratti join after leaving Al Arabi?",
+   "a": "Al Duhail"
+  },
+  {
+   "q": "Which club did Marc Degryse join after leaving Club Brugge?",
+   "a": "Anderlecht"
+  },
+  {
+   "q": "Which club did Michael Ballack join after leaving Chemnitzer FC?",
+   "a": "FC Kaiserslautern"
+  },
+  {
+   "q": "Which club did Mario Götze join after leaving PSV?",
+   "a": "Eintracht Frankfurt"
+  },
+  {
+   "q": "Which club did Laurent Koscielny join after leaving Tours?",
+   "a": "Lorient"
+  },
+  {
+   "q": "Which club did Joško Gvardiol join after leaving Dinamo Zagreb?",
+   "a": "RB Leipzig"
+  },
+  {
+   "q": "Which club did Andrey Arshavin join after leaving Arsenal?",
+   "a": "Zenit"
+  },
+  {
+   "q": "Which club did Karim Benzema join after leaving Real Madrid?",
+   "a": "Al Ittihad"
+  },
+  {
+   "q": "Which club did Diego Milito start his senior career at?",
+   "a": "Racing"
+  },
+  {
+   "q": "Which club did Jarrod Bowen start his senior career at?",
+   "a": "Hereford"
+  },
+  {
+   "q": "Which club did Emmanuel Adebayor start his senior career at?",
+   "a": "FC Metz"
+  },
+  {
+   "q": "Which club did Cristhian Stuani start his senior career at?",
+   "a": "Levante"
+  },
+  {
+   "q": "Which club did Arne Slot start his senior career at?",
+   "a": "Pec Zwolle"
+  },
+  {
+   "q": "Which club did Kalidou Koulibaly start his senior career at?",
+   "a": "FC Metz"
+  },
+  {
+   "q": "Which club did Gianluca Vialli start his senior career at?",
+   "a": "Cremonese"
+  },
+  {
+   "q": "Which club did Damien Duff start his senior career at?",
+   "a": "Blackburn Rovers"
+  },
+  {
+   "q": "Which club did Jude Bellingham start his senior career at?",
+   "a": "Birmingham"
+  },
+  {
+   "q": "Which club did Dominik Szoboszlai start his senior career at?",
+   "a": "Salzburg"
+  },
+  {
+   "q": "Which club did Niklas Süle start his senior career at?",
+   "a": "Hoffenheim"
+  },
+  {
+   "q": "Which club did Bruno Guimarães start his senior career at?",
+   "a": "Athletico Paranaense"
+  },
+  {
+   "q": "Which club did Rudi Völler start his senior career at?",
+   "a": "Kickers Offenbach"
+  },
+  {
+   "q": "Which club did Bas Dost start his senior career at?",
+   "a": "FC Emmen"
+  },
+  {
+   "q": "Which club did Robert Pirès start his senior career at?",
+   "a": "FC Metz"
+  },
+  {
+   "q": "Which club did Henrikh Mkhitaryan start his senior career at?",
+   "a": "Pyunik"
+  },
+  {
+   "q": "Which club did Sylvain Wiltord start his senior career at?",
+   "a": "Rennes"
+  },
+  {
+   "q": "Which club did Didier Deschamps start his senior career at?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Which club did Fernando Hierro start his senior career at?",
+   "a": "Valladolid"
+  },
+  {
+   "q": "Which club did Bryan Mbeumo start his senior career at?",
+   "a": "Troyes"
+  },
+  {
+   "q": "Which club did Gianluca Zambrotta start his senior career at?",
+   "a": "Como 1907"
+  },
+  {
+   "q": "Which club did Thibaut Courtois start his senior career at?",
+   "a": "Genk"
+  },
+  {
+   "q": "Which club did Sergio Agüero start his senior career at?",
+   "a": "Independiente"
+  },
+  {
+   "q": "Which club did Shinji Kagawa start his senior career at?",
+   "a": "Cerezo Osaka"
+  },
+  {
+   "q": "Which club did Davor Šuker start his senior career at?",
+   "a": "Osijek"
+  },
+  {
+   "q": "Which club did Riyad Mahrez start his senior career at?",
+   "a": "Le Havre AC"
+  },
+  {
+   "q": "Which club did Cláudio Taffarel start his senior career at?",
+   "a": "Internacional"
+  },
+  {
+   "q": "Which club did Victor Osimhen start his senior career at?",
+   "a": "Wolfsburg"
+  },
+  {
+   "q": "Which club did Mohamed Salah start his senior career at?",
+   "a": "Basel"
+  },
+  {
+   "q": "Which club did Didier Drogba start his senior career at?",
+   "a": "Le Mans"
+  },
+  {
+   "q": "Which club did Nick Pope start his senior career at?",
+   "a": "Charlton"
+  },
+  {
+   "q": "Which club did Zlatan Ibrahimović start his senior career at?",
+   "a": "Malmo"
+  },
+  {
+   "q": "Which club did Axel Witsel start his senior career at?",
+   "a": "Standard Liege"
+  },
+  {
+   "q": "Which club did Antonio Cassano start his senior career at?",
+   "a": "Bari"
+  },
+  {
+   "q": "Which club did Michel Vorm play for between FC Utrecht and Tottenham?",
+   "a": "Swansea City"
+  },
+  {
+   "q": "Which club did Bruno Martins Indi play for between FC Porto and AZ Alkmaar?",
+   "a": "Stoke City"
+  },
+  {
+   "q": "Which club did Santi Cazorla play for between Villarreal and Villarreal?",
+   "a": "Recreativo Huelva"
+  },
+  {
+   "q": "Which club did Jermain Defoe play for between Tottenham and Tottenham?",
+   "a": "Portsmouth"
+  },
+  {
+   "q": "Which club did Xavi Simons play for between PSV and Tottenham?",
+   "a": "RB Leipzig"
+  },
+  {
+   "q": "Which club did Marc Overmars play for between Go Ahead Eagles and Ajax?",
+   "a": "Willem Ii"
+  },
+  {
+   "q": "Which club did Nathan Aké play for between Chelsea and Manchester City?",
+   "a": "Bournemouth"
+  },
+  {
+   "q": "Which club did Christian Ziege play for between Milan and Liverpool?",
+   "a": "Middlesbrough"
+  },
+  {
+   "q": "Which club did Bas Dost play for between SC Heerenveen and Sporting CP?",
+   "a": "Wolfsburg"
+  },
+  {
+   "q": "Which club did Sylvain Wiltord play for between Lyon and Marseille?",
+   "a": "Rennes"
+  },
+  {
+   "q": "Which club did Kasper Schmeichel play for between Manchester City and Leeds United?",
+   "a": "Notts County"
+  },
+  {
+   "q": "Which club did Rui Patrício play for between Sporting CP and Roma?",
+   "a": "Wolves"
+  },
+  {
+   "q": "Which club did Hatem Ben Arfa play for between Newcastle and Paris Saint Germain?",
+   "a": "Nice"
+  },
+  {
+   "q": "Which club did Didier Drogba play for between Chelsea and Galatasaray?",
+   "a": "Shanghai Shenhua"
+  },
+  {
+   "q": "Which club did Zlatan Ibrahimović play for between Manchester United and Milan?",
+   "a": "LA Galaxy"
+  },
+  {
+   "q": "Which club did Axel Witsel play for between Benfica and Borussia Dortmund?",
+   "a": "Zenit"
+  },
+  {
+   "q": "Which club did Antonio Cassano play for between Real Madrid and Milan?",
+   "a": "Sampdoria"
+  }
+ ]
+}

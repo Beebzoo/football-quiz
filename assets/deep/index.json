@@ -473,14 +473,6 @@
    "a": "Manchester City"
   },
   {
-   "q": "Which club did Shinji Kagawa join after leaving Borussia Dortmund?",
-   "a": "Manchester United"
-  },
-  {
-   "q": "Which club did Sergio Ramos join after leaving Sevilla?",
-   "a": "Real Madrid"
-  },
-  {
    "q": "Which club did Kasper Schmeichel join after leaving Anderlecht?",
    "a": "Celtic"
   },
@@ -567,14 +559,6 @@
   {
    "q": "Which club did Blaise Matuidi join after leaving Juventus?",
    "a": "Inter Miami CF"
-  },
-  {
-   "q": "Which club did Cristiano Ronaldo join after leaving Manchester United?",
-   "a": "Al Nassr"
-  },
-  {
-   "q": "Which club did Gary Medel join after leaving Boca Juniors?",
-   "a": "Universidad Catolica"
   },
   {
    "q": "Which club did Diego Milito leave to sign for Inter?",
@@ -875,10 +859,6 @@
   {
    "q": "Which club did Nick Pope join after leaving Burnley?",
    "a": "Newcastle"
-  },
-  {
-   "q": "Which club did Stefan Effenberg join after leaving Bayern München?",
-   "a": "Wolfsburg"
   },
   {
    "q": "Which club did Nick Pope leave to sign for Newcastle?",
@@ -1237,10 +1217,6 @@
    "a": "Germany"
   },
   {
-   "q": "Which club did Karim El Ahmadi join after leaving Feyenoord?",
-   "a": "Al Ittihad"
-  },
-  {
    "q": "Manchester United, Champions League final 1999 lined up in which formation?",
    "a": "4-4-2"
   },
@@ -1501,10 +1477,6 @@
    "a": "Manchester United"
   },
   {
-   "q": "Which club did Gianluigi Buffon join after leaving Juventus?",
-   "a": "Parma"
-  },
-  {
    "q": "Which club did Olivier Giroud leave to sign for Arsenal?",
    "a": "Montpellier"
   },
@@ -1599,6 +1571,34 @@
   {
    "q": "Leonardo Balerdi is the only player from which country ever to appear for Borussia Dortmund?",
    "a": "Italy"
+  },
+  {
+   "q": "Which club did Claude Makélélé join after leaving Nantes?",
+   "a": "Marseille"
+  },
+  {
+   "q": "Which club did Ivan Rakitić join after leaving Al Shabab?",
+   "a": "Hajduk Split"
+  },
+  {
+   "q": "Which club did Claude Makélélé leave to sign for Marseille?",
+   "a": "Nantes"
+  },
+  {
+   "q": "Barcelona, Champions League final 2006 lined up in which formation?",
+   "a": "4-3-3"
+  },
+  {
+   "q": "Marvelous Nakamba is the only player from which country ever to appear for Vitesse?",
+   "a": "Zimbabwe"
+  },
+  {
+   "q": "In which city would you find Rostov Arena?",
+   "a": "Rostov-on-Don, Russia"
+  },
+  {
+   "q": "Which club have both David de Gea and Paul Pogba played for?",
+   "a": "Manchester United"
   }
  ],
  "ball": [
@@ -2089,10 +2089,6 @@
   {
    "q": "Which club did Bas Dost join after leaving FC Emmen?",
    "a": "Heracles"
-  },
-  {
-   "q": "Which club did Sylvain Wiltord join after leaving Rennes?",
-   "a": "Bordeaux"
   },
   {
    "q": "Which club did Bryan Mbeumo join after leaving Troyes?",
@@ -3201,6 +3197,10 @@
   {
    "q": "Who wore number 2 for Real Madrid, Champions League final 2002?",
    "a": "Míchel Salgado"
+  },
+  {
+   "q": "Which club did Jay-Jay Okocha join after leaving Paris Saint Germain?",
+   "a": "Bolton"
   }
  ],
  "extreme": [
@@ -3625,10 +3625,6 @@
    "a": "Brescia"
   },
   {
-   "q": "Which job did Luciano Spalletti take after Roma?",
-   "a": "Zenit"
-  },
-  {
    "q": "Which job did Alberto Aquilani take after Pisa?",
    "a": "Catanzaro"
   },
@@ -3775,14 +3771,6 @@
   {
    "q": "In which year did this happen: Rio Ferdinand joins Leeds United?",
    "a": "2000"
-  },
-  {
-   "q": "In which year did this happen: Olympic silver in Antwerp?",
-   "a": "1920"
-  },
-  {
-   "q": "In which year did this happen: First European Cup, beat Panathinaikos?",
-   "a": "1971"
   },
   {
    "q": "In which year did this happen: Marco van Basten joins AC Milan?",
@@ -3957,10 +3945,6 @@
    "a": "Las Palmas"
   },
   {
-   "q": "Which club did Diego Milito join after leaving Genoa?",
-   "a": "Inter"
-  },
-  {
    "q": "Which club did Emmanuel Adebayor join after leaving Tottenham?",
    "a": "Crystal Palace"
   },
@@ -3971,10 +3955,6 @@
   {
    "q": "Which club did Bruno Martins Indi join after leaving FC Porto?",
    "a": "Stoke City"
-  },
-  {
-   "q": "Which club did Santi Cazorla join after leaving Villarreal?",
-   "a": "Al Sadd"
   },
   {
    "q": "Which club did Cristhian Stuani join after leaving Middlesbrough?",
@@ -4031,10 +4011,6 @@
   {
    "q": "Which club did Sylvain Wiltord join after leaving Lyon?",
    "a": "Rennes"
-  },
-  {
-   "q": "Which club did Alexandre Lacazette join after leaving Lyon?",
-   "a": "Neom"
   },
   {
    "q": "Which club did Juan Román Riquelme join after leaving Villarreal?",
@@ -4173,20 +4149,8 @@
    "a": "José Luis Brown"
   },
   {
-   "q": "In which year did this happen: European Cup, Kindvall beats Celtic?",
-   "a": "1970"
-  },
-  {
-   "q": "In which year did this happen: Signs for Barcelona?",
-   "a": "1973"
-  },
-  {
    "q": "In which year did this happen: Zlatan joins Juventus?",
    "a": "2004"
-  },
-  {
-   "q": "In which year did this happen: La Liga runners-up behind Real Madrid?",
-   "a": "1969"
   },
   {
    "q": "In which year did this happen: Gary Lineker joins Barcelona?",
@@ -4353,10 +4317,6 @@
    "a": "the Netherlands"
   },
   {
-   "q": "In which year did this happen: World Cup debut, quarter-final vs Italy?",
-   "a": "1934"
-  },
-  {
    "q": "Luka Đorđević is the only player from which country ever to appear for FC Twente?",
    "a": "Montenegro"
   },
@@ -4419,10 +4379,6 @@
   {
    "q": "Where did Morten Olsen take his first coaching job?",
    "a": "Brondby"
-  },
-  {
-   "q": "In which year did this happen: First ever World Cup, in Uruguay?",
-   "a": "1930"
   },
   {
    "q": "Ari is the only player from which country ever to appear for AZ?",
@@ -4515,10 +4471,6 @@
   {
    "q": "Estadio de la Cerámica is a ground in which city?",
    "a": "Villarreal, Spain"
-  },
-  {
-   "q": "Which job did Luciano Spalletti take after Udinese?",
-   "a": "Roma"
   },
   {
    "q": "Where did Antonio Conte take his first coaching job?",
@@ -4623,10 +4575,6 @@
   {
    "q": "Strawberry Arena is a ground in which city?",
    "a": "Solna, Sweden"
-  },
-  {
-   "q": "Which job did Christoph Daum take after Besiktas?",
-   "a": "Bayer Leverkusen"
   },
   {
    "q": "My Dinh National Stadium is a ground in which country?",
@@ -4911,10 +4859,6 @@
   {
    "q": "Which job did Marco van Basten hold between the Netherlands and SC Heerenveen?",
    "a": "Ajax"
-  },
-  {
-   "q": "Which job did Johan Cruyff take after Ajax?",
-   "a": "Barcelona"
   },
   {
    "q": "Where did Dennis Wise take his first coaching job?",
@@ -5203,6 +5147,62 @@
   {
    "q": "Which job did Takuya Takagi take after Tokyo Verdy?",
    "a": "Roasso Kumamoto"
+  },
+  {
+   "q": "Which job did Johan Cruyff take after Ajax?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Where did Lothar Matthäus take his first coaching job?",
+   "a": "Rapid Vienna"
+  },
+  {
+   "q": "In which year did this happen: Italy thrashed 4-0 in Kyiv final?",
+   "a": "2012"
+  },
+  {
+   "q": "Which club did Roberto Baggio join after leaving Bologna?",
+   "a": "Inter"
+  },
+  {
+   "q": "Miguel Layún is the only Mexico player ever to turn out for which club?",
+   "a": "Atalanta"
+  },
+  {
+   "q": "Which job did Sami Hyypiä hold between Bayer Leverkusen and Zürich?",
+   "a": "Brighton"
+  },
+  {
+   "q": "Moses Mabhida Stadium is a ground in which city?",
+   "a": "Durban, South Africa"
+  },
+  {
+   "q": "Which job did Walter Samuel take after Lugano?",
+   "a": "Argentina"
+  },
+  {
+   "q": "Where did Aitor Karanka take his first coaching job?",
+   "a": "Middlesbrough"
+  },
+  {
+   "q": "In which year did this happen: Fourth place in Brazil?",
+   "a": "1950"
+  },
+  {
+   "q": "Which club did Freddie Ljungberg join after leaving Arsenal?",
+   "a": "West Ham"
+  },
+  {
+   "q": "Roony Bardghji is the only Syria player ever to turn out for which club?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which job did Takuya Takagi hold between Yokohama FC and Roasso Kumamoto?",
+   "a": "Tokyo Verdy"
+  },
+  {
+   "q": "Waldstadion is a ground in which city?",
+   "a": "Frankfurt, Germany"
   }
  ]
 }

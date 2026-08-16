@@ -91,6 +91,31 @@ const spread = (arr, seed) => arr.map((v, i) => [v, (i * 2654435761 + seed) % 10
    only from entries that make no such admission. Shapes drawing on the
    nationality, line-up, stadium and timeline data are unaffected: different
    sources, no adjacency claim. */
+/* A second way an adjacency question goes wrong even on a complete entry:
+   the club named in the question appears twice. Buffon's route is Parma,
+   Juventus, PSG, Juventus, Parma, so "which club did he join after leaving
+   Juventus" has two right answers. 124 of 503 careers and 87 of 227 dugout
+   careers double back like this. These helpers only allow the question when
+   every occurrence leads to the same place, which keeps the good ones
+   (leaving Parma always led to Juventus) and drops the ambiguous ones. */
+const afterIsUnique = (c, i) => {
+  const from = c[i - 1];
+  const next = new Set();
+  c.forEach((s, k) => { if (s === from && k + 1 < c.length) next.add(c[k + 1]); });
+  return next.size === 1;
+};
+const beforeIsUnique = (c, i) => {
+  const to = c[i];
+  const prev = new Set();
+  c.forEach((s, k) => { if (s === to && k > 0) prev.add(c[k - 1]); });
+  return prev.size === 1;
+};
+const pairIsUnique = (c, i) => {
+  let hits = 0;
+  for (let k = 1; k < c.length - 1; k++) if (c[k - 1] === c[i - 1] && c[k + 1] === c[i + 1]) hits++;
+  return hits === 1;
+};
+
 const GAPPY = /simplif|skipp?ed|not shown|omitted|started at|early|finale|wind-down|via |loan|also|too\b/i;
 const solid = p => !(p.note && GAPPY.test(p.note));
 const SOLID_CAREERS = CAREERS.filter(solid);
@@ -103,7 +128,7 @@ for (const p of spread(SOLID_CAREERS, 11)) {
   if (c.length < 3) continue;
   const i = 1 + (p.n.length % (c.length - 1));
   const from = c[i - 1], to = c[i];
-  if (from === to) continue;
+  if (from === to || !afterIsUnique(c, i)) continue;
   add(FAME[to] === "easy" ? "hard" : "ball", "transition",
       `Which club did ${p.n} join after leaving ${NAME[from]}?`, NAME[to]);
 }
@@ -121,6 +146,7 @@ for (const p of spread(SOLID_CAREERS, 37)) {
   if (c.length < 5 || FAME[c[c.length - 1]] === "easy") continue;
   // "played for last" silently rots the day that player signs anywhere else.
   // Joining a club is a past event, so it cannot. Same fact, safe wording.
+  if (!afterIsUnique(c, c.length - 1)) continue;
   add("hard", "finish", `Which club did ${p.n} join after leaving ${NAME[c[c.length - 2]]}?`, NAME[c[c.length - 1]]);
 }
 
@@ -128,7 +154,7 @@ for (const p of spread(SOLID_CAREERS, 37)) {
 for (const p of spread(SOLID_CAREERS, 53)) {
   const c = p.c.filter(s => NAME[s]);
   for (let i = 1; i < c.length - 1; i++) {
-    if (FAME[c[i - 1]] === "easy" && FAME[c[i + 1]] === "easy" && FAME[c[i]] !== "easy") {
+    if (FAME[c[i - 1]] === "easy" && FAME[c[i + 1]] === "easy" && FAME[c[i]] !== "easy" && pairIsUnique(c, i)) {
       add("ball", "between", `Which club did ${p.n} play for between ${NAME[c[i - 1]]} and ${NAME[c[i + 1]]}?`, NAME[c[i]]);
       break;
     }
@@ -139,7 +165,7 @@ for (const p of spread(SOLID_CAREERS, 53)) {
 for (const p of spread(SOLID_CAREERS, 67)) {
   const c = p.c.filter(s => NAME[s]);
   for (let i = 1; i < c.length; i++) {
-    if (FAME[c[i]] === "easy" && FAME[c[i - 1]] !== "easy") {
+    if (FAME[c[i]] === "easy" && FAME[c[i - 1]] !== "easy" && beforeIsUnique(c, i)) {
       add("hard", "leftfor", `Which club did ${p.n} leave to sign for ${NAME[c[i]]}?`, NAME[c[i - 1]]);
       break;
     }
@@ -184,7 +210,7 @@ for (const m of spread(SOLID_MGRS, 151)) {
   const c = m.c.filter(s => NAME[s]);
   if (c.length < 3) continue;
   const i = 1 + (m.n.length % (c.length - 1));
-  if (c[i - 1] === c[i]) continue;
+  if (c[i - 1] === c[i] || !afterIsUnique(c, i)) continue;
   add("extreme", "mgr-next", `Which job did ${m.n} take after ${NAME[c[i - 1]]}?`, NAME[c[i]]);
 }
 
@@ -204,7 +230,19 @@ for (const m of spread(SOLID_MGRS, 157)) {
    on their own. Only take the ones that name a club we know, which is what
    makes them answerable as a standalone question. */
 const CLUBNAMES = Object.values(NAME).filter(n => n.length > 4);
-const standalone = t => CLUBNAMES.some(n => t.includes(n));
+/* Naming a club is necessary but not sufficient. These are captions written to
+   sit under their own Timeline set, so plenty of them have no subject at all
+   once pulled out alone: "Signs for Barcelona" (who signs?), "First European
+   Cup, beat Panathinaikos" (who won it?), "Passes away in Barcelona" (who?).
+   Two structural tells catch them: a bare present-tense verb with nothing in
+   front of it, and a competition named before a comma. */
+const NO_SUBJECT = [
+  /^(Signs|Passes|Joins|Wins|Beats|Loses|Retires|Debuts|Moves|Returns|Scores|Dies)\b/,
+  /^[A-Z][\w' ]*?(Cup|League|Liga|final|match|title)\b[^,]*,/i,
+  /^(Olympic|Bronze|Silver|Gold)\b/,
+  /^[A-Z][\w' ]*? runners-up\b/,
+];
+const standalone = t => CLUBNAMES.some(n => t.includes(n)) && !NO_SUBJECT.some(re => re.test(t));
 for (const set of spread(TLINE, 163)) {
   for (const it of set.items) {
     if (!standalone(it.t)) continue;
@@ -274,7 +312,7 @@ for (const [band, tier] of [["easy", "hard"], ["normal", "extreme"], ["hard", "b
 for (const m of spread(SOLID_MGRS, 199)) {
   const c = m.c.filter(s => NAME[s]);
   for (let i = 1; i < c.length - 1; i++) {
-    if (c[i - 1] === c[i] || c[i] === c[i + 1]) continue;
+    if (c[i - 1] === c[i] || c[i] === c[i + 1] || !pairIsUnique(c, i)) continue;
     if (add("extreme", "mgr-between", `Which job did ${m.n} hold between ${NAME[c[i - 1]]} and ${NAME[c[i + 1]]}?`, NAME[c[i]])) break;
   }
 }
@@ -291,7 +329,7 @@ for (const pass of [0, 1, 2]) {
     if (c.length < 3) continue;
     for (let k = 0; k < c.length - 1; k++) {
       const i = 1 + ((k + pass * 2 + p.n.length) % (c.length - 1));
-      if (c[i - 1] === c[i]) continue;
+      if (c[i - 1] === c[i] || !afterIsUnique(c, i)) continue;
       if (add(tierOfClub(c[i]), "transition", `Which club did ${p.n} join after leaving ${NAME[c[i - 1]]}?`, NAME[c[i]])) break;
     }
   }

@@ -89,6 +89,47 @@ function boot() {
   check("no question in the deep pack goes stale", rotten.length === 0, rotten.length + " found");
   rotten.slice(0, 5).forEach(r => console.log("        " + r));
 
+  /* Both decks are curated for playing, not citing, and they say so in their
+     note fields. Career Path can show a simplified route because you see the
+     route; a Classic question asserting "he joined X straight after Y" cannot.
+     Alex McLeish's entry drops Rangers, so "which job between Motherwell and
+     Scotland" had two right answers until this gate went in. */
+  console.log("\n--- no question claims a move the deck admits it simplified ---");
+  const MG = JSON.parse(fs.readFileSync(path.join(REPO, "assets/managers/index.json"), "utf8"));
+  const htmlSrc = fs.readFileSync(path.join(REPO, "index.html"), "utf8");
+  const cblk = htmlSrc.slice(htmlSrc.indexOf("const CAREERS = ["), htmlSrc.indexOf("const SAVE_KEY"));
+  const CA = eval(cblk.slice(cblk.indexOf("["), cblk.lastIndexOf("]") + 1));
+  const GAPPY = /simplif|skipp?ed|not shown|omitted|started at|early|finale|wind-down|via |loan|also|too\b/i;
+  /* Check each question against the deck it was actually built from. Several
+     people are in both decks, and a simplified DUGOUT career says nothing
+     about whether their PLAYING career is complete: Van Nistelrooy's manager
+     entry is simplified, his playing entry is not. */
+  const gappyOf = deck => new Set(deck.filter(p => p.note && GAPPY.test(p.note)).map(p => p.n));
+  const gappyPlayers = gappyOf(CA), gappyMgrs = gappyOf(MG);
+  const ADJACENT = [
+    [/^Which club did (.+) join after leaving /, gappyPlayers],
+    [/^Which club did (.+) start his senior career at\?/, gappyPlayers],
+    [/^Which club did (.+) play for between /, gappyPlayers],
+    [/^Which club did (.+) leave to sign for /, gappyPlayers],
+    [/^Which club have both (.+) and (.+) played for\?/, gappyPlayers],
+    [/^Which job did (.+) take after /, gappyMgrs],
+    [/^Where did (.+) take his first coaching job\?/, gappyMgrs],
+    [/^Which job did (.+) hold between /, gappyMgrs],
+    [/^Which national side has (.+) taken charge of\?/, gappyMgrs],
+    [/^Which club have both (.+) and (.+) managed\?/, gappyMgrs],
+  ];
+  const tainted = [];
+  ["hard", "ball", "extreme"].forEach(t => deep[t].forEach(q => {
+    for (const [re, set] of ADJACENT) {
+      const m = q.q.match(re);
+      if (!m) continue;
+      for (let i = 1; i < m.length; i++) if (m[i] && set.has(m[i].trim())) tainted.push(`[${t}] ${q.q}`);
+      break;
+    }
+  }));
+  check("no adjacency claim rests on a simplified deck entry", tainted.length === 0, tainted.length + " found");
+  tainted.slice(0, 4).forEach(t => console.log("        " + t));
+
   console.log("\n--- the bank numbers itself the same way every load ---");
   /* S.used stores indexes, so a resumed match points at the wrong questions if
      two packs can land in either order. Boot a second copy and compare. */
@@ -103,7 +144,10 @@ function boot() {
   TIERS.forEach(t => {
     const rows = JSON.parse(ev(`JSON.stringify(BANK.${t})`)), sh = {};
     rows.forEach(q => {
-      const s = q.q.replace(/\b(19|20)\d\d(\/\d\d)?\b/g, "<yr>").split(" ").slice(0, 5).join(" ");
+      /* Collapse every number, not just years. "Who wore number 5 for" and
+         "number 7 for" are one shape to anyone sitting at the table, and
+         counting them separately hid 115 of them in a single tier. */
+      const s = q.q.replace(/\b\d+(\/\d+)?\b/g, "<n>").split(" ").slice(0, 5).join(" ");
       sh[s] = (sh[s] || 0) + 1;
     });
     const [top, n] = Object.entries(sh).sort((a, b) => b[1] - a[1])[0];

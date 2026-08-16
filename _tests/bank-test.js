@@ -63,6 +63,31 @@ function boot() {
   check("no question over 150 chars", all.every(q => q.q.length <= 150), all.filter(q => q.q.length > 150).map(q => q.q.slice(0, 60))[0]);
   check("no answer over 110 chars", all.every(q => String(q.a).length <= 110), all.filter(q => String(q.a).length > 110).map(q => String(q.a).slice(0, 60))[0]);
 
+  /* The deep pack is handwritten history, so nothing in it should depend on
+     who happens to play where this season. "Netherlands' all-time leading
+     scorer" was written as Van Persie and was already wrong: Depay passed him
+     in 2025. Ask about the event, not the current holder. Scoped to the deep
+     pack; the older bank still has these and they are tracked separately. */
+  console.log("\n--- nothing in the deep pack has a shelf life ---");
+  const deep = JSON.parse(fs.readFileSync(path.join(REPO, "assets/deep/index.json"), "utf8"));
+  /* Present tense is the tell. "Which club did X join after leaving Y" is a
+     past event and safe forever; "which club does X play for" is a bet on the
+     transfer window. Likewise a question about who broke a record is history,
+     while one asking who currently holds it is not. */
+  const ROT = [
+    [/\bplays for\b|\bdoes .+ play for\b|\bcurrently\b|\bnow plays\b|\bplay for last\b/i, "present tense, breaks on a transfer"],
+    [/\bis the (manager|coach) of\b|\bmanages\b/i, "breaks on a sacking"],
+    [/^who (is|are|holds)\b.*\b(all-time|record|most|oldest|youngest)\b/i, "asks for the current holder of a record"],
+    [/\bhas won the most\b|\bholds the record for\b/i, "a running record, not a settled fact"],
+    [/\breigning\b|\bdefending champions?\b/i, "breaks every season"],
+  ];
+  const rotten = [];
+  ["hard", "ball"].forEach(t => deep[t].forEach(q => {
+    ROT.forEach(([re, why]) => { if (re.test(q.q)) rotten.push(`[${t}] ${why}: ${q.q}`); });
+  }));
+  check("no question in the deep pack goes stale", rotten.length === 0, rotten.length + " found");
+  rotten.slice(0, 5).forEach(r => console.log("        " + r));
+
   console.log("\n--- the bank numbers itself the same way every load ---");
   /* S.used stores indexes, so a resumed match points at the wrong questions if
      two packs can land in either order. Boot a second copy and compare. */

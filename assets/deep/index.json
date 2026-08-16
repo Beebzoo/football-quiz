@@ -85,15 +85,15 @@
    "a": "Argentina, on penalties in the semi-final"
   },
   {
-   "q": "Who is the Netherlands' all-time leading goalscorer?",
-   "a": "Robin van Persie"
+   "q": "Who did Memphis Depay overtake in 2025 to become the Netherlands' all-time leading scorer?",
+   "a": "Robin van Persie, who finished on 50 goals"
   },
   {
    "q": "Which Dutchman won the Ballon d'Or three times?",
    "a": "Johan Cruyff"
   },
   {
-   "q": "Which Dutch defender won the Ballon d'Or in 1987?",
+   "q": "Which Dutchman won the Ballon d'Or in 1987, the year he moved to Milan?",
    "a": "Ruud Gullit"
   },
   {
@@ -189,7 +189,7 @@
    "a": "Jerzy Dudek"
   },
   {
-   "q": "Which club has won the most European Cups and Champions Leagues?",
+   "q": "Which club won its 15th European Cup in 2024, beating Borussia Dortmund at Wembley?",
    "a": "Real Madrid"
   },
   {
@@ -233,8 +233,8 @@
    "a": "Feyenoord"
   },
   {
-   "q": "Which club did Ajax beat 5-1 on aggregate in the 2019 Champions League last 16?",
-   "a": "Real Madrid"
+   "q": "Which holders did Ajax beat 4-1 at the Bernabeu in the 2019 Champions League last 16?",
+   "a": "Real Madrid, going through 5-3 on aggregate"
   },
   {
    "q": "Which club knocked Ajax out in the 2019 Champions League semi-final, with a last-minute goal?",
@@ -297,7 +297,7 @@
    "a": "Philips Sport Vereniging"
   },
   {
-   "q": "Which Dutch club is nicknamed 'de Godenzonen'?",
+   "q": "Which Dutch club is nicknamed 'de Superfriezen'?",
    "a": "sc Heerenveen"
   },
   {
@@ -349,8 +349,8 @@
    "a": "14"
   },
   {
-   "q": "Why did Cruyff wear two stripes rather than three on his Netherlands shirt?",
-   "a": "He had a personal deal with a rival sportswear brand to Adidas"
+   "q": "Cruyff wore two stripes, not three, at the 1974 World Cup. Which brand was he personally contracted to?",
+   "a": "Puma, while the rest of the Dutch squad wore Adidas"
   },
   {
    "q": "Which Dutch club did Ronald Koeman play for before joining PSV?",
@@ -517,139 +517,131 @@
    "a": "Celtic"
   },
   {
-   "q": "Which club did Rodrigo Moreno play for last, after leaving Al Rayyan?",
+   "q": "Which club did Rodrigo Moreno join after leaving Al Rayyan?",
    "a": "Lusail"
   },
   {
-   "q": "Which club did Diego Milito play for last, after leaving Inter?",
+   "q": "Which club did Diego Milito join after leaving Inter?",
    "a": "Racing"
   },
   {
-   "q": "Which club did Emmanuel Adebayor play for last, after leaving Crystal Palace?",
+   "q": "Which club did Emmanuel Adebayor join after leaving Crystal Palace?",
    "a": "Basaksehir"
   },
   {
-   "q": "Which club did Bruno Martins Indi play for last, after leaving AZ Alkmaar?",
+   "q": "Which club did Bruno Martins Indi join after leaving AZ Alkmaar?",
    "a": "Sparta Rotterdam"
   },
   {
-   "q": "Which club did Santi Cazorla play for last, after leaving Al Sadd?",
+   "q": "Which club did Santi Cazorla join after leaving Al Sadd?",
    "a": "Oviedo"
   },
   {
-   "q": "Which club did Kalidou Koulibaly play for last, after leaving Chelsea?",
+   "q": "Which club did Kalidou Koulibaly join after leaving Chelsea?",
    "a": "Al Hilal"
   },
   {
-   "q": "Which club did Damien Duff play for last, after leaving Melbourne City?",
+   "q": "Which club did Damien Duff join after leaving Melbourne City?",
    "a": "Shamrock Rovers"
   },
   {
-   "q": "Which club did Bas Dost play for last, after leaving FC Utrecht?",
+   "q": "Which club did Bas Dost join after leaving FC Utrecht?",
    "a": "NEC Nijmegen"
   },
   {
-   "q": "Which club did Patrick Kluivert play for last, after leaving PSV?",
+   "q": "Which club did Patrick Kluivert join after leaving PSV?",
    "a": "Lille"
   },
   {
-   "q": "Which club did Shinji Kagawa play for last, after leaving Borussia Dortmund?",
-   "a": "Cerezo Osaka"
-  },
-  {
-   "q": "Which club did Álvaro Morata play for last, after leaving Milan?",
+   "q": "Which club did Álvaro Morata join after leaving Milan?",
    "a": "Como 1907"
   },
   {
-   "q": "Which club did Sergio Ramos play for last, after leaving Sevilla?",
-   "a": "Monterrey"
-  },
-  {
-   "q": "Which club did Ricardo Quaresma play for last, after leaving Besiktas?",
+   "q": "Which club did Ricardo Quaresma join after leaving Besiktas?",
    "a": "Vitoria De Guimaraes"
   },
   {
-   "q": "Which club did Davor Šuker play for last, after leaving West Ham?",
+   "q": "Which club did Davor Šuker join after leaving West Ham?",
    "a": "1860 Munich"
   },
   {
-   "q": "Which club did Cláudio Taffarel play for last, after leaving Galatasaray?",
+   "q": "Which club did Cláudio Taffarel join after leaving Galatasaray?",
    "a": "Parma"
   },
   {
-   "q": "Which club did Rui Patrício play for last, after leaving Atalanta?",
+   "q": "Which club did Rui Patrício join after leaving Atalanta?",
    "a": "Al Ain"
   },
   {
-   "q": "Which club did Hatem Ben Arfa play for last, after leaving Bordeaux?",
+   "q": "Which club did Hatem Ben Arfa join after leaving Bordeaux?",
    "a": "Lille"
   },
   {
-   "q": "Which club did Didier Drogba play for last, after leaving Chelsea?",
+   "q": "Which club did Didier Drogba join after leaving Chelsea?",
    "a": "CF Montreal"
   },
   {
-   "q": "Which club did Axel Witsel play for last, after leaving Atletico Madrid?",
+   "q": "Which club did Axel Witsel join after leaving Atletico Madrid?",
    "a": "Girona"
   },
   {
-   "q": "Which club did Antonio Cassano play for last, after leaving Parma?",
+   "q": "Which club did Antonio Cassano join after leaving Parma?",
    "a": "Sampdoria"
   },
   {
-   "q": "Which club did Hernán Crespo play for last, after leaving Genoa?",
+   "q": "Which club did Hernán Crespo join after leaving Genoa?",
    "a": "Parma"
   },
   {
-   "q": "Which club did Miralem Sulejmani play for last, after leaving Benfica?",
+   "q": "Which club did Miralem Sulejmani join after leaving Benfica?",
    "a": "Young Boys"
   },
   {
-   "q": "Which club did Rubén Castro play for last, after leaving Cartagena?",
+   "q": "Which club did Rubén Castro join after leaving Cartagena?",
    "a": "Malaga"
   },
   {
-   "q": "Which club did David Villa play for last, after leaving New York City FC?",
+   "q": "Which club did David Villa join after leaving New York City FC?",
    "a": "Vissel Kobe"
   },
   {
-   "q": "Which club did Marc Degryse play for last, after leaving PSV?",
+   "q": "Which club did Marc Degryse join after leaving PSV?",
    "a": "Gent"
   },
   {
-   "q": "Which club did Nwankwo Kanu play for last, after leaving West Bromwich Albion?",
+   "q": "Which club did Nwankwo Kanu join after leaving West Bromwich Albion?",
    "a": "Portsmouth"
   },
   {
-   "q": "Which club did Mario Götze play for last, after leaving PSV?",
+   "q": "Which club did Mario Götze join after leaving PSV?",
    "a": "Eintracht Frankfurt"
   },
   {
-   "q": "Which club did Laurent Koscielny play for last, after leaving Arsenal?",
+   "q": "Which club did Laurent Koscielny join after leaving Arsenal?",
    "a": "Bordeaux"
   },
   {
-   "q": "Which club did Thiago Silva play for last, after leaving FC Porto?",
+   "q": "Which club did Thiago Silva join after leaving FC Porto?",
    "a": "Fluminense"
   },
   {
-   "q": "Which club did Jean-Pierre Papin play for last, after leaving Bordeaux?",
+   "q": "Which club did Jean-Pierre Papin join after leaving Bordeaux?",
    "a": "Guingamp"
   },
   {
-   "q": "Which club did Juan Cuadrado play for last, after leaving Atalanta?",
+   "q": "Which club did Juan Cuadrado join after leaving Atalanta?",
    "a": "Pisa"
   },
   {
-   "q": "Which club did Blaise Matuidi play for last, after leaving Juventus?",
+   "q": "Which club did Blaise Matuidi join after leaving Juventus?",
    "a": "Inter Miami CF"
   },
   {
-   "q": "Which club did Cristiano Ronaldo play for last, after leaving Manchester United?",
+   "q": "Which club did Cristiano Ronaldo join after leaving Manchester United?",
    "a": "Al Nassr"
   },
   {
-   "q": "Which club did Gary Medel play for last, after leaving Boca Juniors?",
+   "q": "Which club did Gary Medel join after leaving Boca Juniors?",
    "a": "Universidad Catolica"
   },
   {
@@ -799,6 +791,14 @@
   {
    "q": "Who wore number 10 for Ajax, Champions League final 1995?",
    "a": "Jari Litmanen"
+  },
+  {
+   "q": "Which club did Ashley Young join after leaving Everton?",
+   "a": "Ipswich"
+  },
+  {
+   "q": "Which club did Kevin Mirallas join after leaving Antwerp?",
+   "a": "Gaziantep"
   }
  ],
  "ball": [
@@ -1095,8 +1095,8 @@
    "a": "The Champions League"
   },
   {
-   "q": "Which Finn was the leading scorer of that great mid-1990s Ajax side?",
-   "a": "Jari Litmanen"
+   "q": "Which Finn top-scored in the 1995/96 Champions League with nine goals?",
+   "a": "Jari Litmanen of Ajax"
   },
   {
    "q": "Which goalkeeper played in the 1995 Champions League final for Ajax at the age of 24?",
@@ -1155,8 +1155,8 @@
    "a": "1902"
   },
   {
-   "q": "Which three professional clubs represent the province of Limburg?",
-   "a": "MVV Maastricht, Roda JC Kerkrade and Fortuna Sittard (VVV-Venlo is the fourth)"
+   "q": "Name the four professional clubs from the province of Limburg.",
+   "a": "MVV Maastricht, Roda JC Kerkrade, Fortuna Sittard and VVV-Venlo"
   },
   {
    "q": "Which Dutch manager took Feyenoord to the 2002 UEFA Cup, won in their own stadium?",
@@ -1199,8 +1199,8 @@
    "a": "The European Cup, the Eredivisie and the KNVB Cup"
   },
   {
-   "q": "Which Dutch club side did Guus Hiddink later take to a World Cup semi-final as a national manager?",
-   "a": "South Korea, in 2002"
+   "q": "Which national side did Guus Hiddink take to a World Cup semi-final in 2002?",
+   "a": "South Korea, the co-hosts"
   },
   {
    "q": "Which country did Guus Hiddink take to the Euro 2008 semi-finals?",
@@ -1275,14 +1275,6 @@
    "a": "Hull City"
   },
   {
-   "q": "Which club did Emmanuel Adebayor join after leaving Crystal Palace?",
-   "a": "Basaksehir"
-  },
-  {
-   "q": "Which club did Santi Cazorla join after leaving Al Sadd?",
-   "a": "Oviedo"
-  },
-  {
    "q": "Which club did Cristhian Stuani join after leaving Espanyol?",
    "a": "Middlesbrough"
   },
@@ -1315,10 +1307,6 @@
    "a": "Brentford"
   },
   {
-   "q": "Which club did Davor Šuker join after leaving West Ham?",
-   "a": "1860 Munich"
-  },
-  {
    "q": "Which club did Riyad Mahrez join after leaving Le Havre AC?",
    "a": "Leicester"
   },
@@ -1335,16 +1323,8 @@
    "a": "Bordeaux"
   },
   {
-   "q": "Which club did Didier Drogba join after leaving Chelsea?",
-   "a": "CF Montreal"
-  },
-  {
    "q": "Which club did Axel Witsel join after leaving Benfica?",
    "a": "Zenit"
-  },
-  {
-   "q": "Which club did Hernán Crespo join after leaving Genoa?",
-   "a": "Parma"
   },
   {
    "q": "Which club did Ivan Toney join after leaving Peterborough?",
@@ -1357,10 +1337,6 @@
   {
    "q": "Which club did Alan Shearer join after leaving Southampton?",
    "a": "Blackburn Rovers"
-  },
-  {
-   "q": "Which club did David Villa join after leaving New York City FC?",
-   "a": "Vissel Kobe"
   },
   {
    "q": "Which club did Jack Wilshere join after leaving West Ham?",
@@ -1377,10 +1353,6 @@
   {
    "q": "Which club did Michael Ballack join after leaving Chemnitzer FC?",
    "a": "FC Kaiserslautern"
-  },
-  {
-   "q": "Which club did Mario Götze join after leaving PSV?",
-   "a": "Eintracht Frankfurt"
   },
   {
    "q": "Which club did Laurent Koscielny join after leaving Tours?",
@@ -1601,6 +1573,34 @@
   {
    "q": "Which club did Antonio Cassano play for between Real Madrid and Milan?",
    "a": "Sampdoria"
+  },
+  {
+   "q": "Which club did Hernán Crespo play for between River Plate and Lazio?",
+   "a": "Parma"
+  },
+  {
+   "q": "Which club did Andy Cole play for between Arsenal and Newcastle?",
+   "a": "Bristol City"
+  },
+  {
+   "q": "Which club did Ibrahim Afellay play for between Barcelona and PSV?",
+   "a": "Stoke City"
+  },
+  {
+   "q": "Which club did Rubén Castro play for between Las Palmas and Real Betis?",
+   "a": "Deportivo LA Coruna"
+  },
+  {
+   "q": "Which club did Michael Reiziger play for between Barcelona and PSV?",
+   "a": "Middlesbrough"
+  },
+  {
+   "q": "Which club did Thiago Silva play for between Chelsea and FC Porto?",
+   "a": "Fluminense"
+  },
+  {
+   "q": "Which club did Marco Materazzi play for between Everton and Inter?",
+   "a": "Perugia"
   }
  ]
 }

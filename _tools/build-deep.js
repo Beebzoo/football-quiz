@@ -72,7 +72,9 @@ for (const p of spread(CAREERS, 23)) {
 for (const p of spread(CAREERS, 37)) {
   const c = p.c.filter(s => NAME[s]);
   if (c.length < 5 || FAME[c[c.length - 1]] === "easy") continue;
-  add("hard", "finish", `Which club did ${p.n} play for last, after leaving ${NAME[c[c.length - 2]]}?`, NAME[c[c.length - 1]]);
+  // "played for last" silently rots the day that player signs anywhere else.
+  // Joining a club is a past event, so it cannot. Same fact, safe wording.
+  add("hard", "finish", `Which club did ${p.n} join after leaving ${NAME[c[c.length - 2]]}?`, NAME[c[c.length - 1]]);
 }
 
 /* ---------- 4. the club sandwiched between two big ones ---------- */
@@ -132,12 +134,18 @@ const LIVE = REPO + 'assets/deep/index.json';
 let deep = { hard: [], ball: [] };
 try { deep = JSON.parse(fs.readFileSync(LIVE, 'utf8')); } catch (e) {}
 
+/* One key set across BOTH tiers, not one per tier. Two shapes can land on the
+   same wording for the same player (his last move is also a transition), and
+   a per-tier check would happily file one copy in Hard and another in BALL. */
+const haveKeys = new Set();
+["hard", "ball"].forEach(t => (deep[t] || []).forEach(q => haveKeys.add(norm(q.q))));
 for (const tier of ['hard', 'ball']) {
   const have = deep[tier] || [];
-  const haveKeys = new Set(have.map(q => norm(q.q)));
   const fresh = out[tier].filter(q => !haveKeys.has(norm(q.q)));
   const need = Math.max(0, TARGET - have.length);
-  deep[tier] = have.concat(fresh.slice(0, need));
+  const take = fresh.slice(0, need);
+  take.forEach(q => haveKeys.add(norm(q.q)));
+  deep[tier] = have.concat(take);
   console.log(`${tier.padEnd(5)} kept ${have.length} (handwritten included) + added ${Math.min(need, fresh.length)} = ${deep[tier].length}`);
 }
 fs.mkdirSync(REPO + 'assets/deep', { recursive: true });

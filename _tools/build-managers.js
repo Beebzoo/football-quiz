@@ -1,8 +1,41 @@
-/* Turn the Wikidata manager dump into a Career Path deck.
+/* Build the Manager Path deck for BALL.
+
+   Two Wikidata queries feed this. Run them at https://query.wikidata.org, save
+   the JSON results beside this script, then run:  node _tools/build-managers.js
+
+   mgr.json — every manager with 25+ Wikipedia language versions, and every
+   team they have coached, with the date they took the job:
+
+     SELECT ?m ?mLabel ?links ?club ?clubLabel ?clubShort ?start ?isClub ?isNat WHERE {
+       ?m wdt:P106 wd:Q628099 ; wikibase:sitelinks ?links .
+       FILTER(?links >= 25)
+       ?m p:P6087 ?st . ?st ps:P6087 ?club .
+       OPTIONAL { ?st pq:P580 ?start }
+       OPTIONAL { ?club wdt:P1813 ?clubShort }
+       BIND(EXISTS{?club wdt:P31/wdt:P279* wd:Q476028} AS ?isClub)
+       BIND(EXISTS{?club wdt:P31/wdt:P279* wd:Q6979593} AS ?isNat)
+       SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+     }
+
+   alts.json — every other name those teams go by. This is how "FC Bayern
+   Munich" reaches the crest filed on disk as bayern-munchen:
+
+     SELECT ?club ?alt WHERE {
+       ?m wdt:P106 wd:Q628099 ; wikibase:sitelinks ?links .
+       FILTER(?links >= 25)
+       ?m wdt:P6087 ?club .
+       { ?club skos:altLabel ?alt . FILTER(LANG(?alt) IN ("en","de","es","it","fr","pt","nl","tr")) }
+       UNION { ?club rdfs:label ?alt . FILTER(LANG(?alt) IN ("de","es","it","fr","pt","nl","tr")) }
+       UNION { ?club wdt:P1705 ?alt }
+     }
+
+   Writes assets/managers/index.json, and manager-logos-block.js to paste into
+   sw.js so the dugout crests survive the pub's dead wifi too. Wikidata is CC0,
+   so unlike the photo banks this deck carries no attribution tail.
+
    The hard part is not the careers, it is matching Wikidata's team labels onto
-   the 2,894 logo slugs already sitting in assets/logos, which were named by
-   football-logos.cc and follow no single convention: "fiorentina" but
-   "bayern-munchen", "marseille" but "queens-park-rangers". */
+   the logo slugs in assets/logos, which follow no single convention:
+   "fiorentina" but "bayern-munchen", "marseille" but "queens-park-rangers". */
 const fs = require("fs");
 const path = require("path");
 
@@ -159,7 +192,23 @@ console.log(`\nstill-missing crests (most wanted):`);
 
 // the shipped bank keeps only what the game reads
 const bank = deck.map(d => d.skipped ? { n: d.n, c: d.c, note: "Some spells simplified" } : { n: d.n, c: d.c });
-fs.writeFileSync("managers-index.json", JSON.stringify(bank));
+fs.writeFileSync(path.join(REPO,"assets/managers/index.json"), JSON.stringify(bank));
 fs.writeFileSync("managers-raw.json", JSON.stringify(deck, null, 1));
 fs.writeFileSync("team-matches.json", JSON.stringify([...teams.entries()].map(([q, t]) => ({ q, ...t })), null, 1));
-console.log(`\nwrote managers-index.json (${(fs.statSync("managers-index.json").size / 1024).toFixed(1)} KB)`);
+console.log(`\nwrote assets/managers/index.json (${(fs.statSync(path.join(REPO,"assets/managers/index.json")).size / 1024).toFixed(1)} KB)`);
+
+/* ---- the sw.js precache block, so offline play covers the dugout too ---- */
+const swText = fs.readFileSync(path.join(REPO, "sw.js"), "utf8");
+const inCareer = new Set((((swText.match(/const CAREER_LOGOS = \[([\s\S]*?)\];/) || ["", ""])[1])
+  .match(/"[a-z0-9-]+"/g) || []).map(v => v.slice(1, -1)));
+const extra = [...new Set(bank.flatMap(m => m.c))].filter(s => !inCareer.has(s)).sort();
+const lines = []; let cur = "";
+for (const s of extra) {
+  const t = JSON.stringify(s);
+  if (cur && ("  " + cur + "," + t).length > 94) { lines.push("  " + cur + ","); cur = t; }
+  else cur = cur ? cur + "," + t : t;
+}
+if (cur) lines.push("  " + cur);
+fs.writeFileSync("manager-logos-block.js", "const MANAGER_LOGOS = [\n" + lines.join("\n") + "];\n");
+console.log(`\n${extra.length} crests Career Path does not already cache -> manager-logos-block.js`);
+console.log(`paste it over the MANAGER_LOGOS array in sw.js whenever the deck changes`);

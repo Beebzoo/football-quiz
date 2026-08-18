@@ -22,6 +22,10 @@ const OUT = path.join(REPO, "assets", "fonts");
 const FORCE = process.argv.includes("--force");
 const FAMILY = "Barlow Semi Condensed";
 const WEIGHTS = [400, 600, 700];
+/* one italic, for the mode name that slams up before a round starts. A
+   browser will happily slant an upright face for you, and it looks exactly
+   like what it is. */
+const ITALICS = [700];
 /* A modern browser UA or the CSS endpoint answers in ttf for ancient ones */
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36";
 const OFL = "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowsemicondensed/OFL.txt";
@@ -34,8 +38,9 @@ const get = async (url, bin) => {
 
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });
+  const axis = WEIGHTS.map(w => "0," + w).concat(ITALICS.map(w => "1," + w)).join(";");
   const url = "https://fonts.googleapis.com/css2?family="
-    + encodeURIComponent(FAMILY) + ":wght@" + WEIGHTS.join(";") + "&display=swap";
+    + encodeURIComponent(FAMILY) + ":ital,wght@" + axis + "&display=swap";
   const css = await get(url);
 
   /* The CSS comes back as a run of @font-face blocks, one per subset per
@@ -46,17 +51,18 @@ const get = async (url, bin) => {
   for (const b of blocks) {
     const subset = (b.match(/^\/\*\s*([a-z-]+)\s*\*\//) || [])[1];
     const weight = (b.match(/font-weight:\s*(\d+)/) || [])[1];
+    const italic = /font-style:\s*italic/.test(b);
     const src = (b.match(/url\((https:[^)]+\.woff2)\)/) || [])[1];
     if (!subset || !weight || !src) continue;
     if (!["latin", "latin-ext"].includes(subset)) continue;
-    const file = `barlow-semicondensed-${weight}-${subset}.woff2`;
+    const file = `barlow-semicondensed-${weight}${italic ? "i" : ""}-${subset}.woff2`;
     const range = (b.match(/unicode-range:\s*([^;]+);/) || [])[1];
     wanted.push({ file, src });
-    rules.push(`@font-face{font-family:'Barlow Semi Condensed';font-style:normal;`
+    rules.push(`@font-face{font-family:'Barlow Semi Condensed';font-style:${italic ? "italic" : "normal"};`
       + `font-weight:${weight};font-display:swap;src:url(assets/fonts/${file}) format('woff2');`
       + `unicode-range:${range.trim()}}`);
   }
-  console.log(`${wanted.length} files wanted (${WEIGHTS.length} weights x 2 subsets)`);
+  console.log(`${wanted.length} files wanted (${WEIGHTS.length} upright + ${ITALICS.length} italic, x2 subsets)`);
 
   let got = 0;
   for (const w of wanted) {

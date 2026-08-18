@@ -196,6 +196,16 @@
     background:#fdf6e6;border-color:#c9a45e;color:#7a5410;text-shadow:none;
     box-shadow:inset 4px 0 0 #c9932e, 0 2px 10px rgba(0,0,0,.28);
   }
+  /* The install line is housekeeping, not a thing to play, so it stops looking
+     like a button at all: no card, no border, just a quiet line at the foot of
+     the page for the one night somebody wants it on their home screen. */
+  body.careermode .bigbtn.ghost.tinybtn{
+    display:block;width:auto;margin:6px auto 0;padding:6px 8px;
+    background:none;border:none;box-shadow:none;
+    font:500 .74rem/1.3 var(--ui);letter-spacing:.01em;
+    color:rgba(207,224,212,.5);
+  }
+  body.careermode .bigbtn.ghost.tinybtn:active{transform:none;filter:none;color:rgba(207,224,212,.8)}
   .rules{margin-top:4px}
   .rules summary{
     list-style:none;cursor:pointer;text-align:center;
@@ -4738,7 +4748,7 @@ function renderSetup(st){
     ${/* Bottom of the page on purpose: you install an app you have already
          decided you like, so it belongs after the rules rather than above the
          mode you came to play. */""}
-    ${isStandalone()?"":`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="installApp()">📲 Get BALL on your home screen</button>`}`;
+    ${isStandalone()?"":`<button class="bigbtn ghost tinybtn" onclick="installApp()">📲 Get BALL on your home screen</button>`}`;
 }
 
 /* ============================== GAME FLOW ============================== */

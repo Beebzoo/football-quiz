@@ -175,6 +175,26 @@
   .rules summary::-webkit-details-marker{display:none}
   .rules[open] summary{border-color:#3fd685;color:#8df0b8}
   .rules .hint{padding:10px 4px 2px}
+  /* league rush */
+  .leaguelist{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 4px}
+  .leaguelist .bigbtn{display:flex;align-items:center;gap:8px;text-align:left;padding:11px 10px;min-width:0}
+  .leaguelist .bigbtn.played{opacity:.45}
+  .lflag{width:22px;height:15px;object-fit:cover;border-radius:3px;flex:none}
+  .lcount{margin-left:auto;font-size:.78rem;color:#9fb8a6;font-variant-numeric:tabular-nums}
+  .rgrid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0 4px}
+  .rclub{
+    width:74px;display:flex;flex-direction:column;align-items:center;gap:4px;
+    padding:7px 4px;border-radius:12px;background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.16);
+  }
+  .rclub img{width:38px;height:38px;object-fit:contain}
+  .rclub .rnoc{font:800 1rem/38px var(--ui);color:#9fb8a6;height:38px}
+  .rclub .rn{font:600 .62rem/1.15 var(--ui);text-align:center;color:#cfe0d4;word-break:break-word}
+  .rclub.got{background:rgba(63,214,133,.16);border-color:#3fd685}
+  /* the ones that got away, shown at the end so you can see what you forgot */
+  .rclub.missed{opacity:.42}
+  .rclub.missed img{filter:grayscale(1)}
+
   /* older or taller: two faces, tap one */
   .duelrow{display:flex;gap:10px;justify-content:center;margin:6px 0 4px}
   .duelcard{
@@ -2723,39 +2743,81 @@ fetch("assets/faces/index.json").then(r=>r.json()).then(f=>{ FACES=f; }).catch((
 const faceHTML = name => (FACES && FACES[name])
   ? `<img class="face" src="assets/faces/${FACES[name]}" alt="" loading="lazy">` : "";
 
-/* ============================== CAREER REVERSE ==============================
-   The player's name appears; recite the career in order. +1 per club, +3 for
-   running the whole board. First mistake ends the run. */
-function newCrev(){
-  let avail=CAREERS.map((_,i)=>i).filter(i=>!S.usedR.includes(i));
-  if(!avail.length){ toast("Career deck exhausted — reshuffling!"); S.usedR=[]; avail=CAREERS.map((_,i)=>i); }
-  const ci=avail[Math.floor(Math.random()*avail.length)];
-  S.usedR.push(ci);
-  S.crev={ci, got:0};
-  S.phase="r_play";
+/* ============================== LEAGUE RUSH ==============================
+   Pick a league, then type as many of its clubs as you can in thirty
+   seconds. Replaced Career Reverse, which asked one player to recite while
+   everybody else sat and watched.
+
+   The bank is the CURRENT season, rebuilt from Wikipedia by
+   _tools/build-leagues.js, so this needs a re-run every August when the
+   promoted sides come up. */
+let LEAGUES=null;
+fetch("assets/leagues/index.json").then(r=>r.json()).then(l=>{
+  LEAGUES=l;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+const RUSH_SECS=30;
+/* Type it how you say it. The bank carries the aliases (Atleti, Spurs, PSV),
+   this just has to stop punctuation and accents costing anybody a point with
+   nine seconds left. */
+const rnorm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
+  .replace(/&/g," and ").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim();
+function newRush(){
+  if(!LEAGUES || !LEAGUES.length){ toast("The league bank is still loading — one second!", true); return; }
+  if(!S.usedL) S.usedL=[];
+  S.rush={li:null, got:[], secs:RUSH_SECS};
+  S.phase="g_pick";
 }
-function crevOk(){
-  const C=CAREERS[S.crev.ci];
-  S.crev.got++; popfx();
-  if(S.crev.got>=C.c.length){
-    const pts=S.crev.got+3;
-    S.players[S.turn].score+=pts; ching(); confetti(46);
-    toast(`⚽ Full career! ${S.players[S.turn].name} +${pts}`);
-    if(maybeFinish()) return;
-    crevNextPlayer();
-  }else render();
+function rushPick(li){
+  S.rush={li, got:[], secs:RUSH_SECS};
+  S.phase="g_play";
+  if(!S.usedL.includes(li)) S.usedL.push(li);
+  render();
+  startTimer(RUSH_SECS, rushTimeUp, "rush"+S.turn+"-"+li+"-"+S.round);
+  const el=document.getElementById("rushin"); if(el) el.focus();
 }
-function crevEnd(){
-  const pts=S.crev.got;
-  if(pts>0){ S.players[S.turn].score+=pts; ching(); toast(`${S.players[S.turn].name} +${pts}`); }
-  else { buzzer(); flashBad(); }
+/* Matched on every keystroke rather than on enter: with a clock running,
+   asking someone to press a key they cannot see is a way of losing points
+   they had already earned. */
+function rushType(el){
+  const L=LEAGUES[S.rush.li];
+  const typed=rnorm(el.value);
+  if(typed.length<3) return;
+  const left=(c,i)=>!S.rush.got.includes(i);
+  let hit=L.clubs.findIndex((c,i)=>left(c,i) && c.a.includes(typed));
+  /* Nobody types "Borussia Mönchengladbach". They type gladbach, and juve,
+     and forest. So four letters or more that appear inside exactly one club
+     still standing counts: exactly one, because "united" belongs to three of
+     them and awarding the first would be a lie. */
+  if(hit<0 && typed.length>=4){
+    const near=L.clubs.map((c,i)=>({c,i})).filter(({c,i})=>left(c,i) && c.a.some(a=>a.includes(typed)));
+    if(near.length===1) hit=near[0].i;
+  }
+  if(hit<0) return;
+  S.rush.got.push(hit);
+  el.value="";
+  popfx(); ching();
+  if(S.rush.got.length>=L.clubs.length){ rushTimeUp(); return; }
+  render();
+  const again=document.getElementById("rushin"); if(again) again.focus();
+}
+function rushTimeUp(){
+  stopTimer();
+  const L=LEAGUES[S.rush.li], got=S.rush.got.length;
+  let pts=got;
+  /* Naming a whole league inside thirty seconds deserves more than the last
+     club being worth the same as the first. */
+  if(got>=L.clubs.length){ pts+=10; confetti(60); }
+  if(pts>0){ S.players[S.turn].score+=pts; ching(); toast(`${esc(S.players[S.turn].name)} +${pts}`); }
+  else buzzer();
+  S.phase="g_done";
   if(maybeFinish()) return;
-  S.phase="r_dead"; render();
+  render();
 }
-function crevNextPlayer(){
+function rushNextPlayer(){
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
-  newCrev(); render();
+  newRush(); render();
 }
 
 /* ============================== OLDER OR TALLER ==============================
@@ -2951,8 +3013,8 @@ function freshState(names, timed=true, mode="classic", target=100){
     ans:"", asub:false, // the answer the player on the hook locked in from their own phone
     career:null, usedC:[], // career mode: current round + careers already played
     usedM:[], // manager career path: dugout careers already played
-    crev:null, usedR:[], // career reverse: current run + careers already recited
     duel:null, usedD:[], // older or taller: current pair + faces already shown
+    rush:null, usedL:[], // league rush: the current 30 seconds + leagues already played
     xi:null, usedX:[], // name the XI: current board + finals already played
     tl:null, usedT:[], // timeline: current question + ones already asked
     ref:null, // referee mode: the non-playing quizmaster's name
@@ -3333,7 +3395,7 @@ function joinFromSheet(){
    Every finished match gets filed here so there is a running table across
    nights. Local to this phone, like everything else in the app. */
 const HIST_KEY = "ball-quiz-history-v1";
-const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", mgr:"Manager Path", crev:"Career Reverse", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller"};
+const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush"};
 function history(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }catch(e){ return []; } }
 function putHistory(h){ try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }catch(e){} }
 function clearHistory(){ try{ localStorage.removeItem(HIST_KEY); }catch(e){} }
@@ -3814,6 +3876,50 @@ function render(){
     return;
   }
 
+  if(S.phase==="g_pick"){
+    st.innerHTML = `
+      <div class="kick">League Rush · ${esc(S.players[S.turn].name)}'s go · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <h1 class="title" style="font-size:clamp(1.5rem,7vw,2rem)">Pick a league</h1>
+      <div class="hint" style="text-align:center">Thirty seconds to type as many of its clubs as you can. +1 each, +10 for the lot.</div>
+      <div class="leaguelist">
+        ${LEAGUES.map((l,i)=>`
+          <button class="bigbtn ghost${S.usedL.includes(i)?" played":""}" onclick="rushPick(${i})">
+            <img class="lflag" src="assets/natflags/${l.flag}.png" alt="">
+            <span class="mlab">${esc(l.n)}</span>
+            <span class="lcount">${l.clubs.length}</span>
+          </button>`).join("")}
+      </div>
+      <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`;
+    return;
+  }
+
+  if(S.phase==="g_play" || S.phase==="g_done"){
+    const L=LEAGUES[S.rush.li], done=S.phase==="g_done";
+    const got=S.rush.got;
+    const crest=(c,i)=>`
+      <div class="rclub${got.includes(i)?" got":done?" missed":""}">
+        ${c.s?`<img src="assets/logos/${c.s}.png" alt="" loading="lazy">`:`<span class="rnoc">${esc(c.n.slice(0,3))}</span>`}
+        <span class="rn">${done||got.includes(i)?esc(c.n):"&nbsp;"}</span>
+      </div>`;
+    st.innerHTML = `
+      <div class="kick">${esc(L.n)} ${esc(L.season)} · ${esc(S.players[S.turn].name)}${done?"" :" · type them"}</div>
+      ${done?"":`<div class="clock" id="clock"><div class="digits">${RUSH_SECS.toFixed(1)}</div><div class="bar"><i style="width:100%"></i></div></div>`}
+      <div class="potpill">${got.length} / ${L.clubs.length}${done?"":" named"}</div>
+      ${done?"":`<input class="nm-in" id="rushin" placeholder="Type a club…" autocomplete="off"
+                        autocapitalize="off" autocorrect="off" spellcheck="false" oninput="rushType(this)">`}
+      <div class="rgrid">
+        ${done ? L.clubs.map(crest).join("")
+               : got.map(i=>crest(L.clubs[i], i)).join("") || `<div class="hint" style="text-align:center;width:100%">Nothing yet. Anything you type that matches pops up here.</div>`}
+      </div>
+      ${done?`
+        <div class="hint" style="text-align:center">${got.length===L.clubs.length?"The whole league. +10 on top.":`Missed ${L.clubs.length-got.length}.`}</div>
+        <div class="spacer"></div>
+        <button class="bigbtn" onclick="rushNextPlayer()">Next player<kbd>Space</kbd></button>`
+      :`<div class="spacer"></div>`}`;
+    if(!done) startTimer(RUSH_SECS, rushTimeUp, "rush"+S.turn+"-"+S.rush.li+"-"+S.round);
+    return;
+  }
+
   if(S.phase==="d_play" || S.phase==="d_show"){
     const d=S.duel, ax=duelAxis(), A=DUEL[d.a], B=DUEL[d.b];
     const shown = S.phase==="d_show";
@@ -3841,33 +3947,6 @@ function render(){
       :`
       <div class="hint" style="text-align:center">Tap the face. The app knows the answer, so there is nothing to argue about until afterwards.</div>
       <div class="spacer"></div>
-      <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
-    return;
-  }
-
-  if(S.phase==="r_play" || S.phase==="r_dead"){
-    const C=CAREERS[S.crev.ci];
-    const done = S.phase==="r_dead";
-    const cards = C.c.map((slug,i)=> (i<S.crev.got || done)
-      ? `<div class="clubcard${done&&i>=S.crev.got?" pop":""}"><img src="assets/logos/${slug}.png" alt=""></div>`
-      : `<div class="clubcard mystery">?</div>`).join("");
-    st.innerHTML = `
-      <div class="kick">Career Reverse · ${esc(S.players[S.turn].name)} reciting · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
-      ${faceHTML(C.n)}
-      <div class="careername">${esc(C.n)}</div>
-      ${done&&C.note?`<div class="hint" style="text-align:center">${esc(C.note)}</div>`:""}
-      <div class="clubgrid">${cards}</div>
-      <div class="potpill">${S.crev.got} / ${C.c.length} clubs${done||S.crev.got===C.c.length?"":" · full career pays +"+(C.c.length+3)}</div>
-      ${done?`
-      <div class="spacer"></div>
-      <button class="bigbtn" onclick="crevNextPlayer()">Next player<kbd>Space</kbd></button>`
-      :`
-      <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} names the clubs in career order, out loud. ${reader()} confirms each before revealing.</div>
-      <div class="spacer"></div>
-      <div class="row2">
-        <button class="bigbtn ok" onclick="crevOk()">✓ Named it +1<kbd>C</kbd></button>
-        <button class="bigbtn bad" onclick="crevEnd()">✗ Wrong / stop<kbd>W</kbd></button>
-      </div>
       <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
     return;
   }
@@ -3968,7 +4047,7 @@ let setupCount = 3;
 let setupTimed = true;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
-const MODE_META = {career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], crev:["rewind","Career Reverse","#e8c47f"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"]};
+const MODE_META = {career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -3986,7 +4065,7 @@ function modeDrawerHTML(){
   const btn = m && !modesOpen
     ? `<button class="bigbtn ghost sel modestoggle" onclick="toggleModes()"><span class="mico" style="color:${m[2]}">${ico(m[0])}</span><span class="mlab">${m[1]}</span>${chev}</button>`
     : `<button class="bigbtn ghost modestoggle" onclick="toggleModes()"><span class="mico">${ico('grid')}</span><span class="mlab">More game modes</span>${chev}</button>`;
-  const off = {kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, mgr:!MGRS, xi:!XI, tline:!TLINE, duel:!DUEL};
+  const off = {kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, mgr:!MGRS, xi:!XI, tline:!TLINE, duel:!DUEL, rush:!LEAGUES};
   const grid = modesOpen?`<div class="modes">
       ${Object.entries(MODE_META).map(([k,[ic,label,ac]])=>
         `<button class="bigbtn ghost${setupMode===k?" sel":""}" onclick="setMode('${k}')" ${off[k]?"disabled style='opacity:.4'":""}><span class="mico" style="color:${ac}">${ico(ic)}</span><span class="mlab">${label}</span></button>`).join("")}
@@ -4095,7 +4174,7 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
     </div>`}
-    ${["career","mgr","crev","xi","tline","duel"].includes(setupMode)?"":`<div class="row2">
+    ${["career","mgr","xi","tline","duel","rush"].includes(setupMode)?"":`<div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">${ico('clock')}With timer</button>
       <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">${ico('inf')}No timer</button>
     </div>`}
@@ -4113,7 +4192,7 @@ function renderSetup(st){
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, type your answer, lock it in, and the real answer lands on every phone at once so you call it yourself. Miss it and the other phones race for a STEAL IT button. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, type your answer, lock it in, and the real answer lands on every phone at once so you call it yourself. Miss it and the other phones race for a STEAL IT button. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>
     <details class="rules credits" ontoggle="if(this.open) loadCredits()">
       <summary>${ico('book')}Credits and sources</summary>
@@ -4175,15 +4254,16 @@ function startGame(){
   if(setupMode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
   if(setupMode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
   if(setupMode==="duel" && !DUEL){ toast("The face-off deck is still loading — one second!", true); return; }
+  if(setupMode==="rush" && !LEAGUES){ toast("The league bank is still loading — one second!", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
     S.ref=(el && el.value.trim()) || "The ref";
   }
   if(S.mode==="career" || S.mode==="mgr") newCareer();
-  if(S.mode==="crev") newCrev();
   if(S.mode==="xi") newXI();
   if(S.mode==="duel") newDuel();
+  if(S.mode==="rush") newRush();
     if(S.mode==="tline") newTL();
   render();
 }
@@ -4196,8 +4276,8 @@ function resumeGame(){
   if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[]; if(!S.wsub) S.wsub=[];
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
-  if(!S.usedR) S.usedR=[]; if(!S.usedM) S.usedM=[]; // saves from before crev/manager path existed
-  if(S.mode==="hilo"){ toast("Higher or Lower has retired. Pick a mode."); S=null; render(); return; } // that match can't be resumed
+  if(!S.usedM) S.usedM=[]; // saves from before manager path existed
+  if(S.mode==="hilo" || S.mode==="crev"){ toast(`${S.mode==="crev"?"Career Reverse":"Higher or Lower"} has been retired. Pick a mode.`); S=null; render(); return; } // that match can't be resumed
   if(!S.usedX) S.usedX=[]; if(!S.usedT) S.usedT=[]; // saves from before xi/timeline existed
   if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
   if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
@@ -4206,14 +4286,16 @@ function resumeGame(){
   if(S.mode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
   if(S.mode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
   if(S.mode==="duel" && !DUEL){ toast("The face-off deck is still loading — one second!", true); return; }
+  if(S.mode==="rush" && !LEAGUES){ toast("The league bank is still loading — one second!", true); return; }
   if(S.mode==="mgr" && !S.career) newCareer();
-  if(S.mode==="crev" && !S.crev) newCrev();
   if(S.mode==="xi" && !S.xi) newXI();
   if(S.mode==="tline" && !S.tl) newTL();
   if(S.mode==="duel" && !S.duel) newDuel();
+  if(S.mode==="rush" && !S.rush) newRush();
   if(S.phase==="tl_reveal" && S.tl && !S.tl.right) S.phase="tl_play"; // saves from before drag scoring
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
+  if(S.phase==="g_play"){ S.phase="g_pick"; S.rush=null; }   // the thirty seconds are gone
   if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
   if(["judge","steal_judge","deadq","steal_offer"].includes(S.phase) && S.qi==null) S.phase="pick";
   if(["c_who","c_judge"].includes(S.phase)) S.phase="c_play";
@@ -4486,13 +4568,13 @@ function endGame(){
 function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
-  const usedC=S.usedC, ref=S.ref, usedM=S.usedM, usedR=S.usedR, usedX=S.usedX, usedT=S.usedT;
+  const usedC=S.usedC, ref=S.ref, usedM=S.usedM, usedX=S.usedX, usedT=S.usedT;
   S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC; S.ref=ref;
-  S.usedM=usedM||[]; S.usedR=usedR||[]; S.usedX=usedX||[]; S.usedT=usedT||[];
+  S.usedM=usedM||[]; S.usedX=usedX||[]; S.usedT=usedT||[];
   if(S.mode==="career" || S.mode==="mgr") newCareer();
-  if(S.mode==="crev") newCrev();
   if(S.mode==="xi") newXI();
   if(S.mode==="duel") newDuel();
+  if(S.mode==="rush") newRush();
     if(S.mode==="tline") newTL();
   render();
 }
@@ -4554,16 +4636,13 @@ document.addEventListener("keydown", e=>{
   }else if(S.phase==="c_judge"){
     if(k==="c") cJudge(true);
     if(k==="w"||k==="x") cJudge(false);
+  }else if(S.phase==="g_done"){
+    if(k===" "||k==="enter"){ e.preventDefault(); rushNextPlayer(); }
   }else if(S.phase==="d_play"){
     if(k==="1") duelPick("a");
     if(k==="2") duelPick("b");
   }else if(S.phase==="d_show"){
     if(k===" "||k==="enter"){ e.preventDefault(); S.duel.right ? duelOn() : duelNextPlayer(); }
-  }else if(S.phase==="r_play"){
-    if(k==="c") crevOk();
-    if(k==="w"||k==="x") crevEnd();
-  }else if(S.phase==="r_dead"){
-    if(k===" "||k==="enter"){ e.preventDefault(); crevNextPlayer(); }
   }else if(S.phase==="x_done"){
     if(k===" "||k==="enter"){ e.preventDefault(); xiAfter(); }
   }else if(S.phase==="tl_play"){

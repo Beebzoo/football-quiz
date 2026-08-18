@@ -78,15 +78,26 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
   check("the pointer rotates through all three", JSON.stringify(turns) === JSON.stringify([0,1,2,0,1,2,0,1,2]), turns.join(","));
   check("the round counts up once per lap", ev(app, "S.round") === 4, ev(app, "S.round"));
 
-  /* Name the XI parks S.turn at -1 for a communal board and Career Path never
-     touches it. If the next deal read S.turn instead of S.lbTurn, one of those
-     would silently reset the rotation to whoever came after -1. */
+  /* Three modes park S.turn at -1 because the whole table plays at once: Name
+     the XI, Career Path and Manager Path. If the next deal read S.turn instead
+     of S.lbTurn, any of them would silently reset the rotation to whoever came
+     after -1, which is player 0 every time. Rolled 40 times so both kinds of
+     mode are certain to come up. */
   console.log("\n--- a communal mode does not eat the rotation ---");
-  run(app, `S = freshState(["Ale","Bram","Martijn"], false, "classic", 0);
-            S.lb = true; S.lbTurn = 2; S.turn = -1; S.lbLast = "xi"; lbDeal(false);`);
-  const communal = ["xi"].includes(ev(app, "S.mode"));
-  check("the go still belongs to the third player", communal || ev(app, "S.turn") === 2,
-    ev(app, "S.mode") + " / turn " + ev(app, "S.turn"));
+  const COMMUNAL = ["xi", "career", "mgr"];
+  let solo = 0, kept = 0, lostTurn = [], lostPointer = [];
+  for (let i = 0; i < 40; i++) {
+    run(app, `S = freshState(["Ale","Bram","Martijn"], false, "classic", 0);
+              S.lb = true; S.lbTurn = 2; S.turn = -1; lbDeal(false);`);
+    const m = ev(app, "S.mode");
+    if (ev(app, "S.lbTurn") !== 2) lostPointer.push(m);
+    if (COMMUNAL.includes(m)) { kept++; continue; }        // -1 on purpose: nobody is on the spot
+    solo++;
+    if (ev(app, "S.turn") !== 2) lostTurn.push(m + " gave the go to " + ev(app, "S.turn"));
+  }
+  check("both kinds of mode came up", solo > 0 && kept > 0, `${solo} solo, ${kept} communal`);
+  check("a solo mode hands the go to the player whose turn it is", lostTurn.length === 0, lostTurn.join("; "));
+  check("and the pointer itself is never touched by the deal", lostPointer.length === 0, lostPointer.join(","));
 
   console.log("\n--- every mode gives the ball back ---");
   /* Drive each handover directly: this is the check that would have caught a

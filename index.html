@@ -161,13 +161,20 @@
      wash of it behind, and a thin gold rule down the left edge does the same
      job: you can see instantly which one is chosen, and it looks chosen
      rather than alarmed. */
+  /* Picked reads as filled, not outlined. The gold hairline version was
+     quieter than the 2px border it replaced but it was still a box with a
+     line round it; this is the parchment the Resume button already uses, so
+     a chosen thing looks like the same family of thing. */
   body.careermode .bigbtn.ghost.sel{
-    background:linear-gradient(90deg,rgba(233,184,76,.16),rgba(233,184,76,.06));
-    border:1px solid rgba(233,184,76,.62);
-    box-shadow:inset 3px 0 0 #e9b84c;
-    color:#f6e2a8;font-weight:700;
+    background:#fdf6e6;border:1px solid #e8cf96;color:#8a6414;
+    font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.28);
   }
-  body.careermode .bigbtn.ghost.sel .mico{color:#e9b84c}
+  /* the mode's own accent would vanish on cream, so the tile goes with it */
+  body.careermode .bigbtn.ghost.sel .mico{
+    color:#8a6414;background:rgba(138,100,20,.13);
+  }
+  body.careermode .bigbtn.ghost.sel .chev,
+  body.careermode .bigbtn.ghost.sel .lcount{color:#a07c26;opacity:.8}
   .rules{margin-top:4px}
   .rules summary{
     list-style:none;cursor:pointer;text-align:center;

@@ -179,21 +179,6 @@
   }
   body.careermode .bigbtn.ghost.sel .chev,
   body.careermode .bigbtn.ghost.sel .lcount{color:#a07c26;opacity:.8}
-  /* Let's Ball owns the gold on the menu: it is the one mode that contains all
-     the others, so it sits under Classic and Written rather than in the drawer
-     with the specialities. It has to be declared inside body.careermode or the
-     ghost rule above outranks it and the button comes out plain. Picked, it
-     goes parchment like every other chosen thing. */
-  body.careermode .bigbtn.ghost.lbbtn{
-    background:linear-gradient(100deg,#b8821f,#e3b453 52%,#cf9c33);
-    border-color:#b07f1e;color:#fff;font-weight:800;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 4px 16px rgba(201,147,46,.3);
-    text-shadow:0 1px 2px rgba(0,0,0,.3);
-  }
-  body.careermode .bigbtn.ghost.lbbtn.sel{
-    background:#fdf6e6;border-color:#c9a45e;color:#7a5410;text-shadow:none;
-    box-shadow:inset 4px 0 0 #c9932e, 0 2px 10px rgba(0,0,0,.28);
-  }
   .rules{margin-top:4px}
   .rules summary{
     list-style:none;cursor:pointer;text-align:center;
@@ -4560,10 +4545,16 @@ function render(){
 }
 
 let setupCount = 3;
-let setupTimed = true;
+/* No timer by default. The clock is a good mode for a competitive night but a
+   bad default for a table that is talking, and the answer being argued about
+   is usually the point. */
+let setupTimed = false;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
-const MODE_META = {career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"]};
+/* Let's Ball leads the drawer: it is the one entry that contains every other
+   entry, so it reads as the top of the list rather than as another speciality
+   wedged in alphabetically. */
+const MODE_META = {lb:["trophy","Let's Ball","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -4692,7 +4683,6 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupMode==="classic"?" sel":""}" onclick="setMode('classic')">${ico('mic')}Classic</button>
       <button class="bigbtn ghost${setupMode==="written"?" sel":""}" onclick="setMode('written')">${ico('pencil')}Written</button>
     </div>
-    <button class="bigbtn ghost lbbtn${setupMode==="lb"?" sel":""}" onclick="setMode('lb')"><img class="ballic" src="assets/ball.png" alt="">Let's Ball</button>
     ${modeDrawerHTML()}
     ${MP?"":`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="askPlayTogether()">📡 Play together</button>`}
     ${isStandalone()?"":`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="installApp()">📲 Get BALL on your home screen</button>`}

@@ -570,32 +570,45 @@
   input.nm-in::placeholder{color:#9fb8a6;font-weight:500}
   input.nm-in:focus{outline:2px solid #e9b84c;border-color:#e9b84c;background:rgba(255,255,255,.12)}
 
-  /* difficulty buttons */
+  /* Difficulty buttons. The tier colour used to be a dot and a pill on a plain
+     white card; now it bleeds in from the left edge and gives out before the
+     middle, so the row reads as its own colour without becoming a coloured
+     slab. The 3px inset rule is the same gold-selection idiom used on the setup
+     chips, borrowed here in each tier's colour.
+     background is declared twice on purpose: a browser without color-mix keeps
+     the flat card rather than dropping to no background at all. */
   .diff{
     display:flex;align-items:center;justify-content:space-between;
-    width:100%;padding:14px 16px;border-radius:var(--radius);
-    border:1px solid var(--line);background:var(--card);
+    width:100%;padding:15px 16px 15px 19px;border-radius:var(--radius);
+    border:1px solid var(--line);
+    background:var(--card);
+    background:linear-gradient(100deg,
+      color-mix(in srgb, var(--dc) 20%, var(--card)) 0%,
+      color-mix(in srgb, var(--dc) 6%, var(--card)) 42%,
+      var(--card) 78%);
     font:700 1.1rem/1 var(--ui);
     color:var(--ink);
-    box-shadow:var(--shadow);
-    transition:transform .06s ease;
+    box-shadow:inset 3px 0 0 var(--dc), var(--shadow);
+    transition:transform .06s ease, box-shadow .12s ease;
   }
-  .diff:active{transform:scale(.98)}
-  .diff .left{display:flex;flex-direction:column;gap:4px;text-align:left}
-  .diff .left > span:first-child{display:flex;align-items:center}
-  .diff .left > span:first-child::before{
-    content:"";width:10px;height:10px;border-radius:99px;background:var(--dc);margin-right:9px;
-  }
+  .diff:active{transform:scale(.98);box-shadow:inset 3px 0 0 var(--dc), 0 2px 6px rgba(0,0,0,.28)}
+  .diff .left{display:flex;flex-direction:column;gap:5px;text-align:left}
+  .diff .left > span:first-child{display:flex;align-items:center;letter-spacing:.01em}
   .diff .pts{
     font:700 .8rem/1 var(--ui);
     background:var(--dc);color:#fff;padding:6px 11px;border-radius:99px;
+    box-shadow:0 1px 4px color-mix(in srgb, var(--dc) 45%, transparent);
   }
+  /* BALL keeps its gold, deepened at both ends so the fade runs the same way
+     the other five do rather than sitting flat across the row */
   .diff.ball{
-    background:linear-gradient(115deg,#c9932e,#e3b453 55%,#c9932e);
+    background:#c9932e;
+    background:linear-gradient(100deg,#b8821f,#e3b453 52%,#cf9c33);
     border-color:#b07f1e;color:#fff;
+    box-shadow:inset 3px 0 0 #f3d982, var(--shadow);
   }
-  .diff.ball .left > span:first-child::before{background:#fff}
-  .diff.ball .pts{background:rgba(255,255,255,.22)}
+  .diff.ball:active{box-shadow:inset 3px 0 0 #f3d982, 0 2px 6px rgba(0,0,0,.28)}
+  .diff.ball .pts{background:rgba(255,255,255,.22);box-shadow:none}
   .diff.ball .cnt{color:rgba(255,255,255,.85)}
   .diff .cnt{font:500 .68rem/1 var(--ui);color:var(--chalk-dim)}
 
@@ -3970,8 +3983,10 @@ function render(){
     const nat = S.mode==="nations";
     const bdg = S.mode==="badge";
     const kit = S.mode==="kit";
+    /* No kick line here on purpose: the round, the mode and the target are all
+       already on the screen above this one, and the player's name is what the
+       table is looking at. */
     st.innerHTML = `
-      <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":nat?"The One & Only":bdg?"Badge Zoom":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
       <div class="hint blurb">${written?"Everyone writes an answer to the same question. Pick how hard you want it."
         :stad?"A photo of a ground comes up and you say where it is. Pick your level."
@@ -3982,9 +3997,9 @@ function render(){
         :"Pick your level. Someone else reads the question out loud."}</div>
       ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn. Pick your level</div>`:""}
       ${remotePlayer(S.turn)?`<div class="hint waitline">⌛ ${esc(P.name)} is picking on their own phone.</div>`:""}
-      ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t],ix)=>`
+      ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t])=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
-          <span class="left"><span>${tlabel(k)}<kbd>${ix+1}</kbd></span><span class="cnt">${remaining(k)} left</span></span>
+          <span class="left"><span>${tlabel(k)}</span><span class="cnt">${remaining(k)} left</span></span>
           <span class="pts">+${t.pts}</span>
         </button>`).join("")}
       <div class="foot">

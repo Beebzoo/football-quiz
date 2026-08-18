@@ -105,6 +105,12 @@ const SPELL = /^(?:from \d{4}|\d{4}(?: to \d{4})?)$/;
   check("no game count, no games", fact({ pos: "Winger", yr: "2001 to 2004" }) === "Winger · 2001 to 2004",
     fact({ pos: "Winger", yr: "2001 to 2004" }));
   check("position only", fact({ pos: "Striker" }) === "Striker", fact({ pos: "Striker" }));
+  check("goals ride with the games, not in a slot of their own",
+    fact({ pos: "Striker", yr: "1999", app: 12, gl: 4 }) === "Striker · 1999 · 12 games, 4 goals",
+    fact({ pos: "Striker", yr: "1999", app: 12, gl: 4 }));
+  check("one goal is not 1 goals", fact({ app: 12, gl: 1 }) === "12 games, 1 goal", fact({ app: 12, gl: 1 }));
+  check("one game is not 1 games", fact({ app: 1 }) === "1 game", fact({ app: 1 }));
+  check("no goal count, no trailing comma", fact({ app: 12 }) === "12 games", fact({ app: 12 }));
   check("an empty row makes no line", fact({}) === null, JSON.stringify(fact({})));
 
   console.log("\n--- where it shows, and where it must not ---");

@@ -11,6 +11,7 @@
      yr   the spell at THAT club, from the P54 statement's own P580/P582
           qualifiers, not the player's career span
      app  appearances for that club (P1350), when the statement carries it
+     gl   goals for that club (P1351), same
      pos  what he played
 
    POSITION IS NOT TAKEN FROM WIKIDATA. P413 exists but its vocabulary is
@@ -112,6 +113,7 @@ async function getEntities(ids) {
           from: yearOf(s.qualifiers && s.qualifiers.P580),
           to: yearOf(s.qualifiers && s.qualifiers.P582),
           apps: numOf(s.qualifiers && s.qualifiers.P1350),
+          goals: numOf(s.qualifiers && s.qualifiers.P1351),
         }));
       out[id] = { spells, title: (e.sitelinks && e.sitelinks.enwiki || {}).title || null };
     }
@@ -317,7 +319,8 @@ function spellText(spells) {
     if (!best) continue;
     paired++;
     const apps = best.mine.reduce((a, s) => a + (s.apps || 0), 0);
-    pick[r.player + "|" + r.slug] = { yr: spellText(best.mine), app: apps || null, title: best.e.title };
+    const goals = best.mine.reduce((a, s) => a + (s.goals || 0), 0);
+    pick[r.player + "|" + r.slug] = { yr: spellText(best.mine), app: apps || null, gl: goals || null, title: best.e.title };
     if (best.e.title) titles.add(best.e.title);
   }
   console.log(`  ${paired} of ${rows.length} rows paired to a spell at their own club\n`);
@@ -343,9 +346,10 @@ function spellText(spells) {
     if (!FORCE && (r.pos || r.yr)) continue;
     const p = pick[r.player + "|" + r.slug];
     if (!p) continue;
-    if (FORCE) { delete r.pos; delete r.yr; delete r.app; }
+    if (FORCE) { delete r.pos; delete r.yr; delete r.app; delete r.gl; }
     if (p.yr) r.yr = p.yr;
     if (p.app) r.app = p.app;
+    if (p.gl) r.gl = p.gl;
     if (p.title && pos[p.title]) r.pos = pos[p.title];
     if (r.pos && r.yr) filled++; else if (r.pos || r.yr) part++;
   }
@@ -355,7 +359,7 @@ function spellText(spells) {
 
   const stat = k => TIERS.reduce((a, t) => a + bank[t].filter(r => r[k]).length, 0);
   console.log(`\nfull detail ${filled}, partial ${part}`);
-  console.log(`  position ${stat("pos")}/${rows.length}, years ${stat("yr")}/${rows.length}, apps ${stat("app")}/${rows.length}`);
+  console.log(`  position ${stat("pos")}/${rows.length}, years ${stat("yr")}/${rows.length}, apps ${stat("app")}/${rows.length}, goals ${stat("gl")}/${rows.length}`);
   if (weak.length) {
     console.log("\nclubs where the vote was thin, worth an eye:");
     weak.slice(0, 12).forEach(([s, v, n]) => console.log(`   ${s}: ${v}/${n} players agreed`));
@@ -364,7 +368,7 @@ function spellText(spells) {
 
   /* A spot check reads better than a count: 20 rows spread across the bank,
      written the way the card will write them. */
-  const line = r => [r.pos, r.yr, r.app ? r.app + " games" : null].filter(Boolean).join(" · ");
+  const line = r => [r.pos, r.yr, r.app ? r.app + " games" + (r.gl ? ", " + r.gl + " goals" : "") : null].filter(Boolean).join(" · ");
   const all = TIERS.flatMap(t => bank[t]);
   console.log("\nsample:");
   for (let i = 0; i < all.length; i += Math.floor(all.length / 20)) {

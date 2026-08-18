@@ -2533,7 +2533,7 @@ let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stea
    fetches could land either way round and quietly renumber the bank between
    one page load and the next, which would point a resumed match's used-list at
    the wrong questions. */
-const PACKS = ["assets/facts/index.json", "assets/deep/index.json", "assets/nicknames/index.json"];
+const PACKS = ["assets/facts/index.json", "assets/deep/index.json", "assets/nicknames/index.json", "assets/awards/index.json"];
 (async ()=>{
   let n=0;
   for(const url of PACKS){
@@ -2598,7 +2598,12 @@ function natQ(){
    them. It is deliberately NOT on the question card, where "1998 to 2003"
    would hand over half the answer. */
 function natFact(r){
-  return [r.pos, r.yr, r.app ? r.app+" games" : null].filter(Boolean).join(" · ") || null;
+  /* Goals ride with the games rather than taking a slot of their own, so the
+     line stays three parts wide on a phone. A goal count of zero is left off:
+     it is as often a gap in the data as a defender who never scored. */
+  const n = (v,one,many) => v+" "+(v===1?one:many);   // "1 goal", not "1 goals"
+  const games = r.app ? n(r.app,"game","games")+(r.gl?", "+n(r.gl,"goal","goals"):"") : null;
+  return [r.pos, r.yr, games].filter(Boolean).join(" · ") || null;
 }
 const tlabel = k => (S && S.mode==="nations" && k==="normal") ? "Medium" : TIERS[k].label;
 let natAnim = false; // entrance animation plays once per fresh One & Only question

@@ -612,7 +612,11 @@
   /* the reveal portrait: a face lands better than a name on its own */
   .face{
     display:block;margin:0 auto 10px;width:132px;height:132px;object-fit:cover;
-    object-position:center 22%;   /* Commons shots are full-body as often as not */
+    /* The portraits are cropped square around the face by _tools/
+       build-facecrop.py, so cover has nothing left to cut. The anchor is for
+       the handful whose face the detector never found: they are still whole
+       photos, and a touchline shot wants its top, not its middle. */
+    object-position:center 22%;
     border-radius:50%;border:3px solid #e9b84c;
     box-shadow:0 8px 22px rgba(0,0,0,.45);background:#0d2418;
     animation:facein .38s cubic-bezier(.22,.8,.3,1) both;

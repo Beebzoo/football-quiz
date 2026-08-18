@@ -2,3 +2,7 @@
 Football Quiz Question Bank.xlsx
 _bank_data.tsv
 ~$*
+
+# the YuNet face model, fetched on demand by _tools/build-facecrop.py
+_tools/_models/
+__pycache__/

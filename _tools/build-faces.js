@@ -11,6 +11,12 @@
    Commons resizes server-side, so there is no image processing step: we ask
    for a 400px-wide thumbnail and save what comes back, about 18KB each.
 
+   What ships is not what this downloads: _tools/build-facecrop.py then finds
+   the face in each photo and crops it to a square head-and-shoulders, because
+   a circle drawn on a full-body touchline shot cuts the man's head off. Run
+   that after this, and ALWAYS after a --force here, which throws the crops
+   away and puts the original framing back.
+
    SAFE TO RE-RUN. Files already on disk are left alone unless --force. */
 const fs = require("fs");
 const path = require("path");

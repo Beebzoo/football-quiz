@@ -50,6 +50,41 @@ for (const set of SETS) {
   console.log(`      ${csv.length} attribution rows`);
 }
 
+/* A portrait is drawn in a circle, so a photo taller than it is wide gets its
+   middle shown and the man's head cut off above the frame. _tools/
+   build-facecrop.py finds the face and crops a square, and this is the check
+   that the square actually shipped. */
+console.log("\n--- portraits are framed for a circle ---");
+function jpegSize(file) {
+  const b = fs.readFileSync(file);
+  let i = 2;                                          // skip SOI
+  while (i < b.length - 9) {
+    if (b[i] !== 0xFF) { i++; continue; }
+    const marker = b[i + 1];
+    // SOF0..SOF15, minus the four that are not frame headers
+    if (marker >= 0xC0 && marker <= 0xCF && ![0xC4, 0xC8, 0xCC, 0xD8].includes(marker)) {
+      return { h: b.readUInt16BE(i + 5), w: b.readUInt16BE(i + 7) };
+    }
+    i += 2 + b.readUInt16BE(i + 2);
+  }
+  return null;
+}
+const faceDir = path.join(REPO, "assets/faces");
+const faceFiles = fs.readdirSync(faceDir).filter(f => f.endsWith(".jpg"));
+const sizes = faceFiles.map(f => ({ f, ...(jpegSize(path.join(faceDir, f)) || {}) }));
+const oblong = sizes.filter(s => s.w !== s.h);
+const pct = Math.round((sizes.length - oblong.length) / sizes.length * 100);
+console.log(`      ${sizes.length - oblong.length} of ${sizes.length} are square (${pct}%)`);
+check("at least 90% of portraits are cropped square", pct >= 90,
+      `${oblong.length} still oblong, e.g. ${oblong.slice(0, 3).map(s => s.f + " " + s.w + "x" + s.h).join(", ")}`);
+/* the leftovers are faces the detector could not find; they fall back to the
+   CSS anchor, which only works on something roughly upright */
+check("nothing left oblong is a tower", oblong.every(s => s.h / s.w < 2.2),
+      oblong.filter(s => s.h / s.w >= 2.2).map(s => s.f).join(", "));
+const heavy = sizes.filter(s => fs.statSync(path.join(faceDir, s.f)).size > 120 * 1024);
+check("no portrait weighs more than 120KB", heavy.length === 0,
+      `${heavy.length} heavy, e.g. ${heavy[0] && heavy[0].f}`);
+
 /* the faces are deliberately kept out of the precache: they would triple it */
 console.log("\n--- service worker ---");
 const sw = fs.readFileSync(path.join(REPO, "sw.js"), "utf8");

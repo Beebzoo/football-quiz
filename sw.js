@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v76";
+const CACHE = "ball-quiz-v77";
 const NATFLAGS = "ad,ae,af,ag,al,am,ao,ar,at,au,az,ba,be,bf,bg,bi,bj,bm,bn,bo,br,by,ca,cd,cf,cg,ch,ci,cl,cm,cn,co,cr,cu,cv,cy,cz,de,dk,do,dz,ec,ee,eg,es,et,fi,fr,ga,gb,gd,ge,gh,gm,gn,gq,gr,gt,gw,gy,hn,hr,ht,hu,id,ie,il,in,iq,ir,is,it,jm,jo,jp,ke,kn,kr,kw,kz,lb,lc,li,lk,lr,lt,lu,lv,ly,ma,md,me,mg,mk,ml,mr,mt,mu,mw,mx,my,mz,na,ne,ng,nl,no,nz,pa,pe,ph,pk,pl,pt,py,qa,ro,rs,ru,rw,sa,sc,sd,se,si,sk,sl,sm,sn,so,sr,st,sv,sy,sz,td,tg,th,tl,tm,tn,tr,tt,tz,ua,ug,us,uy,uz,ve,vn,ws,xk,za,zm,zw".split(",");
 const EXTRA_ASSETS = ["assets/ball.png", "assets/stadiums/index.json", "assets/facts/index.json", "assets/deep/index.json", "assets/nicknames/index.json", "assets/awards/index.json", "assets/hilo/index.json", "assets/leagues/index.json", "assets/kits/index.json", "assets/kits/_base.png", "assets/nations/index.json",
   "assets/badges/index.json",
@@ -164,6 +164,7 @@ const ASSETS = [
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/icon-180.png",
+  "icons/icon-maskable-512.png",
   ...EXTRA_ASSETS,
   ...CAREER_LOGOS.map(s => "assets/logos/" + s + ".png"),
   ...MANAGER_LOGOS.map(s => "assets/logos/" + s + ".png"),

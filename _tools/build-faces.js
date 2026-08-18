@@ -23,6 +23,7 @@ const path = require("path");
 
 const REPO = path.join(__dirname, "..");
 const OUT = path.join(REPO, "assets", "faces");
+const WIKI = "https://en.wikipedia.org/w/api.php";
 const UA = "BallQuizBot/1.0 (personal football quiz; https://github.com/Beebzoo/football-quiz)";
 const FORCE = process.argv.includes("--force");
 const THUMB = 400;
@@ -59,6 +60,46 @@ async function findImages(names) {
     await sleep(400);                     // be polite to the query service
   }
   return found;
+}
+
+/* ---------- 1b. whoever Wikidata has no P18 for ----------
+   Thirty of the best-known players in the deck have no photo statement on
+   Wikidata at all: Messi, Ramos, Xavi, Cantona, Puyol, Alves. Their articles
+   all carry one anyway, so the article's own lead image is the fallback.
+
+   It is checked before use. English Wikipedia can host non-free images
+   locally, and a fair-use press photo is exactly what must not end up in a
+   game on the open web, so anything not living on Commons is refused. */
+async function leadImages(names) {
+  const found = {};
+  for (const batch of chunk(names, 20)) {
+    const j = await getJSON(WIKI + "?action=query&format=json&formatversion=2&prop=pageimages"
+      + "&piprop=name&pilimit=max&redirects=1&titles=" + encodeURIComponent(batch.join("|")));
+    const back = {};
+    for (const r of (j.query && j.query.redirects) || []) back[r.to] = r.from;
+    for (const r of (j.query && j.query.normalized) || []) back[r.to] = back[r.to] || r.from;
+    for (const p of (j.query && j.query.pages) || []) {
+      if (!p.pageimage) continue;
+      const asked = back[p.title] || p.title;
+      if (batch.includes(asked)) found[asked] = p.pageimage.replace(/_/g, " ");
+    }
+    process.stdout.write(".");
+    await sleep(200);
+  }
+  return found;
+}
+
+async function onCommons(files) {
+  const ok = new Set();
+  for (const batch of chunk(files, 40)) {
+    const j = await getJSON("https://commons.wikimedia.org/w/api.php?action=query&format=json"
+      + "&formatversion=2&prop=imageinfo&iiprop=url&titles="
+      + encodeURIComponent(batch.map(f => "File:" + f).join("|")));
+    for (const p of (j.query && j.query.pages) || [])
+      if (!p.missing && p.imageinfo) ok.add(p.title.replace(/^File:/, ""));
+    await sleep(200);
+  }
+  return ok;
 }
 
 /* ---------- 2. filenames -> licence, author, sized thumbnail ---------- */
@@ -114,15 +155,51 @@ async function download(url, dest, tries = 4) {
   throw new Error("gave up");
 }
 
+/* The player deck lives inside index.html rather than in its own file, so it
+   is read out of the source: find `const CAREERS = [` and take lines until the
+   brackets balance again. Cheaper and safer than a regex across 500 entries. */
+function careerNames() {
+  const lines = fs.readFileSync(path.join(REPO, "index.html"), "utf8").split("\n");
+  const start = lines.findIndex(l => l.startsWith("const CAREERS"));
+  if (start < 0) return [];
+  let depth = 0, out = [];
+  for (let i = start; i < lines.length; i++) {
+    out.push(lines[i]);
+    for (const ch of lines[i]) { if (ch === "[") depth++; if (ch === "]") depth--; }
+    if (depth === 0 && out.length > 1) break;
+  }
+  const src = out.join("\n").replace(/^const CAREERS\s*=\s*/, "").replace(/;\s*$/, "");
+  return eval(src).map(c => c.n);
+}
+
 (async () => {
-  const names = JSON.parse(fs.readFileSync(path.join(REPO, "assets/managers/index.json"), "utf8")).map(m => m.n);
-  console.log(`${names.length} managers in the deck\n`);
+  /* Both decks share one folder and one index, keyed by name. A man who
+     played and then managed is one photo, not two, and faceHTML(name) does
+     not need to know which deck it came from. */
+  const managers = JSON.parse(fs.readFileSync(path.join(REPO, "assets/managers/index.json"), "utf8")).map(m => m.n);
+  const players = careerNames();
+  const names = [...new Set([...managers, ...players])];
+  console.log(`${managers.length} managers + ${players.length} players = ${names.length} unique faces wanted\n`);
   fs.mkdirSync(OUT, { recursive: true });
 
   process.stdout.write("asking wikidata ");
   const found = await findImages(names);
-  const misses = names.filter(n => !found[n]);
-  console.log(`\n  ${names.length - misses.length} matched, ${misses.length} with no free image`);
+  let misses = names.filter(n => !found[n]);
+  console.log(`\n  ${names.length - misses.length} matched, ${misses.length} with no photo statement`);
+
+  if (misses.length) {
+    process.stdout.write("wikipedia leads ");
+    const lead = await leadImages(misses);
+    const free = await onCommons([...new Set(Object.values(lead))]);
+    let rescued = 0;
+    for (const [n, file] of Object.entries(lead)) {
+      if (!free.has(file)) continue;              // lives on en.wiki, so possibly non-free
+      found[n] = [file];
+      rescued++;
+    }
+    misses = names.filter(n => !found[n]);
+    console.log(`\n  ${rescued} rescued from article lead images, ${misses.length} still with nothing`);
+  }
 
   process.stdout.write("reading commons  ");
   const allFiles = [...new Set(Object.values(found).flat())];
@@ -134,7 +211,7 @@ async function download(url, dest, tries = 4) {
     const f = pick(found[n], meta);
     if (f) chosen[n] = f;
   }
-  console.log(`  picked one portrait each for ${Object.keys(chosen).length} managers\n`);
+  console.log(`  picked one portrait each for ${Object.keys(chosen).length} of them\n`);
 
   // download, 8 at a time
   const jobs = Object.entries(chosen).map(([n, f]) => ({ n, f, file: slug(n) + ".jpg" }));

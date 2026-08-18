@@ -1,16 +1,20 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v69";
+const CACHE = "ball-quiz-v70";
 const NATFLAGS = "ad,ae,af,ag,al,am,ao,ar,at,au,az,ba,be,bf,bg,bi,bj,bm,bn,bo,br,by,ca,cd,cf,cg,ch,ci,cl,cm,cn,co,cr,cu,cv,cy,cz,de,dk,do,dz,ec,ee,eg,es,et,fi,fr,ga,gb,gd,ge,gh,gm,gn,gq,gr,gt,gw,gy,hn,hr,ht,hu,id,ie,il,in,iq,ir,is,it,jm,jo,jp,ke,kn,kr,kw,kz,lb,lc,li,lk,lr,lt,lu,lv,ly,ma,md,me,mg,mk,ml,mr,mt,mu,mw,mx,my,mz,na,ne,ng,nl,no,nz,pa,pe,ph,pk,pl,pt,py,qa,ro,rs,ru,rw,sa,sc,sd,se,si,sk,sl,sm,sn,so,sr,st,sv,sy,sz,td,tg,th,tl,tm,tn,tr,tt,tz,ua,ug,us,uy,uz,ve,vn,ws,xk,za,zm,zw".split(",");
 const EXTRA_ASSETS = ["assets/ball.png", "assets/stadiums/index.json", "assets/facts/index.json", "assets/deep/index.json", "assets/kits/index.json", "assets/kits/_base.png", "assets/nations/index.json",
   "assets/badges/index.json",
   "assets/managers/index.json",
-  /* The 221 manager portraits are NOT precached: images you only see on a
+  /* The 680 portraits are NOT precached: images you only see on a
      reveal should not sit in the install. The network-first fetch handler
      caches each one the first time it is shown, so a face you have already
      seen still works on the pub's dead wifi. Worth revisiting now that
-     cropping them to heads took the set from 19MB to 4.3MB. */
+     cropping them to heads keeps the set at 14MB for 680 faces. */
   "assets/faces/index.json",
+  /* the credits are only read when someone opens them, but they must still be
+     readable with no signal: a licence you can only see online is not much of
+     an attribution */
+  "assets/credits.json",
   "assets/xi/index.json",
   "assets/timeline/index.json",
   "assets/vendor/supabase.js",

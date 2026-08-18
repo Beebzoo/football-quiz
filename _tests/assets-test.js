@@ -45,8 +45,18 @@ for (const set of SETS) {
   check("every image on disk is credited", uncredited.length === 0,
         `${uncredited.length} uncredited, e.g. ${uncredited[0]}`);
 
-  const blank = csv.filter(l => { const c = l.split(";"); return !c[set.licCol] || !c[set.authCol] || c[set.authCol] === "unknown"; });
-  check("every credit names a licence and an author", blank.length === 0, `${blank.length} incomplete`);
+  /* An author is owed where the licence asks for one. Public domain and CC0
+     ask for nothing, and Batistuta's photo genuinely has no author recorded
+     on Commons, so demanding one there was the test being wrong rather than
+     the data. Anything with BY in it still has to name somebody. */
+  const needsAuthor = lic => /\bBY\b/i.test(lic) && !/^(public domain|CC0)/i.test(lic);
+  const blank = csv.filter(l => {
+    const c = l.split(";");
+    if (!c[set.licCol]) return true;
+    return needsAuthor(c[set.licCol]) && (!c[set.authCol] || c[set.authCol] === "unknown");
+  });
+  check("every credit names a licence, and an author where one is owed", blank.length === 0,
+        `${blank.length} incomplete, e.g. ${(blank[0] || "").split(";")[0]}`);
   console.log(`      ${csv.length} attribution rows`);
 }
 

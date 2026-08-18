@@ -231,20 +231,9 @@
   /* which one they actually tapped, so a wrong answer is legible at a glance */
   .duelcard.chose{box-shadow:0 0 0 2px #e9b84c inset}
   .duelcard.chose.lose{border-color:var(--card-r)}
-  /* credits: readable, but plainly the small print rather than a screen you
-     have to scroll past to play */
-  .credits .crlead{margin:2px 0 12px}
   .crewbar{display:flex;gap:8px;align-items:stretch;margin:8px 0 4px}
   .crewbar .nm-in{flex:1;min-width:0}
   .crewbar .bigbtn{width:auto;flex:none;padding:12px 14px;font-size:.95rem}
-  .crset{margin:0 0 13px}
-  .crh{font-weight:700;color:#dfeee5;font-size:.95rem}
-  .crh .crn{font-weight:600;color:#9fb8a6;font-size:.82em;margin-left:4px}
-  .crsub{color:#9fb8a6;font-size:.82rem;line-height:1.45;margin-top:2px}
-  .crppl{
-    color:#7f9a88;font-size:.74rem;line-height:1.5;margin-top:5px;
-    max-height:8.5em;overflow-y:auto;                 /* 600 names should not own the page */
-  }
   .ic{width:1.06em;height:1.06em;display:inline-block;vertical-align:-.18em;margin-right:.3em}
   img.ballic{width:1.05em;height:1.05em;vertical-align:-.18em;margin-right:.3em;border-radius:50%}
   body.careermode .bigbtn.warn{box-shadow:0 0 22px rgba(240,196,25,.35)}
@@ -4573,48 +4562,7 @@ function renderSetup(st){
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
       <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points, and the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order, and you shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear, and you name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in, and you name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart, though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts, and the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history. Drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins, or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone: pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. <b>The Table:</b> every finished match is filed on the phone that played it and survives the app being closed. Type the same shared table name on all three phones and you keep one table between you, with everybody's matches in it. Leave it empty and the phone keeps its own. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
-    </details>
-    <details class="rules credits" ontoggle="if(this.open) loadCredits()">
-      <summary>${ico('book')}Credits and sources</summary>
-      <div id="creditsbody" class="hint">Loading…</div>
     </details>`;
-}
-
-/* ---------- credits ----------
-   The photos in this game are other people's work, and CC BY and CC BY-SA
-   both want the author named where the work is used, not filed in a CSV in a
-   repo nobody opens. assets/credits.json is generated from the attribution
-   files by _tools/build-credits.js, so the screen cannot drift from what
-   actually ships. Loaded on first open rather than at boot: nobody needs 20KB
-   of photographers' names to start a match. */
-let CREDITS=null;
-function loadCredits(){
-  const el=document.getElementById("creditsbody");
-  if(!el || CREDITS===false) return;
-  if(CREDITS){ el.innerHTML=creditsHTML(); return; }
-  CREDITS=false;                                    // in flight, do not ask twice
-  fetch("assets/credits.json").then(r=>r.json()).then(c=>{
-    CREDITS=c;
-    const e=document.getElementById("creditsbody");
-    if(e) e.innerHTML=creditsHTML();
-  }).catch(()=>{
-    CREDITS=null;
-    const e=document.getElementById("creditsbody");
-    if(e) e.innerHTML="Could not load the credits. They are in assets/credits.json and in the ATTRIBUTION.csv next to each set of images.";
-  });
-}
-function creditsHTML(){
-  const c=CREDITS;
-  return `<p class="crlead">BALL is built out of other people's work. Everything here is used under a
-    licence that allows it, and this is the part of that bargain we owe back.</p>`
-    + c.sets.map(s=>`
-      <div class="crset">
-        <div class="crh">${esc(s.title)} <span class="crn">${s.count}</span></div>
-        <div class="crsub">${esc(s.source)} · ${s.licences.map(l=>`${esc(l.l)} (${l.n})`).join(" · ")}</div>
-        ${s.note?`<div class="crsub">${esc(s.note)}</div>`:""}
-        <div class="crppl">${s.authors.map(a=>esc(a)).join(" · ")}</div>
-      </div>`).join("")
-    + c.notes.map(n=>`<div class="crset"><div class="crh">${esc(n.h)}</div><div class="crsub">${esc(n.t)}</div></div>`).join("");
 }
 
 /* ============================== GAME FLOW ============================== */

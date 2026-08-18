@@ -4405,12 +4405,12 @@ function startGame(){
     const el=document.getElementById("n2");
     S.ref=(el && el.value.trim()) || "The ref";
   }
+  modeIntro(MODE_LABEL[S.mode]);   // first, so anything that deals waits for it
   if(S.mode==="career" || S.mode==="mgr") newCareer();
   if(S.mode==="xi") newXI();
   if(S.mode==="duel") newDuel();
   if(S.mode==="rush") newRush();
-    if(S.mode==="tline") newTL();
-  modeIntro(MODE_LABEL[S.mode]);
+  if(S.mode==="tline") newTL();
   render();
 }
 function resumeGame(){
@@ -4749,12 +4749,12 @@ function rematch(){
   const usedC=S.usedC, ref=S.ref, usedM=S.usedM, usedX=S.usedX, usedT=S.usedT;
   S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC; S.ref=ref;
   S.usedM=usedM||[]; S.usedX=usedX||[]; S.usedT=usedT||[];
+  modeIntro(MODE_LABEL[S.mode]);   // first, so anything that deals waits for it
   if(S.mode==="career" || S.mode==="mgr") newCareer();
   if(S.mode==="xi") newXI();
   if(S.mode==="duel") newDuel();
   if(S.mode==="rush") newRush();
-    if(S.mode==="tline") newTL();
-  modeIntro(MODE_LABEL[S.mode]);
+  if(S.mode==="tline") newTL();
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }

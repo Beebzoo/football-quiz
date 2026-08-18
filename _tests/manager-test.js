@@ -101,6 +101,33 @@ const stage = c => (c.__els["stage"] ? c.__els["stage"].innerHTML : "");
     bank.every(m => m.c.every((s, i) => i === 0 || s !== m.c[i - 1])),
     (bank.find(m => m.c.some((s, i) => i > 0 && s === m.c[i - 1])) || {}).n);
 
+  /* The mode splash and the first crest were landing on top of each other,
+     because the deal was scheduled before the splash had said how long it
+     wanted. The crest waits for it now, and this is the check that the two
+     calls stay in that order: reversing them silently puts the logo back
+     underneath the title. */
+  console.log("\n--- the first crest waits for the mode splash ---");
+  const intro = makeInstance("mgr-intro");
+  await tick(300);
+  run(intro, "MGRS = [{n:'Test Man', c:['ajax','psv','feyenoord']}];");
+  let revealAt = null;
+  run(intro, "__revealLog = []; bigReveal = (slug, done) => { __revealLog.push(performance.now()); done(); };");
+  const t0 = ev(intro, "performance.now()");
+  run(intro, `S = freshState(["A","B"], false, "mgr", 0);
+            modeIntro(MODE_LABEL[S.mode]);
+            newCareer();`);
+  await tick(2400);
+  revealAt = ev(intro, "__revealLog[0] || null");
+  const gap = revealAt === null ? null : Math.round(revealAt - t0);
+  console.log(`      crest revealed ${gap}ms after kick off, splash runs for ${ev(intro, "INTRO_MS")}ms`);
+  check("the crest is not revealed under the splash", gap !== null && gap >= ev(intro, "INTRO_MS"), gap);
+  check("and it does not wait around after it", gap !== null && gap < ev(intro, "INTRO_MS") + 600, gap);
+  /* mid-match there is no splash, so nothing should be waiting for one */
+  run(intro, "__revealLog = []; newCareer();");
+  await tick(300);
+  check("a later deal in the same match reveals straight away",
+    ev(intro, "__revealLog.length") === 1, ev(intro, "__revealLog.length"));
+
   const sw = fs.readFileSync(path.join(__dirname, "..", "sw.js"), "utf8");
   const cached = new Set((sw.match(/"[a-z0-9-]+"/g) || []).map(s => s.slice(1, -1)));
   const uncached = [...new Set(bank.flatMap(m => m.c))].filter(s => !cached.has(s));

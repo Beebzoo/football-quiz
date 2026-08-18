@@ -175,6 +175,28 @@
   .rules summary::-webkit-details-marker{display:none}
   .rules[open] summary{border-color:#3fd685;color:#8df0b8}
   .rules .hint{padding:10px 4px 2px}
+  /* older or taller: two faces, tap one */
+  .duelrow{display:flex;gap:10px;justify-content:center;margin:6px 0 4px}
+  .duelcard{
+    flex:1 1 0;min-width:0;padding:12px 8px 10px;border-radius:16px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);
+    color:#eef5ef;display:flex;flex-direction:column;align-items:center;gap:7px;
+    transition:transform .06s ease,border-color .15s ease,background .15s ease;
+  }
+  .duelcard:active{transform:scale(.98)}
+  .duelcard img{
+    width:min(118px,30vw);height:min(118px,30vw);border-radius:50%;object-fit:cover;
+    border:3px solid rgba(255,255,255,.22);background:#0d2418;
+  }
+  .duelcard .dn{font:700 1rem/1.2 var(--ui);text-align:center;text-wrap:balance}
+  .duelcard .dv{font:600 .9rem/1.2 var(--ui);color:#9fb8a6;font-variant-numeric:tabular-nums}
+  .duelcard.win{border-color:#3fd685;background:rgba(63,214,133,.14)}
+  .duelcard.win .dv{color:#8df0b8}
+  .duelcard.win img{border-color:#3fd685}
+  .duelcard.lose{opacity:.72}
+  /* which one they actually tapped, so a wrong answer is legible at a glance */
+  .duelcard.chose{box-shadow:0 0 0 2px #e9b84c inset}
+  .duelcard.chose.lose{border-color:var(--card-r)}
   /* credits: readable, but plainly the small print rather than a screen you
      have to scroll past to play */
   .credits .crlead{margin:2px 0 12px}
@@ -2736,6 +2758,78 @@ function crevNextPlayer(){
   newCrev(); render();
 }
 
+/* ============================== OLDER OR TALLER ==============================
+   Two faces, one question the app can settle itself: who was born first, or
+   who stands taller. The old Higher or Lower was stadium capacities and it
+   was retired, because nobody has a feel for whether a ground holds 38,000 or
+   52,000. Everyone has a feel for players, and the row afterwards is the
+   point of the thing.
+
+   Run-based like Career Reverse: keep going while you are right, and the run
+   ends the moment you are not. */
+let DUEL=null;
+fetch("assets/hilo/index.json").then(r=>r.json()).then(d=>{
+  DUEL=d;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+const DUEL_AXES=[
+  {k:"age",  ask:"Who is older?",  val:r=>`born ${r.y}`, better:(a,b)=>a.y<b.y, gap:(a,b)=>Math.abs(a.y-b.y)>=2},
+  {k:"tall", ask:"Who is taller?", val:r=>`${r.h}cm`,    better:(a,b)=>a.h>b.h, gap:(a,b)=>Math.abs(a.h-b.h)>=3},
+];
+function newDuel(){
+  if(!DUEL || DUEL.length<2){ toast("That deck is still loading — one second!", true); return; }
+  if(!S.usedD) S.usedD=[];
+  /* Nobody twice in a run while there is anybody left: seeing the same face
+     again tells you the answer you already gave. */
+  let pool=DUEL.map((_,i)=>i).filter(i=>!S.usedD.includes(i));
+  if(pool.length<2){ S.usedD=[]; pool=DUEL.map((_,i)=>i); }
+  const axis=DUEL_AXES[Math.floor(Math.random()*DUEL_AXES.length)];
+  /* A pair a year apart is a coin toss, and a dead heat has no answer at all,
+     so keep drawing until the two are far enough apart to be worth asking.
+     92% of pairs clear the age gap and 81% the height one, so this lands
+     almost immediately; the counter is only there so a thin bank cannot hang
+     the game. */
+  let a,b,tries=0;
+  do{
+    a=pool[Math.floor(Math.random()*pool.length)];
+    b=pool[Math.floor(Math.random()*pool.length)];
+    tries++;
+  }while((a===b || !axis.gap(DUEL[a],DUEL[b])) && tries<400);
+  if(a===b || !axis.gap(DUEL[a],DUEL[b])) return;   // bank too thin for this axis
+  S.usedD.push(a,b);
+  S.duel={a, b, axis:axis.k, picked:null, right:null, streak:(S.duel&&S.duel.right)?S.duel.streak:0};
+  S.phase="d_play";
+}
+const duelAxis = () => DUEL_AXES.find(x=>x.k===S.duel.axis) || DUEL_AXES[0];
+function duelPick(which){
+  if(S.phase!=="d_play") return;
+  const d=S.duel, ax=duelAxis();
+  const A=DUEL[d.a], B=DUEL[d.b];
+  const correct = ax.better(A,B) ? "a" : "b";
+  d.picked=which; d.right=(which===correct);
+  if(d.right){
+    d.streak++;
+    let pts=1;
+    /* Five in a row pays ten on top, which is what makes it worth carrying on
+       rather than banking a point and passing the phone. */
+    if(d.streak%5===0) pts+=10;
+    S.players[S.turn].score+=pts; ching(); popfx();
+    if(d.streak%5===0){ confetti(40); toast(`🔥 ${d.streak} in a row · ${esc(S.players[S.turn].name)} +${pts}`); }
+  }else{ buzzer(); flashBad(); }
+  S.phase="d_show";
+  if(d.right && maybeFinish()) return;
+  render();
+}
+function duelOn(){                       // right: same player carries on
+  newDuel(); render();
+}
+function duelNextPlayer(){               // wrong: the run is over, pass it on
+  S.turn=(S.turn+1)%S.players.length;
+  if(S.turn===0) S.round++;
+  if(S.duel) S.duel.right=null;          // a fresh run starts the streak again
+  newDuel(); render();
+}
+
 /* ============================== NAME THE XI ==============================
    A famous final's formation appears as eleven shirts; the table fills them
    in together, a point per shirt. Communal — the reader taps a shirt when
@@ -2858,6 +2952,7 @@ function freshState(names, timed=true, mode="classic", target=100){
     career:null, usedC:[], // career mode: current round + careers already played
     usedM:[], // manager career path: dugout careers already played
     crev:null, usedR:[], // career reverse: current run + careers already recited
+    duel:null, usedD:[], // older or taller: current pair + faces already shown
     xi:null, usedX:[], // name the XI: current board + finals already played
     tl:null, usedT:[], // timeline: current question + ones already asked
     ref:null, // referee mode: the non-playing quizmaster's name
@@ -3238,7 +3333,7 @@ function joinFromSheet(){
    Every finished match gets filed here so there is a running table across
    nights. Local to this phone, like everything else in the app. */
 const HIST_KEY = "ball-quiz-history-v1";
-const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", mgr:"Manager Path", crev:"Career Reverse", xi:"Name the XI", tline:"Timeline"};
+const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", mgr:"Manager Path", crev:"Career Reverse", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller"};
 function history(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }catch(e){ return []; } }
 function putHistory(h){ try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }catch(e){} }
 function clearHistory(){ try{ localStorage.removeItem(HIST_KEY); }catch(e){} }
@@ -3719,6 +3814,37 @@ function render(){
     return;
   }
 
+  if(S.phase==="d_play" || S.phase==="d_show"){
+    const d=S.duel, ax=duelAxis(), A=DUEL[d.a], B=DUEL[d.b];
+    const shown = S.phase==="d_show";
+    const winner = ax.better(A,B) ? "a" : "b";
+    const card=(r,side)=>`
+      <button class="duelcard${shown?(side===winner?" win":" lose"):""}${shown&&d.picked===side?" chose":""}"
+              onclick="duelPick('${side}')" ${shown?"disabled":""}>
+        <img src="assets/faces/${r.f}" alt="" loading="lazy">
+        <div class="dn">${esc(r.n)}</div>
+        <div class="dv">${shown?esc(ax.val(r)):"&nbsp;"}</div>
+      </button>`;
+    st.innerHTML = `
+      <div class="kick">Older or Taller · ${esc(S.players[S.turn].name)}'s run · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <h1 class="title" style="font-size:clamp(1.5rem,7vw,2rem)">${ax.ask}</h1>
+      <div class="duelrow">${card(A,"a")}${card(B,"b")}</div>
+      ${d.streak && (!shown || d.right)
+        ? `<div class="potpill">${d.streak} in a row${d.streak%5?` · ${5-d.streak%5} more pays +10`:" · +10 banked"}</div>`
+        : ""}
+      ${shown?`
+      <div class="spacer"></div>
+      ${d.right
+        ? `<button class="bigbtn ok" onclick="duelOn()">Right, keep going<kbd>Space</kbd></button>`
+        : `<div class="hint" style="text-align:center">Run over. ${esc(S.players[S.turn].name)} kept ${d.streak} of them.</div>
+           <button class="bigbtn" onclick="duelNextPlayer()">Next player<kbd>Space</kbd></button>`}`
+      :`
+      <div class="hint" style="text-align:center">Tap the face. The app knows the answer, so there is nothing to argue about until afterwards.</div>
+      <div class="spacer"></div>
+      <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
+    return;
+  }
+
   if(S.phase==="r_play" || S.phase==="r_dead"){
     const C=CAREERS[S.crev.ci];
     const done = S.phase==="r_dead";
@@ -3842,7 +3968,7 @@ let setupCount = 3;
 let setupTimed = true;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
-const MODE_META = {career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], crev:["rewind","Career Reverse","#e8c47f"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"]};
+const MODE_META = {career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], crev:["rewind","Career Reverse","#e8c47f"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -3860,7 +3986,7 @@ function modeDrawerHTML(){
   const btn = m && !modesOpen
     ? `<button class="bigbtn ghost sel modestoggle" onclick="toggleModes()"><span class="mico" style="color:${m[2]}">${ico(m[0])}</span><span class="mlab">${m[1]}</span>${chev}</button>`
     : `<button class="bigbtn ghost modestoggle" onclick="toggleModes()"><span class="mico">${ico('grid')}</span><span class="mlab">More game modes</span>${chev}</button>`;
-  const off = {kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, mgr:!MGRS, xi:!XI, tline:!TLINE};
+  const off = {kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, mgr:!MGRS, xi:!XI, tline:!TLINE, duel:!DUEL};
   const grid = modesOpen?`<div class="modes">
       ${Object.entries(MODE_META).map(([k,[ic,label,ac]])=>
         `<button class="bigbtn ghost${setupMode===k?" sel":""}" onclick="setMode('${k}')" ${off[k]?"disabled style='opacity:.4'":""}><span class="mico" style="color:${ac}">${ico(ic)}</span><span class="mlab">${label}</span></button>`).join("")}
@@ -3969,7 +4095,7 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupCount===2?" sel":""}" onclick="setCount(2)">2 players</button>
       <button class="bigbtn ghost${setupCount===3?" sel":""}" onclick="setCount(3)">3 players</button>
     </div>`}
-    ${["career","mgr","crev","xi","tline"].includes(setupMode)?"":`<div class="row2">
+    ${["career","mgr","crev","xi","tline","duel"].includes(setupMode)?"":`<div class="row2">
       <button class="bigbtn ghost${setupTimed?" sel":""}" onclick="setTimed(true)">${ico('clock')}With timer</button>
       <button class="bigbtn ghost${!setupTimed?" sel":""}" onclick="setTimed(false)">${ico('inf')}No timer</button>
     </div>`}
@@ -3987,7 +4113,7 @@ function renderSetup(st){
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, type your answer, lock it in, and the real answer lands on every phone at once so you call it yourself. Miss it and the other phones race for a STEAL IT button. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, type your answer, lock it in, and the real answer lands on every phone at once so you call it yourself. Miss it and the other phones race for a STEAL IT button. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>
     <details class="rules credits" ontoggle="if(this.open) loadCredits()">
       <summary>${ico('book')}Credits and sources</summary>
@@ -4048,6 +4174,7 @@ function startGame(){
   if(setupMode==="mgr" && !MGRS){ toast("Manager deck still loading — one second!", true); return; }
   if(setupMode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
   if(setupMode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
+  if(setupMode==="duel" && !DUEL){ toast("The face-off deck is still loading — one second!", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
@@ -4056,7 +4183,8 @@ function startGame(){
   if(S.mode==="career" || S.mode==="mgr") newCareer();
   if(S.mode==="crev") newCrev();
   if(S.mode==="xi") newXI();
-  if(S.mode==="tline") newTL();
+  if(S.mode==="duel") newDuel();
+    if(S.mode==="tline") newTL();
   render();
 }
 function resumeGame(){
@@ -4077,10 +4205,12 @@ function resumeGame(){
   if(S.mode==="mgr" && !MGRS){ toast("Manager deck still loading — one second!", true); return; }
   if(S.mode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
   if(S.mode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
+  if(S.mode==="duel" && !DUEL){ toast("The face-off deck is still loading — one second!", true); return; }
   if(S.mode==="mgr" && !S.career) newCareer();
   if(S.mode==="crev" && !S.crev) newCrev();
   if(S.mode==="xi" && !S.xi) newXI();
   if(S.mode==="tline" && !S.tl) newTL();
+  if(S.mode==="duel" && !S.duel) newDuel();
   if(S.phase==="tl_reveal" && S.tl && !S.tl.right) S.phase="tl_play"; // saves from before drag scoring
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
@@ -4362,7 +4492,8 @@ function rematch(){
   if(S.mode==="career" || S.mode==="mgr") newCareer();
   if(S.mode==="crev") newCrev();
   if(S.mode==="xi") newXI();
-  if(S.mode==="tline") newTL();
+  if(S.mode==="duel") newDuel();
+    if(S.mode==="tline") newTL();
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
@@ -4423,6 +4554,11 @@ document.addEventListener("keydown", e=>{
   }else if(S.phase==="c_judge"){
     if(k==="c") cJudge(true);
     if(k==="w"||k==="x") cJudge(false);
+  }else if(S.phase==="d_play"){
+    if(k==="1") duelPick("a");
+    if(k==="2") duelPick("b");
+  }else if(S.phase==="d_show"){
+    if(k===" "||k==="enter"){ e.preventDefault(); S.duel.right ? duelOn() : duelNextPlayer(); }
   }else if(S.phase==="r_play"){
     if(k==="c") crevOk();
     if(k==="w"||k==="x") crevEnd();

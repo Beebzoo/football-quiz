@@ -333,6 +333,37 @@
     .modeintro{animation:introfade 1.2s linear both}
   }
 
+  /* the BALL-tier celebration: the ball itself, thrown up and blown out */
+  .ballgoal{
+    position:fixed;inset:0;z-index:44;pointer-events:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ballgoal img{
+    width:min(46vw,240px);height:min(46vw,240px);border-radius:50%;
+    filter:drop-shadow(0 0 34px rgba(233,184,76,.75)) drop-shadow(0 10px 22px rgba(0,0,0,.5));
+    /* the pop is eased, the fade is not: with both on one eased timeline the
+       ball was already half gone a third of the way in */
+    animation:ballgoalpop 1.4s cubic-bezier(.16,.85,.3,1) both, ballgoalhold 1.4s linear both;
+  }
+  .ballgoal .bgflare{
+    position:absolute;width:120vmin;height:120vmin;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,238,180,.5),rgba(233,184,76,.16) 34%,transparent 62%);
+    animation:ballgoalflare 1.1s ease-out both;
+  }
+  @keyframes ballgoalpop{
+    0%{transform:scale(.25) rotate(-140deg)}
+    22%{transform:scale(1.12) rotate(-8deg)}
+    38%{transform:scale(.96) rotate(4deg)}
+    62%{transform:scale(1.02) rotate(0deg)}
+    100%{transform:scale(1.45) rotate(14deg)}
+  }
+  @keyframes ballgoalhold{0%{opacity:0}12%,74%{opacity:1}100%{opacity:0}}
+  @keyframes ballgoalflare{
+    0%{opacity:0;transform:scale(.4)}
+    30%{opacity:1}
+    100%{opacity:0;transform:scale(1.3)}
+  }
+
   .bigreveal{
     position:fixed;inset:0;z-index:40;pointer-events:none;
     display:flex;align-items:center;justify-content:center;
@@ -2891,7 +2922,7 @@ function rushTimeUp(){
   let pts=got;
   /* Naming a whole league inside thirty seconds deserves more than the last
      club being worth the same as the first. */
-  if(got>=L.clubs.length){ pts+=10; confetti(60); }
+  if(got>=L.clubs.length){ pts+=10; ballGoal(); }
   if(pts>0){ S.players[S.turn].score+=pts; ching(); toast(`${esc(S.players[S.turn].name)} +${pts}`); }
   else buzzer();
   S.phase="g_done";
@@ -2960,7 +2991,7 @@ function duelPick(which){
        rather than banking a point and passing the phone. */
     if(d.streak%5===0) pts+=10;
     S.players[S.turn].score+=pts; ching(); popfx();
-    if(d.streak%5===0){ confetti(40); toast(`🔥 ${d.streak} in a row · ${esc(S.players[S.turn].name)} +${pts}`); }
+    if(d.streak%5===0){ confetti(64); toast(`🔥 ${d.streak} in a row · ${esc(S.players[S.turn].name)} +${pts}`); }
   }else{ buzzer(); flashBad(); }
   S.phase="d_show";
   if(d.right && maybeFinish()) return;
@@ -3010,7 +3041,7 @@ function xiAward(p){
   const i=S.xi.pick; if(i==null) return;
   S.xi.got[i]=p; S.xi.pick=null;
   if(p>=0){ S.players[p].score+=1; ching(); }
-  if(S.xi.got.every(g=>g!==null)){ S.phase="x_done"; confetti(40); }
+  if(S.xi.got.every(g=>g!==null)){ S.phase="x_done"; confetti(64); }
   render();
 }
 function xiRest(){ // give up on the stragglers: flip them, no points
@@ -3075,7 +3106,7 @@ function tlReveal(){
   const who=S.players[S.turn];
   if(pts>0){
     who.score+=pts;
-    if(pts>=5){ ching(); confetti(40); toast(`⚽ ${who.name} runs the timeline! +5`); }
+    if(pts>=5){ ching(); confetti(64); toast(`⚽ ${who.name} runs the timeline! +5`); }
     else { popfx(); toast(`${who.name} +${pts}`); }
   } else { buzzer(); flashBad(); toast(`${who.name}: nothing in place`, true); }
   if(maybeFinish()) return;
@@ -3625,6 +3656,29 @@ function confetti(n){
   document.body.appendChild(c);
   setTimeout(()=>c.remove(),1700);
 }
+/* A BALL question is worth twenty and comes round rarely, so getting one
+   should not look like getting a one-pointer with more paper. The ball itself
+   comes up over the pitch, spins once and blows out, with the confetti thrown
+   underneath it.
+
+   It sits on the same timing as the goal toast rather than holding the game
+   up: nothing waits for it, it removes itself, and it never takes a tap. */
+function ballGoal(){
+  confetti(120);
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  /* Written mode awards each player with their own tap, so three right
+     answers on a BALL question would stack three balls on top of each other.
+     The newest one wins. */
+  document.querySelectorAll(".ballgoal").forEach(el=>el.remove());
+  const o=document.createElement("div");
+  o.className="ballgoal";
+  o.innerHTML=`<div class="bgflare"></div><img src="assets/ball.png" alt="">`;
+  document.body.appendChild(o);
+  setTimeout(()=>o.remove(), 1400);
+}
+/* every other right answer: the same burst it always had, with more in it */
+const goalFx = (big) => big ? ballGoal() : confetti(52);
+
 function flashBad(){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const f=document.createElement("div"); f.className="redflash";
@@ -4438,7 +4492,7 @@ function wTimeUp(){ if(isGuest()){ flashBad(); return; } if(S.phase==="w_answer"
 function wToggle(i){
   const pts=TIERS[S.tier].pts;
   S.wgot[i]=!S.wgot[i];
-  if(S.wgot[i]){ S.players[i].score+=pts; ching(); confetti(S.tier==="ball"?48:18); }
+  if(S.wgot[i]){ S.players[i].score+=pts; ching(); goalFx(S.tier==="ball"); }
   else{ S.players[i].score-=pts; }
   render();
 }
@@ -4474,7 +4528,10 @@ function judge(correct, level){
   const who = stealing ? S.players[S.stealer] : S.players[S.turn];
   if(correct){
     who.score+=pts; ching();
-    confetti(S.tier==="ball" && rung!=="country" ? (isBadgeBall()&&bzStep()===2 ? 26 : 64) : 26);
+    /* a BALL question pays twenty, so it gets the ball. Not when the answer
+       was only the country, and not when Badge Zoom had already pulled the
+       camera all the way back: both of those pay single figures. */
+    goalFx(S.tier==="ball" && rung!=="country" && !(isBadgeBall()&&bzStep()===2));
     const how = rung==="city" ? " (city)" : rung==="country" ? " (country only)"
               : isBadgeBall() && bzStep() ? ` (pulled back ${bzStep()===1?"once":"twice"})` : "";
     toast(`⚽ GOAL! ${who.name} +${pts}${how}${stealing?" (stolen!)":""}`);
@@ -4593,7 +4650,7 @@ function cJudge(correct){
   if(correct){
     const pts=cpot();
     who.score+=pts; ching();
-    confetti(cdeck()[S.career.ci].c.length>=8 ? 64 : 30);
+    confetti(cdeck()[S.career.ci].c.length>=8 ? 80 : 52);
     toast(`⚽ ${who.name} nails it! +${pts}`);
     if(maybeFinish()) return;
     S.round++;

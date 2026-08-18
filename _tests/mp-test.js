@@ -78,6 +78,10 @@ function makeInstance(label) {
     documentElement: makeEl("html"),
     activeElement: null,
     querySelector(sel) { return el(sel.replace(/^[#.]/, "")); },
+    /* nothing in the stub keeps a live element list, so a sweep for
+       leftovers finds none. Enough for code that clears its own overlays
+       before adding another. */
+    querySelectorAll() { return []; },
     // only ids the test explicitly registers exist, like a real page
     getElementById(id) { return els["__live_" + id] || null; },
     __live(id, value) { const e = makeEl(id); e.value = value; els["__live_" + id] = e; return e; },

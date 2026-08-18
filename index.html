@@ -3032,7 +3032,7 @@ function rushTimeUp(){
   render();
 }
 function rushNextPlayer(){
-  if(S.lb) return lbNext();
+  if(S.rr) return rrNext();
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
   newRush(); render();
@@ -3104,7 +3104,7 @@ function duelOn(){                       // right: same player carries on
   newDuel(); render();
 }
 function duelNextPlayer(){               // wrong: the run is over, pass it on
-  if(S.lb) return lbNext();
+  if(S.rr) return rrNext();
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
   if(S.duel) S.duel.right=null;          // a fresh run starts the streak again
@@ -3152,7 +3152,7 @@ function xiRest(){ // give up on the stragglers: flip them, no points
   S.xi.got=S.xi.got.map(g=>g===null?-1:g); S.xi.pick=null;
   S.phase="x_done"; render();
 }
-function xiAfter(){ if(maybeFinish()) return; if(S.lb) return lbNext(); S.round++; newXI(); render(); }
+function xiAfter(){ if(maybeFinish()) return; if(S.rr) return rrNext(); S.round++; newXI(); render(); }
 
 /* ============================== TIMELINE ==============================
    Five moments, put them in chronological order out loud; the reveal shows
@@ -3217,7 +3217,7 @@ function tlReveal(){
   render();
 }
 function tlNext(){
-  if(S.lb) return lbNext();
+  if(S.rr) return rrNext();
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
   newTL(); render();
@@ -3235,13 +3235,13 @@ function tlNext(){
    goes. The alternative, a thirteenth mode that every screen has to know about,
    would have meant touching every screen.
 
-   S.lbTurn exists because S.turn cannot be trusted across the roll: Name the XI
+   S.rrTurn exists because S.turn cannot be trusted across the roll: Name the XI
    parks it at -1 for a communal board, and Career Path never rotates it at all.
    The pointer that survives the mode change is the one that passes the phone. */
-const LB_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush"];
+const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush"];
 /* Same readiness the setup screen enforces, per mode: a bank that has not
    landed yet must not be rolled, or the deal comes up empty. */
-const LB_READY = {
+const RR_READY = {
   classic:()=>true,
   written:()=>true,
   career:()=>CAREERS.length > (S.usedC||[]).length,
@@ -3257,23 +3257,23 @@ const LB_READY = {
 };
 /* Where each mode expects to start. The tier modes all open on the difficulty
    picker; the run-based ones each have their own first phase. */
-const LB_START = {career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick"};
-function lbPool(){
-  return LB_POOL.filter(m => { try{ return !!LB_READY[m](); }catch(e){ return false; } });
+const RR_START = {career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick"};
+function rrPool(){
+  return RR_POOL.filter(m => { try{ return !!RR_READY[m](); }catch(e){ return false; } });
 }
 /* Deal a fresh go: roll a mode, wipe the per-question state the last mode left
    behind, and hand over to that mode's own dealer. */
-function lbDeal(announce=true){
-  const pool = lbPool().filter(m => m !== S.lbLast);
-  const from = pool.length ? pool : lbPool();          // one mode left: play it again
+function rrDeal(announce=true){
+  const pool = rrPool().filter(m => m !== S.rrLast);
+  const from = pool.length ? pool : rrPool();          // one mode left: play it again
   if(!from.length){ toast("Nothing is loaded yet, give it a second", true); return; }
   const m = from[Math.floor(Math.random()*from.length)];
-  S.lbLast = m;
+  S.rrLast = m;
   S.mode = m;
-  S.turn = S.lbTurn;
+  S.turn = S.rrTurn;
   S.tier=null; S.qi=null; S.stealer=null; S.timeUp=false; S.ans=""; S.asub=false;
   S.wans=[]; S.wgot=[]; S.wsub=[];
-  S.phase = LB_START[m] || "pick";
+  S.phase = RR_START[m] || "pick";
   if(announce) modeIntro(MODE_LABEL[m]);   // first, so anything that deals waits for it
   if(m==="career" || m==="mgr") newCareer();
   else if(m==="xi") newXI();
@@ -3282,11 +3282,11 @@ function lbDeal(announce=true){
   else if(m==="rush") S.rush=null;         // the league is picked on the g_pick screen
 }
 /* Every mode's end-of-go funnels through here instead of its own handover. */
-function lbNext(){
+function rrNext(){
   stopTimer();
-  S.lbTurn=(S.lbTurn+1)%S.players.length;
-  if(S.lbTurn===0) S.round++;
-  lbDeal();
+  S.rrTurn=(S.rrTurn+1)%S.players.length;
+  if(S.rrTurn===0) S.round++;
+  rrDeal();
   render();
 }
 
@@ -3307,10 +3307,10 @@ function freshState(names, timed=true, mode="classic", target=100){
     tl:null, usedT:[], // timeline: current question + ones already asked
     ref:null, // referee mode: the non-playing quizmaster's name
     bz:0, // badge zoom BALL: how far the camera has been pulled back this question
-    /* Let's Ball: lb says the mode is being rolled every go, lbTurn is the
-       pointer that survives modes which park or ignore S.turn, lbLast stops the
+    /* Rainbow Road: rr says the mode is being rolled every go, rrTurn is the
+       pointer that survives modes which park or ignore S.turn, rrLast stops the
        same mode landing twice running. */
-    lb:false, lbTurn:0, lbLast:null,
+    rr:false, rrTurn:0, rrLast:null,
     used:{easy:[],normal:[],hard:[],extreme:[],ball:[]},
   };
 }
@@ -3721,7 +3721,10 @@ function joinFromSheet(){
    Every finished match gets filed here so there is a running table across
    nights. Local to this phone, like everything else in the app. */
 const HIST_KEY = "ball-quiz-history-v1";
-const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", lb:"Let's Ball"};
+/* classic is called Let's Ball on the outside: it is the flagship quiz and the
+   thing the app is for, so it gets the name and the gold button. The mode that
+   deals one of everything is Rainbow Road, which is where the idea came from. */
+const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", rr:"Rainbow Road"};
 /* THE RECORD BOOK HAS TO SURVIVE THE APP BEING SHUT.
 
    It lives in localStorage, which already survives a close, but three things
@@ -3742,10 +3745,18 @@ function readHist(key){
     return Array.isArray(h) ? h : null;
   }catch(e){ return null; }
 }
+/* The everything-mode filed matches under "lb" for the hour it was called
+   Let's Ball, and that name now belongs to the classic quiz. Renaming on the
+   way out means an old night keeps its right name in The Table instead of
+   showing a bare "lb", without rewriting what is already on the phone. */
+function fixModes(h){
+  if(Array.isArray(h)) h.forEach(r=>{ if(r && r.mode==="lb") r.mode="rr"; });
+  return h;
+}
 function history(){
-  const main = readHist(HIST_KEY);
+  const main = fixModes(readHist(HIST_KEY));
   if(main && main.length) return main;
-  const bak = readHist(HIST_BAK);
+  const bak = fixModes(readHist(HIST_BAK));
   if(bak && bak.length){                       // main is gone or corrupt: put it back
     try{ localStorage.setItem(HIST_KEY, JSON.stringify(bak)); }catch(e){}
     return bak;
@@ -3873,7 +3884,7 @@ function recordMatch(){
     ts: Date.now(),
     /* A Let's Ball night files as Let's Ball, not as whichever mode happened
        to be on the board when it finished. */
-    mode: S.lb ? "lb" : S.mode, ref: S.ref||null, target: S.target||0, rounds: S.round,
+    mode: S.rr ? "rr" : S.mode, ref: S.ref||null, target: S.target||0, rounds: S.round,
     players: S.players.map(p=>({name:String(p.name||"").trim(), score:p.score, off:p.off||0})),
     winner: outright ? String(top.name||"").trim() : null,
     losers: S.players.filter(p=>p.score<0).map(p=>String(p.name||"").trim()),
@@ -3960,6 +3971,9 @@ const $ = sel => document.querySelector(sel);
 const esc = s => s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 /* flat inline icons (Feather-style, stroke = button text colour) */
 const IPATHS = {
+  /* three arcs, drawn in the same stroke weight as the rest so it reads as one
+     of the set rather than as a picture of a rainbow */
+  rainbow:'<path d="M3 19a9 9 0 0 1 18 0"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><path d="M10 19a2 2 0 0 1 4 0"/>',
   users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
   shirt:'<path d="M15.5 3a3.5 3.5 0 0 1-7 0L3 6.5l2.5 4 2-1.2V21h9V9.3l2 1.2 2.5-4z"/>',
@@ -4581,11 +4595,11 @@ let setupCount = 3;
 let setupTimed = false;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
-/* Every mode lives in the drawer now, Classic and Written included, because
-   the front of the menu belongs to Let's Ball. They lead the list: they are
-   still the two you reach for most, they are just no longer a permanent pair
-   of buttons above everything else. */
-const MODE_META = {classic:["mic","Classic","#dfeee5"], written:["pencil","Written","#f0c98a"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"]};
+/* Everything except the flagship lives in the drawer. Written leads it because
+   it is the one people reach for next, and Rainbow Road sits second: it is the
+   showpiece, but it is still a mode you go looking for rather than the one the
+   app opens on. */
+const MODE_META = {written:["pencil","Written","#f0c98a"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
@@ -4710,11 +4724,11 @@ function renderSetup(st){
     ${logoTicker()}
     ${saved?`<button class="bigbtn gold" onclick="resumeGame()">Resume match in progress</button>
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="askCancelMatch()">Cancel match in progress</button>`:""}
-    <button class="bigbtn ghost lbbtn${setupMode==="lb"?" sel":""}" onclick="setMode('lb')"><img class="ballic" src="assets/ball.png" alt="">Let's Ball</button>
+    <button class="bigbtn ghost lbbtn${setupMode==="classic"?" sel":""}" onclick="setMode('classic')"><img class="ballic" src="assets/ball.png" alt="">Let's Ball</button>
     ${modeDrawerHTML()}
     ${MP?"":`<button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="askPlayTogether()">📡 Play together</button>`}
     ${setupMode==="stadium"?`<div class="hint" style="text-align:center">Name the ground for the full points, or take fewer for the city, fewer still for the country.</div>`:""}
-    ${setupMode==="lb"?`<div class="hint" style="text-align:center">Every mode in one match. Nobody picks: each go the app rolls one and tells you what you are playing.</div>`:""}
+    ${setupMode==="rr"?`<div class="hint" style="text-align:center">Every mode in one match. Nobody picks: each go the app rolls one and tells you what you are playing.</div>`:""}
     ${!setupMode?`<div class="hint" style="text-align:center">Pick a game mode to set up the match</div>`:`
     <div class="kick" style="margin-top:2px">${ico('users')}Who's playing</div>
     <div class="row2">
@@ -4743,7 +4757,7 @@ function renderSetup(st){
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${books().length} match${books().length===1?"":"es"}${crewName()?" · "+esc(crewName()):""}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points, and the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order, and you shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear, and you name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in, and you name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart, though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts, and the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history. Drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins, or pick "No limit" and end with the full-time whistle. <b>Let's Ball:</b> all twelve modes in one match, and you do not get to choose. Each go the app rolls a mode, throws its name up on the screen and deals it, so a career of crests can be followed by a shirt, a crest cropped to bits, five events to drag into order or thirty seconds of typing out a league. Every mode keeps its own scoring, so the same go can be worth one point or twenty, and the same mode never lands twice in a row. Play it to the target and the night decides itself. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone: pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. <b>The Table:</b> every finished match is filed on the phone that played it and survives the app being closed. Type the same shared table name on all three phones and you keep one table between you, with everybody's matches in it. Leave it empty and the phone keeps its own. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points, and the ref's word is final. <b>Let's Ball:</b> the quiz itself, and the one the app opens on. One player picks a difficulty and answers out loud, the rest can steal. 3,800 questions across five levels, from one pointers to the BALL tier nobody sensible gets. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order, and you shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Let's Ball. <b>One &amp; Only:</b> a club crest and a country flag appear, and you name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in, and you name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Let's Ball. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart, though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts, and the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history. Drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins, or pick "No limit" and end with the full-time whistle. <b>Rainbow Road:</b> all twelve modes in one match, and you do not get to choose. Each go the app rolls a mode, throws its name up on the screen and deals it, so a career of crests can be followed by a shirt, a crest cropped to bits, five events to drag into order or thirty seconds of typing out a league. Every mode keeps its own scoring, so the same go can be worth one point or twenty, and the same mode never lands twice in a row. Play it to the target and the night decides itself. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone: pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. <b>The Table:</b> every finished match is filed on the phone that played it and survives the app being closed. Type the same shared table name on all three phones and you keep one table between you, with everybody's matches in it. Leave it empty and the phone keeps its own. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>
     ${/* Bottom of the page on purpose: you install an app you have already
          decided you like, so it belongs after the rules rather than above the
@@ -4774,13 +4788,13 @@ function startGame(){
     const el=document.getElementById("n2");
     S.ref=(el && el.value.trim()) || "The ref";
   }
-  if(setupMode==="lb"){
+  if(setupMode==="rr"){
     /* The kickoff splash says Let's Ball, so the first go does not announce
        itself on top of it. Every go after that gets its own name thrown up,
        which is the whole point of the mode. */
-    S.lb=true; S.lbTurn=0;
-    modeIntro(MODE_LABEL.lb);
-    lbDeal(false);
+    S.rr=true; S.rrTurn=0;
+    modeIntro(MODE_LABEL.rr);
+    rrDeal(false);
     render();
     return;
   }
@@ -4804,7 +4818,7 @@ function resumeGame(){
   if(!S.usedM) S.usedM=[]; // saves from before manager path existed
   if(S.mode==="hilo" || S.mode==="crev"){ toast(`${S.mode==="crev"?"Career Reverse":"Higher or Lower"} has been retired. Pick a mode.`); S=null; render(); return; } // that match can't be resumed
   if(!S.usedX) S.usedX=[]; if(!S.usedT) S.usedT=[]; // saves from before xi/timeline existed
-  if(S.lb===undefined){ S.lb=false; S.lbTurn=0; S.lbLast=null; } // saves from before Let's Ball
+  if(S.rr===undefined){ S.rr=false; S.rrTurn=0; S.rrLast=null; } // saves from before Let's Ball
   if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading, give it a second", true); return; }
   if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading, give it a second", true); return; }
   if(S.mode==="badge" && !BADGE){ toast("Badge bank still loading, give it a second", true); return; }
@@ -4885,7 +4899,7 @@ function wToggle(i){
 }
 function wNext(){
   if(maybeFinish()) return; // someone hit the win target this round
-  if(S.lb) return lbNext();
+  if(S.rr) return rrNext();
   stopTimer();
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
@@ -4944,7 +4958,7 @@ function noSteal(){
 }
 function nextTurn(){
   if(isGuest()) return mpAct("nextTurn",[]);
-  if(S.lb) return lbNext();
+  if(S.rr) return rrNext();
   stopTimer();
   S.turn=(S.turn+1)%S.players.length;
   if(S.turn===0) S.round++;
@@ -5042,7 +5056,7 @@ function cJudge(correct){
     confetti(cdeck()[S.career.ci].c.length>=8 ? 80 : 52);
     toast(`⚽ ${who.name} nails it! +${pts}`);
     if(maybeFinish()) return;
-    if(S.lb) return lbNext();
+    if(S.rr) return rrNext();
     S.round++;
     newCareer(); render();
   }else{
@@ -5056,7 +5070,7 @@ function cJudge(correct){
   }
 }
 function cGiveUp(){ S.phase="c_dead"; revealAnim=true; render(); }
-function cAfter(){ if(S.lb) return lbNext(); S.round++; newCareer(); render(); }
+function cAfter(){ if(S.rr) return rrNext(); S.round++; newCareer(); render(); }
 
 /* ============================== BOOKINGS ============================== */
 function askBook(i){
@@ -5130,13 +5144,13 @@ function rematch(){
   const names=S.players.map(p=>p.name);
   const used=S.used; // keep used questions so a rematch gets fresh ones
   const usedC=S.usedC, ref=S.ref, usedM=S.usedM, usedX=S.usedX, usedT=S.usedT;
-  const lb=S.lb;
+  const rr=S.rr;
   S=freshState(names, S.timed, S.mode, S.target); S.used=used; S.usedC=usedC; S.ref=ref;
   S.usedM=usedM||[]; S.usedX=usedX||[]; S.usedT=usedT||[];
-  if(lb){                              // a Let's Ball rematch is another Let's Ball
-    S.lb=true; S.lbTurn=0;
-    modeIntro(MODE_LABEL.lb);
-    lbDeal(false);
+  if(rr){                              // a Rainbow Road rematch is another Rainbow Road
+    S.rr=true; S.rrTurn=0;
+    modeIntro(MODE_LABEL.rr);
+    rrDeal(false);
     render();
     return;
   }

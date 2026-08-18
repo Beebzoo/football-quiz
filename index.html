@@ -664,6 +664,9 @@
     border:1px solid rgba(255,255,255,.16);
   }
   .qcard.natq .atext .lbl{color:#9fb8a6}
+  /* an answer that is being withheld on purpose, not one still loading */
+  .atext.hidden-ans{color:#9fb8a6;font-style:italic;font-weight:600;letter-spacing:.01em}
+  .qcard.natq .atext.hidden-ans{color:#9fb8a6}
   .natstage{position:relative;margin:10px 0 14px;overflow:visible}
   .natrow{display:flex;gap:min(22px,5vw);justify-content:center}
   .natcard{
@@ -3196,6 +3199,34 @@ const mpName  = () => (localStorage.getItem("ball-mp-name")||"").trim();
 const myIdx   = () => (S && S.players) ? S.players.findIndex(p=>nameKey(p.name)===nameKey(mpName())) : -1;
 // the player on the hook right now: the stealer during a steal, otherwise whoever's turn it is
 const answerIdx = () => (S.phase==="steal_q"||S.phase==="steal_judge") ? S.stealer : S.turn;
+/* WHO IS ALLOWED TO SEE THE ANSWER.
+
+   On one phone the reader reads it out and that is the whole ritual. On three
+   phones it was being painted on all of them at once, which quietly ruined
+   the steal: everyone else had already read the answer off their own screen
+   before they were asked whether they wanted it.
+
+   So while a question is being called, the answer belongs to the player on
+   the hook and nobody else. It opens up again the moment the question is
+   dead, because then it is just something the table wants to know.
+
+   A phone with no player on it is the reader or the ref, and they see
+   everything: judging is their job. */
+function answerHidden(){
+  if(!MP || !MP.ch || !S) return false;             // single phone, nothing to hide
+  if(S.phase!=="judge" && S.phase!=="steal_judge") return false;
+  if(isGuest()){
+    const me = myIdx();
+    return me < 0 || me !== answerIdx();            // a guest who matches nobody is a spectator
+  }
+  /* The host phone never stored a name for itself, so it cannot ask "which
+     player am I". It does not need to: it holds whoever is NOT on a phone of
+     their own, which is exactly what presence already tells us. */
+  if(S.ref) return false;                           // referee mode: judging IS the ref's job
+  const mine = S.players.map((_,i)=>i).filter(i=>!remotePlayer(i));
+  if(!mine.length) return false;                    // everyone has a phone, so this one is the reader
+  return !mine.includes(answerIdx());
+}
 // is this player sitting on their own phone? (host-side, from presence)
 function remotePlayer(i){
   return !!(isHost() && MP.claimed && S && S.players[i] && MP.claimed.has(nameKey(S.players[i].name)));
@@ -3409,8 +3440,9 @@ function mpAnswerHTML(){
       <div class="digits">${stealing?"5.0":"15.0"}</div>
       <div class="bar"><i style="width:100%"></i></div>
     </div>`:``}
-    <input class="nm-in" id="mpans" placeholder="Your answer" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
-    <button class="bigbtn" onclick="mpLockAnswer()">Lock it in — reveal</button>
+    <input class="nm-in" id="mpans" placeholder="Type it if you like — optional" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
+    <button class="bigbtn" onclick="mpLockAnswer()">Say it out loud, then reveal</button>
+    <div class="hint" style="text-align:center">Nobody else's phone shows the answer until you have called it right or wrong.</div>
     ${isBadgeBall() && bzStep()<BADGE_BALL.length-1
       ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back — drops to +${BADGE_BALL[bzStep()+1].pts}</button>`:""}
     ${stealing?"":`<button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question</button>`}
@@ -3879,6 +3911,35 @@ function render(){
     const t=TIERS[S.tier];
     const sp = S.mode==="stadium" ? stadPts() : null;
     const s  = sp ? q().stad : null;
+
+    /* Everyone else's phone: the question stays up, the answer does not, and
+       there is nothing to tap. They are about to be offered the steal. */
+    if(answerHidden()){
+      st.innerHTML = `
+        <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} is calling it</div>
+        <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
+          <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${ptsLabel()}</span></div>
+          ${q().img?`<img class="stadimg" src="${q().img}" alt="">`:""}
+          ${q().duo?`<div class="natstage"><div class="natrow">
+            <div class="natcard"><span class="halo"></span><img src="${q().duo.crest}" alt=""></div>
+            <div class="natcard flagcard"><span class="halo"></span><img src="${q().duo.flag}" alt=""></div>
+          </div></div>`:""}
+          ${q().badge?badgeHTML(q().badge,true):""}${q().kit?kitHTML(q().kit):""}
+          <div class="qtext">${esc(q().q)}</div>
+          <div class="atext hidden-ans"><span class="lbl">Answer</span>Hidden until ${esc(who.name)} has called it</div>
+          ${S.ans?`<div class="atext said"><span class="lbl">${esc(who.name)} locked in</span>${esc(S.ans)}</div>`:""}
+        </div>
+        <div class="hint waitline" style="text-align:center">⌛ Say nothing yet. If ${esc(who.name)} missed it, this is yours to steal.</div>
+        <div class="spacer"></div>
+        ${isHost()?`
+        <div class="hint" style="text-align:center">If their phone has frozen, you can still call it. You cannot see the answer either, so ask them what they said.</div>
+        <div class="row2">
+          <button class="bigbtn ok" onclick="judge(true)">They got it ${ptsLabel()}</button>
+          <button class="bigbtn bad" onclick="judge(false)">They missed</button>
+        </div>`:""}`;
+      return;
+    }
+
     st.innerHTML = `
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
@@ -4337,7 +4398,7 @@ function renderSetup(st){
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, type your answer, lock it in, and the real answer lands on every phone at once so you call it yourself. Miss it and the other phones race for a STEAL IT button. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>
     <details class="rules credits" ontoggle="if(this.open) loadCredits()">
       <summary>${ico('book')}Credits and sources</summary>

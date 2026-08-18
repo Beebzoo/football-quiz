@@ -456,6 +456,13 @@
   /* stadium mode */
   .stadimg{display:block;width:100%;max-height:40vh;object-fit:cover;border-radius:12px;margin:0 0 10px;background:#0b1c12}
   .pcredit{margin-top:8px;font-size:.62rem;opacity:.55;text-align:right}
+  /* the small print under a One & Only answer: what he played, when he was
+     there, how many games. Reveal screens only, never the question. */
+  .pfact{
+    margin-top:7px;text-align:center;font:600 .8rem/1.35 system-ui,sans-serif;
+    color:#4c6455;letter-spacing:.2px;
+  }
+  .qcard.natq .pfact{color:#bcd6c5;text-shadow:0 1px 8px rgba(0,0,0,.5)}
   /* one & only mode: no card, no props — the night pitch IS the stage */
   .qcard.natq{
     background:transparent;border:none;box-shadow:none;border-top:none;
@@ -2530,7 +2537,17 @@ function natQ(){
   const r=NAT[S.tier][S.qi];
   return {q:`Name the only player from ${r.country} ever at ${r.club}`,
           a:`${r.player} — the only player from ${r.country} in ${r.club}'s recorded history`,
+          sub:natFact(r),
           duo:{crest:"assets/logos/"+r.slug+".png", flag:"assets/natflags/"+r.flag+".png"}};
+}
+/* A name on its own settles the point and tells you nothing about the man, so
+   the reveal also says what he played and when he was there (_tools/
+   build-natinfo.js). Every part is optional: 98% of the bank has a position,
+   87% the years, 62% a game count, and the line just gets shorter without
+   them. It is deliberately NOT on the question card, where "1998 to 2003"
+   would hand over half the answer. */
+function natFact(r){
+  return [r.pos, r.yr, r.app ? r.app+" games" : null].filter(Boolean).join(" · ") || null;
 }
 const tlabel = k => (S && S.mode==="nations" && k==="normal") ? "Medium" : TIERS[k].label;
 let natAnim = false; // entrance animation plays once per fresh One & Only question
@@ -3437,6 +3454,7 @@ function render(){
         <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · +${t.pts}</span></div>
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+        ${q().sub?`<div class="pfact">${esc(q().sub)}</div>`:""}
       </div>
       <div class="whobar">
         ${S.players.map((p,i)=>`
@@ -3517,6 +3535,7 @@ function render(){
         ${q().badge?badgeHTML(q().badge,true):""}${q().kit?kitHTML(q().kit):""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+        ${q().sub?`<div class="pfact">${esc(q().sub)}</div>`:""}
         ${S.ans?`<div class="atext said"><span class="lbl">${esc(who.name)} locked in</span>${esc(S.ans)}</div>`:""}
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
       </div>
@@ -3569,6 +3588,7 @@ function render(){
         ${q().badge?badgeHTML(q().badge,true):""}${q().kit?kitHTML(q().kit):""}
         <div class="qtext">${esc(q().q)}</div>
         <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
+        ${q().sub?`<div class="pfact">${esc(q().sub)}</div>`:""}
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
       </div>
       <div class="spacer"></div>
@@ -3910,7 +3930,7 @@ function renderSetup(st){
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, type your answer, lock it in, and the real answer lands on every phone at once so you call it yourself. Miss it and the other phones race for a STEAL IT button. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>Career Reverse:</b> the player's name appears and you recite their clubs in career order, +1 per club and +3 on top for running the whole board; first slip ends the run. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, type your answer, lock it in, and the real answer lands on every phone at once so you call it yourself. Miss it and the other phones race for a STEAL IT button. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>`;
 }
 

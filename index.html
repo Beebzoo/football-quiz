@@ -902,13 +902,31 @@
   /* goal celebration + red-card flash */
   .confetti{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
   .confetti i{
-    position:absolute;left:50%;top:42%;width:9px;height:13px;border-radius:2px;
-    background:var(--c);font-style:normal;font-size:15px;line-height:1;
-    animation:fly 1.25s cubic-bezier(.2,.6,.4,1) forwards;
+    position:absolute;left:50%;top:42%;border-radius:2px;
+    background:var(--c);font-style:normal;line-height:1;
+    box-shadow:0 2px 6px rgba(0,0,0,.35);
+    animation:fly 1.5s cubic-bezier(.16,.7,.35,1) forwards;
   }
+  /* the pop of light it all comes out of */
+  .confetti .cflash{
+    position:absolute;left:50%;top:42%;width:64vmin;height:64vmin;margin:-32vmin 0 0 -32vmin;
+    border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,246,207,.5),rgba(233,184,76,.16) 38%,transparent 68%);
+    animation:cflash .7s ease-out forwards;
+  }
+  @keyframes cflash{
+    0%{opacity:0;transform:scale(.3)}
+    22%{opacity:1}
+    100%{opacity:0;transform:scale(1.15)}
+  }
+  /* The centring and the travel are two separate translates on purpose. With
+     one, the distances are percentages of the PIECE, so a 12px square with
+     --dx:300% moved 36px and the whole burst came out the size of a stamp. In
+     vmin they are a share of the screen, which is what was meant all along. */
   @keyframes fly{
-    from{transform:translate(-50%,-50%) rotate(0);opacity:1}
-    to{transform:translate(var(--dx),var(--dy)) rotate(var(--rr));opacity:0}
+    from{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(.5);opacity:1}
+    16%{opacity:1}
+    to{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) rotate(var(--rr)) scale(1);opacity:0}
   }
   .redflash{
     position:fixed;inset:0;pointer-events:none;z-index:29;
@@ -3825,20 +3843,31 @@ const COLS=["#0a9e5c","#e9b84c","#2563eb","#dc2626","#ffffff"];
 function confetti(n){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const c=document.createElement("div"); c.className="confetti";
+  /* A flash under the paper. Fifty small squares crossing a dark pitch read
+     as a fizzle; the same fifty over a bloom of light read as something
+     happening. */
+  const flash=document.createElement("b"); flash.className="cflash"; c.appendChild(flash);
   for(let i=0;i<n;i++){
     const s=document.createElement("i");
     const a=Math.PI*2*i/n + (i%3)*.4;
-    const d=90+((i*53)%160);
-    s.style.setProperty("--dx",(Math.cos(a)*d-50)+"%");
-    s.style.setProperty("--dy",(Math.sin(a)*d*1.9-50)+"%");
-    s.style.setProperty("--rr",((i*97)%720-360)+"deg");
+    /* Thrown further and at more different speeds than before. Everything
+       travelling the same distance is what made it look like a puff. */
+    const d=16+((i*53)%42);          // vmin: a real throw across the screen
+    const size=8+((i*7)%9);                       // 8 to 16px, mixed
+    s.style.width=size+"px";
+    s.style.height=(size+((i%3)*5))+"px";
+    s.style.setProperty("--dx",(Math.cos(a)*d).toFixed(1)+"vmin");
+    s.style.setProperty("--dy",(Math.sin(a)*d*1.15-8).toFixed(1)+"vmin");   // thrown up, then out
+    s.style.setProperty("--rr",((i*97)%1080-540)+"deg");
     s.style.setProperty("--c",COLS[i%COLS.length]);
-    s.style.animationDelay=((i%5)*.05)+"s";
-    if(i%7===0){ s.textContent="⚽"; s.style.background="none"; }
+    s.style.animationDelay=((i%6)*.045)+"s";
+    s.style.animationDuration=(1.35+((i%5)*.16))+"s";
+    if(i%4===0){ s.style.borderRadius="50%"; }     // some of it is round
+    if(i%9===0){ s.textContent="⚽"; s.style.background="none"; s.style.fontSize=(size+9)+"px"; }
     c.appendChild(s);
   }
   document.body.appendChild(c);
-  setTimeout(()=>c.remove(),1700);
+  setTimeout(()=>c.remove(),2400);
 }
 /* A BALL question is worth twenty and comes round rarely, so getting one
    should not look like getting a one-pointer with more paper. The ball itself
@@ -3860,8 +3889,9 @@ function ballGoal(){
   document.body.appendChild(o);
   setTimeout(()=>o.remove(), 1400);
 }
-/* every other right answer: the same burst it always had, with more in it */
-const goalFx = (big) => big ? ballGoal() : confetti(52);
+/* Everything else scales with what the answer was worth, because a +10 that
+   celebrates exactly like a +1 is the app not paying attention. */
+const goalFx = (big, pts) => big ? ballGoal() : confetti(pts>=10 ? 110 : pts>=5 ? 85 : 65);
 
 function flashBad(){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -4682,7 +4712,7 @@ function wTimeUp(){ if(isGuest()){ flashBad(); return; } if(S.phase==="w_answer"
 function wToggle(i){
   const pts=TIERS[S.tier].pts;
   S.wgot[i]=!S.wgot[i];
-  if(S.wgot[i]){ S.players[i].score+=pts; ching(); goalFx(S.tier==="ball"); }
+  if(S.wgot[i]){ S.players[i].score+=pts; ching(); goalFx(S.tier==="ball", pts); }
   else{ S.players[i].score-=pts; }
   render();
 }
@@ -4721,7 +4751,7 @@ function judge(correct, level){
     /* a BALL question pays twenty, so it gets the ball. Not when the answer
        was only the country, and not when Badge Zoom had already pulled the
        camera all the way back: both of those pay single figures. */
-    goalFx(S.tier==="ball" && rung!=="country" && !(isBadgeBall()&&bzStep()===2));
+    goalFx(S.tier==="ball" && rung!=="country" && !(isBadgeBall()&&bzStep()===2), pts);
     const how = rung==="city" ? " (city)" : rung==="country" ? " (country only)"
               : isBadgeBall() && bzStep() ? ` (pulled back ${bzStep()===1?"once":"twice"})` : "";
     toast(`⚽ GOAL! ${who.name} +${pts}${how}${stealing?" (stolen!)":""}`);

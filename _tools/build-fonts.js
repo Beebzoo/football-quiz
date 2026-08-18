@@ -21,6 +21,9 @@ const REPO = path.join(__dirname, "..");
 const OUT = path.join(REPO, "assets", "fonts");
 const FORCE = process.argv.includes("--force");
 const FAMILY = "Barlow Semi Condensed";
+/* and a serif italic for the lines that explain a mode, so the voice of the
+   app and the voice of the instructions are visibly different things */
+const SERIF = { family: "Lora", weights: [400], italic: true, slug: "lora" };
 const WEIGHTS = [400, 600, 700];
 /* one italic, for the mode name that slams up before a round starts. A
    browser will happily slant an upright face for you, and it looks exactly
@@ -73,6 +76,24 @@ const get = async (url, bin) => {
   }
   if (!fs.existsSync(path.join(OUT, "OFL.txt")) || FORCE) {
     fs.writeFileSync(path.join(OUT, "OFL.txt"), await get(OFL));
+  }
+
+  /* The serif, one weight and italic only. It is here so the lines that
+     explain a mode are visibly a different voice from the game itself: the
+     app talks in condensed caps, the instructions lean. */
+  const surl = "https://fonts.googleapis.com/css2?family=" + encodeURIComponent(SERIF.family)
+    + ":ital,wght@1," + SERIF.weights[0] + "&display=swap";
+  for (const b of (await get(surl)).split("/*").slice(1).map(x => "/*" + x)) {
+    const subset = (b.match(/^\/\*\s*([a-z-]+)\s*\*\//) || [])[1];
+    const src = (b.match(/url\((https:[^)]+\.woff2)\)/) || [])[1];
+    const range = (b.match(/unicode-range:\s*([^;]+);/) || [])[1];
+    if (!subset || !src || !range || !["latin", "latin-ext"].includes(subset)) continue;
+    const file = `${SERIF.slug}-400i-${subset}.woff2`;
+    const dest = path.join(OUT, file);
+    if (FORCE || !fs.existsSync(dest)) fs.writeFileSync(dest, await get(src, true));
+    rules.push(`@font-face{font-family:'${SERIF.family}';font-style:italic;font-weight:400;`
+      + `font-display:swap;src:url(assets/fonts/${file}) format('woff2');unicode-range:${range.trim()}}`);
+    console.log("  serif " + file);
   }
 
   fs.writeFileSync(path.join(OUT, "font-face.css"), rules.join("\n") + "\n");

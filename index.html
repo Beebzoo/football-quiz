@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b8250">
-<title>BALL — Gran Canaria MVV Ultras</title>
+<title>BALL · Gran Canaria MVV Ultras</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="assets/ball.png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -28,8 +28,12 @@
     --bad:#dc2626;
   @font-face{font-family:'Barlow Semi Condensed';font-style:italic;font-weight:700;font-display:swap;src:url(assets/fonts/barlow-semicondensed-700i-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
   @font-face{font-family:'Barlow Semi Condensed';font-style:italic;font-weight:700;font-display:swap;src:url(assets/fonts/barlow-semicondensed-700i-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+  @font-face{font-family:'Lora';font-style:italic;font-weight:400;font-display:swap;src:url(assets/fonts/lora-400i-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+  @font-face{font-family:'Lora';font-style:italic;font-weight:400;font-display:swap;src:url(assets/fonts/lora-400i-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
 
     /* one place for the interface face; everything else says var(--ui) */
+    --serif:"Lora",Georgia,"Times New Roman",serif;
     --ui:"Barlow Semi Condensed",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     --radius:16px;
     --shadow:0 1px 2px rgba(16,24,40,.06),0 4px 14px rgba(16,24,40,.06);
@@ -123,7 +127,7 @@
   }
   .careername{font:800 1.7rem/1.2 var(--ui);text-align:center;text-wrap:balance}
 
-  /* the floodlit night look — now the whole app's home kit */
+  /* the floodlit night look, now the whole app's home kit */
   html{background:#0d2013}
   body.careermode{color:#eef5ef;border-color:rgba(255,255,255,.12)}
   body.careermode .clock .digits{color:#eef5ef}
@@ -230,6 +234,9 @@
   /* credits: readable, but plainly the small print rather than a screen you
      have to scroll past to play */
   .credits .crlead{margin:2px 0 12px}
+  .crewbar{display:flex;gap:8px;align-items:stretch;margin:8px 0 4px}
+  .crewbar .nm-in{flex:1;min-width:0}
+  .crewbar .bigbtn{width:auto;flex:none;padding:12px 14px;font-size:.95rem}
   .crset{margin:0 0 13px}
   .crh{font-weight:700;color:#dfeee5;font-size:.95rem}
   .crh .crn{font-weight:600;color:#9fb8a6;font-size:.82em;margin-left:4px}
@@ -649,7 +656,7 @@
     color:#4c6455;letter-spacing:.2px;
   }
   .qcard.natq .pfact{color:#bcd6c5;text-shadow:0 1px 8px rgba(0,0,0,.5)}
-  /* one & only mode: no card, no props — the night pitch IS the stage */
+  /* one & only mode: no card, no props, the night pitch IS the stage */
   .qcard.natq{
     background:transparent;border:none;box-shadow:none;border-top:none;
     color:#eef5ef;padding:6px 0;
@@ -959,7 +966,15 @@
 
   .foot{margin-top:auto;display:flex;gap:10px}
   .foot .bigbtn{flex:1;padding:12px}
-  .hint{font:500 .8rem/1.4 var(--ui);color:var(--chalk-dim)}
+  /* The lines that explain a mode are the app talking to you rather than the
+     app running the game, so they are set in a serif italic. Different voice,
+     visibly different type: the game shouts in condensed caps, the
+     instructions lean. */
+  .hint{font:italic 400 .86rem/1.5 var(--serif);color:var(--chalk-dim);letter-spacing:.005em}
+  /* the exceptions: a wall of rules is easier upright, and a waiting line is
+     the game telling you something is happening rather than explaining it */
+  .rules .hint,.hint.waitline,.hint.lastline{font:500 .8rem/1.4 var(--ui);letter-spacing:0}
+  .hint.blurb{font-size:.92rem;color:#c2d6c8}
   .spacer{flex:1}
 
   /* keyboard hints: only on devices with a real pointer + keyboard */
@@ -1715,7 +1730,7 @@ normal: [
  {q:"Which manager wore a big coat and won the 2005 Champions League with Liverpool?", a:"Rafael Benítez"},
  {q:"What protective headgear did Petr Čech wear after a serious head injury?", a:"A rugby-style scrum cap"},
  {q:"Which player has won the most career trophies, an Argentine great?", a:"Lionel Messi"},
- {q:"Which club's academy produced the 'Class of 92' — Beckham, Scholes, Giggs and the Nevilles?", a:"Manchester United"},
+ {q:"Which club's academy produced the 'Class of 92': Beckham, Scholes, Giggs and the Nevilles?", a:"Manchester United"},
  {q:"Which English club plays in claret and blue and is nicknamed 'the Villans'?", a:"Aston Villa"},
  {q:"Which two brothers both won the 1966 World Cup with England?", a:"Bobby and Jack Charlton"},
  {q:"Liverpool came from 3-0 down to win the 2005 Champions League final against which club?", a:"AC Milan"},
@@ -1922,7 +1937,7 @@ hard: [
  {q:"Which Eredivisie club's fans are collectively known as 'Het Legioen'?", a:"Feyenoord"},
  {q:"Which Dutch club is nicknamed 'de Boeren' (the farmers) by rival fans?", a:"PSV"},
  {q:"Which Mexican winger was nicknamed 'Chucky' during his time at PSV?", a:"Hirving Lozano"},
- {q:"Which is older — De Kuip or the Johan Cruyff Arena?", a:"De Kuip (1937 vs 1996)"},
+ {q:"Which is older, De Kuip or the Johan Cruyff Arena?", a:"De Kuip (1937 vs 1996)"},
  {q:"Which two brothers both played for Ajax and then Barcelona?", a:"Frank and Ronald de Boer"},
  {q:"Which Dutch club did Steven Berghuis cross the Rotterdam-Amsterdam divide to join in 2021?", a:"Ajax"},
  {q:"Which Dutch club won three straight European Cups from 1971 to 1973?", a:"Ajax"},
@@ -2034,7 +2049,7 @@ extreme: [
  {q:"The first World Cup penalty shoot-out was in 1982, between which two teams?", a:"West Germany and France"},
  {q:"Who was the first man to win the World Cup as both player and manager?", a:"Mário Zagallo (Brazil)"},
  {q:"According to the famous (if not quite true) story, why did India withdraw from the 1950 World Cup?", a:"They were not allowed to play barefoot"},
- {q:"What message did Andrés Iniesta reveal on his shirt after scoring the 2010 World Cup winner?", a:"'Dani Jarque, siempre con nosotros' — a tribute to a late friend"},
+ {q:"What message did Andrés Iniesta reveal on his shirt after scoring the 2010 World Cup winner?", a:"'Dani Jarque, siempre con nosotros', a tribute to a late friend"},
  {q:"Which trophy did Sergio Ramos famously drop during Real Madrid's 2011 celebrations?", a:"The Copa del Rey (a bus ran over it)"},
  {q:"Why was Atlético Madrid nicknamed 'Los Colchoneros'?", a:"Their red-and-white stripes resembled old mattress covers"},
  {q:"Which king granted Madrid FC the title 'Real'?", a:"King Alfonso XIII"},
@@ -2045,7 +2060,7 @@ extreme: [
  {q:"Which Spanish club has won the Copa del Rey a record number of times?", a:"Barcelona"},
  {q:"Why did Johan Cruyff wear two stripes, not three, on his 1974 Netherlands shirt?", a:"He had a personal sponsorship clash with Adidas"},
  {q:"Which Dutch club is nicknamed 'de Godenzonen' (Sons of the Gods)?", a:"Ajax"},
- {q:"How many lines make up the face of the warrior on the Ajax badge?", a:"11 — one for each player"},
+ {q:"How many lines make up the face of the warrior on the Ajax badge?", a:"11, one for each player"},
  {q:"The Johan Cruyff Arena opened in 1996 as the first European stadium with what?", a:"A retractable roof"},
  {q:"Which Eredivisie club's stadium roof collapsed in 2019 while empty?", a:"AZ"},
  {q:"Whom did Luis Suárez bite while playing for Ajax in 2010, earning the 'Cannibal of Ajax' tag?", a:"Otman Bakkal"},
@@ -2215,7 +2230,7 @@ const CAREERS = [
  {n:"Mohamed Salah", c:["basel","chelsea","fiorentina","roma","liverpool"]},
  {n:"Sadio Mané", c:["fc-metz","salzburg","southampton","liverpool","bayern-munchen","al-nassr"]},
  {n:"Andrea Pirlo", c:["brescia","inter","milan","juventus","new-york-city-fc"]},
- {n:"Willy Brokamp", c:["mvv-maastricht","ajax","mvv-maastricht"], note:"Started at RKVV Chèvremont — Us MVV!"},
+ {n:"Willy Brokamp", c:["mvv-maastricht","ajax","mvv-maastricht"], note:"Started at RKVV Chèvremont. Us MVV!"},
  {n:"Zinedine Zidane", c:["cannes","bordeaux","juventus","real-madrid"]},
  {n:"Jamie Vardy", c:["fleetwood-town","leicester"], note:"Non-league years skipped"},
  {n:"N'Golo Kanté", c:["boulogne","leicester","chelsea","al-ittihad","fenerbahce"], note:"Caen years skipped"},
@@ -2754,7 +2769,7 @@ fetch("assets/nations/index.json").then(r=>r.json()).then(b=>{
 function natQ(){
   const r=NAT[S.tier][S.qi];
   return {q:`Name the only player from ${r.country} ever at ${r.club}`,
-          a:`${r.player} — the only player from ${r.country} in ${r.club}'s recorded history`,
+          a:`${r.player}, the only player from ${r.country} in ${r.club}'s recorded history`,
           sub:natFact(r),
           duo:{crest:"assets/logos/"+r.slug+".png", flag:"assets/natflags/"+r.flag+".png"}};
 }
@@ -2841,7 +2856,7 @@ function bzPull(){
   if(isGuest()) return mpAct("bzPull",[]);
   S.bz = bzStep()+1;
   audio(); tick();
-  toast(`Camera pulls back — this one now pays +${BADGE_BALL[bzStep()].pts}`);
+  toast(`Camera pulls back, so this one now pays +${BADGE_BALL[bzStep()].pts}`);
   render();
 }
 
@@ -2888,7 +2903,7 @@ const RUSH_SECS=30;
 const rnorm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
   .replace(/&/g," and ").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim();
 function newRush(){
-  if(!LEAGUES || !LEAGUES.length){ toast("The league bank is still loading — one second!", true); return; }
+  if(!LEAGUES || !LEAGUES.length){ toast("The league bank is still loading, give it a second", true); return; }
   if(!S.usedL) S.usedL=[];
   S.rush={li:null, got:[], secs:RUSH_SECS};
   S.phase="g_pick";
@@ -2964,7 +2979,7 @@ const DUEL_AXES=[
   {k:"tall", ask:"Who is taller?", val:r=>`${r.h}cm`,    better:(a,b)=>a.h>b.h, gap:(a,b)=>Math.abs(a.h-b.h)>=3},
 ];
 function newDuel(){
-  if(!DUEL || DUEL.length<2){ toast("That deck is still loading — one second!", true); return; }
+  if(!DUEL || DUEL.length<2){ toast("That deck is still loading, give it a second", true); return; }
   if(!S.usedD) S.usedD=[];
   /* Nobody twice in a run while there is anybody left: seeing the same face
      again tells you the answer you already gave. */
@@ -3019,11 +3034,11 @@ function duelNextPlayer(){               // wrong: the run is over, pass it on
 
 /* ============================== NAME THE XI ==============================
    A famous final's formation appears as eleven shirts; the table fills them
-   in together, a point per shirt. Communal — the reader taps a shirt when
+   in together, a point per shirt. Communal: the reader taps a shirt when
    someone names its player, then hands out the point. */
 function newXI(){
   let avail=XI.map((_,i)=>i).filter(i=>!S.usedX.includes(i));
-  if(!avail.length){ toast("Every final played — reshuffling!"); S.usedX=[]; avail=XI.map((_,i)=>i); }
+  if(!avail.length){ toast("Every final played, reshuffling"); S.usedX=[]; avail=XI.map((_,i)=>i); }
   const xi=avail[Math.floor(Math.random()*avail.length)];
   S.usedX.push(xi);
   S.xi={i:xi, got:Array(11).fill(null), pick:null}; // got[n] = player index, -1 = nobody, null = still hidden
@@ -3065,7 +3080,7 @@ function xiAfter(){ if(maybeFinish()) return; S.round++; newXI(); render(); }
    the years and the reader pays +1 per correctly placed event, +5 for all. */
 function newTL(){
   let avail=TLINE.map((_,i)=>i).filter(i=>!S.usedT.includes(i));
-  if(!avail.length){ toast("Timeline deck exhausted — reshuffling!"); S.usedT=[]; avail=TLINE.map((_,i)=>i); }
+  if(!avail.length){ toast("Timeline deck exhausted, reshuffling"); S.usedT=[]; avail=TLINE.map((_,i)=>i); }
   const ti=avail[Math.floor(Math.random()*avail.length)];
   S.usedT.push(ti);
   const order=TLINE[ti].items.map((_,i)=>i);
@@ -3130,6 +3145,7 @@ function tlNext(){
 
 function freshState(names, timed=true, mode="classic", target=100){
   return {
+    mid: matchId(),   // one id for this match, shared by every phone that files it
     players: names.map(n=>({name:n, score:0, off:0})),
     turn:0, round:1, phase:"pick",
     tier:null, qi:null, stealer:null, timeUp:false, timed:timed, mode:mode,
@@ -3178,7 +3194,7 @@ function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
    Phase 1: three phones, one game. The host phone runs the whole match
    exactly like solo play; the others join with a room code and get a live
    mirror of the host screen plus a buzz button. Supabase Realtime broadcast
-   only — no database, no accounts, free tier. Needs internet on all phones. */
+   only: no database, no accounts, free tier. Needs internet on all phones. */
 const SUPA_URL="https://qychsizyqatnmpenidls.supabase.co";
 const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5Y2hzaXp5cWF0bm1wZW5pZGxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0NDc2MzIsImV4cCI6MjEwMjAyMzYzMn0.r0pRGgJbO-JcVSQdht6ptumEd3u4Oiwis4C2WEsS5Cw";
 let MP=null; // {role:"host"|"guest", code, ch, n}
@@ -3329,8 +3345,8 @@ function hostRoom(){
     if(S && S.phase!=="setup") render(); // repaint the "on their own phone" hints
   });
   ch.subscribe(st=>{
-    if(st==="SUBSCRIBED"){ ch.track({role:"host"}); toast(`Room ${code} open — join on the other phones`); mpRenderBar(); }
-    if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ toast("Room connection lost — check internet", true); }
+    if(st==="SUBSCRIBED"){ ch.track({role:"host"}); toast(`Room ${code} is open. Join on the other phones`); mpRenderBar(); }
+    if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ toast("Room connection lost. Check the internet", true); }
   });
   render();
 }
@@ -3369,7 +3385,7 @@ function joinRoom(code){
       toast(`In room ${code} as ${mpName()||"a spectator"}`);
       mpRenderBar();
     }
-    if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ toast("Room connection lost — check internet", true); }
+    if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ toast("Room connection lost. Check the internet", true); }
   });
   render();
 }
@@ -3402,7 +3418,7 @@ function mpRenderBar(){
   // in a live match with a name that matches nobody, you can only spectate: say so
   const stray = !!(S && S.players && S.phase!=="setup" && myIdx()<0);
   bar.innerHTML = stray
-    ? `<div class="mppill warn" onclick="renameGuest()">⚠ "${esc(mpName()||"no name")}" isn't a player — tap to fix</div>
+    ? `<div class="mppill warn" onclick="renameGuest()">⚠ "${esc(mpName()||"no name")}" isn't a player. Tap to fix</div>
        <button class="buzzbtn" onclick="mpBuzz()">BUZZ</button>`
     : `<div class="mppill">📡 ${MP.code} · ${MP.n}<button class="mpx" onclick="leaveRoom()" aria-label="Leave room">✕</button></div>
        ${acting?"":`<button class="buzzbtn" onclick="mpBuzz()">BUZZ</button>`}`;
@@ -3433,7 +3449,7 @@ function mpAnswerHTML(){
   const pts = ptsLabel();
   return `
     <div class="kick">${stealing?"Your steal":"Round "+S.round} · ${tlabel(S.tier)} · ${pts}</div>
-    <div class="yourturn">⚽ You're up${stealing?" — five seconds":""}</div>
+    <div class="yourturn">⚽ You're up${stealing?", five seconds":""}</div>
     <div class="qcard${(Q.duo||Q.badge||Q.kit)?" natq":""}" style="--dc:${t.color}">
       <div class="qmeta"><span class="tierchip">${tlabel(S.tier)} · ${pts}</span></div>
       ${qVisual(false)}
@@ -3445,17 +3461,17 @@ function mpAnswerHTML(){
       <div class="digits">${stealing?"5.0":"15.0"}</div>
       <div class="bar"><i style="width:100%"></i></div>
     </div>`:``}
-    <input class="nm-in" id="mpans" placeholder="Type it if you like — optional" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
+    <input class="nm-in" id="mpans" placeholder="Type it if you like, it is optional" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
     <button class="bigbtn" onclick="mpLockAnswer()">Say it out loud, then reveal</button>
     <div class="hint" style="text-align:center">Nobody else's phone shows the answer until you have called it right or wrong.</div>
     ${isBadgeBall() && bzStep()<BADGE_BALL.length-1
-      ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back — drops to +${BADGE_BALL[bzStep()+1].pts}</button>`:""}
-    ${stealing?"":`<button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question</button>`}
+      ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back, drops to +${BADGE_BALL[bzStep()+1].pts}</button>`:""}
+    ${stealing?"":`<button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip, give me a new one</button>`}
     <div class="hint">Type your answer and lock it in. The real answer then shows on every phone and you call it yourself: got it or not.${isBadgeBall()?" Stuck on the crest? Pull the camera back for a wider shot and fewer points.":""}</div>`;
 }
 function mpLockAnswer(){
   const el=document.getElementById("mpans");
-  const text=(el?el.value.trim():"") || "—"; // no idea is a valid answer, it just loses
+  const text=(el?el.value.trim():"") || "(nothing)"; // no idea is a valid answer, it just loses
   MP.draft=text;
   mpAct("lockAns",[text]);
   if(el) el.blur();
@@ -3483,14 +3499,14 @@ function mpGuestAnswerHTML(){
   if(idx<0) return `
     <div class="kick">Round ${S.round} · written question</div>
     ${qcard}
-    <div class="hint" style="text-align:center">Your name "${esc(my||"?")}" doesn't match a player on the host phone (${S.players.map(p=>esc(p.name)).join(", ")}). Leave the room via ✕, fix your name, rejoin — or answer out loud like it's 2025.</div>`;
+    <div class="hint" style="text-align:center">Your name "${esc(my||"?")}" doesn't match a player on the host phone (${S.players.map(p=>esc(p.name)).join(", ")}). Leave the room via ✕, fix your name, rejoin, or just answer out loud like it's 2025.</div>`;
   const locks=S.players.map((p,i)=>`<span class="lockchip${S.wsub&&S.wsub[i]?" on":""}">${esc(p.name)}${S.wsub&&S.wsub[i]?" ✓":""}</span>`).join("");
   return `
     <div class="kick">Round ${S.round} · your answer, in secret · +${t.pts}</div>
     ${qcard}
     <input class="nm-in" id="mpans" placeholder="${esc(S.players[idx].name)}'s answer" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
     <button class="bigbtn" onclick="mpSendAns()">${MP.locked?"Update answer":"Lock it in"}</button>
-    ${MP.locked?`<div class="hint" style="text-align:center">Locked ✓ — you can still change it until the reveal.</div>`:""}
+    ${MP.locked?`<div class="hint" style="text-align:center">Locked ✓. You can still change it until the reveal.</div>`:""}
     <div class="lockrow">${locks}</div>`;
 }
 function mpSendAns(){
@@ -3599,6 +3615,7 @@ function clearHistory(){
 /* Browsers evict storage for sites they think you have abandoned. Asking
    makes the data persistent where the browser allows it, and costs nothing
    where it does not. Installed apps are usually granted it outright. */
+(function pullCrewOnBoot(){ setTimeout(()=>{ try{ cloudPull(); }catch(e){} }, 1200); })();
 (function keepStorage(){
   try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
 })();
@@ -3612,6 +3629,7 @@ function recordMirrored(){
   if(!S || !S.players || !S.players.length) return;
   const h = history();
   const last = h[h.length-1];
+  if(S.mid && history().some(m=>m.id===S.mid)) return;   // this phone already filed it
   const same = last && last.mode===S.mode && last.rounds===S.round
     && last.players.length===S.players.length
     && last.players.every((p,i)=>nameKey(p.name)===nameKey(S.players[i].name) && p.score===S.players[i].score);
@@ -3620,6 +3638,72 @@ function recordMirrored(){
   S.recorded = false;                        // the host's flag says nothing about this phone
   recordMatch();
   S.recorded = saved;
+}
+
+/* ============================ THE SHARED TABLE ============================
+   Every phone keeps its own record book, which is right, but three phones in
+   the same pub then have three different Tables and none of them is the truth.
+   A crew name fixes that: type the same word on each phone and every finished
+   match goes to one row in Supabase, and The Table shows the lot.
+
+   It is deliberately soft. No crew name means local only, exactly as before.
+   If the table is missing or the wifi is out, the match is still on the phone
+   that played it, and the next successful sync picks it up.
+
+   Matches carry a match id made once by whoever started the match and shared
+   with the state, so the three phones filing the same match write the same
+   row rather than three copies of one night. */
+const CREW_KEY = "ball-crew";
+const crewName = () => (localStorage.getItem(CREW_KEY)||"").trim().toLowerCase();
+function setCrew(v){
+  try{ localStorage.setItem(CREW_KEY, String(v||"").trim().toLowerCase()); }catch(e){}
+  cloudPull();
+}
+const matchId = () => Array.from({length:14},()=>"abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random()*36)]).join("");
+
+let CLOUD = null;                 // matches pulled from the shared table
+function cloudClient(){
+  if(!crewName() || !window.supabase) return null;
+  try{
+    if(!cloudClient._c) cloudClient._c = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+    return cloudClient._c;
+  }catch(e){ return null; }
+}
+async function cloudPush(m){
+  const c = cloudClient(); if(!c || !m || !m.id) return;
+  try{
+    await c.from("matches").upsert({
+      id: m.id, crew: crewName(), ts: m.ts, mode: m.mode, ref: m.ref,
+      target: m.target, rounds: m.rounds, players: m.players,
+      winner: m.winner, losers: m.losers,
+    }, {onConflict:"id", ignoreDuplicates:true});
+  }catch(e){ /* the phone still has it; it syncs next time */ }
+}
+async function cloudPull(){
+  const c = cloudClient();
+  if(!c){ CLOUD = null; return; }
+  try{
+    const {data,error} = await c.from("matches").select("*")
+      .eq("crew", crewName()).order("ts",{ascending:true}).limit(400);
+    if(error || !Array.isArray(data)) return;
+    CLOUD = data.map(r=>({
+      id:r.id, ts:Number(r.ts)||0, mode:r.mode, ref:r.ref, target:r.target,
+      rounds:r.rounds, players:r.players||[], winner:r.winner, losers:r.losers||[],
+    }));
+    /* anything this phone played while the crew was offline goes up now */
+    const have = new Set(CLOUD.map(m=>m.id));
+    for(const m of history()) if(m.id && !have.has(m.id)) cloudPush(m);
+    if(showBoard) render();
+  }catch(e){ /* offline: The Table falls back to this phone's own book */ }
+}
+/* what The Table reads: the shared book when there is a crew, otherwise this
+   phone's. Local matches with no id are kept either way, so nothing a phone
+   played before the crew existed disappears from it. */
+function books(){
+  const mine = history();
+  if(!CLOUD) return mine;
+  const seen = new Set(CLOUD.map(m=>m.id));
+  return CLOUD.concat(mine.filter(m=>!m.id || !seen.has(m.id))).sort((a,b)=>a.ts-b.ts);
 }
 
 // called the moment a match reaches the results screen, once and only once
@@ -3631,22 +3715,27 @@ function recordMatch(){
   // a tie at the top is a draw, nobody takes the win
   const outright = top && top.score>=0 && order.filter(p=>p.score===top.score).length===1;
   const h=history();
-  h.push({
+  const rec = {
+    /* the id comes from the state, so all three phones file one match rather
+       than three copies of the same night */
+    id: S.mid || matchId(),
     ts: Date.now(),
     mode: S.mode, ref: S.ref||null, target: S.target||0, rounds: S.round,
     players: S.players.map(p=>({name:String(p.name||"").trim(), score:p.score, off:p.off||0})),
     winner: outright ? String(top.name||"").trim() : null,
     losers: S.players.filter(p=>p.score<0).map(p=>String(p.name||"").trim()),
-  });
+  };
+  h.push(rec);
   if(h.length>300) h.splice(0, h.length-300); // a night out, not a database
   putHistory(h);
+  cloudPush(rec);          // only does anything if a crew name is set
 }
 
 // aggregate the log into a table; names matched case-insensitively so
 // "ale" and "Ale" are the same player
 function tally(mode){
   const rows=new Map();
-  for(const m of history()){
+  for(const m of books()){
     if(mode && m.mode!==mode) continue;
     for(const p of m.players){
       const k=nameKey(p.name); if(!k) continue;
@@ -3858,13 +3947,13 @@ function render(){
     st.innerHTML = `
       <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":nat?"The One & Only":bdg?"Badge Zoom":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
-      <div class="hint">${written?"Pick the difficulty — everyone writes an answer to the same question."
-        :stad?"Pick your difficulty — a stadium photo appears, answer out loud."
-        :nat?"Pick your difficulty — a club and a flag appear: name the only player of that nationality ever to wear the shirt."
-        :bdg?"Pick your difficulty — a crest appears zoomed right in. Name the club. On BALL you can trade points for a wider shot."
-        :S.ref?`Pick your difficulty. ${esc(S.ref)} reads the question and gives the points.`
-        :"Pick your difficulty. Someone else reads the question out loud."}</div>
-      ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn — pick your difficulty</div>`:""}
+      <div class="hint blurb">${written?"Everyone writes an answer to the same question. Pick how hard you want it."
+        :stad?"A photo of a ground comes up and you say where it is. Pick your level."
+        :nat?"A crest and a flag. Name the one player from that country who ever pulled on that shirt."
+        :bdg?"A crest, cropped to bits. Name the club. On BALL you can trade points for a wider shot."
+        :S.ref?`Pick your level. ${esc(S.ref)} reads it out and hands out the points.`
+        :"Pick your level. Someone else reads the question out loud."}</div>
+      ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn. Pick your level</div>`:""}
       ${remotePlayer(S.turn)?`<div class="hint waitline">⌛ ${esc(P.name)} is picking on their own phone.</div>`:""}
       ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t],ix)=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
@@ -3897,8 +3986,8 @@ function render(){
       </div>`:``}
       <div class="spacer"></div>
       <button class="bigbtn" onclick="wReveal()">Reveal answer<kbd>Space</kbd></button>
-      <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question</button>
-      <div class="hint">${S.timed?"Fifteen seconds — type an answer for each player before the buzzer.":"Type an answer for each player, then hit Reveal."} Seen it before? Skip for a fresh one.</div>`;
+      <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip, give me a new one</button>
+      <div class="hint">${S.timed?"Fifteen seconds. Type an answer for each player before the buzzer.":"Type an answer for each player, then hit Reveal."} Seen it before? Skip for a fresh one.</div>`;
     if(S.timed) startTimer(15, wTimeUp, clockKey());
     return;
   }
@@ -3925,7 +4014,7 @@ function render(){
       </div>
       <div class="spacer"></div>
       <button class="bigbtn" onclick="wNext()">Next question<kbd>Space</kbd></button>
-      <div class="hint">Tap everyone who got it right — they score +${t.pts} each. Tap again to undo.</div>`;
+      <div class="hint">Tap everyone who got it right. They score +${t.pts} each. Tap again to undo.</div>`;
     return;
   }
 
@@ -3957,13 +4046,13 @@ function render(){
       <div class="spacer"></div>
       <button class="bigbtn" onclick="reveal()">Reveal answer<kbd>Space</kbd></button>
       ${isBadgeBall() && bzStep()<BADGE_BALL.length-1
-        ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back — drops to +${BADGE_BALL[bzStep()+1].pts}<kbd>Z</kbd></button>`:""}
-      <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip — new question<kbd>S</kbd></button>
+        ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back, drops to +${BADGE_BALL[bzStep()+1].pts}<kbd>Z</kbd></button>`:""}
+      <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip, give me a new one<kbd>S</kbd></button>
       ${remotePlayer(stealing?S.stealer:S.turn)
         ? `<div class="hint waitline">⌛ ${esc(who.name)} is typing their answer in on their own phone. Only reveal here if they'd rather shout it.</div>`
         : `<div class="hint">${S.timed
-            ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer — the clock stops."
-            : "No timer — take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one — same difficulty, no points lost.${isBadgeBall()?" Nobody recognising it? Pull the camera back for a wider shot, at the cost of points, and the clock starts again.":""}</div>`}`;
+            ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer, which stops the clock."
+            : "No timer, so take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one at the same difficulty, no points lost.${isBadgeBall()?" Nobody recognising it? Pull the camera back for a wider shot, at the cost of points, and the clock starts again.":""}</div>`}`;
     if(S.timed) startTimer(stealing?5:15, onTimeUp, clockKey());
     if(S.mode==="nations" && natAnim && !matchMedia("(prefers-reduced-motion: reduce)").matches){
       setTimeout(popfx, 300); setTimeout(popfx, 1000);
@@ -4026,7 +4115,7 @@ function render(){
         ${q().credit?`<div class="pcredit">${esc(q().credit)}</div>`:""}
       </div>
       ${S.timeUp?`<div class="hint" style="color:var(--card-r);font-weight:700">Time was already up. Only count an answer given before the buzzer.</div>`:""}
-      ${grole==="judge"?`<div class="yourturn">Your call — did you get it?</div>`:""}
+      ${grole==="judge"?`<div class="yourturn">Your call. Did you get it?</div>`:""}
       ${remotePlayer(answerIdx())?`<div class="hint waitline">⌛ ${esc(who.name)} is calling it on their own phone. These buttons still work if they freeze.</div>`:""}
       <div class="spacer"></div>
       ${sp?`
@@ -4109,7 +4198,7 @@ function render(){
           ? `<button class="bigbtn" onclick="cNext()">Next club<kbd>Space</kbd></button>`
           : `<div class="hint" style="text-align:center">Full career on the table. Last chance…</div>`}
         <button class="bigbtn warn" onclick="cGuess()">${ico('hand')}Someone knows it!<kbd>G</kbd></button>
-        <button class="bigbtn ghost" onclick="cGiveUp()">Nobody knows — reveal</button>`;
+        <button class="bigbtn ghost" onclick="cGiveUp()">Nobody knows, reveal it</button>`;
       return;
     }
     if(S.phase==="c_who"){
@@ -4362,6 +4451,13 @@ function logoTicker(){
 let showBoard=false, boardMode="";
 function openBoard(){ showBoard=true; boardMode=""; render(); }
 function closeBoard(){ showBoard=false; render(); }
+function saveCrew(){
+  const el=document.getElementById("crewin");
+  const v=el?el.value.trim():"";
+  setCrew(v);
+  toast(v ? `Sharing The Table as "${v}"` : "The Table is this phone's own again.");
+  render();
+}
 function setBoardMode(m){ boardMode=m; render(); }
 function askClearRecords(){
   sheet(`
@@ -4373,13 +4469,22 @@ function askClearRecords(){
 function doClearRecords(){ closeSheet(); clearHistory(); render(); toast("Record book wiped."); }
 
 function renderBoard(st){
-  const all=history();
+  const all=books();
   const rows=tally(boardMode);
   const log=all.filter(m=>!boardMode || m.mode===boardMode).slice().reverse();
   const since = all.length ? new Date(all[0].ts).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) : null;
   st.innerHTML = `
     <div class="kick">${all.length} match${all.length===1?"":"es"} on record${since?` · since ${since}`:""}</div>
     <h1 class="title" style="font-size:clamp(1.6rem,8vw,2.1rem)">The <span class="gold">Table</span></h1>
+    <div class="crewbar">
+      <input class="nm-in" id="crewin" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="Shared table name" value="${esc(crewName())}">
+      <button class="bigbtn ghost" onclick="saveCrew()">${crewName()?"Change":"Share"}</button>
+    </div>
+    <div class="hint" style="text-align:center">${crewName()
+      ? (CLOUD ? `Sharing with everyone using the name "${esc(crewName())}". ${CLOUD.length} match${CLOUD.length===1?"":"es"} came from the others.`
+               : `Set to "${esc(crewName())}", but nothing has come back yet. Check the internet, or the table may not be set up in Supabase.`)
+      : "Type the same word on each phone and you all keep one table. Leave it empty and this phone keeps its own."}</div>
     <div class="chiprow">
       ${[["","All modes"],...Object.entries(MODE_LABEL)].map(([k,l])=>
         `<button class="chip${boardMode===k?" on":""}" onclick="setBoardMode('${k}')">${l}</button>`).join("")}
@@ -4461,11 +4566,11 @@ function renderSetup(st){
     ${Array.from({length:(setupRef?2:setupCount)},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
     <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
-    ${history().length?`<div class="hint lastline">${(h=>{const m=h[h.length-1];return "Last match · "+m.players.map(p=>esc(p.name)+" "+p.score).join(" · ")+(m.winner?" · 🏆 "+esc(m.winner):" · draw");})(history())}</div>
-    <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${history().length} match${history().length===1?"":"es"}</button>`:""}
+    ${books().length?`<div class="hint lastline">${(h=>{const m=h[h.length-1];return "Last match · "+m.players.map(p=>esc(p.name)+" "+p.score).join(" · ")+(m.winner?" · 🏆 "+esc(m.winner):" · draw");})(books())}</div>
+    <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${books().length} match${books().length===1?"":"es"}${crewName()?" · "+esc(crewName()):""}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points — the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order — shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear — name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in — name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart — though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts — the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history — drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins — or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone — pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points, and the ref's word is final. <b>Classic:</b> one player picks a difficulty and answers out loud, the rest can steal. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order, and you shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Classic. <b>One &amp; Only:</b> a club crest and a country flag appear, and you name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in, and you name the club, 2,588 badges deep. Easy +1 · Hard +5. BALL crops in hard on clubs nobody sensible has heard of, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Classic. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart, though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts, and the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history. Drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins, or pick "No limit" and end with the full-time whistle. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone: pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. <b>The Table:</b> every finished match is filed on the phone that played it and survives the app being closed. Type the same shared table name on all three phones and you keep one table between you, with everybody's matches in it. Leave it empty and the phone keeps its own. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>
     <details class="rules credits" ontoggle="if(this.open) loadCredits()">
       <summary>${ico('book')}Credits and sources</summary>
@@ -4520,14 +4625,14 @@ function startGame(){
     const v=el ? el.value.trim() : "";
     return v || "Player "+(i+1);
   });
-  if(setupMode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
-  if(setupMode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
-  if(setupMode==="badge" && !BADGE){ toast("Badge bank still loading — one second!", true); return; }
-  if(setupMode==="mgr" && !MGRS){ toast("Manager deck still loading — one second!", true); return; }
-  if(setupMode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
-  if(setupMode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
-  if(setupMode==="duel" && !DUEL){ toast("The face-off deck is still loading — one second!", true); return; }
-  if(setupMode==="rush" && !LEAGUES){ toast("The league bank is still loading — one second!", true); return; }
+  if(setupMode==="stadium" && !STAD){ toast("Stadium photos still loading, give it a second", true); return; }
+  if(setupMode==="nations" && !NAT){ toast("Nationality bank still loading, give it a second", true); return; }
+  if(setupMode==="badge" && !BADGE){ toast("Badge bank still loading, give it a second", true); return; }
+  if(setupMode==="mgr" && !MGRS){ toast("Manager deck still loading, give it a second", true); return; }
+  if(setupMode==="xi" && !XI){ toast("The finals are still loading, give it a second", true); return; }
+  if(setupMode==="tline" && !TLINE){ toast("Timeline deck still loading, give it a second", true); return; }
+  if(setupMode==="duel" && !DUEL){ toast("The face-off deck is still loading, give it a second", true); return; }
+  if(setupMode==="rush" && !LEAGUES){ toast("The league bank is still loading, give it a second", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
@@ -4553,14 +4658,14 @@ function resumeGame(){
   if(!S.usedM) S.usedM=[]; // saves from before manager path existed
   if(S.mode==="hilo" || S.mode==="crev"){ toast(`${S.mode==="crev"?"Career Reverse":"Higher or Lower"} has been retired. Pick a mode.`); S=null; render(); return; } // that match can't be resumed
   if(!S.usedX) S.usedX=[]; if(!S.usedT) S.usedT=[]; // saves from before xi/timeline existed
-  if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading — one second!", true); return; }
-  if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading — one second!", true); return; }
-  if(S.mode==="badge" && !BADGE){ toast("Badge bank still loading — one second!", true); return; }
-  if(S.mode==="mgr" && !MGRS){ toast("Manager deck still loading — one second!", true); return; }
-  if(S.mode==="xi" && !XI){ toast("The finals are still loading — one second!", true); return; }
-  if(S.mode==="tline" && !TLINE){ toast("Timeline deck still loading — one second!", true); return; }
-  if(S.mode==="duel" && !DUEL){ toast("The face-off deck is still loading — one second!", true); return; }
-  if(S.mode==="rush" && !LEAGUES){ toast("The league bank is still loading — one second!", true); return; }
+  if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading, give it a second", true); return; }
+  if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading, give it a second", true); return; }
+  if(S.mode==="badge" && !BADGE){ toast("Badge bank still loading, give it a second", true); return; }
+  if(S.mode==="mgr" && !MGRS){ toast("Manager deck still loading, give it a second", true); return; }
+  if(S.mode==="xi" && !XI){ toast("The finals are still loading, give it a second", true); return; }
+  if(S.mode==="tline" && !TLINE){ toast("Timeline deck still loading, give it a second", true); return; }
+  if(S.mode==="duel" && !DUEL){ toast("The face-off deck is still loading, give it a second", true); return; }
+  if(S.mode==="rush" && !LEAGUES){ toast("The league bank is still loading, give it a second", true); return; }
   if(S.mode==="mgr" && !S.career) newCareer();
   if(S.mode==="xi" && !S.xi) newXI();
   if(S.mode==="tline" && !S.tl) newTL();
@@ -4750,11 +4855,11 @@ const cdeck = () => S.mode==="mgr" ? (MGRS||[]) : CAREERS;
 const cused = () => S.mode==="mgr" ? S.usedM : S.usedC;
 function newCareer(){
   const deck = cdeck();
-  if(!deck.length){ toast("That deck is still loading — one second!", true); return; }
+  if(!deck.length){ toast("That deck is still loading, give it a second", true); return; }
   let used = cused();
   let avail = deck.map((_,i)=>i).filter(i=>!used.includes(i));
   if(!avail.length){
-    toast(`Whole ${S.mode==="mgr"?"manager":"career"} deck played — reshuffling!`);
+    toast(`Whole ${S.mode==="mgr"?"manager":"career"} deck played, reshuffling`);
     used.length=0; avail = deck.map((_,i)=>i);
   }
   const ci = avail[Math.floor(Math.random()*avail.length)];
@@ -4830,7 +4935,7 @@ function adjustHTML(i){
   const p=S.players[i];
   return `
     <h2>Adjust ${esc(p.name)}</h2>
-    <p>Current score: <b>${p.score}</b>. Fix a scoring slip — nudge the points up or down.</p>
+    <p>Current score: <b>${p.score}</b>. Fix a scoring slip by nudging the points up or down.</p>
     <div class="row2">
       <button class="bigbtn bad" onclick="adjust(${i},-5)">−5</button>
       <button class="bigbtn bad" onclick="adjust(${i},-1)">−1</button>

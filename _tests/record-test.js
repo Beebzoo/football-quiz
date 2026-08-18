@@ -105,6 +105,33 @@ function restart(old, label) {
   check("and the guest still has it after closing the app", ev(guestBack, "history().length") === 1,
     ev(guestBack, "history().length"));
 
+  console.log("\n--- the shared table ---");
+  const crew = makeInstance("crew");
+  await tick(300);
+  check("no crew by default, so nothing is shared", ev(crew, "crewName()") === "", ev(crew, "crewName()"));
+  run(crew, 'S = freshState(["Martijn","Bram"], false, "classic", 0); S.players[0].score = 4; endGame();');
+  await tick(200);
+  check("a filed match carries an id", !!ev(crew, "history()[0].id"), ev(crew, "history()[0].id"));
+  check("the id is the one the match was given",
+    ev(crew, "history()[0].id") === ev(crew, "S.mid"), ev(crew, "history()[0].id") + " vs " + ev(crew, "S.mid"));
+  check("with no crew, The Table is just this phone",
+    ev(crew, "books().length") === ev(crew, "history().length"), ev(crew, "books().length"));
+
+  /* what a pull from the shared table looks like, without a network */
+  run(crew, `CLOUD = [
+    {id:"remote1", ts:1, mode:"rush", players:[{name:"Ale",score:9},{name:"Bram",score:2}], winner:"Ale", losers:[]},
+    {id: history()[0].id, ts:2, mode:"classic", players:[{name:"Martijn",score:4},{name:"Bram",score:0}], winner:"Martijn", losers:[]}
+  ];`);
+  check("the shared book brings the others' matches in", ev(crew, "books().length") === 2, ev(crew, "books().length"));
+  check("and does not double up the one this phone filed",
+    ev(crew, "books().filter(m=>m.id===history()[0].id).length") === 1,
+    ev(crew, "books().filter(m=>m.id===history()[0].id).length"));
+  check("Ale appears in the standings without ever touching this phone",
+    ev(crew, "tally(null).some(r=>r.name==='Ale')"), ev(crew, "tally(null).map(r=>r.name).join(',')"));
+  check("matches played before any crew existed are kept",
+    ev(crew, "(function(){ const h=history(); h.push({ts:3,mode:'duel',players:[{name:'Old',score:1}],winner:'Old',losers:[]}); putHistory(h); return books().some(m=>m.players[0].name==='Old'); })()"),
+    "an unsynced match vanished");
+
   console.log(fails ? `\n${fails} FAILED` : "\nall good");
   process.exit(fails ? 1 : 0);
 })();

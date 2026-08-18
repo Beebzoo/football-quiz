@@ -3570,7 +3570,7 @@ function joinFromSheet(){
    Every finished match gets filed here so there is a running table across
    nights. Local to this phone, like everything else in the app. */
 const HIST_KEY = "ball-quiz-history-v1";
-const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush"};
+const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush"};
 /* THE RECORD BOOK HAS TO SURVIVE THE APP BEING SHUT.
 
    It lives in localStorage, which already survives a close, but three things
@@ -3944,6 +3944,7 @@ function render(){
     const stad = S.mode==="stadium";
     const nat = S.mode==="nations";
     const bdg = S.mode==="badge";
+    const kit = S.mode==="kit";
     st.innerHTML = `
       <div class="kick">Round ${S.round} · ${written?"Written round":stad?"Guess the ground":nat?"The One & Only":bdg?"Badge Zoom":"On the spot"}${S.target?" · 🏁 first to "+S.target:""}</div>
       <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
@@ -3951,6 +3952,7 @@ function render(){
         :stad?"A photo of a ground comes up and you say where it is. Pick your level."
         :nat?"A crest and a flag. Name the one player from that country who ever pulled on that shirt."
         :bdg?"A crest, cropped to bits. Name the club. On BALL you can trade points for a wider shot."
+        :kit?"A home shirt comes up and you name whose it is. Say it out loud, the reader confirms."
         :S.ref?`Pick your level. ${esc(S.ref)} reads it out and hands out the points.`
         :"Pick your level. Someone else reads the question out loud."}</div>
       ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn. Pick your level</div>`:""}

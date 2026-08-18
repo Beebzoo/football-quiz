@@ -106,6 +106,20 @@ const stage = c => (c.__els["stage"] ? c.__els["stage"].innerHTML : "");
      wanted. The crest waits for it now, and this is the check that the two
      calls stay in that order: reversing them silently puts the logo back
      underneath the title. */
+  /* Guess the Kit had no entry in MODE_LABEL, so modeIntro was handed an
+     undefined name and quietly did nothing: that one mode started with no
+     title screen, and it had no chip in The Table's filters either. Nothing
+     errored, which is why it took a person noticing. */
+  console.log("\n--- every mode can say its own name ---");
+  const metaKeys = JSON.parse(ev(app, "JSON.stringify(Object.keys(MODE_META))"));
+  const labelKeys = JSON.parse(ev(app, "JSON.stringify(Object.keys(MODE_LABEL))"));
+  const unnamed = metaKeys.filter(k => !labelKeys.includes(k));
+  check("no mode in the drawer is missing a label", unnamed.length === 0, unnamed.join(", "));
+  check("the label list also covers the two on the front", ["classic", "written"].every(k => labelKeys.includes(k)),
+    labelKeys.join(","));
+  const blank = labelKeys.filter(k => !ev(app, `MODE_LABEL[${JSON.stringify(k)}]`));
+  check("and no label is empty", blank.length === 0, blank.join(", "));
+
   console.log("\n--- the first crest waits for the mode splash ---");
   const intro = makeInstance("mgr-intro");
   await tick(300);

@@ -2533,7 +2533,7 @@ let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stea
    fetches could land either way round and quietly renumber the bank between
    one page load and the next, which would point a resumed match's used-list at
    the wrong questions. */
-const PACKS = ["assets/facts/index.json", "assets/deep/index.json"];
+const PACKS = ["assets/facts/index.json", "assets/deep/index.json", "assets/nicknames/index.json"];
 (async ()=>{
   let n=0;
   for(const url of PACKS){

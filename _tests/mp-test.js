@@ -99,6 +99,9 @@ function makeInstance(label) {
     getItem: k => (k in store ? store[k] : null),
     setItem: (k, v) => { store[k] = String(v); },
     removeItem: k => { delete store[k]; },
+    /* not part of the browser API: it lets a test carry storage into a fresh
+       instance, which is what closing the app and opening it again is */
+    __store: store,
   };
   win.localStorage = localStorage;
   const ctx = {

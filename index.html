@@ -3353,6 +3353,11 @@ function joinRoom(code){
     const sameQ = S && S.phase===payload.phase && S.qi===payload.qi && S.tier===payload.tier;
     const typing = document.activeElement && document.activeElement.id==="mpans";
     S=payload;
+    /* The host files the match to its own record book when it ends. A guest
+       only ever mirrors, so every match played from your own phone used to
+       vanish the moment you closed the app: your Table was empty while the
+       host's had the whole night in it. Now each phone keeps its own copy. */
+    if(S && S.phase==="results") recordMirrored();
     if(sameQ && typing) return; // don't yank the keyboard away mid-word
     render();
   });
@@ -3550,10 +3555,72 @@ function joinFromSheet(){
    nights. Local to this phone, like everything else in the app. */
 const HIST_KEY = "ball-quiz-history-v1";
 const MODE_LABEL = {classic:"Classic", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush"};
-function history(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }catch(e){ return []; } }
-function putHistory(h){ try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }catch(e){} }
-function clearHistory(){ try{ localStorage.removeItem(HIST_KEY); }catch(e){} }
+/* THE RECORD BOOK HAS TO SURVIVE THE APP BEING SHUT.
+
+   It lives in localStorage, which already survives a close, but three things
+   could take it away and two of them had nothing to do with the phone.
+
+   A second copy is kept under a backup key. If the main one comes back
+   missing or unreadable, the backup is used and the main one is written
+   again, so a write that died halfway or a quota error costs nothing.
+
+   Writing an empty list over a full one is refused unless the wipe was asked
+   for out loud, because every other path to an empty list is a bug. */
+const HIST_BAK = HIST_KEY + "-bak";
+function readHist(key){
+  try{
+    const raw = localStorage.getItem(key);
+    if(!raw) return null;
+    const h = JSON.parse(raw);
+    return Array.isArray(h) ? h : null;
+  }catch(e){ return null; }
+}
+function history(){
+  const main = readHist(HIST_KEY);
+  if(main && main.length) return main;
+  const bak = readHist(HIST_BAK);
+  if(bak && bak.length){                       // main is gone or corrupt: put it back
+    try{ localStorage.setItem(HIST_KEY, JSON.stringify(bak)); }catch(e){}
+    return bak;
+  }
+  return main || [];
+}
+function putHistory(h, wiping){
+  if(!Array.isArray(h)) return;
+  if(!h.length && !wiping && history().length) return;   // never lose a night to a bug
+  try{
+    localStorage.setItem(HIST_KEY, JSON.stringify(h));
+    localStorage.setItem(HIST_BAK, JSON.stringify(h));
+  }catch(e){}
+}
+function clearHistory(){
+  try{ localStorage.removeItem(HIST_KEY); localStorage.removeItem(HIST_BAK); }catch(e){}
+}
+/* Browsers evict storage for sites they think you have abandoned. Asking
+   makes the data persistent where the browser allows it, and costs nothing
+   where it does not. Installed apps are usually granted it outright. */
+(function keepStorage(){
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+})();
 const nameKey = n => String(n||"").trim().toLowerCase();
+
+/* A guest's copy of a finished match. It cannot use S.recorded, because that
+   flag belongs to the host's state and arrives already set, and the results
+   state is re-broadcast on every repaint, so the guard is the record itself:
+   the same players on the same scores in the same mode is the same match. */
+function recordMirrored(){
+  if(!S || !S.players || !S.players.length) return;
+  const h = history();
+  const last = h[h.length-1];
+  const same = last && last.mode===S.mode && last.rounds===S.round
+    && last.players.length===S.players.length
+    && last.players.every((p,i)=>nameKey(p.name)===nameKey(S.players[i].name) && p.score===S.players[i].score);
+  if(same) return;
+  const saved = S.recorded;
+  S.recorded = false;                        // the host's flag says nothing about this phone
+  recordMatch();
+  S.recorded = saved;
+}
 
 // called the moment a match reaches the results screen, once and only once
 function recordMatch(){

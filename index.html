@@ -583,21 +583,34 @@
     border:1px solid var(--line);
     background:var(--card);
     background:linear-gradient(100deg,
-      color-mix(in srgb, var(--dc) 20%, var(--card)) 0%,
-      color-mix(in srgb, var(--dc) 6%, var(--card)) 42%,
-      var(--card) 78%);
+      color-mix(in srgb, var(--dc) 38%, var(--card)) 0%,
+      color-mix(in srgb, var(--dc) 16%, var(--card)) 46%,
+      var(--card) 84%);
     font:700 1.1rem/1 var(--ui);
     color:var(--ink);
-    box-shadow:inset 3px 0 0 var(--dc), var(--shadow);
+    box-shadow:inset 4px 0 0 var(--dc), var(--shadow);
     transition:transform .06s ease, box-shadow .12s ease;
   }
-  .diff:active{transform:scale(.98);box-shadow:inset 3px 0 0 var(--dc), 0 2px 6px rgba(0,0,0,.28)}
+  .diff:active{transform:scale(.98);box-shadow:inset 4px 0 0 var(--dc), 0 2px 6px rgba(0,0,0,.28)}
   .diff .left{display:flex;flex-direction:column;gap:5px;text-align:left}
   .diff .left > span:first-child{display:flex;align-items:center;letter-spacing:.01em}
+  /* The points token: lit from the top like a physical counter rather than
+     filled flat. The light catch and the darker underside are what stop it
+     reading as a coloured rectangle with a number in it. */
   .diff .pts{
-    font:700 .8rem/1 var(--ui);
-    background:var(--dc);color:#fff;padding:6px 11px;border-radius:99px;
-    box-shadow:0 1px 4px color-mix(in srgb, var(--dc) 45%, transparent);
+    font:800 .84rem/1 var(--ui);letter-spacing:.02em;
+    color:#fff;padding:8px 14px;border-radius:99px;
+    background:var(--dc);
+    background:linear-gradient(165deg,
+      color-mix(in srgb, var(--dc) 72%, #fff) 0%,
+      var(--dc) 46%,
+      color-mix(in srgb, var(--dc) 78%, #000) 100%);
+    border:1px solid color-mix(in srgb, var(--dc) 62%, #000);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.42),
+      inset 0 -2px 3px rgba(0,0,0,.16),
+      0 2px 7px color-mix(in srgb, var(--dc) 38%, transparent);
+    text-shadow:0 1px 1px rgba(0,0,0,.3);
   }
   /* BALL keeps its gold, deepened at both ends so the fade runs the same way
      the other five do rather than sitting flat across the row */
@@ -608,7 +621,15 @@
     box-shadow:inset 3px 0 0 #f3d982, var(--shadow);
   }
   .diff.ball:active{box-shadow:inset 3px 0 0 #f3d982, 0 2px 6px rgba(0,0,0,.28)}
-  .diff.ball .pts{background:rgba(255,255,255,.22);box-shadow:none}
+  /* BALL's token goes parchment rather than translucent white, the same cream
+     the Resume button and the selected chips use. White on gold was the one
+     token on the screen with nothing holding it down. */
+  .diff.ball .pts{
+    background:linear-gradient(165deg,#fffaf0,#fdf6e6 45%,#f0e2c2);
+    border-color:#c9a45e;color:#7a5410;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9), inset 0 -2px 3px rgba(138,100,20,.16), 0 2px 8px rgba(0,0,0,.28);
+    text-shadow:none;
+  }
   .diff.ball .cnt{color:rgba(255,255,255,.85)}
   .diff .cnt{font:500 .68rem/1 var(--ui);color:var(--chalk-dim)}
 

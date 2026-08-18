@@ -6,3 +6,6 @@ _bank_data.tsv
 # the YuNet face model, fetched on demand by _tools/build-facecrop.py
 _tools/_models/
 __pycache__/
+
+# the badge fame cache: rebuildable, and 2,894 lookups nobody needs in git
+_tools/_models/

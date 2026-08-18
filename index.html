@@ -2715,6 +2715,12 @@ let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stea
    facts = generated from Wikidata (CC0, so no attribution tail unlike the photo
    banks): home grounds, founding years, league winners.
    deep  = handwritten Hard and BALL questions, never regenerated.
+   extra = the August 2026 top-up across all five tiers, written and then
+           fact-checked against sources before shipping. The checking was worth
+           more than the writing: nothing came back invented, but every question
+           phrased as a live record ("all-time top scorer", "most capped") had
+           either already broken or was about to, so they are all re-anchored to
+           a closed season now.
 
    APPENDED to each tier, never inserted: S.used holds indexes, so putting these
    anywhere but the end would scramble a saved match's list of seen questions.
@@ -2722,7 +2728,7 @@ let S = null; // {players:[{name,score,off}], turn, round, phase, tier, qi, stea
    fetches could land either way round and quietly renumber the bank between
    one page load and the next, which would point a resumed match's used-list at
    the wrong questions. */
-const PACKS = ["assets/facts/index.json", "assets/deep/index.json", "assets/nicknames/index.json", "assets/awards/index.json"];
+const PACKS = ["assets/facts/index.json", "assets/deep/index.json", "assets/nicknames/index.json", "assets/awards/index.json", "assets/extra/index.json"];
 (async ()=>{
   let n=0;
   for(const url of PACKS){

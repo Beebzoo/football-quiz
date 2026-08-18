@@ -1,0 +1,1508 @@
+{
+ "easy": [
+  {
+   "q": "In which Dutch city do MVV play?",
+   "a": "Maastricht"
+  },
+  {
+   "q": "Which Dutch club is based in Tilburg?",
+   "a": "Willem II"
+  },
+  {
+   "q": "Which Dutch club is based in Breda?",
+   "a": "NAC Breda"
+  },
+  {
+   "q": "Feyenoord's home shirt is split into which two colours?",
+   "a": "Red and white"
+  },
+  {
+   "q": "Ajax's white home shirt carries a broad vertical band of which colour?",
+   "a": "Red"
+  },
+  {
+   "q": "What colours and pattern are PSV's home shirts?",
+   "a": "Red and white stripes"
+  },
+  {
+   "q": "Who captained the Netherlands at Euro 2024?",
+   "a": "Virgil van Dijk"
+  },
+  {
+   "q": "Which national team did Louis van Gaal manage at both the 2014 and 2022 World Cups?",
+   "a": "The Netherlands"
+  },
+  {
+   "q": "Which country do Frenkie de Jong and Matthijs de Ligt play for?",
+   "a": "The Netherlands"
+  },
+  {
+   "q": "How many World Cups have the Netherlands won?",
+   "a": "None"
+  },
+  {
+   "q": "In which decade did Ajax win three European Cups in a row?",
+   "a": "The 1970s"
+  },
+  {
+   "q": "Which country is Xavi Simons from?",
+   "a": "The Netherlands"
+  },
+  {
+   "q": "Which country co-hosted Euro 2000 with Belgium?",
+   "a": "The Netherlands"
+  },
+  {
+   "q": "Which position did Edwin van der Sar play?",
+   "a": "Goalkeeper"
+  },
+  {
+   "q": "Which position did Marco van Basten play?",
+   "a": "Striker"
+  },
+  {
+   "q": "Which position did Ronald Koeman play?",
+   "a": "Defender"
+  },
+  {
+   "q": "Which Dutch club did Johan Cruyff both play for and later manage?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which is the biggest football stadium in the Netherlands?",
+   "a": "The Johan Cruyff Arena"
+  },
+  {
+   "q": "What colours are Barcelona's traditional home shirts?",
+   "a": "Blue and red"
+  },
+  {
+   "q": "UD Las Palmas play on which Spanish islands?",
+   "a": "The Canary Islands"
+  },
+  {
+   "q": "What colour do UD Las Palmas wear at home?",
+   "a": "Yellow"
+  },
+  {
+   "q": "Which two clubs contest the Madrid city derby?",
+   "a": "Real Madrid and Atlético Madrid"
+  },
+  {
+   "q": "Which country did Xavi and Andrés Iniesta play for?",
+   "a": "Spain"
+  },
+  {
+   "q": "Which Spanish club is nicknamed 'Atleti'?",
+   "a": "Atlético Madrid"
+  },
+  {
+   "q": "How many teams play in La Liga?",
+   "a": "20"
+  },
+  {
+   "q": "What is the Spanish domestic cup competition called?",
+   "a": "The Copa del Rey"
+  },
+  {
+   "q": "What does 'Copa del Rey' mean in English?",
+   "a": "The King's Cup"
+  },
+  {
+   "q": "Complete Barcelona's motto: 'Més que un ...'",
+   "a": "Club (more than a club)"
+  },
+  {
+   "q": "Which country is Álvaro Morata from?",
+   "a": "Spain"
+  },
+  {
+   "q": "What colour is Spain's home shirt?",
+   "a": "Red"
+  },
+  {
+   "q": "Which Seville club plays in green and white stripes?",
+   "a": "Real Betis"
+  },
+  {
+   "q": "Barcelona is the capital of which Spanish region?",
+   "a": "Catalonia"
+  },
+  {
+   "q": "Espanyol are the other big club in which Spanish city?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "What is the offence called when an attacker is ahead of the last defender when the ball is played forward?",
+   "a": "Offside"
+  },
+  {
+   "q": "What do you call a match in which a goalkeeper's team concedes no goals?",
+   "a": "A clean sheet"
+  },
+  {
+   "q": "How many points does a team get for a draw?",
+   "a": "1"
+  },
+  {
+   "q": "How long does extra time last in total?",
+   "a": "30 minutes"
+  },
+  {
+   "q": "How many penalties does each team take in the first round of a shoot-out?",
+   "a": "Five"
+  },
+  {
+   "q": "What is awarded when a defender puts the ball out of play over their own goal line?",
+   "a": "A corner"
+  },
+  {
+   "q": "Which organisation runs world football?",
+   "a": "FIFA"
+  },
+  {
+   "q": "Which organisation runs European football?",
+   "a": "UEFA"
+  },
+  {
+   "q": "How often is the men's World Cup held?",
+   "a": "Every four years"
+  },
+  {
+   "q": "Which competition is South America's version of the Champions League?",
+   "a": "The Copa Libertadores"
+  },
+  {
+   "q": "Which Argentine club are Boca Juniors' great rivals?",
+   "a": "River Plate"
+  },
+  {
+   "q": "Which Brazilian club did Pelé spend nearly his whole career at?",
+   "a": "Santos"
+  },
+  {
+   "q": "Which Italian club did Paolo Maldini spend his entire career at?",
+   "a": "AC Milan"
+  },
+  {
+   "q": "Which Italian club did Francesco Totti spend his entire career at?",
+   "a": "Roma"
+  },
+  {
+   "q": "Which two big clubs are based in Rome?",
+   "a": "Roma and Lazio"
+  },
+  {
+   "q": "Which Italian city is home to Juventus?",
+   "a": "Turin"
+  },
+  {
+   "q": "What colours are Juventus's home shirts?",
+   "a": "Black and white stripes"
+  },
+  {
+   "q": "What is the top division in the United States called?",
+   "a": "Major League Soccer"
+  },
+  {
+   "q": "What is the top division in Mexico called?",
+   "a": "Liga MX"
+  },
+  {
+   "q": "What is the top division in Turkey called?",
+   "a": "The Süper Lig"
+  },
+  {
+   "q": "What is the top division in Portugal called?",
+   "a": "The Primeira Liga"
+  },
+  {
+   "q": "How many teams played at the 2026 World Cup?",
+   "a": "48"
+  },
+  {
+   "q": "Which country did England beat in the 1966 World Cup final?",
+   "a": "West Germany"
+  },
+  {
+   "q": "Which country hosted the 1990 World Cup?",
+   "a": "Italy"
+  },
+  {
+   "q": "Which country hosted and won the 1998 World Cup?",
+   "a": "France"
+  },
+  {
+   "q": "Which German club did Erling Haaland join Manchester City from in 2022?",
+   "a": "Borussia Dortmund"
+  },
+  {
+   "q": "Which country is Riyad Mahrez from?",
+   "a": "Algeria"
+  }
+ ],
+ "normal": [
+  {
+   "q": "Which Dutch club is based in Doetinchem?",
+   "a": "De Graafschap"
+  },
+  {
+   "q": "Which Dutch club is based in Leeuwarden?",
+   "a": "SC Cambuur"
+  },
+  {
+   "q": "Which Dutch club is based in the Limburg town of Kerkrade?",
+   "a": "Roda JC"
+  },
+  {
+   "q": "MVV, Roda JC and Fortuna Sittard all come from which Dutch province?",
+   "a": "Limburg"
+  },
+  {
+   "q": "What is the second tier of Dutch football called?",
+   "a": "The Eerste Divisie"
+  },
+  {
+   "q": "Which Dutchman managed Barcelona from 2020 until his sacking in 2021?",
+   "a": "Ronald Koeman"
+  },
+  {
+   "q": "Which Dutch goalkeeper won the Champions League with both Ajax and Manchester United?",
+   "a": "Edwin van der Sar"
+  },
+  {
+   "q": "Which three Dutch clubs have won the European Cup?",
+   "a": "Ajax, Feyenoord and PSV"
+  },
+  {
+   "q": "Which country beat the Netherlands in the 2019 Nations League final?",
+   "a": "Portugal"
+  },
+  {
+   "q": "Which club has won the most KNVB Cups?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which Spanish club did Wesley Sneijder play for before joining Inter Milan?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which Italian club did Wesley Sneijder win the treble with in 2010?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Which English club did Liverpool sign Georginio Wijnaldum from in 2016?",
+   "a": "Newcastle United"
+  },
+  {
+   "q": "Which English club did Liverpool sign Virgil van Dijk from in 2018?",
+   "a": "Southampton"
+  },
+  {
+   "q": "Which country did the Netherlands beat 2-1 in the Euro 2024 quarter-final?",
+   "a": "Turkey"
+  },
+  {
+   "q": "Which country did the Netherlands beat in the 2014 World Cup third-place play-off?",
+   "a": "Brazil"
+  },
+  {
+   "q": "Which Dutch coach won the Bundesliga with Bayern Munich in 2010?",
+   "a": "Louis van Gaal"
+  },
+  {
+   "q": "Which club has won the second-most Eredivisie titles?",
+   "a": "PSV"
+  },
+  {
+   "q": "Which Dutch midfielder scored twice in Liverpool's 4-0 comeback against Barcelona in 2019?",
+   "a": "Georginio Wijnaldum"
+  },
+  {
+   "q": "Which Dutch club did Jurriën Timber leave for Arsenal in 2023?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which German club did Liverpool sign Ryan Gravenberch from in 2023?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Which Italian club did Frank de Boer manage in 2016?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Which Spanish club did Memphis Depay join from Lyon in 2021?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which English club did Dirk Kuyt join from Feyenoord in 2006?",
+   "a": "Liverpool"
+  },
+  {
+   "q": "Which Dutch club did Robin van Persie return to as a player in 2018?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "Which German club did Klaas-Jan Huntelaar play for from 2010 to 2017?",
+   "a": "Schalke 04"
+  },
+  {
+   "q": "Which Spanish club did Arjen Robben play for between Chelsea and Bayern Munich?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which Spanish club is nicknamed the 'Yellow Submarine'?",
+   "a": "Villarreal"
+  },
+  {
+   "q": "Which Spanish club won the 2021 Europa League, beating Manchester United on penalties?",
+   "a": "Villarreal"
+  },
+  {
+   "q": "The Basque derby is contested by Athletic Club and which other club?",
+   "a": "Real Sociedad"
+  },
+  {
+   "q": "In which city do Real Sociedad play?",
+   "a": "San Sebastián"
+  },
+  {
+   "q": "Which Canary Islands club did Pedri play for before joining up with Barcelona in 2020?",
+   "a": "UD Las Palmas"
+  },
+  {
+   "q": "Which other Canary Islands club are UD Las Palmas' great rivals?",
+   "a": "CD Tenerife"
+  },
+  {
+   "q": "Who managed Spain at the 2022 World Cup?",
+   "a": "Luis Enrique"
+  },
+  {
+   "q": "Which country knocked Spain out of the 2022 World Cup on penalties?",
+   "a": "Morocco"
+  },
+  {
+   "q": "Which club did Liverpool beat 4-0 to overturn a 3-0 first-leg deficit in the 2019 Champions League semi-final?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which Spanish club won the 2004 UEFA Cup?",
+   "a": "Valencia"
+  },
+  {
+   "q": "Who is Barcelona's all-time top scorer?",
+   "a": "Lionel Messi"
+  },
+  {
+   "q": "Which Spanish club did brothers Iñaki and Nico Williams both come through?",
+   "a": "Athletic Club"
+  },
+  {
+   "q": "Which club has won the most La Liga titles?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which Spanish club did Fernando Torres both come through and return to in 2015?",
+   "a": "Atlético Madrid"
+  },
+  {
+   "q": "Which country did Spain beat in the Euro 2024 quarter-final?",
+   "a": "Germany"
+  },
+  {
+   "q": "Which Italian club did Liverpool sign Mohamed Salah from in 2017?",
+   "a": "Roma"
+  },
+  {
+   "q": "Which German club did Manchester City sign Kevin De Bruyne from in 2015?",
+   "a": "Wolfsburg"
+  },
+  {
+   "q": "Who captained Germany to the 2014 World Cup title?",
+   "a": "Philipp Lahm"
+  },
+  {
+   "q": "Which German won the Golden Boot at the 2010 World Cup?",
+   "a": "Thomas Müller"
+  },
+  {
+   "q": "Which country hosted the 1986 World Cup?",
+   "a": "Mexico"
+  },
+  {
+   "q": "Which country hosted the 1982 World Cup?",
+   "a": "Spain"
+  },
+  {
+   "q": "Which two countries co-hosted Euro 2012?",
+   "a": "Poland and Ukraine"
+  },
+  {
+   "q": "Which country hosted Euro 1996?",
+   "a": "England"
+  },
+  {
+   "q": "Which country beat England on penalties in the Euro 1996 semi-final?",
+   "a": "Germany"
+  },
+  {
+   "q": "Which club has won the most Serie A titles?",
+   "a": "Juventus"
+  },
+  {
+   "q": "Which German club did Real Madrid sign Toni Kroos from in 2014?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Which Argentine club did Diego Maradona play for before moving to Barcelona?",
+   "a": "Boca Juniors"
+  },
+  {
+   "q": "What is the Buenos Aires derby between Boca Juniors and River Plate called?",
+   "a": "The Superclásico"
+  },
+  {
+   "q": "Which Brazilian club did Neymar play for before joining Barcelona?",
+   "a": "Santos"
+  },
+  {
+   "q": "Which country won the 2019 Copa América on home soil?",
+   "a": "Brazil"
+  },
+  {
+   "q": "At which World Cup was VAR used for the first time?",
+   "a": "2018"
+  },
+  {
+   "q": "Which club won the FIFA Club World Cup in 2023?",
+   "a": "Manchester City"
+  },
+  {
+   "q": "How many World Cups have Uruguay won?",
+   "a": "Two (1930 and 1950)"
+  },
+  {
+   "q": "Who is France's all-time top international goalscorer?",
+   "a": "Kylian Mbappé"
+  },
+  {
+   "q": "Who missed the decisive penalty for England in the Euro 1996 semi-final shoot-out?",
+   "a": "Gareth Southgate"
+  },
+  {
+   "q": "Which England player was famously in tears after a booking in the 1990 World Cup semi-final?",
+   "a": "Paul Gascoigne"
+  }
+ ],
+ "hard": [
+  {
+   "q": "Which Dutch goalkeeper set the Premier League record of 1,311 minutes without conceding, in 2009?",
+   "a": "Edwin van der Sar"
+  },
+  {
+   "q": "Who was the Netherlands' top scorer at the 2010 World Cup?",
+   "a": "Wesley Sneijder (5 goals)"
+  },
+  {
+   "q": "How many European Cups have Dutch clubs won in total?",
+   "a": "Six (Ajax 4, Feyenoord 1, PSV 1)"
+  },
+  {
+   "q": "Which club won the Eredivisie in 1998-99?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "Which Dutch club did Frank Rijkaard manage before joining Barcelona?",
+   "a": "Sparta Rotterdam"
+  },
+  {
+   "q": "Which country knocked the Netherlands out of Euro 2020 in the last 16?",
+   "a": "The Czech Republic"
+  },
+  {
+   "q": "Who scored the Netherlands' goal in the 1978 World Cup final?",
+   "a": "Dick Nanninga"
+  },
+  {
+   "q": "Which Turkish club did Dirk Kuyt win a league title with?",
+   "a": "Fenerbahçe"
+  },
+  {
+   "q": "Which major tournament did the Netherlands fail to qualify for in 2016?",
+   "a": "The European Championship (Euro 2016)"
+  },
+  {
+   "q": "Which Dutch club did Pierre van Hooijdonk leave for Celtic in 1995?",
+   "a": "NAC Breda"
+  },
+  {
+   "q": "Which national team did Bert van Marwijk take to the 2018 World Cup?",
+   "a": "Australia"
+  },
+  {
+   "q": "Which national team did Dick Advocaat manage at Euro 2004?",
+   "a": "The Netherlands"
+  },
+  {
+   "q": "Which Spanish club did Johan Neeskens join in 1974?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Marco van Basten won the 1986 European Golden Shoe while playing for which club?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which Dutch club did Ronald Koeman leave to join Barcelona in 1989?",
+   "a": "PSV"
+  },
+  {
+   "q": "Which Belgian club made Marc Overmars their technical director in 2022?",
+   "a": "Royal Antwerp"
+  },
+  {
+   "q": "Which club sacked Erik ten Hag in October 2024?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Which German club did Mark van Bommel join from Barcelona in 2006?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Which Italian club did Nigel de Jong join from Manchester City in 2012?",
+   "a": "AC Milan"
+  },
+  {
+   "q": "Which Spanish club did Jasper Cillessen join from Barcelona in 2019?",
+   "a": "Valencia"
+  },
+  {
+   "q": "Which club did Giovanni van Bronckhorst take to the 2022 Europa League final?",
+   "a": "Rangers"
+  },
+  {
+   "q": "Who captained the Netherlands at the 1998 World Cup?",
+   "a": "Frank de Boer"
+  },
+  {
+   "q": "Michael Reiziger, Winston Bogarde and Patrick Kluivert all followed Louis van Gaal to which club in the late 1990s?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Who was the Netherlands manager at the 2006 World Cup?",
+   "a": "Marco van Basten"
+  },
+  {
+   "q": "Which Dutch club did Robin van Persie become head coach of in 2025?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "Which trophy goes to the best goalkeeper in La Liga each season?",
+   "a": "The Zamora Trophy"
+  },
+  {
+   "q": "What is Real Madrid's reserve team called?",
+   "a": "Real Madrid Castilla"
+  },
+  {
+   "q": "Which Spanish club is nicknamed 'Los Che'?",
+   "a": "Valencia"
+  },
+  {
+   "q": "Which Spain manager was sacked two days before their opening match at the 2018 World Cup?",
+   "a": "Julen Lopetegui"
+  },
+  {
+   "q": "Which club's announcement that they had hired Julen Lopetegui got him sacked by Spain in 2018?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which Spanish club ended a 40-year wait for a major trophy by winning the 2024 Copa del Rey?",
+   "a": "Athletic Club"
+  },
+  {
+   "q": "Who became Atlético Madrid's all-time record goalscorer in 2024?",
+   "a": "Antoine Griezmann"
+  },
+  {
+   "q": "Which winger scored Spain's opening goal in the Euro 2024 final?",
+   "a": "Nico Williams"
+  },
+  {
+   "q": "Which Spaniard won the Golden Boot at Euro 2012?",
+   "a": "Fernando Torres"
+  },
+  {
+   "q": "How many goals did Spain concede on the way to winning the 2010 World Cup?",
+   "a": "Two"
+  },
+  {
+   "q": "Celta de Vigo come from which Spanish region?",
+   "a": "Galicia"
+  },
+  {
+   "q": "What does the word 'balompié' in Real Betis's full name mean?",
+   "a": "Football"
+  },
+  {
+   "q": "Which manager won three Europa Leagues in a row with Sevilla between 2014 and 2016?",
+   "a": "Unai Emery"
+  },
+  {
+   "q": "What was the mascot of the 1982 World Cup in Spain called?",
+   "a": "Naranjito"
+  },
+  {
+   "q": "Which Spain and Manchester City midfielder was born in Gran Canaria?",
+   "a": "David Silva"
+  },
+  {
+   "q": "Which stadium hosted the 2022 World Cup final?",
+   "a": "Lusail Stadium"
+  },
+  {
+   "q": "Whose disallowed goal against Germany at the 2010 World Cup pushed FIFA towards goal-line technology?",
+   "a": "Frank Lampard"
+  },
+  {
+   "q": "At which World Cup were yellow and red cards introduced?",
+   "a": "1970, in Mexico"
+  },
+  {
+   "q": "Which England goalkeeper won a record 125 caps between 1970 and 1990?",
+   "a": "Peter Shilton"
+  },
+  {
+   "q": "Who is Italy's all-time top international goalscorer?",
+   "a": "Luigi Riva"
+  },
+  {
+   "q": "Who is Liverpool's all-time top scorer?",
+   "a": "Ian Rush"
+  },
+  {
+   "q": "Which stadium hosted the 2018 World Cup final?",
+   "a": "The Luzhniki Stadium in Moscow"
+  },
+  {
+   "q": "Which English club won the European Cup in 1982?",
+   "a": "Aston Villa"
+  },
+  {
+   "q": "Which country beat Italy in the play-off that kept them out of the 2018 World Cup?",
+   "a": "Sweden"
+  },
+  {
+   "q": "Which country knocked Italy out of the 2022 World Cup qualifying play-offs?",
+   "a": "North Macedonia"
+  },
+  {
+   "q": "Which Argentine club has won the most Copa Libertadores titles?",
+   "a": "Independiente (7)"
+  },
+  {
+   "q": "Which club won the 2024-25 Europa League?",
+   "a": "Tottenham Hotspur"
+  },
+  {
+   "q": "Which club won the 2024-25 Conference League, completing a clean sweep of European trophies?",
+   "a": "Chelsea"
+  },
+  {
+   "q": "Which country won the 2023 Africa Cup of Nations on home soil?",
+   "a": "Ivory Coast"
+  },
+  {
+   "q": "Which country won Women's Euro 2025?",
+   "a": "England"
+  },
+  {
+   "q": "Which club won the 2024-25 Women's Champions League?",
+   "a": "Arsenal"
+  },
+  {
+   "q": "Whose 40-goal Bundesliga season record did Robert Lewandowski break in 2021?",
+   "a": "Gerd Müller"
+  }
+ ],
+ "extreme": [
+  {
+   "q": "Which Limburg club won the Dutch national championship in 1950, the first from the province to manage it?",
+   "a": "Limburgia, from Brunssum"
+  },
+  {
+   "q": "Which Kerkrade club won the last Dutch national championship before the Eredivisie started, in 1956?",
+   "a": "Rapid JC"
+  },
+  {
+   "q": "Which two Enschede clubs merged in 1965 to form FC Twente?",
+   "a": "Sportclub Enschede and Enschedese Boys"
+  },
+  {
+   "q": "Which club gave Erik ten Hag his first job as a head coach, in 2012?",
+   "a": "Go Ahead Eagles"
+  },
+  {
+   "q": "Ernst Happel won the European Cup with Feyenoord in 1970. Which German club did he win it with in 1983?",
+   "a": "Hamburger SV"
+  },
+  {
+   "q": "Which country knocked the Netherlands out of the play-off for the 1986 World Cup, going through on away goals?",
+   "a": "Belgium"
+  },
+  {
+   "q": "Who was the Netherlands manager at the 1978 World Cup?",
+   "a": "Ernst Happel"
+  },
+  {
+   "q": "Which English club did Feyenoord beat over two legs to win the 1974 UEFA Cup?",
+   "a": "Tottenham Hotspur"
+  },
+  {
+   "q": "Which Greek striker was Eredivisie top scorer in 2020-21 with 26 goals, for a VVV-Venlo side that went down?",
+   "a": "Giorgos Giakoumakis"
+  },
+  {
+   "q": "Who holds the Eredivisie record for goals in a single season, with 43 for PSV in 1956-57?",
+   "a": "Coen Dillen"
+  },
+  {
+   "q": "Which club did Louis van Gaal manage to the 2008-09 Eredivisie title?",
+   "a": "AZ"
+  },
+  {
+   "q": "Which Dutch club plays at the Parkstad Limburg Stadion?",
+   "a": "Roda JC Kerkrade"
+  },
+  {
+   "q": "Which Limburg club finished second in the Eredivisie in 1994-95, their best ever finish?",
+   "a": "Roda JC Kerkrade"
+  },
+  {
+   "q": "Which club beat Fortuna Sittard 2-0 in the 1999 KNVB Cup final?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Fortuna Sittard was formed in 1968 by merging Sittardia with which other club?",
+   "a": "Fortuna '54"
+  },
+  {
+   "q": "Which Venlo club won the KNVB Cup in 1959?",
+   "a": "VVV"
+  },
+  {
+   "q": "Which club beat MVV over two legs in the 2017 promotion/relegation play-off final?",
+   "a": "Roda JC Kerkrade"
+  },
+  {
+   "q": "Which reserve side won the Eerste Divisie in 2017-18 without being allowed to go up?",
+   "a": "Jong Ajax"
+  },
+  {
+   "q": "Which Italian club did Ajax beat on away goals to win the 1992 UEFA Cup, Louis van Gaal's first trophy?",
+   "a": "Torino"
+  },
+  {
+   "q": "Which Rotterdam club was Ruud Geels playing for when he won the 1980-81 Eredivisie Golden Boot?",
+   "a": "Sparta Rotterdam"
+  },
+  {
+   "q": "Which French club did PSV beat 3-0 on aggregate in the 1978 UEFA Cup final?",
+   "a": "Bastia"
+  },
+  {
+   "q": "Which club won the KNVB Cup for the first time in 1985, beating Helmond Sport in the final?",
+   "a": "FC Utrecht"
+  },
+  {
+   "q": "Which club beat Go Ahead in the 1965 KNVB Cup final?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "Which club won its only La Liga title in 1945-46?",
+   "a": "Sevilla"
+  },
+  {
+   "q": "Which club won La Liga in 1934-35, the only time they have done it?",
+   "a": "Real Betis"
+  },
+  {
+   "q": "Which Basque club won back-to-back La Liga titles in 1981 and 1982?",
+   "a": "Real Sociedad"
+  },
+  {
+   "q": "Which club beat UD Las Palmas in the 1978 Copa del Rey final?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "UD Las Palmas' best La Liga finish is second place. In which season?",
+   "a": "1968-69"
+  },
+  {
+   "q": "Which ground was UD Las Palmas' home before they moved to the Estadio Gran Canaria?",
+   "a": "The Estadio Insular"
+  },
+  {
+   "q": "Which club beat Real Madrid on the final day of both 1991-92 and 1992-93, handing Barcelona the title each time?",
+   "a": "Tenerife"
+  },
+  {
+   "q": "Which German coach took CD Tenerife to the 1996-97 UEFA Cup semi-finals?",
+   "a": "Jupp Heynckes"
+  },
+  {
+   "q": "Which Spanish club did Rafael Benítez lead to promotion in 2001, just before he joined Valencia?",
+   "a": "Tenerife"
+  },
+  {
+   "q": "Which Dutchman was sacked by Valencia in the same season he won them the 2008 Copa del Rey?",
+   "a": "Ronald Koeman"
+  },
+  {
+   "q": "Which Spanish club did Guus Hiddink manage from 1991 to 1994?",
+   "a": "Valencia"
+  },
+  {
+   "q": "Which Spanish club lost the 2001 UEFA Cup final 5-4 to Liverpool?",
+   "a": "Deportivo Alavés"
+  },
+  {
+   "q": "Which Deportivo defender missed a last-minute penalty on the final day of 1993-94 that would have won them the title?",
+   "a": "Miroslav Djukić"
+  },
+  {
+   "q": "Which Brazilian won the Pichichi in 1992-93 with 29 goals for Deportivo La Coruña?",
+   "a": "Bebeto"
+  },
+  {
+   "q": "Which English club won the last Inter-Cities Fairs Cup, in 1971?",
+   "a": "Leeds United"
+  },
+  {
+   "q": "Which club won the first official UEFA Super Cup, in 1973?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which club did Aberdeen beat in the 1983 Cup Winners' Cup final?",
+   "a": "Real Madrid"
+  },
+  {
+   "q": "Which Swedish club reached the 1979 European Cup final?",
+   "a": "Malmö FF"
+  },
+  {
+   "q": "Which player won the European Cup six times, more than anyone else?",
+   "a": "Francisco Gento"
+  },
+  {
+   "q": "Which country was handed a bye straight to the quarter-finals of the 1938 World Cup after Austria withdrew?",
+   "a": "Sweden"
+  },
+  {
+   "q": "Which English club won the Cup Winners' Cup in 1985, beating Rapid Vienna in the final?",
+   "a": "Everton"
+  },
+  {
+   "q": "Which club won the Cup Winners' Cup four times, more than any other side?",
+   "a": "Barcelona"
+  },
+  {
+   "q": "Which German club was stripped of all its points and relegated in 1972 over the Bundesliga match-fixing scandal?",
+   "a": "Arminia Bielefeld"
+  },
+  {
+   "q": "Which club was awarded the 2005-06 Serie A title after Juventus were stripped of it?",
+   "a": "Inter Milan"
+  },
+  {
+   "q": "Which country did Jack Charlton manage at the 1990 World Cup?",
+   "a": "The Republic of Ireland"
+  },
+  {
+   "q": "Which English club beat Barcelona in the 1991 Cup Winners' Cup final?",
+   "a": "Manchester United"
+  },
+  {
+   "q": "Which German club won the 1988 UEFA Cup on penalties after losing the first leg 3-0 to Espanyol?",
+   "a": "Bayer Leverkusen"
+  },
+  {
+   "q": "Which club won the Bundesliga in 1997-98, the season straight after being promoted?",
+   "a": "1. FC Kaiserslautern"
+  },
+  {
+   "q": "Which German club did Nottingham Forest beat in the 1980 European Cup final?",
+   "a": "Hamburger SV"
+  },
+  {
+   "q": "Which French club won the league and cup double in 1996 under Guy Roux?",
+   "a": "AJ Auxerre"
+  },
+  {
+   "q": "Which Italian club won its only Serie A title in 1990-91?",
+   "a": "Sampdoria"
+  },
+  {
+   "q": "Which club won the Scottish league title in 1982-83, the only time they have done it?",
+   "a": "Dundee United"
+  },
+  {
+   "q": "Which country did Bora Milutinović manage at the 1998 World Cup?",
+   "a": "Nigeria"
+  },
+  {
+   "q": "Which Italian club did Denis Law join in 1961 for a British record fee?",
+   "a": "Torino"
+  },
+  {
+   "q": "Who coached Cameroon at the 1990 World Cup?",
+   "a": "Valeri Nepomniachi"
+  },
+  {
+   "q": "Which South American club did Real Madrid beat to win the first Intercontinental Cup, in 1960?",
+   "a": "Peñarol"
+  },
+  {
+   "q": "In 1996 Graeme Souness signed a player for Southampton after a phone call from a man posing as George Weah, recommending his cousin. Who was he?",
+   "a": "Ali Dia, who lasted 53 minutes as a substitute against Leeds"
+  },
+  {
+   "q": "At the 1994 Caribbean Cup a golden goal counted double. Barbados led Grenada 2-1 but needed to win by two. What did they do?",
+   "a": "Deliberately scored an own goal to make it 2-2 and force extra time, then won 4-2"
+  },
+  {
+   "q": "Referee Ken Aston invented the yellow and red card after a language mix-up at the 1966 World Cup. What gave him the idea on the drive home?",
+   "a": "Traffic lights, on Kensington High Street"
+  },
+  {
+   "q": "Which 1962 World Cup match did David Coleman call the most stupid, appalling and disgraceful exhibition of football in the game's history?",
+   "a": "Chile against Italy, the Battle of Santiago"
+  },
+  {
+   "q": "Juventus played in pink until 1903, when an English player in the side wrote home for new shirts. Which club's colours turned up?",
+   "a": "Notts County's black and white stripes"
+  },
+  {
+   "q": "With the ball at his feet in the box and the Everton keeper down injured in 2000, what did Paolo Di Canio do?",
+   "a": "Caught the ball so the keeper could be treated, and won the FIFA Fair Play award for it"
+  },
+  {
+   "q": "The joint manager who took Iceland to Euro 2016 and beat England had another job. What was it?",
+   "a": "Dentist, Heimir Hallgrímsson still ran a practice"
+  },
+  {
+   "q": "A three-match World Cup qualifier in 1969 helped tip two countries into a four day shooting war. Which two?",
+   "a": "El Salvador and Honduras"
+  },
+  {
+   "q": "Manchester United came out for the second half at Southampton in 1996 in a different kit. What was Alex Ferguson's reason?",
+   "a": "His players could not pick each other out in the grey shirts"
+  },
+  {
+   "q": "Garrincha won two World Cups with a body that should have stopped him. What was wrong with his legs?",
+   "a": "They were bent, both knees turned the same way, and one leg was several centimetres shorter than the other"
+  },
+  {
+   "q": "Before Argentina played Italy in Naples at the 1990 World Cup, what did Maradona ask the Neapolitans to remember?",
+   "a": "That the rest of Italy did not treat them as Italians, so they should back Argentina"
+  },
+  {
+   "q": "Who holds the record for the fastest booking in English football, carded three seconds into a game against Sheffield United in 1992?",
+   "a": "Vinnie Jones"
+  },
+  {
+   "q": "The 2004 Manchester United win that ended Arsenal's 49 match unbeaten run has a nickname. What flew at Alex Ferguson in the tunnel?",
+   "a": "A slice of pizza, hence the Battle of the Buffet"
+  },
+  {
+   "q": "The 1994 World Cup opening ceremony ended with Diana Ross taking a penalty at a rigged goal. What happened?",
+   "a": "She missed by a metre and the goal collapsed anyway"
+  },
+  {
+   "q": "After Norway beat England in 1981, Bjørge Lillelien listed Nelson, Churchill and Lady Diana, then shouted a line at Britain's prime minister. What?",
+   "a": "Maggie Thatcher, your boys took a hell of a beating"
+  }
+ ],
+ "ball": [
+  {
+   "q": "Which club won the Eerste Divisie title in 1981-82?",
+   "a": "Helmond Sport"
+  },
+  {
+   "q": "Which club won the Segunda División in 1979-80, 1982-83, 1985-86 and 2002-03?",
+   "a": "Real Murcia"
+  },
+  {
+   "q": "Which Arnhem club won the Eerste Divisie in 1976-77?",
+   "a": "Vitesse"
+  },
+  {
+   "q": "Which three Utrecht clubs merged in 1970 to form FC Utrecht?",
+   "a": "DOS, Elinkwijk and Velox"
+  },
+  {
+   "q": "Go Ahead Eagles were founded in 1902 under which name?",
+   "a": "Be Quick"
+  },
+  {
+   "q": "Which coach suggested adding 'Eagles' to Go Ahead's name in 1971?",
+   "a": "Barry Hughes"
+  },
+  {
+   "q": "In which year did Go Ahead win the last of their four Dutch national championships?",
+   "a": "1933"
+  },
+  {
+   "q": "Which NEC striker shared the 1972-73 Eredivisie top scorer prize with MVV's Willy Brokamp, both on 18 goals?",
+   "a": "Cas Janssens"
+  },
+  {
+   "q": "Which Volendam striker was Eredivisie top scorer in 1961-62?",
+   "a": "Dick Tol"
+  },
+  {
+   "q": "Which DWS striker was Eredivisie top scorer in both 1963-64 and 1964-65?",
+   "a": "Frans Geurtsen"
+  },
+  {
+   "q": "Which NEC striker was Eredivisie top scorer in 2010-11?",
+   "a": "Björn Vleminckx"
+  },
+  {
+   "q": "Which Sittard club won the Eerste Divisie in both 1963-64 and 1965-66?",
+   "a": "Sittardia"
+  },
+  {
+   "q": "DS'79 won the Eerste Divisie in 1982-83. Which city was that club from?",
+   "a": "Dordrecht"
+  },
+  {
+   "q": "MVV have won the Eerste Divisie twice, in 1983-84 and in which other season?",
+   "a": "1996-97"
+  },
+  {
+   "q": "How many of the eleven Rapid JC players who won the 1956 Dutch title worked as coal miners?",
+   "a": "Ten"
+  },
+  {
+   "q": "Who scored the last hat-trick in a European Cup or Champions League final, in 1969?",
+   "a": "Pierino Prati, for Milan against Ajax"
+  },
+  {
+   "q": "Which Belgian defender's late header in Rotterdam in 1985 put Belgium ahead of the Netherlands on away goals and into the 1986 World Cup?",
+   "a": "Georges Grün"
+  },
+  {
+   "q": "Which club were on the receiving end of the record 13-0 Eredivisie defeat by Ajax in 2020?",
+   "a": "VVV-Venlo"
+  },
+  {
+   "q": "Which German coach was in charge of AZ '67 for the 1981 UEFA Cup final against Ipswich?",
+   "a": "Georg Kessler"
+  },
+  {
+   "q": "Which two Amsterdam clubs merged in 1972 to form FC Amsterdam?",
+   "a": "Blauw-Wit and DWS"
+  },
+  {
+   "q": "Against which club did Johan Cruyff make his Ajax debut, scoring in a 3-1 defeat in November 1964?",
+   "a": "GVAV, the Groningen club"
+  },
+  {
+   "q": "Who was PSV's manager when they won the 1978 UEFA Cup?",
+   "a": "Kees Rijvers"
+  },
+  {
+   "q": "Who headed the 90th-minute winner that won FC Utrecht the 1985 KNVB Cup?",
+   "a": "John van Loen"
+  },
+  {
+   "q": "In which stadium did AZ '67 play their home leg of the 1981 UEFA Cup final?",
+   "a": "The Olympic Stadium in Amsterdam"
+  },
+  {
+   "q": "Which FC Twente forward shared the 1968-69 Eredivisie top scorer prize with Ove Kindvall?",
+   "a": "Dick van Dijk"
+  },
+  {
+   "q": "Which Greek striker won the 1997-98 Eredivisie Golden Boot with 34 goals for Vitesse?",
+   "a": "Nikos Machlas"
+  },
+  {
+   "q": "Which Dutch club spent 41 straight seasons in the Eredivisie from 1973 until they went down in 2014?",
+   "a": "Roda JC Kerkrade"
+  },
+  {
+   "q": "In which year did Real Madrid play their own reserve side Castilla in the Copa del Rey final?",
+   "a": "1980"
+  },
+  {
+   "q": "What was the score in that 1980 Copa del Rey final between Real Madrid and Castilla?",
+   "a": "6-1 to Real Madrid"
+  },
+  {
+   "q": "Which European competition did Castilla go into after losing the 1980 Copa del Rey final?",
+   "a": "The Cup Winners' Cup"
+  },
+  {
+   "q": "Which Real Madrid reserve side won the Segunda División in 1983-84?",
+   "a": "Castilla"
+  },
+  {
+   "q": "Which club did Juan Carlos Valerón leave Las Palmas for in 1997?",
+   "a": "Mallorca"
+  },
+  {
+   "q": "In which year was UD Las Palmas formed, by a merger of five Canarian clubs?",
+   "a": "1949"
+  },
+  {
+   "q": "Which club knocked CD Tenerife out at the semi-final stage of the 1996-97 UEFA Cup?",
+   "a": "Schalke 04"
+  },
+  {
+   "q": "Who put through his own net with the golden goal that won Liverpool the 2001 UEFA Cup final?",
+   "a": "Delfí Geli"
+  },
+  {
+   "q": "Which Alavés player headed the equaliser that took the 2001 UEFA Cup final into extra time?",
+   "a": "Jordi Cruyff"
+  },
+  {
+   "q": "Deportivo needed a win at home on the final day of 1993-94 to take the title. Which club held them to a 0-0 draw?",
+   "a": "Valencia"
+  },
+  {
+   "q": "Which Spanish club did Guus Hiddink take over straight after being sacked by Real Madrid in 1999?",
+   "a": "Real Betis"
+  },
+  {
+   "q": "Which Extremadura club won the Segunda División in both 1994-95 and 1996-97?",
+   "a": "Mérida"
+  },
+  {
+   "q": "Which manager took Tenerife to those two final-day wins over Real Madrid, then took the Real Madrid job himself in 1994?",
+   "a": "Jorge Valdano"
+  },
+  {
+   "q": "Which Dutch club did CD Tenerife knock out on their run to the 1996-97 UEFA Cup semi-finals?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "Which club did Valencia beat 3-1 in the 2008 Copa del Rey final?",
+   "a": "Getafe"
+  },
+  {
+   "q": "Which club did Barcelona beat in a one-off play-off in 1971 to keep the Inter-Cities Fairs Cup trophy for good?",
+   "a": "Leeds United"
+  },
+  {
+   "q": "Who scored Aberdeen's extra-time winner in the 1983 Cup Winners' Cup final?",
+   "a": "John Hewitt"
+  },
+  {
+   "q": "Which Englishman managed Malmö in the 1979 European Cup final?",
+   "a": "Bob Houghton"
+  },
+  {
+   "q": "Which country did Sweden beat 8-0 in the quarter-finals of the 1938 World Cup?",
+   "a": "Cuba"
+  },
+  {
+   "q": "Which club president blew open the 1971 Bundesliga match-fixing scandal by playing a tape at his own 50th birthday party?",
+   "a": "Horst-Gregorio Canellas of Kickers Offenbach"
+  },
+  {
+   "q": "Which club was stripped of its Bundesliga licence for two years in July 1971 over that scandal?",
+   "a": "Kickers Offenbach"
+  },
+  {
+   "q": "Who scored the goal that won Hamburg the 1983 European Cup final against Juventus?",
+   "a": "Felix Magath"
+  },
+  {
+   "q": "Paco Gento played in a record eight European Cup finals. Which Italian shares that record?",
+   "a": "Paolo Maldini"
+  },
+  {
+   "q": "How many different nations did Bora Milutinović manage at World Cups?",
+   "a": "Five"
+  },
+  {
+   "q": "Who scored both Manchester United goals against his old club in the 1991 Cup Winners' Cup final?",
+   "a": "Mark Hughes"
+  },
+  {
+   "q": "Who scored Barcelona's consolation goal in that 1991 Cup Winners' Cup final?",
+   "a": "Ronald Koeman"
+  },
+  {
+   "q": "Which Austrian scored Rapid Vienna's goal in the 1985 Cup Winners' Cup final against Everton?",
+   "a": "Hans Krankl"
+  },
+  {
+   "q": "Newly promoted Kaiserslautern opened the 1997-98 Bundesliga season with a 1-0 win away at which club?",
+   "a": "Bayern Munich"
+  },
+  {
+   "q": "Which German midfielder, later of Bayern and Chelsea, was a young member of Kaiserslautern's 1998 title-winning side?",
+   "a": "Michael Ballack"
+  },
+  {
+   "q": "Which manager led Kaiserslautern to that 1998 Bundesliga title?",
+   "a": "Otto Rehhagel"
+  },
+  {
+   "q": "Boavista in 2001 were only the second club outside Portugal's big three to win the league. Which club was the first, in 1946?",
+   "a": "Belenenses"
+  },
+  {
+   "q": "How many years did Guy Roux spend managing Auxerre?",
+   "a": "44"
+  },
+  {
+   "q": "Which club won the Scottish league title in 1984-85, the last time it went to a side other than Rangers or Celtic?",
+   "a": "Aberdeen"
+  },
+  {
+   "q": "Who was Barcelona's manager for the 1991 Cup Winners' Cup final?",
+   "a": "Johan Cruyff"
+  },
+  {
+   "q": "Arbroath beat Bon Accord 36-0 in the 1885 Scottish Cup. What was the Arbroath goalkeeper doing for most of it?",
+   "a": "Sheltering under an umbrella he borrowed from a spectator, he never touched the ball"
+  },
+  {
+   "q": "Arbroath's 36-0 was not even a clear winner as the score of the day. Which club won 35-0 the same afternoon in 1885?",
+   "a": "Dundee Harp, against Aberdeen Rovers"
+  },
+  {
+   "q": "Scotland kicked off a World Cup qualifier in Tallinn in 1996 and the referee blew for full time after three seconds. Why?",
+   "a": "Estonia never turned up, after a row over the floodlights had moved the kick-off time"
+  },
+  {
+   "q": "After the Dutch knocked West Germany out in Hamburg at Euro 88, what did Ronald Koeman do with the shirt he had swapped with Olaf Thon?",
+   "a": "Pretended to wipe his backside with it, in front of the Dutch fans"
+  },
+  {
+   "q": "In 1973 the Ajax squad held a secret ballot for the captaincy and Cruyff lost it, then left for Barcelona. Who had beaten him to the armband?",
+   "a": "Piet Keizer"
+  },
+  {
+   "q": "Feyenoord changed the spelling of its own name in 1974. What was it before, and why did they bother?",
+   "a": "Feijenoord, because foreigners could not pronounce the Dutch ij"
+  },
+  {
+   "q": "In 1925 the Spanish government shut Barcelona's ground for months and forced founder Joan Gamper out of the club. What had the crowd done?",
+   "a": "Jeered the Spanish national anthem"
+  },
+  {
+   "q": "On a Real Madrid tour in 1963, Alfredo Di Stéfano was taken from his hotel at six in the morning by guerrillas and held for three days. In which city?",
+   "a": "Caracas"
+  },
+  {
+   "q": "Founded in 1949 in the third tier, Las Palmas hold a record no other Spanish club has. What did they manage in their first two seasons?",
+   "a": "Back to back promotions, reaching La Liga two years after being founded"
+  },
+  {
+   "q": "Real Oviedo needed nearly two million euros in two weeks in 2012 or they were finished. What saved them?",
+   "a": "Fans around the world bought shares in an emergency issue, and Carlos Slim then came in as majority owner"
+  },
+  {
+   "q": "Goalkeeper Rogério Ceni scored 131 goals for São Paulo, a world record. How many of them came from open play?",
+   "a": "One, the rest were free kicks and penalties"
+  },
+  {
+   "q": "The longest match on record, Stockport County against Doncaster Rovers in 1946, lasted three hours and 23 minutes. What finally stopped it?",
+   "a": "Darkness, the ground had no floodlights"
+  },
+  {
+   "q": "Graham Poll showed Josip Šimunić three yellow cards in one 2006 World Cup game. What was his explanation?",
+   "a": "He had written the second booking down against an Australian player, because Šimunić sounded Australian"
+  },
+  {
+   "q": "A Liverpool engineer patented the goal net in 1889 after watching a disallowed goal at Everton. What else did he later help build?",
+   "a": "The Mersey road tunnel, he was John Alexander Brodie"
+  },
+  {
+   "q": "The Euro 1968 semi-final between Italy and the Soviet Union finished goalless after 120 minutes. How was it decided?",
+   "a": "A coin toss, which Italy's Giacinto Facchetti won by calling tails"
+  },
+  {
+   "q": "In 2002 Norwegian club Flekkerøy signed striker Kenneth Kristensen for one kilo of seafood per kilo of player. What was the final fee?",
+   "a": "75 kilos of shrimp, weighed out at a boxing-style weigh-in"
+  },
+  {
+   "q": "The Faroe Islands beat Austria 1-0 in their first ever competitive match in 1990. What was their goalkeeper Jens Martin Knudsen wearing?",
+   "a": "A white bobble hat, worn ever since a head injury as a boy"
+  },
+  {
+   "q": "Heerenveen trailed Ajax 5-1 with half an hour left on 7 May 1950 and won 6-5. Which Frisian folk hero dragged them back?",
+   "a": "Abe Lenstra"
+  },
+  {
+   "q": "Ajax were thrown out of Europe in 1989 after a UEFA Cup tie against Austria Wien was abandoned. What had been thrown at the away keeper?",
+   "a": "An iron rod, from the F-side"
+  },
+  {
+   "q": "Go Ahead Eagles won the KNVB Cup in 2025, their first major trophy since 1933. Who did they beat, and how?",
+   "a": "AZ, on penalties after a 1-1 draw"
+  },
+  {
+   "q": "Uruguayan striker Sebastián Abreu holds a Guinness record no manager wants on a CV. What for?",
+   "a": "Most clubs played for, more than 30"
+  },
+  {
+   "q": "Thomas Helmer's shot in 1994 went wide but was given as a goal, and Bayern beat Nürnberg. What did the German FA do about it?",
+   "a": "Ordered the match replayed, and Bayern won that 5-0 as well"
+  },
+  {
+   "q": "Kanu did not realise the ball had been put out for an injury and set up Arsenal's 1999 FA Cup winner against Sheffield United. What did Wenger do?",
+   "a": "Offered to replay the whole tie, and Arsenal won that 2-1 as well"
+  },
+  {
+   "q": "Robbie Fowler won a UEFA Fair Play award in 1997 for telling the referee that David Seaman had not fouled him. How did it end?",
+   "a": "The penalty stood, Seaman saved it, and Jason McAteer scored the rebound"
+  },
+  {
+   "q": "England captain Bobby Moore was arrested in Bogotá in 1970 for stealing a bracelet. What killed the case against him?",
+   "a": "The blazer she said he had slipped it into had no pocket on that side"
+  },
+  {
+   "q": "Barcelona were beaten 11-1 by Real Madrid in a 1943 cup semi-final after leading the tie 3-0. What had happened in their dressing room beforehand?",
+   "a": "Franco's director of state security had come in to remind them they played only by the regime's generosity"
+  },
+  {
+   "q": "Jan Jongbloed kept goal for the Netherlands in the 1974 and 1978 World Cup finals. Which shirt number did he wear?",
+   "a": "8"
+  },
+  {
+   "q": "At the 1978 World Cup a Dutch defender became the first man to score at both ends in the same World Cup match. Who?",
+   "a": "Ernie Brandts, against Italy"
+  },
+  {
+   "q": "Brian Clough turned up late to unveil Britain's first million pound player in 1979 carrying what?",
+   "a": "A squash racket, and wearing a tracksuit, to play the whole thing down"
+  },
+  {
+   "q": "Cameroon were fined and docked six qualifying points in 2004 over their kit. What was wrong with it?",
+   "a": "It was a one piece bodysuit, and FIFA required shirt and shorts to be separate items"
+  },
+  {
+   "q": "Mexico goalkeeper Jorge Campos wore neon kits he had designed himself. What else did he do that keepers do not?",
+   "a": "Played as a forward, scoring 14 league goals in a season for Pumas"
+  },
+  {
+   "q": "Goalkeeper Lutz Pfannenstiel was jailed in Singapore and once stopped breathing on a pitch in Bradford. What is he the only footballer to have done?",
+   "a": "Played professionally in all six FIFA confederations, the first man to do it"
+  },
+  {
+   "q": "Referee Damián Rubino set a Guinness record in an Argentine fourth division match in 2011. What for?",
+   "a": "Sending off 36 players, every player and substitute from both sides"
+  },
+  {
+   "q": "The 1923 FA Cup final, the first at Wembley, started 45 minutes late. Who is credited with clearing the pitch?",
+   "a": "A police horse called Billie, and PC George Scorey"
+  },
+  {
+   "q": "Japan's King Kazu, Kazuyoshi Miura, has played professional football in five different decades. Which Brazilian club did he start at in 1986?",
+   "a": "Santos"
+  },
+  {
+   "q": "Referee Clive Thomas never worked another World Cup after Brazil against Sweden in 1978. What did he do?",
+   "a": "Blew for full time while a corner was in the air, disallowing Zico's header"
+  },
+  {
+   "q": "A women's club match at Goodison Park in 1920 drew 53,000, with thousands locked out. What did the FA do a year later?",
+   "a": "Banned women from playing on the grounds of its member clubs, a ban that lasted until 1971"
+  },
+  {
+   "q": "Celtic won the European Cup in 1967 with a squad that shared one unusual thing. What?",
+   "a": "Every player was born within 30 miles of Celtic Park"
+  },
+  {
+   "q": "Before settling on football, Lev Yashin was good enough at another sport to win a national cup in 1953. Which?",
+   "a": "Ice hockey, as a goalkeeper for Dynamo Moscow"
+  },
+  {
+   "q": "One man has played in two World Cup finals for two different countries. Who?",
+   "a": "Luis Monti, for Argentina in 1930 and Italy in 1934"
+  },
+  {
+   "q": "At Corinthians in the early 1980s, Sócrates and his teammates ran the club by vote. What were they voting on?",
+   "a": "Everything, from the team selection to wages and travel, one man one vote including the kit man"
+  },
+  {
+   "q": "Ruud Gullit won the Ballon d'Or in 1987 and dedicated it to a man in prison. Who?",
+   "a": "Nelson Mandela"
+  },
+  {
+   "q": "English referee Andy Wain abandoned a Sunday league match in 2005 after squaring up to a goalkeeper. What had he done first?",
+   "a": "Sent himself off, saying he would have sent off any player who did that"
+  },
+  {
+   "q": "Colombian midfielder Gerardo Bedoya holds a Guinness record for the wrong reasons. What is it?",
+   "a": "Most red cards in a professional career, 46"
+  },
+  {
+   "q": "A Seville derby in the 2007 Copa del Rey was abandoned and finished behind closed doors in Getafe. Why?",
+   "a": "Sevilla coach Juande Ramos was knocked unconscious by a bottle thrown from the stand"
+  },
+  {
+   "q": "Atlético Madrid were nearly bankrupt after the Spanish Civil War and merged with another club to survive. Who with?",
+   "a": "Aviación Nacional, the air force club, making them Atlético Aviación"
+  },
+  {
+   "q": "Spanish goalkeeper Ricardo Zamora was reported shot dead in 1936, then found alive in a Madrid prison. What is said to have kept him there?",
+   "a": "Playing football with the guards, until the Argentine embassy got him out"
+  },
+  {
+   "q": "When Athletic Bilbao win a major trophy they parade it in a way no other club does. How?",
+   "a": "On a barge, the gabarra, down the river Nervión into Bilbao"
+  },
+  {
+   "q": "Barcelona's motto més que un club was not invented by a marketing department. Who said it first, in 1968?",
+   "a": "Club president Narcís de Carreras, in his nomination speech"
+  },
+  {
+   "q": "After Cruyff's Barcelona won 5-0 at the Bernabéu in February 1974, what did Catalans keep saying to him instead of congratulations?",
+   "a": "Thank you"
+  },
+  {
+   "q": "Roger Milla was retired and playing on Réunion when he was talked back into the Cameroon squad for the 1990 World Cup. Who talked him round?",
+   "a": "Paul Biya, the president of Cameroon, who phoned him"
+  },
+  {
+   "q": "Brian Clough bought a striker from Long Eaton United for 2,000 pounds and won two European Cups with him. What was the player's day job before that?",
+   "a": "Carpet fitter, he was Garry Birtles"
+  },
+  {
+   "q": "Which club won 6-3 at Ajax's De Meer stadium in April 1980?",
+   "a": "MVV Maastricht"
+  },
+  {
+   "q": "In 1973 Chile kicked off a World Cup play-off in an empty stadium, walked the ball into the net and the referee ended it. Where was the other team?",
+   "a": "The Soviet Union refused to play in a stadium Pinochet had used as a prison"
+  },
+  {
+   "q": "Iceland's thunderclap looks ancient but is not. Where did their fans pick it up?",
+   "a": "From Motherwell fans, when Stjarnan played at Fir Park in 2014"
+  },
+  {
+   "q": "Ajax's founders named the club after a Greek warrior for one specific reason. What was it?",
+   "a": "Ajax killed himself rather than be beaten, so he died unconquered"
+  },
+  {
+   "q": "Sparta Rotterdam's red and white stripes came from a board trip to England in 1899. Which club's kit did they copy?",
+   "a": "Sunderland"
+  },
+  {
+   "q": "Faas Wilkes was banned from the Dutch national team from 1949 to 1955 in his prime. What had he done wrong?",
+   "a": "Turned professional abroad, which the amateur-only KNVB would not allow"
+  },
+  {
+   "q": "On the last day of the 1999 season, Carlisle United needed a goal in the final seconds to stay in the Football League. Who scored it?",
+   "a": "Their on-loan goalkeeper Jimmy Glass, who had come up for a corner"
+  }
+ ]
+}

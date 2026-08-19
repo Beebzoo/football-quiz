@@ -127,6 +127,50 @@
   }
   .careername{font:800 1.7rem/1.2 var(--ui);text-align:center;text-wrap:balance}
 
+  /* Alumni: the names come down the screen one at a time, so the list reads
+     top to bottom like a team sheet rather than sideways like the crest grid.
+     The portrait shrinks to a badge here; at 132px it would be the row. */
+  .alumlist{display:flex;flex-direction:column;gap:8px;width:100%;max-width:480px;margin:0 auto}
+  .alumrow{
+    display:flex;align-items:center;gap:12px;min-height:52px;padding:7px 14px;border-radius:14px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(233,184,76,.3);
+    font:700 1.05rem var(--ui);color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.45);
+  }
+  .alumrow .face{width:40px;height:40px;margin:0;border-width:2px;flex:0 0 auto;animation:none}
+  /* The Wall. Sixteen tiles four across on a phone, so the names have to be
+     small and allowed to wrap: "Schweinsteiger" is fourteen characters in an
+     88px box, which is exactly what the condensed face is for. */
+  .wlgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%;max-width:480px;margin:0 auto}
+  .wltile{
+    min-height:66px;padding:6px 4px;border-radius:12px;cursor:pointer;
+    background:rgba(255,255,255,.08);border:1px solid rgba(233,184,76,.28);color:#fff;
+    font:700 clamp(.6rem,2.5vw,.78rem)/1.15 var(--ui);text-align:center;word-break:break-word;hyphens:auto;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .wltile.on{background:#fdf6e6;border-color:#e8cf96;color:#8a6414;box-shadow:0 0 0 3px rgba(233,184,76,.25)}
+  .wlgroup{
+    width:100%;max-width:480px;margin:0 auto 6px;padding:8px 12px;border-radius:12px;
+    background:rgba(233,184,76,.16);border:1px solid rgba(233,184,76,.45);
+  }
+  .wlgroup.got{background:rgba(127,212,163,.16);border-color:rgba(127,212,163,.5)}
+  .wllabel{font:800 1rem var(--ui);color:#f3d982}
+  .wlnames{font:600 .8rem/1.3 var(--ui);color:#fff;opacity:.9}
+  .wllives{text-align:center;font-size:1.1rem;letter-spacing:4px}
+  /* Mystery Man: one row per guess, newest on top, so the board reads like a
+     case file being built rather than a list scrolling away. */
+  .myrow{width:100%;max-width:480px;margin:0 auto 6px;padding:8px 12px;border-radius:12px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+  .myrow.him{background:rgba(127,212,163,.18);border-color:rgba(127,212,163,.55)}
+  .myname{font:800 1rem var(--ui);color:#fff;margin-bottom:5px}
+  .mychips{display:flex;flex-wrap:wrap;gap:5px}
+  .mychip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;
+    font:700 .72rem var(--ui);background:rgba(255,255,255,.09);color:#dfe9e1;border:1px solid transparent}
+  .mychip.hit{background:rgba(127,212,163,.22);color:#bff0d4;border-color:rgba(127,212,163,.5)}
+  .mychip.miss{background:rgba(220,38,38,.14);color:#f0b9b9;border-color:rgba(220,38,38,.32)}
+  .mychip img{width:18px;height:18px;object-fit:contain;background:#fff;border-radius:4px;padding:1px}
+  .alumrow.pop{animation:cardpop .5s cubic-bezier(.2,1.7,.4,1) both}
+  @media (prefers-reduced-motion: reduce){ .alumrow.pop{animation:none} }
+
   /* the floodlit night look, now the whole app's home kit */
   html{background:#0d2013}
   body.careermode{color:#eef5ef;border-color:rgba(255,255,255,.12)}
@@ -2795,6 +2839,503 @@ const CAREERS = [
  {n:"Alejandro Garnacho", c:["manchester-united","chelsea"]},
  {n:"Dean Huijsen", c:["juventus","bournemouth","real-madrid"], note:"Roma loan"},
  {n:"Jeremy Doku", c:["anderlecht","rennes","manchester-city"]},
+  {"n":"Diogo Jota","c":["pacos-ferreira","atletico-madrid","fc-porto","wolves","liverpool"]},
+  {"n":"Hugo Ekitike","c":["stade-de-reims","vejle-boldklub","paris-saint-germain","eintracht-frankfurt","liverpool"]},
+  {"n":"Marcus Rashford","c":["manchester-united","aston-villa","barcelona"]},
+  {"n":"Ronaldo","c":["cruzeiro","psv","barcelona","inter","real-madrid","milan","corinthians"]},
+  {"n":"Ousmane Dembélé","c":["rennes","borussia-dortmund","barcelona","paris-saint-germain"]},
+  {"n":"Carlo Ancelotti","c":["parma","roma","milan"]},
+  {"n":"Eberechi Eze","c":["queens-park-rangers","wycombe","crystal-palace","arsenal"]},
+  {"n":"Raphinha","c":["vitoria-de-guimaraes","sporting-cp","rennes","leeds-united","barcelona"]},
+  {"n":"Pep Guardiola","c":["barcelona","brescia","roma","brescia","al-ahli-doha","dorados-de-sinaloa"]},
+  {"n":"Omar Marmoush","c":["wadi-degla","wolfsburg","st-pauli","vfb-stuttgart","eintracht-frankfurt","manchester-city"]},
+  {"n":"Nick Woltemade","c":["werder-bremen","sv-elversberg","vfb-stuttgart","newcastle"]},
+  {"n":"Noni Madueke","c":["psv","chelsea","arsenal"]},
+  {"n":"Liam Delap","c":["manchester-city","stoke-city","preston-north-end","hull-city","ipswich","chelsea"]},
+  {"n":"Dele Alli","c":["mk-dons","tottenham","mk-dons","everton","besiktas","como-1907"]},
+  {"n":"Amad Diallo","c":["atalanta","manchester-united","rangers","sunderland"]},
+  {"n":"David Moyes","c":["celtic","cambridge-united","bristol-city","shrewsbury","dunfermline","hamilton","preston-north-end"]},
+  {"n":"Jobe Bellingham","c":["birmingham","sunderland","borussia-dortmund"]},
+  {"n":"Christian Pulisic","c":["borussia-dortmund","chelsea","milan"]},
+  {"n":"Denis Law","c":["huddersfield","manchester-city","torino","manchester-united","manchester-city"]},
+  {"n":"Jhon Durán","c":["envigado","chicago-fire-fc","aston-villa","al-nassr","fenerbahce","zenit","benfica"]},
+  {"n":"Micah Richards","c":["manchester-city","fiorentina","aston-villa"]},
+  {"n":"Randal Kolo Muani","c":["nantes","boulogne","eintracht-frankfurt","paris-saint-germain","juventus","tottenham","juventus"]},
+  {"n":"Morgan Rogers","c":["west-bromwich-albion","manchester-city","lincoln-city","bournemouth","blackpool","middlesbrough","aston-villa","chelsea"]},
+  {"n":"Brahim Díaz","c":["manchester-city","real-madrid","milan"]},
+  {"n":"Harvey Elliott","c":["fulham","liverpool","blackburn-rovers","aston-villa"]},
+  {"n":"Alex Oxlade-Chamberlain","c":["southampton","arsenal","liverpool","besiktas","celtic"]},
+  {"n":"Marc Guéhi","c":["chelsea","swansea-city","crystal-palace","manchester-city"]},
+  {"n":"Harry Maguire","c":["sheffield-united","hull-city","wigan","leicester","manchester-united"]},
+  {"n":"Erik ten Hag","c":["twente","de-graafschap","twente","rkc-waalwijk","fc-utrecht","twente"]},
+  {"n":"Anthony Elanga","c":["manchester-united","nottingham-forest","newcastle"]},
+  {"n":"Alisson Becker","c":["internacional","roma","liverpool"]},
+  {"n":"Sean Dyche","c":["nottingham-forest","chesterfield","bristol-city","luton-town","millwall","watford","northampton"]},
+  {"n":"Ansu Fati","c":["barcelona","brighton","as-monaco"]},
+  {"n":"Mason Mount","c":["chelsea","vitesse","derby-county","manchester-united"]},
+  {"n":"James Trafford","c":["manchester-city","accrington","bolton","burnley","manchester-city","leeds-united"]},
+  {"n":"Granit Xhaka","c":["basel","borussia-monchengladbach","arsenal","bayer-leverkusen","sunderland"]},
+  {"n":"Anthony Martial","c":["lyon","as-monaco","manchester-united","sevilla","aek-athens","monterrey"]},
+  {"n":"Jean-Philippe Mateta","c":["chateauroux","lyon","le-havre-ac","mainz-05","crystal-palace"]},
+  {"n":"Yoane Wissa","c":["chateauroux","angers","stade-lavallois","ajaccio","lorient","brentford","newcastle"]},
+  {"n":"Marcus Thuram","c":["sochaux","guingamp","borussia-monchengladbach","inter"]},
+  {"n":"Santiago Giménez","c":["cruz-azul","feyenoord","milan"]},
+  {"n":"Morgan Gibbs-White","c":["wolves","swansea-city","sheffield-united","nottingham-forest"]},
+  {"n":"Jonathan David","c":["gent","lille","juventus"]},
+  {"n":"Scott Parker","c":["charlton","norwich-city","chelsea","newcastle","west-ham","tottenham","fulham"]},
+  {"n":"Dani Olmo","c":["dinamo-zagreb","rb-leipzig","barcelona"]},
+  {"n":"Djed Spence","c":["middlesbrough","nottingham-forest","tottenham","rennes","leeds-united","genoa","inter"]},
+  {"n":"Ademola Lookman","c":["charlton","everton","rb-leipzig","fulham","leicester","atalanta","atletico-madrid"]},
+  {"n":"Eddie Howe","c":["bournemouth","portsmouth","swindon-town","bournemouth"]},
+  {"n":"Christopher Nkunku","c":["paris-saint-germain","rb-leipzig","chelsea","milan"]},
+  {"n":"Marquinhos","c":["corinthians","roma","paris-saint-germain"]},
+  {"n":"Richarlison","c":["america-mineiro","fluminense","watford","everton","tottenham"]},
+  {"n":"Michael Carrick","c":["west-ham","swindon-town","birmingham","tottenham","manchester-united"]},
+  {"n":"Federico Valverde","c":["penarol","real-madrid","deportivo-la-coruna"]},
+  {"n":"Tammy Abraham","c":["chelsea","bristol-city","swansea-city","aston-villa","roma","milan","besiktas","aston-villa"]},
+  {"n":"Altay Bayındır","c":["ankaragucu","fenerbahce","manchester-united","celta"]},
+  {"n":"Ben Chilwell","c":["leicester","huddersfield","chelsea","crystal-palace","rc-strasbourg-alsace"]},
+  {"n":"Gabriel Jesus","c":["palmeiras","manchester-city","arsenal"]},
+  {"n":"Douglas Luiz","c":["vasco-da-gama","manchester-city","girona","aston-villa","juventus","nottingham-forest","aston-villa"]},
+  {"n":"Mark Hughes","c":["manchester-united","barcelona","bayern-munchen","manchester-united","chelsea","southampton","everton","blackburn-rovers"]},
+  {"n":"Brennan Johnson","c":["nottingham-forest","lincoln-city","tottenham","crystal-palace","everton"]},
+  {"n":"Franz Beckenbauer","c":["bayern-munchen","new-york-cosmos","hamburger-sv","new-york-cosmos"]},
+  {"n":"João Cancelo","c":["benfica","valencia","inter","juventus","manchester-city","bayern-munchen","barcelona","al-hilal","barcelona"]},
+  {"n":"Eric Dier","c":["sporting-cp","tottenham","bayern-munchen","as-monaco"]},
+  {"n":"Mauro Icardi","c":["sampdoria","inter","paris-saint-germain","galatasaray"]},
+  {"n":"Conor Gallagher","c":["chelsea","charlton","swansea-city","west-bromwich-albion","crystal-palace","atletico-madrid","tottenham"]},
+  {"n":"Gabriel Magalhães","c":["avai","lille","troyes","dinamo-zagreb","arsenal"]},
+  {"n":"Raúl Jiménez","c":["club-america","atletico-madrid","benfica","wolves","fulham","wolves"]},
+  {"n":"Kiernan Dewsbury-Hall","c":["leicester","blackpool","luton-town","chelsea","everton"]},
+  {"n":"Dominic Solanke","c":["chelsea","vitesse","liverpool","bournemouth","tottenham"]},
+  {"n":"Alfredo Di Stéfano","c":["river-plate","ca-huracan","millonarios","real-madrid","espanyol"]},
+  {"n":"Kalvin Phillips","c":["leeds-united","manchester-city","west-ham","ipswich","sheffield-united"]},
+  {"n":"Lucas Vázquez","c":["espanyol","real-madrid","bayer-leverkusen"]},
+  {"n":"Rafael Leão","c":["sporting-cp","lille","milan"]},
+  {"n":"Ibrahima Konaté","c":["sochaux","rb-leipzig","liverpool","real-madrid"]},
+  {"n":"Xherdan Shaqiri","c":["basel","bayern-munchen","inter","stoke-city","liverpool","lyon","chicago-fire-fc","basel"]},
+  {"n":"Ally McCoist","c":["st-johnstone","sunderland","rangers","kilmarnock"]},
+  {"n":"Dean Henderson","c":["manchester-united","stockport-county","grimsby","shrewsbury","sheffield-united","nottingham-forest","crystal-palace"]},
+  {"n":"Moise Kean","c":["juventus","verona","everton","paris-saint-germain","juventus","fiorentina"]},
+  {"n":"Kingsley Coman","c":["paris-saint-germain","juventus","bayern-munchen","al-nassr"]},
+  {"n":"Riccardo Calafiori","c":["roma","genoa","basel","bologna","arsenal"]},
+  {"n":"David Alaba","c":["bayern-munchen","hoffenheim","real-madrid"]},
+  {"n":"Lloyd Kelly","c":["bristol-city","bournemouth","newcastle","juventus"]},
+  {"n":"Igor Thiago","c":["cruzeiro","ludogorets","club-brugge","brentford"]},
+  {"n":"Jules Koundé","c":["bordeaux","sevilla","barcelona"]},
+  {"n":"Trevoh Chalobah","c":["chelsea","ipswich","huddersfield","lorient","crystal-palace","como-1907"]},
+  {"n":"Jarell Quansah","c":["liverpool","bristol-rovers","bayer-leverkusen"]},
+  {"n":"Filipe Luís","c":["figueirense","ajax","deportivo-la-coruna","atletico-madrid","chelsea","atletico-madrid","flamengo"]},
+  {"n":"Savinho","c":["atletico-mineiro","troyes","psv","girona","manchester-city"]},
+  {"n":"Victor Boniface","c":["bodo-glimt","union-saint-gilloise","bayer-leverkusen","werder-bremen"]},
+  {"n":"Harvey Barnes","c":["leicester","mk-dons","barnsley","west-bromwich-albion","newcastle"]},
+  {"n":"Niko Kovač","c":["hertha-zehlendorf","hertha-bsc","bayer-leverkusen","hamburger-sv","bayern-munchen","hertha-bsc","salzburg"]},
+  {"n":"Luka Jović","c":["crvena-zvezda","benfica","eintracht-frankfurt","real-madrid","eintracht-frankfurt","fiorentina","milan","aek-athens"]},
+  {"n":"Raphaël Varane","c":["rc-lens","real-madrid","manchester-united","como-1907"]},
+  {"n":"Gareth Southgate","c":["crystal-palace","aston-villa","middlesbrough"]},
+  {"n":"Thiago Almada","c":["velez-sarsfield","atlanta-united","botafogo","lyon","atletico-madrid","river-plate"]},
+  {"n":"Lucas Bergvall","c":["brommapojkarna","djurgarden","tottenham"]},
+  {"n":"Lucas Hernandez","c":["atletico-madrid","bayern-munchen","paris-saint-germain"]},
+  {"n":"Barry Ferguson","c":["rangers","blackburn-rovers","rangers","birmingham","blackpool","fleetwood-town","clyde"]},
+  {"n":"Hakan Çalhanoğlu","c":["karlsruher","hamburger-sv","bayer-leverkusen","milan","inter"]},
+  {"n":"Gonçalo Ramos","c":["benfica","paris-saint-germain","milan"]},
+  {"n":"Kyogo Furuhashi","c":["fc-gifu","vissel-kobe","celtic","rennes","birmingham","la-galaxy"]},
+  {"n":"Aaron Wan-Bissaka","c":["crystal-palace","manchester-united","west-ham"]},
+  {"n":"Micky van de Ven","c":["volendam","wolfsburg","tottenham"]},
+  {"n":"Roberto Mancini","c":["bologna","sampdoria","lazio","leicester"]},
+  {"n":"Lucas Chevalier","c":["lille","valenciennes","paris-saint-germain"]},
+  {"n":"Thiago Motta","c":["barcelona","atletico-madrid","genoa","inter","paris-saint-germain"]},
+  {"n":"Gary Speed","c":["leeds-united","everton","newcastle","bolton","sheffield-united"]},
+  {"n":"Tosin Adarabioyo","c":["manchester-city","west-bromwich-albion","blackburn-rovers","fulham","chelsea"]},
+  {"n":"Eddie Nketiah","c":["arsenal","leeds-united","crystal-palace"]},
+  {"n":"Vitor Roque","c":["cruzeiro","athletico-paranaense","barcelona","real-betis","palmeiras"]},
+  {"n":"Nicolás Otamendi","c":["velez-sarsfield","fc-porto","valencia","atletico-mineiro","manchester-city","benfica","river-plate"]},
+  {"n":"Harry Kewell","c":["leeds-united","liverpool","galatasaray","melbourne-victory","al-ittihad","melbourne-city"]},
+  {"n":"Lisandro Martínez","c":["newells-old-boys","defensa-y-justicia","ajax","manchester-united"]},
+  {"n":"Ross Barkley","c":["everton","sheffield-wednesday","leeds-united","chelsea","aston-villa","nice","luton-town","aston-villa"]},
+  {"n":"Michel Platini","c":["nancy","as-saint-etienne","juventus"]},
+  {"n":"Sandro Tonali","c":["brescia","milan","newcastle","tottenham"]},
+  {"n":"Miguel Almirón","c":["cerro","lanus","atlanta-united","newcastle","atlanta-united"]},
+  {"n":"Khéphren Thuram","c":["as-monaco","nice","juventus"]},
+  {"n":"Francisco Conceição","c":["fc-porto","ajax","fc-porto","juventus"]},
+  {"n":"Luca Zidane","c":["real-madrid","racing-santander","rayo-vallecano","eibar","granada","leganes"]},
+  {"n":"Lucas Paquetá","c":["flamengo","milan","lyon","west-ham","flamengo"]},
+  {"n":"Loris Karius","c":["mainz-05","liverpool","besiktas","union-berlin","newcastle","schalke-04"]},
+  {"n":"Héctor Bellerín","c":["arsenal","watford","real-betis","barcelona","sporting-cp","real-betis"]},
+  {"n":"Steve Bruce","c":["gillingham","norwich-city","manchester-united","birmingham","sheffield-united"]},
+  {"n":"Malick Thiaw","c":["schalke-04","milan","newcastle"]},
+  {"n":"Manuel Akanji","c":["winterthur","basel","borussia-dortmund","manchester-city","inter"]},
+  {"n":"John Stones","c":["barnsley","everton","manchester-city","inter"]},
+  {"n":"Daniel James","c":["swansea-city","shrewsbury","manchester-united","leeds-united","fulham"]},
+  {"n":"Jay Rodriguez","c":["burnley","stirling-albion","barnsley","southampton","west-bromwich-albion","burnley","wrexham"]},
+  {"n":"Axel Disasi","c":["paris-fc","stade-de-reims","as-monaco","chelsea","aston-villa","west-ham"]},
+  {"n":"Renato Sanches","c":["benfica","bayern-munchen","swansea-city","lille","paris-saint-germain","roma","benfica","panathinaikos"]},
+  {"n":"Aurélien Tchouaméni","c":["bordeaux","as-monaco","real-madrid"]},
+  {"n":"Folarin Balogun","c":["arsenal","middlesbrough","stade-de-reims","as-monaco"]},
+  {"n":"Callum Hudson-Odoi","c":["chelsea","bayer-leverkusen","nottingham-forest"]},
+  {"n":"Joelinton","c":["sport-recife","hoffenheim","rapid-vienna","newcastle"]},
+  {"n":"Karim Adeyemi","c":["salzburg","fc-liefering","borussia-dortmund","barcelona"]},
+  {"n":"Ruben Loftus-Cheek","c":["chelsea","crystal-palace","fulham","milan"]},
+  {"n":"Ao Tanaka","c":["kawasaki-frontale","fortuna-dusseldorf","leeds-united"]},
+  {"n":"Diogo Dalot","c":["fc-porto","manchester-united","milan"]},
+  {"n":"Darren Fletcher","c":["manchester-united","west-bromwich-albion","stoke-city"]},
+  {"n":"Jacob Ramsey","c":["aston-villa","doncaster-rovers","newcastle"]},
+  {"n":"Armando Broja","c":["chelsea","vitesse","southampton","fulham","everton","burnley"]},
+  {"n":"Giovanni Reyna","c":["borussia-dortmund","nottingham-forest","borussia-monchengladbach","rc-strasbourg-alsace"]},
+  {"n":"Malik Tillman","c":["bayern-munchen","rangers","psv","bayer-leverkusen"]},
+  {"n":"Alex Iwobi","c":["arsenal","everton","fulham"]},
+  {"n":"Jérôme Boateng","c":["hertha-bsc","hamburger-sv","manchester-city","bayern-munchen","lyon","salernitana","lask"]},
+  {"n":"Samuel Umtiti","c":["lyon","barcelona","lecce","lille"]},
+  {"n":"Dani Ceballos","c":["real-betis","real-madrid","arsenal"]},
+  {"n":"Takehiro Tomiyasu","c":["avispa-fukuoka","sint-truidense","bologna","arsenal","ajax","crystal-palace"]},
+  {"n":"Conor Coady","c":["liverpool","sheffield-united","huddersfield","wolves","everton","leicester","wrexham","charlton"]},
+  {"n":"Angel Gomes","c":["manchester-united","lille","boavista","marseille","wolves"]},
+  {"n":"Takefusa Kubo","c":["fc-tokyo","yokohama-f-marinos","real-madrid","mallorca","villarreal","getafe","mallorca","real-sociedad"]},
+  {"n":"Demarai Gray","c":["birmingham","leicester","bayer-leverkusen","everton","al-ettifaq","birmingham"]},
+  {"n":"Wesley Fofana","c":["as-saint-etienne","leicester","chelsea"]},
+  {"n":"Carney Chukwuemeka","c":["aston-villa","chelsea","borussia-dortmund"]},
+  {"n":"James Ward-Prowse","c":["southampton","west-ham","nottingham-forest","burnley"]},
+  {"n":"Pedro Porro","c":["girona","manchester-city","valladolid","sporting-cp","tottenham"]},
+  {"n":"Jonathan Tah","c":["hamburger-sv","fortuna-dusseldorf","bayer-leverkusen","bayern-munchen"]},
+  {"n":"Matz Sels","c":["lierse","gent","newcastle","anderlecht","rc-strasbourg-alsace","nottingham-forest"]},
+  {"n":"Alessandro Bastoni","c":["atalanta","inter","atalanta","parma"]},
+  {"n":"Ismaïla Sarr","c":["fc-metz","rennes","watford","marseille","crystal-palace"]},
+  {"n":"Fran García","c":["real-madrid","rayo-vallecano","real-madrid","real-betis"]},
+  {"n":"Danilo","c":["america-mineiro","santos","fc-porto","real-madrid","manchester-city","juventus","flamengo"]},
+  {"n":"Rhian Brewster","c":["liverpool","swansea-city","sheffield-united","derby-county"]},
+  {"n":"Niclas Füllkrug","c":["werder-bremen","spvgg-greuther-furth","fc-nurnberg","hannover-96","werder-bremen","borussia-dortmund","west-ham","milan","werder-bremen"]},
+  {"n":"Adnan Januzaj","c":["manchester-united","borussia-dortmund","sunderland","real-sociedad","sevilla","basaksehir","las-palmas"]},
+  {"n":"Andreas Christensen","c":["chelsea","borussia-monchengladbach","barcelona"]},
+  {"n":"Fabio Capello","c":["spal","roma","juventus","milan"]},
+  {"n":"Antonee Robinson","c":["everton","bolton","wigan","fulham"]},
+  {"n":"Emile Smith Rowe","c":["arsenal","rb-leipzig","huddersfield","fulham"]},
+  {"n":"Vangelis Pavlidis","c":["vfl-bochum","az-alkmaar","benfica"]},
+  {"n":"Youri Tielemans","c":["anderlecht","as-monaco","leicester","aston-villa","manchester-united"]},
+  {"n":"Leandro Paredes","c":["chievo","roma","empoli","zenit","paris-saint-germain","juventus","roma"]},
+  {"n":"Víctor Valdés","c":["barcelona","manchester-united","standard-liege","middlesbrough"]},
+  {"n":"Takumi Minamino","c":["cerezo-osaka","salzburg","liverpool","southampton","as-monaco"]},
+  {"n":"Tom Cleverley","c":["manchester-united","leicester","watford","wigan","aston-villa","everton","watford"]},
+  {"n":"Mick McCarthy","c":["barnsley","manchester-city","celtic","lyon","millwall"]},
+  {"n":"Leon Bailey","c":["genk","bayer-leverkusen","aston-villa","roma"]},
+  {"n":"Patrik Schick","c":["sparta-praha","bohemians-praha","sampdoria","roma","rb-leipzig","bayer-leverkusen"]},
+  {"n":"Ezri Konsa","c":["charlton","brentford","aston-villa"]},
+  {"n":"Glenn Hoddle","c":["tottenham","as-monaco","swindon-town","chelsea"]},
+  {"n":"Louis Saha","c":["fc-metz","newcastle","fulham","manchester-united","everton","sunderland","lazio"]},
+  {"n":"Lionel Scaloni","c":["newells-old-boys","estudiantes-de-la-plata","deportivo-la-coruna","west-ham","racing-santander","lazio","mallorca","atalanta"]},
+  {"n":"Paul Ince","c":["west-ham","manchester-united","inter","liverpool","middlesbrough","wolves","swindon-town","macclesfield"]},
+  {"n":"Roméo Lavia","c":["manchester-city","southampton","chelsea"]},
+  {"n":"Ángel Correa","c":["san-lorenzo-de-almagro","atletico-madrid","tigres-uanl","river-plate"]},
+  {"n":"Sébastien Haller","c":["auxerre","fc-utrecht","eintracht-frankfurt","west-ham","ajax","borussia-dortmund","leganes","fc-utrecht","sanfrecce-hiroshima"]},
+  {"n":"Chris Smalling","c":["maidstone","fulham","manchester-united","roma","al-fayha"]},
+  {"n":"Fábio Carvalho","c":["fulham","liverpool","rb-leipzig","hull-city","brentford"]},
+  {"n":"Thomas Gravesen","c":["vejle-boldklub","hamburger-sv","everton","real-madrid","celtic","everton"]},
+  {"n":"Stefan Bajcetic","c":["liverpool","salzburg","las-palmas"]},
+  {"n":"Fábio Silva","c":["fc-porto","wolves","anderlecht","psv","rangers","las-palmas","borussia-dortmund"]},
+  {"n":"Neco Williams","c":["liverpool","fulham","nottingham-forest"]},
+  {"n":"Weston McKennie","c":["schalke-04","juventus","leeds-united"]},
+  {"n":"Erik Lamela","c":["river-plate","roma","tottenham","sevilla","aek-athens"]},
+  {"n":"Reiss Nelson","c":["arsenal","hoffenheim","feyenoord","fulham","brentford"]},
+  {"n":"Youssoufa Moukoko","c":["borussia-dortmund","nice","copenhagen"]},
+  {"n":"Chris Richards","c":["bayern-munchen","hoffenheim","crystal-palace"]},
+  {"n":"Éder Militão","c":["sao-paulo","fc-porto","real-madrid"]},
+  {"n":"Craig Gordon","c":["hearts","cowdenbeath","sunderland","celtic","hearts"]},
+  {"n":"Jeffrey Schlupp","c":["leicester","brentford","crystal-palace","norwich-city"]},
+  {"n":"Daizen Maeda","c":["matsumoto-yamaga","mito-hollyhock","maritimo","yokohama-f-marinos","celtic","ipswich"]},
+  {"n":"Karl-Heinz Rummenigge","c":["bayern-munchen","inter","servette"]},
+  {"n":"Clément Lenglet","c":["nancy","sevilla","barcelona","tottenham","aston-villa","atletico-madrid","benfica"]},
+  {"n":"John Robertson","c":["nottingham-forest","derby-county","nottingham-forest"]},
+  {"n":"Eric Abidal","c":["lyon-la-duchere","as-monaco","lille","lyon","barcelona","as-monaco","olympiacos"]},
+  {"n":"Malcom","c":["corinthians","bordeaux","barcelona","zenit","al-hilal"]},
+  {"n":"Edson Álvarez","c":["club-america","ajax","west-ham","fenerbahce"]},
+  {"n":"Nordi Mukiele","c":["stade-lavallois","montpellier","rb-leipzig","paris-saint-germain","bayer-leverkusen","sunderland"]},
+  {"n":"Ferland Mendy","c":["le-havre-ac","lyon","real-madrid"]},
+  {"n":"Richard Ríos","c":["flamengo","mazatlan-fc","guarani","palmeiras","benfica"]},
+  {"n":"Sean Longstaff","c":["newcastle","kilmarnock","blackpool","leeds-united"]},
+  {"n":"Nicolás González","c":["vfb-stuttgart","fiorentina","juventus","atletico-madrid"]},
+  {"n":"Nat Phillips","c":["liverpool","vfb-stuttgart","bournemouth","celtic","cardiff-city","derby-county","west-bromwich-albion"]},
+  {"n":"Nélson Semedo","c":["sintrense","fatima","benfica","barcelona","wolves","fenerbahce"]},
+  {"n":"Lucas Moura","c":["sao-paulo","paris-saint-germain","tottenham","sao-paulo"]},
+  {"n":"Sami Khedira","c":["vfb-stuttgart","real-madrid","juventus","hertha-bsc"]},
+  {"n":"Alan Smith","c":["leeds-united","manchester-united","newcastle","mk-dons","notts-county"]},
+  {"n":"Sergiño Dest","c":["ajax","barcelona","milan","psv"]},
+  {"n":"Éric Maxim Choupo-Moting","c":["hamburger-sv","fc-nurnberg","mainz-05","schalke-04","stoke-city","paris-saint-germain","bayern-munchen","new-york-red-bulls"]},
+  {"n":"Gary O'Neil","c":["portsmouth","walsall","cardiff-city","middlesbrough","west-ham","queens-park-rangers","norwich-city","bristol-city","bolton"]},
+  {"n":"Lucas Digne","c":["lille","paris-saint-germain","roma","barcelona","everton","aston-villa","paris-saint-germain"]},
+  {"n":"Nuri Şahin","c":["borussia-dortmund","feyenoord","real-madrid","liverpool","borussia-dortmund","werder-bremen","antalyaspor"]},
+  {"n":"Michael Keane","c":["manchester-united","leicester","derby-county","blackburn-rovers","burnley","everton"]},
+  {"n":"Stefan Ortega","c":["arminia-bielefeld","1860-munich","arminia-bielefeld","manchester-city","nottingham-forest","olympiacos"]},
+  {"n":"Dan Ndoye","c":["lausanne-sport","nice","lausanne-sport","basel","bologna","nottingham-forest"]},
+  {"n":"Josh Sargent","c":["werder-bremen","norwich-city","toronto-fc"]},
+  {"n":"Kevin Diks","c":["vitesse","fiorentina","vitesse","feyenoord","empoli","agf-aarhus","copenhagen","borussia-monchengladbach"]},
+  {"n":"Rob Holding","c":["bolton","bury","arsenal","crystal-palace","sheffield-united","colorado-rapids"]},
+  {"n":"Emerson Royal","c":["ponte-preta","atletico-mineiro","real-betis","barcelona","real-betis","tottenham","milan","flamengo"]},
+  {"n":"Wataru Endō","c":["shonan-bellmare","urawa-reds","sint-truidense","vfb-stuttgart","liverpool"]},
+  {"n":"Ian Maatsen","c":["chelsea","charlton","coventry-city","burnley","borussia-dortmund","aston-villa"]},
+  {"n":"Dayot Upamecano","c":["fc-liefering","salzburg","rb-leipzig","bayern-munchen"]},
+  {"n":"Joel Ward","c":["portsmouth","bournemouth","crystal-palace","swansea-city"]},
+  {"n":"Iñaki Peña","c":["barcelona","galatasaray","elche","panathinaikos"]},
+  {"n":"Ainsley Maitland-Niles","c":["arsenal","ipswich","west-bromwich-albion","roma","southampton","lyon"]},
+  {"n":"Abdoulaye Doucouré","c":["rennes","watford","granada","everton","neom"]},
+  {"n":"Daichi Kamada","c":["sagan-tosu","eintracht-frankfurt","sint-truidense","lazio","crystal-palace"]},
+  {"n":"Keita Balde","c":["lazio","as-monaco","inter","sampdoria","cagliari","spartak-moskva","espanyol","sivasspor","monza"]},
+  {"n":"Mark Flekken","c":["alemannia-aachen","spvgg-greuther-furth","msv-duisburg","freiburg","brentford","bayer-leverkusen"]},
+  {"n":"Kasper Dolberg","c":["silkeborg","ajax","nice","sevilla","hoffenheim","anderlecht","ajax"]},
+  {"n":"Paolo Rossi","c":["juventus","como-1907","vicenza","perugia","juventus","milan","verona"]},
+  {"n":"Álex Baena","c":["villarreal","girona","atletico-madrid"]},
+  {"n":"Bilal El Khannouss","c":["genk","leicester","vfb-stuttgart"]},
+  {"n":"Joleon Lescott","c":["wolves","everton","manchester-city","west-bromwich-albion","aston-villa","aek-athens","sunderland"]},
+  {"n":"Gary Cahill","c":["aston-villa","burnley","sheffield-united","bolton","chelsea","crystal-palace","bournemouth"]},
+  {"n":"Andriy Lunin","c":["dnipro","zorya-luhansk","real-madrid","leganes","valladolid","oviedo"]},
+  {"n":"Vicente del Bosque","c":["real-madrid","castellon","cordoba","castellon"]},
+  {"n":"Nathaniel Clyne","c":["crystal-palace","southampton","liverpool","bournemouth","crystal-palace"]},
+  {"n":"Ben Gannon-Doak","c":["celtic","liverpool","middlesbrough","bournemouth"]},
+  {"n":"Wilfred Ndidi","c":["genk","leicester","besiktas"]},
+  {"n":"Fabian Schär","c":["wil","basel","hoffenheim","deportivo-la-coruna","newcastle"]},
+  {"n":"Thomas Lemar","c":["stade-malherbe-caen","as-monaco","atletico-madrid","girona"]},
+  {"n":"Giovani dos Santos","c":["barcelona","tottenham","ipswich","galatasaray","racing-santander","mallorca","villarreal","la-galaxy","club-america"]},
+  {"n":"Terry Venables","c":["chelsea","tottenham","queens-park-rangers","crystal-palace","st-patricks-athletic"]},
+  {"n":"Dejan Stanković","c":["crvena-zvezda","lazio","inter"]},
+  {"n":"Danny Murphy","c":["crewe","liverpool","crewe","charlton","tottenham","fulham","blackburn-rovers"]},
+  {"n":"Jonathan Woodgate","c":["leeds-united","newcastle","real-madrid","middlesbrough","tottenham","stoke-city","middlesbrough"]},
+  {"n":"Jens Lehmann","c":["schalke-04","milan","borussia-dortmund","arsenal","vfb-stuttgart","arsenal"]},
+  {"n":"Destiny Udogie","c":["verona","udinese","tottenham","udinese"]},
+  {"n":"Esteban Cambiasso","c":["independiente","river-plate","real-madrid","inter","leicester","olympiacos"]},
+  {"n":"Manu Koné","c":["toulouse","borussia-monchengladbach","roma"]},
+  {"n":"Ayoze Pérez","c":["tenerife","newcastle","leicester","real-betis","villarreal"]},
+  {"n":"João Moutinh0","c":["sporting-cp","fc-porto","as-monaco","wolves","sc-braga"]},
+  {"n":"Dida","c":["vitoria","cruzeiro","lugano","corinthians","milan","corinthians","portuguesa","gremio","internacional"]},
+  {"n":"Ardon Jashari","c":["luzern","club-brugge","milan"]},
+  {"n":"Gabriel Agbonlahor","c":["aston-villa","watford","sheffield-wednesday"]},
+  {"n":"Giovani Lo Celso","c":["rosario-central","paris-saint-germain","rosario-central","real-betis","tottenham","villarreal","real-betis"]},
+  {"n":"Albert Sambi Lokonga","c":["anderlecht","arsenal","crystal-palace","luton-town","sevilla","hamburger-sv"]},
+  {"n":"Jermaine Jenas","c":["nottingham-forest","newcastle","tottenham","aston-villa","nottingham-forest","queens-park-rangers"]},
+  {"n":"Dante","c":["juventude","lille","charleroi","standard-liege","borussia-monchengladbach","bayern-munchen","wolfsburg","nice"]},
+  {"n":"Cristian Romero","c":["belgrano","genoa","juventus","genoa","atalanta","tottenham","atletico-madrid"]},
+  {"n":"Kenny McLean","c":["st-mirren","arbroath","aberdeen","norwich-city","aberdeen"]},
+  {"n":"André Schürrle","c":["mainz-05","bayer-leverkusen","chelsea","wolfsburg","borussia-dortmund","fulham","spartak-moskva"]},
+  {"n":"Danny Ward","c":["wrexham","tamworth","liverpool","morecambe","aberdeen","huddersfield","leicester","wrexham"]},
+  {"n":"Aaron Cresswell","c":["tranmere","ipswich","west-ham","stoke-city"]},
+  {"n":"Júlio César","c":["flamengo","chievo","inter","queens-park-rangers","toronto-fc","benfica","flamengo"]},
+  {"n":"Gabriel Barbosa","c":["santos","inter","benfica","santos","flamengo","cruzeiro","santos"]},
+  {"n":"Moussa Sissoko","c":["toulouse","newcastle","tottenham","watford","nantes","watford","panathinaikos"]},
+  {"n":"Joe Allen","c":["swansea-city","wrexham","liverpool","stoke-city","swansea-city"]},
+  {"n":"Hwang Hee-chan","c":["salzburg","fc-liefering","hamburger-sv","rb-leipzig","wolves"]},
+  {"n":"Fernando Redondo","c":["tenerife","real-madrid","milan"]},
+  {"n":"Joey Jones","c":["wrexham","liverpool","wrexham","chelsea","huddersfield","wrexham"]},
+  {"n":"Alex Telles","c":["juventude","gremio","galatasaray","inter","fc-porto","manchester-united","sevilla","al-nassr","botafogo"]},
+  {"n":"Cucho Hernández","c":["deportivo-pereira","granada","america-de-cali","watford","huesca","mallorca","getafe","columbus-crew","real-betis"]},
+  {"n":"Matthias Sammer","c":["dynamo-dresden","vfb-stuttgart","inter","borussia-dortmund"]},
+  {"n":"Andrej Kramarić","c":["dinamo-zagreb","lokomotiva-zagreb","rijeka","leicester","hoffenheim"]},
+  {"n":"Patrick Roberts","c":["fulham","manchester-city","celtic","girona","norwich-city","middlesbrough","derby-county","troyes","birmingham"]},
+  {"n":"Jérémy Mathieu","c":["sochaux","toulouse","valencia","barcelona","sporting-cp"]},
+  {"n":"Bernd Leno","c":["bayer-leverkusen","arsenal","fulham"]},
+  {"n":"Thorgan Hazard","c":["rc-lens","chelsea","zulte-waregem","borussia-monchengladbach","borussia-dortmund","psv","anderlecht","rc-lens"]},
+  {"n":"Shunsuke Nakamura","c":["yokohama-f-marinos","reggina","celtic","espanyol","yokohama-f-marinos","jubilo-iwata","yokohama-fc"]},
+  {"n":"Paul McGrath","c":["st-patricks-athletic","manchester-united","aston-villa","derby-county","sheffield-united"]},
+  {"n":"Marco Bizot","c":["ajax","sc-cambuur","fc-groningen","genk","az-alkmaar","brest","aston-villa"]},
+  {"n":"Julian Brandt","c":["bayer-leverkusen","borussia-dortmund","ajax"]},
+  {"n":"Mike Penders","c":["genk","chelsea","rc-strasbourg-alsace"]},
+  {"n":"Stuart Armstrong","c":["dundee-united","celtic","southampton","vancouver-whitecaps-fc","sheffield-wednesday","aberdeen"]},
+  {"n":"Corentin Tolisso","c":["lyon","bayern-munchen","lyon"]},
+  {"n":"Per Mertesacker","c":["hannover-96","werder-bremen","arsenal"]},
+  {"n":"Sylvinho","c":["corinthians","arsenal","celta","barcelona","manchester-city"]},
+  {"n":"Okan Buruk","c":["galatasaray","inter","besiktas","galatasaray","basaksehir"]},
+  {"n":"Kevin Nolan","c":["bolton","newcastle","west-ham","leyton-orient","notts-county"]},
+  {"n":"Ayase Ueda","c":["kashima-antlers","cercle-brugge","feyenoord"]},
+  {"n":"Orkun Kökçü","c":["feyenoord","benfica","besiktas"]},
+  {"n":"Nico Schlotterbeck","c":["freiburg","union-berlin","borussia-dortmund"]},
+  {"n":"Luiz Henrique","c":["fluminense","real-betis","botafogo","zenit"]},
+  {"n":"Matt Targett","c":["southampton","fulham","aston-villa","newcastle","middlesbrough","hull-city"]},
+  {"n":"Gonzalo Montiel","c":["river-plate","sevilla","nottingham-forest","river-plate"]},
+  {"n":"Abde Ezzalzouli","c":["hercules","barcelona","osasuna","real-betis"]},
+  {"n":"Fernando Gago","c":["real-madrid","roma","valencia","velez-sarsfield"]},
+  {"n":"Edu","c":["corinthians","arsenal","valencia","corinthians"]},
+  {"n":"Radu Drăgușin","c":["juventus","sampdoria","salernitana","genoa","tottenham","fiorentina"]},
+  {"n":"Stevan Jovetić","c":["partizan","fiorentina","manchester-city","inter","sevilla","as-monaco","hertha-bsc","olympiacos","omonoia"]},
+  {"n":"Peter Reid","c":["bolton","everton","queens-park-rangers","manchester-city","southampton","notts-county","bury"]},
+  {"n":"Joe Rodon","c":["swansea-city","cheltenham","tottenham","rennes","leeds-united"]},
+  {"n":"Fraser Forster","c":["newcastle","stockport-county","bristol-rovers","norwich-city","celtic","southampton","celtic","tottenham","bournemouth"]},
+  {"n":"Nedum Onuoha","c":["manchester-city","sunderland","queens-park-rangers","real-salt-lake"]},
+  {"n":"Alexis Saelemaekers","c":["anderlecht","milan","bologna","roma"]},
+  {"n":"Ian Holloway","c":["bristol-rovers","afc-wimbledon","brentford","torquay-united","bristol-rovers","queens-park-rangers","bristol-rovers"]},
+  {"n":"Willy Caballero","c":["elche","arsenal-de-sarandi","malaga","manchester-city","chelsea","southampton"]},
+  {"n":"Ben Mee","c":["manchester-city","leicester","burnley","brentford","sheffield-united"]},
+  {"n":"Martín Demichelis","c":["river-plate","bayern-munchen","malaga","atletico-madrid","manchester-city","espanyol","malaga"]},
+  {"n":"Charles De Ketelaere","c":["club-brugge","milan","atalanta"]},
+  {"n":"Maxence Lacroix","c":["sochaux","wolfsburg","crystal-palace","chelsea"]},
+  {"n":"Otávio","c":["internacional","fc-porto","vitoria-de-guimaraes","al-nassr","al-qadsiah"]},
+  {"n":"Lee Carsley","c":["derby-county","blackburn-rovers","coventry-city","everton","birmingham","coventry-city"]},
+  {"n":"Claudio Bravo","c":["colo-colo","real-sociedad","barcelona","manchester-city","real-betis"]},
+  {"n":"Jay Spearing","c":["liverpool","leicester","bolton","blackburn-rovers","blackpool","tranmere","liverpool"]},
+  {"n":"Mamadou Sakho","c":["paris-saint-germain","liverpool","crystal-palace","montpellier","fc-torpedo"]},
+  {"n":"Nicolas Raskin","c":["gent","standard-liege","rangers"]},
+  {"n":"Nicolás Tagliafico","c":["banfield","real-sc","independiente","ajax","lyon"]},
+  {"n":"Dino Zoff","c":["udinese","mantova-1911","napoli","juventus"]},
+  {"n":"Emlyn Hughes","c":["blackpool","liverpool","wolves","rotherham","hull-city","mansfield","swansea-city"]},
+  {"n":"Jamaal Lascelles","c":["nottingham-forest","stevenage","newcastle","nottingham-forest","leicester"]},
+  {"n":"Calum Chambers","c":["southampton","arsenal","middlesbrough","fulham","aston-villa","cardiff-city"]},
+  {"n":"Gilberto Silva","c":["america-mineiro","atletico-mineiro","arsenal","panathinaikos","gremio","atletico-mineiro"]},
+  {"n":"Lee Dixon","c":["burnley","chester-fc","bury","stoke-city","arsenal"]},
+  {"n":"Jean-Clair Todibo","c":["toulouse","barcelona","schalke-04","benfica","nice","west-ham"]},
+  {"n":"Diego Moreira","c":["benfica","chelsea","lyon","rc-strasbourg-alsace"]},
+  {"n":"Pablo Zabaleta","c":["san-lorenzo-de-almagro","espanyol","manchester-city","west-ham"]},
+  {"n":"Strahinja Pavlović","c":["partizan","as-monaco","cercle-brugge","basel","salzburg","milan"]},
+  {"n":"Samuel Lino","c":["sao-bernardo","gil-vicente","atletico-madrid","valencia","flamengo"]},
+  {"n":"Rickie Lambert","c":["blackpool","macclesfield","stockport-county","rochdale","bristol-rovers","southampton","liverpool","west-bromwich-albion","cardiff-city"]},
+  {"n":"Scott Arfield","c":["falkirk","huddersfield","burnley","rangers","charlotte-fc","bolton","falkirk","livingston"]},
+  {"n":"Shaun Maloney","c":["celtic","aston-villa","celtic","wigan","chicago-fire-fc","hull-city"]},
+  {"n":"Breel Embolo","c":["basel","schalke-04","borussia-monchengladbach","as-monaco","rennes"]},
+  {"n":"Juliano Belletti","c":["cruzeiro","sao-paulo","atletico-mineiro","villarreal","barcelona","chelsea","fluminense"]},
+  {"n":"Lutsharel Geertruida","c":["feyenoord","rb-leipzig","sunderland"]},
+  {"n":"Salvatore Schillaci","c":["acr-messina","juventus","inter","jubilo-iwata"]},
+  {"n":"Ryan Bertrand","c":["chelsea","bournemouth","oldham","norwich-city","reading","nottingham-forest","aston-villa","southampton","leicester"]},
+  {"n":"Tanguy Ndombele","c":["amiens","lyon","tottenham","lyon","napoli","galatasaray","nice"]},
+  {"n":"Filip Kostić","c":["radnicki-1923","fc-groningen","vfb-stuttgart","hamburger-sv","eintracht-frankfurt","juventus","fenerbahce","psv"]},
+  {"n":"Robert Green","c":["norwich-city","west-ham","queens-park-rangers","leeds-united","huddersfield","chelsea"]},
+  {"n":"Chris Coleman","c":["manchester-city","swansea-city","crystal-palace","blackburn-rovers","fulham"]},
+  {"n":"Harry Winks","c":["tottenham","sampdoria","leicester","cagliari"]},
+  {"n":"Kevin Trapp","c":["fc-kaiserslautern","eintracht-frankfurt","paris-saint-germain","eintracht-frankfurt","paris-fc"]},
+  {"n":"Kieran Gibbs","c":["arsenal","norwich-city","west-bromwich-albion","inter-miami-cf"]},
+  {"n":"Gaël Clichy","c":["cannes","arsenal","manchester-city","basaksehir","servette"]},
+  {"n":"Shkodran Mustafi","c":["everton","sampdoria","valencia","arsenal","schalke-04","levante"]},
+  {"n":"Gonçalo Guedes","c":["benfica","paris-saint-germain","valencia","wolves","benfica","villarreal","real-sociedad"]},
+  {"n":"Yerry Mina","c":["deportivo-pasto","independiente-santa-fe","palmeiras","barcelona","everton","fiorentina","cagliari"]},
+  {"n":"Sardar Azmoun","c":["rubin","rostov","rubin","zenit","bayer-leverkusen","roma","al-ahly"]},
+  {"n":"Koni De Winter","c":["juventus","empoli","genoa","milan"]},
+  {"n":"Diego","c":["santos","fc-porto","werder-bremen","juventus","wolfsburg","atletico-madrid","fenerbahce","flamengo"]},
+  {"n":"Illya Zabarnyi","c":["dynamo-kyiv","bournemouth","paris-saint-germain"]},
+  {"n":"Carlos Soler","c":["valencia","paris-saint-germain","west-ham","real-sociedad"]},
+  {"n":"Loïc Bade","c":["le-havre-ac","rc-lens","rennes","nottingham-forest","sevilla","bayer-leverkusen"]},
+  {"n":"Peter Løvenkrands","c":["ab","rangers","schalke-04","newcastle","birmingham"]},
+  {"n":"Gabriel Milito","c":["independiente","real-zaragoza","barcelona","independiente"]},
+  {"n":"Nathan Redmond","c":["birmingham","norwich-city","southampton","besiktas","burnley","sheffield-wednesday","blackburn-rovers"]},
+  {"n":"Kieron Dyer","c":["ipswich","newcastle","west-ham","ipswich","queens-park-rangers","middlesbrough"]},
+  {"n":"Carlos Augusto","c":["corinthians","monza","inter"]},
+  {"n":"Bacary Sagna","c":["auxerre","arsenal","manchester-city","benevento","cf-montreal"]},
+  {"n":"Nahuel Molina","c":["defensa-y-justicia","rosario-central","udinese","atletico-madrid","roma"]},
+  {"n":"David Platt","c":["crewe","aston-villa","bari","juventus","sampdoria","arsenal","nottingham-forest"]},
+  {"n":"Ray Clemence","c":["scunthorpe","liverpool","tottenham"]},
+  {"n":"Sebastian Giovinco","c":["juventus","empoli","parma","toronto-fc","al-hilal","sampdoria"]},
+  {"n":"Geoffrey Kondogbia","c":["rc-lens","sevilla","as-monaco","inter","valencia","atletico-madrid","marseille"]},
+  {"n":"Isaac Hayden","c":["arsenal","hull-city","newcastle","norwich-city","standard-liege","queens-park-rangers","portsmouth","queens-park-rangers","leyton-orient"]},
+  {"n":"Robin Gosens","c":["vitesse","fc-dordrecht","heracles-almelo","atalanta","inter","union-berlin","fiorentina","schalke-04"]},
+  {"n":"Juan Foyth","c":["estudiantes-de-la-plata","tottenham","villarreal"]},
+  {"n":"Chris Hughton","c":["tottenham","west-ham","brentford"]},
+  {"n":"Óscar Mingueza","c":["barcelona","celta","crystal-palace"]},
+  {"n":"Konrad Laimer","c":["fc-liefering","salzburg","rb-leipzig","bayern-munchen"]},
+  {"n":"Dominik Livaković","c":["nk-zagreb","dinamo-zagreb","fenerbahce","girona","dinamo-zagreb"]},
+  {"n":"Issa Kaboré","c":["mechelen","manchester-city","mechelen","troyes","marseille","luton-town","benfica","werder-bremen","wrexham"]},
+  {"n":"Tiemoué Bakayoko","c":["rennes","as-monaco","chelsea","milan","as-monaco","napoli","milan","lorient","paok"]},
+  {"n":"Ryan Christie","c":["inverness","celtic","inverness","aberdeen","bournemouth"]},
+  {"n":"Mark Noble","c":["west-ham","hull-city","ipswich"]},
+  {"n":"Stiliyan Petrov","c":["montana","cska-sofia","celtic","aston-villa"]},
+  {"n":"Lee Bowyer","c":["charlton","leeds-united","west-ham","newcastle","west-ham","birmingham","ipswich"]},
+  {"n":"Jan Vennegoor of Hesselink","c":["twente","psv","celtic","hull-city","rapid-vienna","psv"]},
+  {"n":"Walter Samuel","c":["newells-old-boys","roma","real-madrid","inter","basel"]},
+  {"n":"Fabian Delph","c":["leeds-united","aston-villa","leeds-united","manchester-city","everton"]},
+  {"n":"Giuseppe Meazza","c":["inter","milan","juventus","varese","atalanta","inter"]},
+  {"n":"Christoph Kramer","c":["bayer-leverkusen","vfl-bochum","borussia-monchengladbach"]},
+  {"n":"Ricardo Rodriguez","c":["zurich","wolfsburg","milan","psv","torino","real-betis"]},
+  {"n":"Pat Jennings","c":["watford","tottenham","arsenal","tottenham","everton"]},
+  {"n":"Aleksandar Kolarov","c":["cukaricki","ofk-beograd","lazio","manchester-city","roma","inter"]},
+  {"n":"Vincenzo Montella","c":["empoli","genoa","sampdoria","roma","fulham","sampdoria"]},
+  {"n":"Glen Kamara","c":["arsenal","southend","colchester","dundee","rangers","leeds-united","rennes","al-shabab","queens-park-rangers"]},
+  {"n":"Maya Yoshida","c":["nagoya-grampus","vvv-venlo","southampton","sampdoria","schalke-04","la-galaxy"]},
+  {"n":"Auston Trusty","c":["philadelphia-union","colorado-rapids","arsenal","colorado-rapids","birmingham","sheffield-united","celtic"]},
+  {"n":"Maxwell","c":["cruzeiro","ajax","inter","barcelona","paris-saint-germain"]},
+  {"n":"Claudio Reyna","c":["bayer-leverkusen","wolfsburg","rangers","sunderland","manchester-city","new-york-red-bulls"]},
+  {"n":"James Beattie","c":["blackburn-rovers","southampton","everton","sheffield-united","stoke-city","rangers","blackpool","sheffield-united","accrington"]},
+  {"n":"Gregor Kobel","c":["hoffenheim","augsburg","vfb-stuttgart","borussia-dortmund"]},
+  {"n":"Raymond Kopa","c":["angers","stade-de-reims","real-madrid","stade-de-reims"]},
+  {"n":"Ludovic Giuly","c":["lyon","as-monaco","barcelona","roma","paris-saint-germain","as-monaco","lorient","goal-fc"]},
+  {"n":"Christian Karembeu","c":["nantes","sampdoria","real-madrid","middlesbrough","olympiacos","servette","bastia"]},
+  {"n":"Rivelino","c":["corinthians","fluminense","al-hilal"]},
+  {"n":"Matty James","c":["manchester-united","preston-north-end","leicester","barnsley","coventry-city","bristol-city","wrexham"]},
+  {"n":"Maximilian Beier","c":["hoffenheim","hannover-96","borussia-dortmund"]},
+  {"n":"Lorenzo Pellegrini","c":["roma","sassuolo","roma"]},
+  {"n":"Phil Jagielka","c":["sheffield-united","everton","sheffield-united","derby-county","stoke-city"]},
+  {"n":"Thomas Vermaelen","c":["ajax","rkc-waalwijk","arsenal","barcelona","roma","vissel-kobe"]},
+  {"n":"Thomas Hitzlsperger","c":["aston-villa","chesterfield","vfb-stuttgart","lazio","west-ham","wolfsburg","everton"]},
+  {"n":"Claudio Marchisio","c":["juventus","empoli","zenit"]},
+  {"n":"Zvonimir Boban","c":["dinamo-zagreb","milan","bari","celta"]},
+  {"n":"Paulo Henrique Ganso","c":["santos","sao-paulo","sevilla","amiens","fluminense"]},
+  {"n":"Viv Anderson","c":["nottingham-forest","arsenal","manchester-united","sheffield-wednesday","barnsley","middlesbrough"]},
+  {"n":"Seko Fofana","c":["manchester-city","fulham","bastia","udinese","rc-lens","al-nassr","al-ettifaq","rennes","fc-porto"]},
+  {"n":"Koen Casteels","c":["genk","hoffenheim","werder-bremen","wolfsburg","al-qadsiah"]},
+  {"n":"Júlio Baptista","c":["sao-paulo","sevilla","real-madrid","arsenal","roma","malaga","cruzeiro","orlando-city","cfr-cluj"]},
+  {"n":"Bernd Schuster","c":["koln","barcelona","real-madrid","atletico-madrid","bayer-leverkusen","pumas-unam"]},
+  {"n":"Stephen Darby","c":["liverpool","swindon-town","notts-county","rochdale","bradford","bolton"]},
+  {"n":"Liam Cooper","c":["hull-city","carlisle","huddersfield","chesterfield","leeds-united","cska-sofia","sheffield-wednesday"]},
+  {"n":"Michael Dawson","c":["nottingham-forest","tottenham","hull-city","nottingham-forest"]},
+  {"n":"Oh Hyeon-gyu","c":["suwon-bluewings","gimcheon-sangmu-fc","celtic","genk","besiktas"]},
+  {"n":"Akram Afif","c":["eupen","villarreal","sporting-gijon","eupen","al-sadd"]},
+  {"n":"Marcelo Gallardo","c":["river-plate","as-monaco","river-plate","paris-saint-germain","dc-united","river-plate","atletico-nacional"]},
+  {"n":"Thilo Kehrer","c":["schalke-04","paris-saint-germain","west-ham","as-monaco"]},
+  {"n":"Fabio","c":["manchester-united","queens-park-rangers","cardiff-city","middlesbrough","nantes","gremio"]},
+  {"n":"Denis Zakaria","c":["servette","young-boys","borussia-monchengladbach","juventus","chelsea","as-monaco"]},
+  {"n":"Ousmane Diomande","c":["midtjylland","mafra","sporting-cp","nottingham-forest"]},
+  {"n":"Víctor Muñoz","c":["internacional","real-madrid","osasuna","liverpool"]},
+  {"n":"Reinier","c":["flamengo","real-madrid","borussia-dortmund","girona","frosinone","granada","atletico-mineiro"]},
+  {"n":"Héctor Herrera","c":["pachuca","fc-porto","atletico-madrid","houston-dynamo","toluca","houston-dynamo"]},
+  {"n":"Borna Sosa","c":["dinamo-zagreb","vfb-stuttgart","ajax","torino","crystal-palace"]},
+  {"n":"Layvin Kurzawa","c":["as-monaco","paris-saint-germain","fulham","boavista","persib-bandung"]},
+  {"n":"Cédric Soares","c":["sporting-cp","academica-de-coimbra","southampton","inter","arsenal","fulham","sao-paulo"]},
+  {"n":"Jan Bednarek","c":["lech-poznan","gornik-leczna","southampton","aston-villa","fc-porto"]},
+  {"n":"Fred","c":["america-mineiro","cruzeiro","lyon","fluminense","atletico-mineiro","cruzeiro","fluminense"]},
+  {"n":"Ritsu Dōan","c":["gamba-osaka","fc-groningen","psv","arminia-bielefeld","freiburg","eintracht-frankfurt"]},
+  {"n":"Michael Bradley","c":["new-york-red-bulls","sc-heerenveen","borussia-monchengladbach","aston-villa","chievo","roma","toronto-fc"]},
+  {"n":"Vikash Dhorasoo","c":["le-havre-ac","lyon","bordeaux","milan","paris-saint-germain","livorno"]},
+  {"n":"Jens Petter Hauge","c":["bodo-glimt","aalesund","milan","eintracht-frankfurt","gent","bodo-glimt"]},
+  {"n":"Christian Panucci","c":["genoa","milan","real-madrid","inter","chelsea","as-monaco","roma","parma"]},
+  {"n":"Timothy Fosu-Mensah","c":["manchester-united","crystal-palace","fulham","bayer-leverkusen"]},
+  {"n":"David Batty","c":["leeds-united","blackburn-rovers","newcastle","leeds-united"]},
+  {"n":"Barış Alper Yılmaz","c":["ankara-demirspor","keciorengucu","galatasaray"]},
+  {"n":"Julian Ryerson","c":["viking","union-berlin","borussia-dortmund"]},
+  {"n":"John Hartson","c":["luton-town","arsenal","west-ham","afc-wimbledon","coventry-city","celtic","west-bromwich-albion","norwich-city"]},
+  {"n":"Gianluca Mancini","c":["perugia","atalanta","roma"]},
+  {"n":"Maxwel Cornet","c":["fc-metz","lyon","burnley","west-ham","southampton","genoa"]},
+  {"n":"Nick Powell","c":["crewe","manchester-united","wigan","leicester","hull-city","wigan","stoke-city","stockport-county","bradford"]},
+  {"n":"Jim Leighton","c":["aberdeen","deveronvale","manchester-united","arsenal","reading","dundee","sheffield-united","hibernian","aberdeen"]},
+  {"n":"Lucas Leiva","c":["gremio","liverpool","lazio","gremio"]},
+  {"n":"Bremer","c":["atletico-mineiro","torino","juventus"]},
+  {"n":"Emre Belözoğlu","c":["galatasaray","inter","newcastle","fenerbahce","atletico-madrid","fenerbahce","basaksehir","fenerbahce"]},
+  {"n":"Emmanuel Eboué","c":["asec-mimosas","beveren","arsenal","galatasaray","sunderland"]},
+  {"n":"Matteo Politano","c":["roma","perugia","pescara","sassuolo","inter","napoli"]},
+  {"n":"Denny Landzaat","c":["ajax","mvv-maastricht","az-alkmaar","wigan","feyenoord","twente"]},
+  {"n":"Martin Kelly","c":["liverpool","huddersfield","crystal-palace","west-bromwich-albion","wigan"]},
+  {"n":"Daniel Agger","c":["brondby","liverpool","brondby"]},
+  {"n":"Arijanet Muric","c":["manchester-city","nac-breda","nottingham-forest","girona","adana-demirspor","burnley","ipswich","sassuolo"]},
+  {"n":"Tom Huddlestone","c":["derby-county","tottenham","wolves","hull-city","derby-county","hull-city","manchester-united"]},
+  {"n":"Alessandro Florenzi","c":["roma","crotone","valencia","paris-saint-germain","milan"]},
+  {"n":"Jasper Cillessen","c":["nec-nijmegen","ajax","barcelona","valencia","nec-nijmegen","las-palmas","nec-nijmegen"]},
+  {"n":"Paul Robinson","c":["leeds-united","tottenham","blackburn-rovers","burnley"]},
+  {"n":"Oliver Skipp","c":["tottenham","norwich-city","leicester"]},
+  {"n":"Fabrice Muamba","c":["arsenal","birmingham","bolton"]},
+  {"n":"Robbie Brady","c":["manchester-united","hull-city","norwich-city","burnley","bournemouth","preston-north-end"]},
+  {"n":"Tomoki Iwata","c":["oita-trinita","yokohama-f-marinos","celtic","birmingham"]},
+  {"n":"Mario Pašalić","c":["hajduk-split","chelsea","elche","as-monaco","milan","spartak-moskva","atalanta"]},
+  {"n":"Zack Steffen","c":["columbus-crew","pittsburgh-riverhounds-sc","manchester-city","fortuna-dusseldorf","middlesbrough","colorado-rapids"]},
+  {"n":"Alexander Nübel","c":["paderborn","schalke-04","bayern-munchen","as-monaco","vfb-stuttgart","besiktas"]},
+  {"n":"Aiden McGeady","c":["celtic","spartak-moskva","everton","sheffield-wednesday","preston-north-end","sunderland","charlton","hibernian","ayr"]},
+  {"n":"Stephan Lichtsteiner","c":["grasshoppers","lille","lazio","juventus","arsenal","augsburg"]},
+  {"n":"Sergio Gómez","c":["borussia-dortmund","huesca","anderlecht","manchester-city","real-sociedad"]},
+  {"n":"Phil Neal","c":["northampton","liverpool","bolton"]},
+  {"n":"Nick Barmby","c":["tottenham","middlesbrough","everton","liverpool","leeds-united","nottingham-forest","hull-city"]},
+  {"n":"Shane Long","c":["cork-city","reading","west-bromwich-albion","hull-city","southampton","bournemouth","reading"]},
+  {"n":"Gabriel Paulista","c":["vitoria","villarreal","arsenal","valencia","atletico-madrid","besiktas","corinthians"]},
+  {"n":"Albert Guðmundsson","c":["psv","az-alkmaar","genoa","fiorentina"]},
+  {"n":"Yoann Gourcuff","c":["rennes","milan","bordeaux","lyon","rennes","dijon"]},
+  {"n":"Sven Ulreich","c":["vfb-stuttgart","bayern-munchen","hamburger-sv","bayern-munchen"]},
+  {"n":"Darron Gibson","c":["manchester-united","antwerp","wolves","everton","sunderland","wigan","salford-city"]},
+  {"n":"Ki Sung-yueng","c":["fc-seoul","celtic","swansea-city","sunderland","newcastle","mallorca","fc-seoul","pohang-steelers"]},
+  {"n":"Emam Ashour","c":["ghazl-el-mahalla","haras-el-hodoud","zamalek","midtjylland","al-ahly"]},
+  {"n":"Andrew Johnson","c":["birmingham","crystal-palace","everton","fulham","queens-park-rangers","crystal-palace"]},
+  {"n":"Massimo Luongo","c":["tottenham","ipswich","swindon-town","queens-park-rangers","sheffield-wednesday","middlesbrough","ipswich","millwall"]},
+  {"n":"Garry Monk","c":["torquay-united","southampton","torquay-united","stockport-county","oxford-united","sheffield-wednesday","barnsley","swansea-city"]},
+  {"n":"Adam Smith","c":["tottenham","wycombe","torquay-united","bournemouth","mk-dons","leeds-united","millwall","derby-county","bournemouth"]},
+  {"n":"Gerald Vanenburg","c":["ajax","psv","jubilo-iwata","fc-utrecht","cannes","1860-munich"]},
+  {"n":"Hong Myung-bo","c":["gimcheon-sangmu-fc","pohang-steelers","shonan-bellmare","kashiwa-reysol","pohang-steelers","la-galaxy"]},
+  {"n":"James McFadden","c":["motherwell","everton","birmingham","everton","sunderland","motherwell","st-johnstone","motherwell","queen-of-the-south"]},
 ];
 
 const SAVE_KEY = "ball-quiz-v1";
@@ -3000,6 +3541,52 @@ fetch("assets/leagues/index.json").then(r=>r.json()).then(l=>{
   LEAGUES=l;
   if(!S || S.phase==="setup") render();
 }).catch(()=>{});
+
+/* Alumni: Career Path read down the other axis. The deck is built from the
+   careers themselves, so it needs no research of its own, and the players in
+   each club come pre-sorted obscure to famous. */
+let ALUM=null;
+fetch("assets/alumni/index.json").then(r=>r.json()).then(a=>{
+  ALUM=a;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+
+/* The Wall: sixteen names, four hidden fours. Each board is built so every
+   name answers to exactly one group on it, which the bank proves before it
+   ships, because a wall that rejects a fair answer is not hard, it is broken. */
+let WALL=null;
+fetch("assets/wall/index.json").then(r=>r.json()).then(w=>{
+  WALL=w;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+
+/* Mystery Man: one hidden player, and every guess reports back how close it
+   was. The bank holds all thousand careers, because any of them may be
+   guessed; only the 495 with a "t" are famous enough to be the answer. */
+let BIDS=null;
+fetch("assets/bidding/index.json").then(r=>r.json()).then(b=>{
+  BIDS=b;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+
+let ORDB=null;
+fetch("assets/order/index.json").then(r=>r.json()).then(o=>{
+  ORDB=o;
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
+
+let MYS=null, MYSI=null;
+fetch("assets/mystery/index.json").then(r=>r.json()).then(m=>{
+  MYS=m;
+  /* one normalised index, built once: the typing lookup runs on every keypress */
+  MYSI={};
+  m.forEach((r,i)=>{
+    const k=rnorm(r.n); if(MYSI[k]===undefined) MYSI[k]=i;
+    const last=rnorm(r.n.split(" ").slice(1).join(" "));
+    if(last && last.length>=4){ MYSI["~"+last] = MYSI["~"+last]===undefined ? i : -1; }
+  });
+  if(!S || S.phase==="setup") render();
+}).catch(()=>{});
 const RUSH_SECS=30;
 /* Type it how you say it. The bank carries the aliases (Atleti, Spurs, PSV),
    this just has to stop punctuation and accents costing anybody a point with
@@ -3184,12 +3771,21 @@ function xiAfter(){ if(maybeFinish()) return; if(S.rr) return rrNext(); S.round+
 /* ============================== TIMELINE ==============================
    Five moments, put them in chronological order out loud; the reveal shows
    the years and the reader pays +1 per correctly placed event, +5 for all. */
+/* Timeline and Order Them are one engine over two decks, the way Career Path
+   and Manager Path are. Both ask for five things smallest first; only the
+   number differs, a year in one and a capacity or a founding date in the
+   other, so everything below reads tdeck() and never TLINE directly. */
+const tdeck = () => S.mode==="ord" ? (ORDB||[]) : (TLINE||[]);
+const tused = () => S.mode==="ord" ? S.usedO : S.usedT;
 function newTL(){
-  let avail=TLINE.map((_,i)=>i).filter(i=>!S.usedT.includes(i));
-  if(!avail.length){ toast("Timeline deck exhausted, reshuffling"); S.usedT=[]; avail=TLINE.map((_,i)=>i); }
+  const deck=tdeck();
+  if(!deck.length){ toast("That deck is still loading, give it a second", true); return; }
+  let used=tused();
+  let avail=deck.map((_,i)=>i).filter(i=>!used.includes(i));
+  if(!avail.length){ toast("Deck exhausted, reshuffling"); used.length=0; avail=deck.map((_,i)=>i); }
   const ti=avail[Math.floor(Math.random()*avail.length)];
-  S.usedT.push(ti);
-  const order=TLINE[ti].items.map((_,i)=>i);
+  used.push(ti);
+  const order=deck[ti].items.map((_,i)=>i);
   for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
   if(order.every((v,i)=>v===i)) [order[0],order[1]]=[order[1],order[0]]; // never deal it pre-solved
   S.tl={i:ti, order};
@@ -3265,7 +3861,7 @@ function tlNext(){
    S.rrTurn exists because S.turn cannot be trusted across the roll: Name the XI
    parks it at -1 for a communal board, and Career Path never rotates it at all.
    The pointer that survives the mode change is the one that passes the phone. */
-const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush"];
+const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush","alum","wall","mys","ord","bid"];
 /* Same readiness the setup screen enforces, per mode: a bank that has not
    landed yet must not be rolled, or the deal comes up empty. */
 const RR_READY = {
@@ -3281,10 +3877,15 @@ const RR_READY = {
   tline:()=>TLINE && TLINE.length > (S.usedT||[]).length,
   duel:()=>!!DUEL,
   rush:()=>LEAGUES && LEAGUES.length > (S.usedL||[]).length,
+  alum:()=>ALUM && ALUM.length > (S.usedA||[]).length,
+  wall:()=>WALL && WALL.length > (S.usedW||[]).length,
+  mys:()=>MYS && MYS.filter(r=>r.t).length > (S.usedY||[]).length,
+  ord:()=>ORDB && ORDB.length > (S.usedO||[]).length,
+  bid:()=>BIDS && BIDS.length > (S.usedB||[]).length,
 };
 /* Where each mode expects to start. The tier modes all open on the difficulty
    picker; the run-based ones each have their own first phase. */
-const RR_START = {career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick"};
+const RR_START = {career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick", alum:"al_play", wall:"wl_play", mys:"my_play", ord:"tl_play", bid:"b_bid"};
 function rrPool(){
   return RR_POOL.filter(m => { try{ return !!RR_READY[m](); }catch(e){ return false; } });
 }
@@ -3305,7 +3906,11 @@ function rrDeal(announce=true){
   if(m==="career" || m==="mgr") newCareer();
   else if(m==="xi") newXI();
   else if(m==="duel") newDuel();
-  else if(m==="tline") newTL();
+  else if(m==="tline" || m==="ord") newTL();
+  else if(m==="alum") newAlum();
+  else if(m==="wall") newWall();
+  else if(m==="mys") newMystery();
+  else if(m==="bid") newBid();
   else if(m==="rush") S.rush=null;         // the league is picked on the g_pick screen
 }
 /* Every mode's end-of-go funnels through here instead of its own handover. */
@@ -3330,6 +3935,11 @@ function freshState(names, timed=true, mode="classic", target=100){
     usedM:[], // manager career path: dugout careers already played
     duel:null, usedD:[], // older or taller: current pair + faces already shown
     rush:null, usedL:[], // league rush: the current 30 seconds + leagues already played
+    alum:null, usedA:[], // alumni: the club on the table + clubs already asked
+    wall:null, usedW:[], // the wall: the board on the table + boards already played
+    mys:null, usedY:[], // mystery man: the hidden player + the ones already hunted
+    usedO:[], // order them: sets already dragged (the set itself lives in S.tl)
+    bid:null, usedB:[], // the bidding round: the lot on the table + the ones already sold
     xi:null, usedX:[], // name the XI: current board + finals already played
     tl:null, usedT:[], // timeline: current question + ones already asked
     ref:null, // referee mode: the non-playing quizmaster's name
@@ -3751,7 +4361,7 @@ const HIST_KEY = "ball-quiz-history-v1";
 /* classic is called Let's Ball on the outside: it is the flagship quiz and the
    thing the app is for, so it gets the name and the gold button. The mode that
    deals one of everything is Rainbow Road, which is where the idea came from. */
-const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", rr:"Rainbow Road"};
+const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", alum:"Alumni", wall:"The Wall", mys:"Mystery Man", ord:"Order Them", bid:"Prove It", rr:"Rainbow Road"};
 /* THE RECORD BOOK HAS TO SURVIVE THE APP BEING SHUT.
 
    It lives in localStorage, which already survives a close, but three things
@@ -4448,6 +5058,199 @@ function render(){
     return;
   }
 
+  if(["b_bid","b_call","b_done"].includes(S.phase)){
+    const B=BIDS[S.bid.i];
+    const lot = `<div class="clubgrid"><div class="clubcard"><img src="assets/logos/${B.s}.png" alt=""></div></div>
+      <div class="careername">${esc(B.nat)} at ${esc(B.c)}</div>`;
+
+    if(S.phase==="b_bid"){
+      const held = S.bid.holder!==null;
+      st.innerHTML = `
+        <div class="kick">${ico('hand')}Prove It · ${esc(S.players[S.turn].name)}'s call · Round ${S.round}</div>
+        ${lot}
+        <div class="potpill">${held ? esc(S.players[S.bid.holder].name)+" says "+S.bid.claim : "No bids yet"}</div>
+        <div class="hint" style="text-align:center">How many players from ${esc(B.nat)} can you name who turned out for ${esc(B.c)}? Raise the bid, or make them prove it.</div>
+        <div class="spacer"></div>
+        <button class="bigbtn" onclick="bidRaise()">I can name ${S.bid.claim+1}</button>
+        ${held && S.bid.holder!==S.turn ? `<button class="bigbtn warn" onclick="bidCall()">Prove it</button>` : ""}
+        <button class="bigbtn ghost" onclick="bidPass()">Nobody fancies it, next lot</button>`;
+      return;
+    }
+    if(S.phase==="b_call"){
+      const h=S.players[S.bid.holder];
+      st.innerHTML = `
+        <div class="kick">${esc(h.name)} said ${S.bid.claim}</div>
+        ${lot}
+        <div class="potpill">${S.bid.got} / ${S.bid.claim}</div>
+        <div class="hint" style="text-align:center">${esc(h.name)} names them out loud. ${reader()} marks each one. Get there and it pays +${S.bid.claim}; fall short and it costs the same.</div>
+        <div class="spacer"></div>
+        <div class="row2">
+          <button class="bigbtn ok" onclick="bidGot()">That one counts<kbd>C</kbd></button>
+          <button class="bigbtn bad" onclick="bidFail()">Out of names<kbd>W</kbd></button>
+        </div>`;
+      return;
+    }
+    const won = S.bid.win==="holder";
+    st.innerHTML = `
+      <div class="kick">${won ? esc(S.players[S.bid.holder].name)+" had them" : "Fell short"}</div>
+      ${lot}
+      <div class="hint" style="text-align:center">The app knows of ${B.k} in its own decks, and there are more it has never heard of.</div>
+      <div class="alumlist">${B.p.slice(0,10).map(n=>`<div class="alumrow">${faceHTML(n)}<span>${esc(n)}</span></div>`).join("")}</div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="bidAfter()">Next lot<kbd>Space</kbd></button>`;
+    return;
+  }
+
+  if(["my_play","my_done"].includes(S.phase)){
+    const T=MYS[S.mys.ti];
+    const over=S.phase==="my_done";
+    const got=over && S.mys.g.some(x=>x.i===S.mys.ti);
+    const yes=v=>v===1?" hit":v===0?" miss":"";
+    const rows=S.mys.g.slice().reverse().map(x=>{
+      const g=MYS[x.i];
+      const arrow=x.age===1?"↑ younger":x.age===-1?"↓ older":x.age===0?"= same year":"?";
+      return `<div class="myrow${x.i===S.mys.ti?" him":""}">
+        <div class="myname">${esc(g.n)}</div>
+        <div class="mychips">
+          <span class="mychip${yes(x.nat)}">${esc(g.nat||"?")}</span>
+          <span class="mychip${yes(x.pos)}">${esc(g.pl||g.p||"?")}</span>
+          <span class="mychip${x.age===0?" hit":""}">${g.y||"?"} ${arrow}</span>
+          ${x.sh.length?x.sh.map(sl=>`<span class="mychip hit"><img src="assets/logos/${sl}.png" alt=""></span>`).join(""):`<span class="mychip miss">no club shared</span>`}
+        </div></div>`;
+    }).join("");
+
+    if(!over){
+      st.innerHTML = `
+        <div class="kick">${ico('eye')}Mystery Man · ${esc(S.players[S.turn]?S.players[S.turn].name:"")}'s guess · Round ${S.round}</div>
+        <div class="potpill">Name him now: +${mysPot()}</div>
+        <input class="nm-in" id="mysin" placeholder="Type any player…" autocomplete="off"
+               autocapitalize="off" autocorrect="off" spellcheck="false" oninput="mysType(this)">
+        <div class="hint" style="text-align:center">Guess anyone. You will be told his country, his position, whether the hidden man is older or younger, and any club the two of them share. ${MYS_TRIES-S.mys.g.length} guesses left.</div>
+        ${rows}
+        <div class="spacer"></div>
+        <button class="bigbtn ghost" onclick="mysGiveUp()">Nobody has him, give it up</button>`;
+      const el=document.getElementById("mysin"); if(el) el.focus();
+      return;
+    }
+    st.innerHTML = `
+      <div class="kick">${got?"Got him":"Nobody had him"}</div>
+      ${faceHTML(T.n)}
+      <div class="careername">${esc(T.n)}</div>
+      <div class="hint" style="text-align:center">${esc([T.pl||T.p, T.nat, T.y].filter(Boolean).join(" · "))}</div>
+      <div class="clubgrid">${T.c.map(sl=>`<div class="clubcard"><img src="assets/logos/${sl}.png" alt=""></div>`).join("")}</div>
+      ${rows}
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="mysAfter()">Next man<kbd>Space</kbd></button>`;
+    return;
+  }
+
+  if(["wl_play","wl_award","wl_done"].includes(S.phase)){
+    const W=WALL[S.wall.wi];
+    const over = S.phase==="wl_done";
+    const rows = S.wall.done.map(gi=>{
+      const g=W.g[gi];
+      return `<div class="wlgroup"><div class="wllabel">${esc(g.l)}</div><div class="wlnames">${g.p.map(n=>esc(n)).join(" · ")}</div></div>`;
+    }).join("");
+    const grid = S.wall.tiles.map((t,i)=>{
+      if(S.wall.done.includes(t.g)) return "";
+      const on=S.wall.sel.includes(i);
+      return `<button class="wltile${on?" on":""}" onclick="wlTap(${i})">${esc(t.n)}</button>`;
+    }).join("");
+
+    if(S.phase==="wl_play"){
+      st.innerHTML = `
+        <div class="kick">${ico('grid')}The Wall · Round ${S.round}</div>
+        <div class="wllives">${"⚽".repeat(S.wall.lives)}${"·".repeat(WALL_LIVES-S.wall.lives)}</div>
+        ${rows}
+        <div class="wlgrid">${grid}</div>
+        <div class="hint" style="text-align:center">Four groups of four are hiding in there. Tap four that belong together.</div>
+        <div class="spacer"></div>
+        <button class="bigbtn${S.wall.sel.length===4?"":" ghost"}" onclick="wlLock()">Lock in these four</button>`;
+      return;
+    }
+    if(S.phase==="wl_award"){
+      const g=W.g[S.wall.last];
+      const solved=S.wall.done.length>=4;
+      st.innerHTML = `
+        <div class="kick">That is a four</div>
+        <div class="careername">${esc(g?g.l:"")}</div>
+        <div class="hint" style="text-align:center">${g?esc(g.p.join(" · ")):""}</div>
+        ${solved?`<div class="hint" style="text-align:center">And that is the wall. Whoever called it takes the ${WALL_ALL} as well.</div>`:""}
+        <div class="spacer"></div>
+        <div class="hint" style="text-align:center">Who spotted it?</div>
+        <div class="whobar">
+          ${S.players.map((p,ix)=>`<button class="stealbtn" onclick="wlAward(${ix})">${esc(p.name)} +${WALL_PTS+(solved?WALL_ALL:0)}</button>`).join("")}
+          <button class="bigbtn ghost" onclick="wlAward(-1)">Nobody, it was a guess</button>
+        </div>`;
+      return;
+    }
+    st.innerHTML = `
+      <div class="kick">${S.wall.done.length>=4?"Wall cleared":"The wall wins"}</div>
+      ${W.g.map((g,gi)=>`<div class="wlgroup${S.wall.done.includes(gi)?" got":""}"><div class="wllabel">${esc(g.l)}</div><div class="wlnames">${g.p.map(n=>esc(n)).join(" · ")}</div></div>`).join("")}
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="wlAfter()">Next wall<kbd>Space</kbd></button>`;
+    return;
+  }
+
+  if(["al_play","al_who","al_judge","al_dead"].includes(S.phase)){
+    const A=ALUM[S.alum.ci];
+    const done = S.phase==="al_judge" || S.phase==="al_dead";
+    const list = A.p.map((name,i)=>{
+      if(!done && i>=S.alum.shown) return "";
+      return `<div class="alumrow${i===S.alum.shown-1&&!done?" pop":""}">${faceHTML(name)}<span>${esc(name)}</span></div>`;
+    }).join("");
+    /* the grid wrapper is what centres it, same as Career Path's row of crests */
+    const crest = `<div class="clubgrid"><div class="clubcard pop"><img src="assets/logos/${A.s}.png" alt=""></div></div>`;
+
+    if(S.phase==="al_play"){
+      const locked=S.alum.locked.map(i=>S.players[i].name);
+      st.innerHTML = `
+        <div class="kick">${ico('route')}Alumni · Round ${S.round}</div>
+        <div class="potpill">Guess now: +${alpot()}</div>
+        <div class="alumlist">${list}</div>
+        <div class="hint" style="text-align:center">All of them turned out for the same club. ${A.p.length} names in this one.${locked.length?` Locked out: ${esc(locked.join(", "))}.`:""}</div>
+        <div class="spacer"></div>
+        ${S.alum.shown<A.p.length
+          ? `<button class="bigbtn" onclick="alNext()">Next player<kbd>Space</kbd></button>`
+          : `<div class="hint" style="text-align:center">That is the lot. Last chance…</div>`}
+        <button class="bigbtn warn" onclick="alGuess()">${ico('hand')}Someone knows it!<kbd>G</kbd></button>
+        <button class="bigbtn ghost" onclick="alGiveUp()">Nobody knows, reveal it</button>`;
+      return;
+    }
+    if(S.phase==="al_who"){
+      st.innerHTML = `
+        <div class="kick">Who says they know it?</div>
+        <div class="alumlist">${list}</div>
+        <div class="hint" style="text-align:center">Say the club out loud FIRST, then ${reader()} checks. Right: +${alpot()}. Wrong: −2 and locked out of this club.</div>
+        <div class="whobar">
+          ${S.players.map((p,i)=>S.alum.locked.includes(i)?"":`<button class="stealbtn" onclick="alPick(${i})">${esc(p.name)}</button>`).join("")}
+          <button class="bigbtn ghost" onclick="alBack()">Back</button>
+        </div>`;
+      return;
+    }
+    if(S.phase==="al_judge"){
+      st.innerHTML = `
+        <div class="kick">${ico('eye')}Only ${reader()} looks · judging ${esc(S.players[S.alum.guesser].name)}</div>
+        ${crest}
+        <div class="careername">${esc(A.n)}</div>
+        <div class="alumlist">${list}</div>
+        <div class="spacer"></div>
+        <div class="row2">
+          <button class="bigbtn ok" onclick="alJudge(true)">Correct +${alpot()}<kbd>C</kbd></button>
+          <button class="bigbtn bad" onclick="alJudge(false)">Wrong −2<kbd>W</kbd></button>
+        </div>`;
+      return;
+    }
+    st.innerHTML = `
+      <div class="kick">Nobody got it</div>
+      ${crest}
+      <div class="careername">${esc(A.n)}</div>
+      <div class="alumlist">${list}</div>
+      <div class="spacer"></div>
+      <button class="bigbtn" onclick="alAfter()">Next club<kbd>Space</kbd></button>`;
+    return;
+  }
+
   if(S.phase==="g_pick"){
     st.innerHTML = `
       <div class="kick">League Rush · ${esc(S.players[S.turn].name)}'s go · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
@@ -4560,21 +5363,24 @@ function render(){
   }
 
   if(S.phase==="tl_play" || S.phase==="tl_reveal"){
-    const T=TLINE[S.tl.i];
+    const T=tdeck()[S.tl.i];
     const rev=S.phase==="tl_reveal";
+    const ord=S.mode==="ord";
+    /* a capacity wants its thousands marked; a year never does */
+    const num=v => (ord && v>=10000) ? v.toLocaleString("en-GB") : v;
     const rows = rev
-      ? S.tl.order.map((ix,p)=>`<div class="tlrow pop ${S.tl.right[p]?"tlok":"tlbad"}" style="animation-delay:${p*.12}s"><span class="tlyear">${T.items[ix].y}</span><span class="tlt">${esc(T.items[ix].t)}</span><span class="tlmark">${S.tl.right[p]?"✓":"✗"}</span></div>`).join("")
+      ? S.tl.order.map((ix,p)=>`<div class="tlrow pop ${S.tl.right[p]?"tlok":"tlbad"}" style="animation-delay:${p*.12}s"><span class="tlyear">${num(T.items[ix].y)}</span><span class="tlt">${esc(T.items[ix].t)}</span><span class="tlmark">${S.tl.right[p]?"✓":"✗"}</span></div>`).join("")
       : S.tl.order.map((ix,p)=>`<div class="tlrow draggable" onpointerdown="tlDown(event,${p})" onpointermove="tlDragMove(event)" onpointerup="tlDragEnd()" onpointercancel="tlDragEnd()"><span class="grip">⠿</span><span class="tlyear">?</span><span class="tlt">${esc(T.items[ix].t)}</span></div>`).join("");
     st.innerHTML = `
-      <div class="kick">Timeline · ${esc(S.players[S.turn].name)}'s call · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
+      <div class="kick">${ord?"Order Them":"Timeline"} · ${esc(S.players[S.turn].name)}'s call · Round ${S.round}${S.target?" · 🏁 first to "+S.target:""}</div>
       <div class="xititle">${esc(T.q)}</div>
       <div class="tlwrap">${rows}</div>
       ${rev?`
       <div class="potpill">${S.tl.score} / 5 in the right spot${S.tl.score===5?" · perfect!":""}</div>
       <div class="spacer"></div>
-      <button class="bigbtn" onclick="tlNext()">Next timeline<kbd>Space</kbd></button>`
+      <button class="bigbtn" onclick="tlNext()">Next ${ord?"set":"timeline"}<kbd>Space</kbd></button>`
       :`
-      <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} drags the events into order, earliest on top, then locks it in. The app pays +1 per correct spot, +5 for a perfect five.</div>
+      <div class="hint" style="text-align:center">${esc(S.players[S.turn].name)} drags them into order, ${ord?"smallest on top":"earliest on top"}, then locks it in. The app pays +1 per correct spot, +5 for a perfect five.</div>
       <div class="spacer"></div>
       <button class="bigbtn" onclick="tlReveal()">Lock it in<kbd>Space</kbd></button>
       <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`}`;
@@ -4626,7 +5432,7 @@ let modesOpen = false; // the specialty-mode drawer on the menu
    it is the one people reach for next, and Rainbow Road sits second: it is the
    showpiece, but it is still a mode you go looking for rather than the one the
    app opens on. */
-const MODE_META = {written:["pencil","Written","#f0c98a"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"]};
+const MODE_META = {written:["pencil","Written","#f0c98a"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"], alum:["route","Alumni","#e8b0a0"], wall:["grid","The Wall","#c9a0e8"], mys:["eye","Mystery Man","#7fc4e8"], ord:["tl","Order Them","#a8c6b3"], bid:["hand","Prove It","#f0c98a"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){
@@ -4827,6 +5633,11 @@ function startGame(){
   if(setupMode==="tline" && !TLINE){ toast("Timeline deck still loading, give it a second", true); return; }
   if(setupMode==="duel" && !DUEL){ toast("The face-off deck is still loading, give it a second", true); return; }
   if(setupMode==="rush" && !LEAGUES){ toast("The league bank is still loading, give it a second", true); return; }
+  if(setupMode==="alum" && !ALUM){ toast("The alumni deck is still loading, give it a second", true); return; }
+  if(setupMode==="wall" && !WALL){ toast("The wall is still loading, give it a second", true); return; }
+  if(setupMode==="mys" && !MYS){ toast("The mystery deck is still loading, give it a second", true); return; }
+  if(setupMode==="ord" && !ORDB){ toast("The ordering deck is still loading, give it a second", true); return; }
+  if(setupMode==="bid" && !BIDS){ toast("The bidding deck is still loading, give it a second", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
@@ -4848,6 +5659,11 @@ function startGame(){
   if(S.mode==="duel") newDuel();
   if(S.mode==="rush") newRush();
   if(S.mode==="tline") newTL();
+  if(S.mode==="alum") newAlum();
+  if(S.mode==="wall") newWall();
+  if(S.mode==="mys") newMystery();
+  if(S.mode==="ord") newTL();
+  if(S.mode==="bid") newBid();
   render();
 }
 function resumeGame(){
@@ -4871,6 +5687,24 @@ function resumeGame(){
   if(S.mode==="tline" && !TLINE){ toast("Timeline deck still loading, give it a second", true); return; }
   if(S.mode==="duel" && !DUEL){ toast("The face-off deck is still loading, give it a second", true); return; }
   if(S.mode==="rush" && !LEAGUES){ toast("The league bank is still loading, give it a second", true); return; }
+  if(S.mode==="alum" && !ALUM){ toast("The alumni deck is still loading, give it a second", true); return; }
+  if(!S.usedA) S.usedA=[];                 // saves from before alumni existed
+  if(!S.usedW) S.usedW=[];                 // saves from before the wall existed
+  if(!S.usedY) S.usedY=[];                 // saves from before the mystery man existed
+  if(!S.usedO) S.usedO=[];                 // saves from before Order Them existed
+  if(!S.usedB) S.usedB=[];                 // saves from before the bidding round existed
+  if(S.mode==="bid" && !BIDS){ toast("The bidding deck is still loading, give it a second", true); return; }
+  if(S.mode==="bid" && !S.bid) newBid();
+  if(S.phase==="b_call") S.phase="b_bid";  // a half-delivered list cannot be resumed fairly
+  if(S.mode==="ord" && !ORDB){ toast("The ordering deck is still loading, give it a second", true); return; }
+  if(S.mode==="ord" && !S.tl) newTL();
+  if(S.mode==="mys" && !MYS){ toast("The mystery deck is still loading, give it a second", true); return; }
+  if(S.mode==="mys" && !S.mys) newMystery();
+  if(S.mode==="wall" && !WALL){ toast("The wall is still loading, give it a second", true); return; }
+  if(S.mode==="wall" && !S.wall) newWall();
+  if(S.phase==="wl_award") S.phase="wl_play";   // the shout is gone, the board is not
+  if(S.mode==="alum" && !S.alum) newAlum();
+  if(["al_who","al_judge"].includes(S.phase)) S.phase="al_play";
   if(S.mode==="mgr" && !S.career) newCareer();
   if(S.mode==="xi" && !S.xi) newXI();
   if(S.mode==="tline" && !S.tl) newTL();
@@ -5116,6 +5950,275 @@ function cJudge(correct){
 function cGiveUp(){ S.phase="c_dead"; revealAnim=true; render(); }
 function cAfter(){ if(S.rr) return rrNext(); S.round++; newCareer(); render(); }
 
+/* ---------------------------- ALUMNI ----------------------------
+   Career Path with the roles swapped: the players come out one at a time and
+   the club is the answer. Same ladder, same locked-out rule, same shape of
+   screen, so there is nothing new to learn at the table. The deck arrives with
+   each club's players already ordered obscure to famous, so revealing them in
+   order is what makes the question soften. */
+function alpot(){ return Math.max(15 - 3*(S.alum.shown-1), 3); }
+function newAlum(){
+  if(!ALUM || !ALUM.length){ toast("The alumni deck is still loading, give it a second", true); return; }
+  if(!S.usedA) S.usedA=[];
+  let avail = ALUM.map((_,i)=>i).filter(i=>!S.usedA.includes(i));
+  if(!avail.length){ toast("Every club played, reshuffling"); S.usedA.length=0; avail=ALUM.map((_,i)=>i); }
+  const ci = avail[Math.floor(Math.random()*avail.length)];
+  S.usedA.push(ci);
+  S.alum = {ci, shown:1, locked:[], guesser:null};
+  S.turn = -1;                       // communal, nobody is on the spot
+  S.phase = "al_play";
+  render();
+}
+function alNext(){
+  const A=ALUM[S.alum.ci];
+  if(S.alum.shown < A.p.length){ S.alum.shown++; render(); }
+}
+function alGuess(){ S.phase="al_who"; render(); }
+function alPick(i){ S.alum.guesser=i; S.phase="al_judge"; render(); }
+function alBack(){ S.phase="al_play"; render(); }
+function alGiveUp(){ S.phase="al_dead"; render(); }
+function alJudge(correct){
+  const who=S.players[S.alum.guesser];
+  if(correct){
+    const pts=alpot();
+    who.score+=pts; ching();
+    confetti(52);
+    toast(`⚽ ${who.name} nails it! +${pts}`);
+    if(maybeFinish()) return;
+    if(S.rr) return rrNext();
+    S.round++;
+    newAlum();
+  }else{
+    who.score-=2;
+    S.alum.locked.push(S.alum.guesser);
+    flashBad(); buzzer();
+    toast(`${who.name}: wrong! −2 and locked out`, true);
+    if(S.alum.locked.length>=S.players.length) S.phase="al_dead";
+    else S.phase="al_play";
+    render();
+  }
+}
+function alAfter(){ if(S.rr) return rrNext(); S.round++; newAlum(); render(); }
+
+/* ---------------------------- THE WALL ----------------------------
+   Sixteen names, four hidden fours, three lives. Tap four and lock them in.
+   The board is built so every name belongs to exactly one group, so a rejected
+   four is always wrong rather than merely unlucky, which is the only reason
+   this mode can judge itself.
+
+   Communal, like Name the XI: the app knows whether the four is right, but not
+   who spotted it, so a correct group asks. */
+const WALL_PTS = 3, WALL_ALL = 5, WALL_LIVES = 3;
+function newWall(){
+  if(!WALL || !WALL.length){ toast("The wall is still loading, give it a second", true); return; }
+  if(!S.usedW) S.usedW=[];
+  let avail = WALL.map((_,i)=>i).filter(i=>!S.usedW.includes(i));
+  if(!avail.length){ toast("Every wall played, reshuffling"); S.usedW.length=0; avail=WALL.map((_,i)=>i); }
+  const wi = avail[Math.floor(Math.random()*avail.length)];
+  S.usedW.push(wi);
+  /* the sixteen are laid out shuffled ONCE, at deal time, and the order is
+     stored: re-shuffling on every render would move a tile under a thumb */
+  const tiles=[];
+  WALL[wi].g.forEach((g,gi)=>g.p.forEach(name=>tiles.push({n:name, g:gi})));
+  for(let i=tiles.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [tiles[i],tiles[j]]=[tiles[j],tiles[i]]; }
+  S.wall = {wi, tiles, sel:[], done:[], lives:WALL_LIVES, last:null};
+  S.turn = -1;
+  S.phase = "wl_play";
+  render();
+}
+const wlLeft = () => S.wall.tiles.filter(t=>!S.wall.done.includes(t.g));
+function wlTap(i){
+  if(S.phase!=="wl_play") return;
+  const t=S.wall.tiles[i];
+  if(!t || S.wall.done.includes(t.g)) return;
+  const at=S.wall.sel.indexOf(i);
+  if(at>=0) S.wall.sel.splice(at,1);
+  else if(S.wall.sel.length<4){ S.wall.sel.push(i); popfx(); }
+  render();
+}
+function wlLock(){
+  if(S.phase!=="wl_play" || S.wall.sel.length!==4) return;
+  const gs=S.wall.sel.map(i=>S.wall.tiles[i].g);
+  if(gs.every(g=>g===gs[0])){
+    S.wall.last=gs[0];
+    S.wall.done.push(gs[0]);
+    S.wall.sel=[];
+    ching();
+    /* three down means the last four are the last four */
+    if(S.wall.done.length===3){
+      const rest=S.wall.tiles.find(t=>!S.wall.done.includes(t.g));
+      if(rest) S.wall.done.push(rest.g);
+    }
+    S.phase="wl_award";
+  }else{
+    S.wall.lives--;
+    S.wall.sel=[];
+    flashBad(); buzzer();
+    if(S.wall.lives<=0){ toast("Out of lives", true); S.phase="wl_done"; }
+    else toast(`Not a four. ${S.wall.lives} ${S.wall.lives===1?"life":"lives"} left`, true);
+  }
+  render();
+}
+function wlAward(p){
+  const solved = S.wall.done.length>=4;
+  if(p>=0){
+    S.players[p].score += WALL_PTS;
+    if(solved){ S.players[p].score += WALL_ALL; }
+    ching();
+  }
+  S.wall.last=null;
+  if(solved){ S.phase="wl_done"; confetti(64); }
+  else S.phase="wl_play";
+  if(solved && maybeFinish()) return;
+  render();
+}
+function wlAfter(){ if(S.rr) return rrNext(); S.round++; newWall(); render(); }
+
+/* ---------------------------- MYSTERY MAN ----------------------------
+   One hidden player. Type any player you like and the app reports back on four
+   things: same country, same position, older or younger, and whether the two
+   of them ever shared a club. Every phone at the table sees every answer, so
+   the board fills up and the pot drops. Whoever finally names him takes what
+   is left of it.
+
+   The clues are facts, so they have to be right, which is why the bank goes to
+   the Wikipedia infobox for a position and to the senior national team for a
+   country. See _tools/build-mystery.js. */
+const MYS_POT = 14, MYS_STEP = 2, MYS_MIN = 2, MYS_TRIES = 8;
+function mysPot(){ return Math.max(MYS_POT - MYS_STEP*S.mys.g.length, MYS_MIN); }
+function newMystery(){
+  if(!MYS){ toast("The mystery deck is still loading, give it a second", true); return; }
+  if(!S.usedY) S.usedY=[];
+  const pool = MYS.map((r,i)=>r.t?i:-1).filter(i=>i>=0);
+  let avail = pool.filter(i=>!S.usedY.includes(i));
+  if(!avail.length){ toast("Everyone has been hunted, reshuffling"); S.usedY.length=0; avail=pool; }
+  const ti = avail[Math.floor(Math.random()*avail.length)];
+  S.usedY.push(ti);
+  S.mys = {ti, g:[]};
+  S.phase = "my_play";
+  render();
+}
+/* what a guess tells you about the hidden man */
+function mysCompare(gi){
+  const t=MYS[S.mys.ti], g=MYS[gi];
+  const shared=g.c.filter(s=>t.c.includes(s));
+  return {
+    i: gi,
+    nat: g.nat && t.nat ? (g.nat===t.nat?1:0) : -1,
+    pos: g.p && t.p ? (g.p===t.p?1:0) : -1,
+    age: g.y && t.y ? (g.y===t.y?0:(g.y>t.y?-1:1)) : -2,   // 1 = the hidden man is younger
+    sh: shared.slice(0,3),
+  };
+}
+function mysType(el){
+  const typed=rnorm(el.value);
+  if(typed.length<3) return;
+  let hit = MYSI[typed];
+  /* a surname is enough when exactly one man answers to it: "gullit" yes,
+     "silva" never, which is the same rule League Rush types under */
+  if(hit===undefined && typed.length>=4){
+    const byLast=MYSI["~"+typed];
+    if(byLast!==undefined && byLast>=0) hit=byLast;
+  }
+  if(hit===undefined || hit<0) return;
+  el.value="";
+  mysGuess(hit);
+}
+function mysGuess(gi){
+  if(S.phase!=="my_play") return;
+  if(S.mys.g.some(x=>x.i===gi)){ toast("Already guessed, try another", true); return; }
+  const who = S.players[S.turn] || S.players[0];
+  if(gi===S.mys.ti){
+    const pts=mysPot();
+    who.score+=pts; ching(); confetti(64);
+    toast(`⚽ ${who.name} has him! +${pts}`);
+    S.mys.g.push(mysCompare(gi));
+    S.phase="my_done";
+    if(maybeFinish()) return;
+    render();
+    return;
+  }
+  S.mys.g.push(mysCompare(gi));
+  popfx();
+  if(S.mys.g.length>=MYS_TRIES){ toast("Out of guesses", true); S.phase="my_done"; render(); return; }
+  S.turn=(S.turn+1)%S.players.length;
+  render();
+}
+function mysGiveUp(){ S.phase="my_done"; render(); }
+/* ---------------------------- PROVE IT ----------------------------
+   "I can name four Brazilians who played for Milan." "Prove it."
+
+   The app deals the pairing and keeps score; it does NOT mark the names. Its
+   own list is a thousand careers deep, not the whole of football, so marking
+   would eventually tell somebody that a real answer is wrong, and there is no
+   arguing with a phone. The reader marks, the way Classic works, and the app
+   shows what it knows only once the lot is settled. */
+const BID_OPEN = 2, BID_STING = 2;
+function newBid(){
+  if(!BIDS || !BIDS.length){ toast("The bidding deck is still loading, give it a second", true); return; }
+  if(!S.usedB) S.usedB=[];
+  let avail = BIDS.map((_,i)=>i).filter(i=>!S.usedB.includes(i));
+  if(!avail.length){ toast("Every lot sold, reshuffling"); S.usedB.length=0; avail=BIDS.map((_,i)=>i); }
+  const bi = avail[Math.floor(Math.random()*avail.length)];
+  S.usedB.push(bi);
+  S.bid = {i:bi, claim:BID_OPEN, holder:null, got:0, win:null};
+  S.phase = "b_bid";
+  render();
+}
+function bidRaise(){
+  if(S.phase!=="b_bid") return;
+  S.bid.claim++;
+  S.bid.holder=S.turn;
+  S.turn=(S.turn+1)%S.players.length;
+  popfx(); render();
+}
+function bidCall(){
+  if(S.phase!=="b_bid" || S.bid.holder===null || S.bid.holder===S.turn) return;
+  S.bid.caller=S.turn;
+  S.bid.got=0;
+  S.phase="b_call";
+  render();
+}
+function bidGot(){
+  if(S.phase!=="b_call") return;
+  S.bid.got++;
+  if(S.bid.got>=S.bid.claim){
+    const h=S.players[S.bid.holder], c=S.players[S.bid.caller];
+    h.score+=S.bid.claim; c.score-=BID_STING;
+    S.bid.win="holder";
+    ching(); confetti(52);
+    toast(`⚽ ${h.name} delivers! +${S.bid.claim}`);
+    S.phase="b_done";
+    if(maybeFinish()) return;
+  }else popfx();
+  render();
+}
+function bidFail(){
+  if(S.phase!=="b_call") return;
+  const h=S.players[S.bid.holder], c=S.players[S.bid.caller];
+  h.score-=S.bid.claim; c.score+=BID_STING;
+  S.bid.win="caller";
+  buzzer(); flashBad();
+  toast(`${h.name} could not do it: −${S.bid.claim}`, true);
+  S.phase="b_done";
+  if(maybeFinish()) return;
+  render();
+}
+function bidPass(){
+  /* nobody fancies it: the lot is withdrawn and the next one comes up */
+  if(S.phase!=="b_bid") return;
+  toast("Lot withdrawn");
+  bidAfter();
+}
+function bidAfter(){
+  if(S.rr) return rrNext();
+  S.round++;
+  S.turn=(S.turn+1)%S.players.length;
+  newBid(); render();
+}
+
+function mysAfter(){ if(S.rr) return rrNext(); S.round++; S.turn=(S.turn+1)%S.players.length; newMystery(); render(); }
+
 /* ============================== BOOKINGS ============================== */
 function askBook(i){
   const p=S.players[i];
@@ -5204,6 +6307,11 @@ function rematch(){
   if(S.mode==="duel") newDuel();
   if(S.mode==="rush") newRush();
   if(S.mode==="tline") newTL();
+  if(S.mode==="alum") newAlum();
+  if(S.mode==="wall") newWall();
+  if(S.mode==="mys") newMystery();
+  if(S.mode==="ord") newTL();
+  if(S.mode==="bid") newBid();
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
@@ -5277,6 +6385,29 @@ document.addEventListener("keydown", e=>{
     if(k===" "||k==="enter"){ e.preventDefault(); tlReveal(); }
   }else if(S.phase==="tl_reveal"){
     if(k===" "||k==="enter"){ e.preventDefault(); tlNext(); }
+  }else if(S.phase==="b_call"){
+    if(k==="c"){ e.preventDefault(); bidGot(); }
+    if(k==="w"||k==="x") bidFail();
+  }else if(S.phase==="b_done"){
+    if(k===" "||k==="enter"){ e.preventDefault(); bidAfter(); }
+  }else if(S.phase==="my_done"){
+    if(k===" "||k==="enter"){ e.preventDefault(); mysAfter(); }
+  }else if(S.phase==="wl_play"){
+    if(k==="enter"){ e.preventDefault(); wlLock(); }
+  }else if(S.phase==="wl_done"){
+    if(k===" "||k==="enter"){ e.preventDefault(); wlAfter(); }
+  }else if(S.phase==="al_play"){
+    if(k===" "){ e.preventDefault(); alNext(); }
+    if(k==="g") alGuess();
+  }else if(S.phase==="al_who"){
+    const free=S.players.map((p,i)=>i).filter(i=>!S.alum.locked.includes(i));
+    if(k>="1" && k<="3" && free.includes(+k-1)) alPick(+k-1);
+    if(k==="escape") alBack();
+  }else if(S.phase==="al_judge"){
+    if(k==="c") alJudge(true);
+    if(k==="w"||k==="x") alJudge(false);
+  }else if(S.phase==="al_dead"){
+    if(k===" "||k==="enter"){ e.preventDefault(); alAfter(); }
   }else if(S.phase==="c_dead"){
     if(k===" "||k==="enter"){ e.preventDefault(); cAfter(); }
   }else if(S.phase==="deadq"){

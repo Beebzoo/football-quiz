@@ -42,7 +42,7 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
 
   console.log("--- the roll ---");
   const POOL = JSON.parse(ev(app, "JSON.stringify(RR_POOL)"));
-  check("twelve modes in the pool", POOL.length === 12, POOL.length);
+  check("seventeen modes in the pool", POOL.length === 17, POOL.length);
   check("opens on a real mode", POOL.includes(ev(app, "S.mode")), ev(app, "S.mode"));
   check("every pooled mode has a label",
     POOL.every(m => !!ev(app, `MODE_LABEL[${JSON.stringify(m)}]`)),
@@ -53,7 +53,7 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
   /* Every mode's phase machine starts somewhere specific. A roll that leaves
      the phase where the last mode left it renders the wrong screen. */
   console.log("\n--- 60 goes, every mode dealt into its own opening screen ---");
-  const START = { career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick" };
+  const START = { career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick", alum:"al_play", wall:"wl_play", mys:"my_play", ord:"tl_play", bid:"b_bid" };
   const seen = {}, badPhase = [], repeats = [];
   let last = ev(app, "S.mode");
   seen[last] = 1;
@@ -84,7 +84,7 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
      after -1, which is player 0 every time. Rolled 40 times so both kinds of
      mode are certain to come up. */
   console.log("\n--- a communal mode does not eat the rotation ---");
-  const COMMUNAL = ["xi", "career", "mgr"];
+  const COMMUNAL = ["xi", "career", "mgr", "alum", "wall"];
   let solo = 0, kept = 0, lostTurn = [], lostPointer = [];
   for (let i = 0; i < 40; i++) {
     run(app, `S = freshState(["Ale","Bram","Martijn"], false, "classic", 0);

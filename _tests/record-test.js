@@ -132,6 +132,30 @@ function restart(old, label) {
     ev(crew, "(function(){ const h=history(); h.push({ts:3,mode:'duel',players:[{name:'Old',score:1}],winner:'Old',losers:[]}); putHistory(h); return books().some(m=>m.players[0].name==='Old'); })()"),
     "an unsynced match vanished");
 
+  console.log("\n--- the regulars are already in the boxes ---");
+  const names = makeInstance("names");
+  await tick(300);
+  check("it starts as Ale, Martijn and Bram",
+    ev(names, "JSON.stringify(setupNames)") === '["Ale","Martijn","Bram"]', ev(names, "JSON.stringify(setupNames)"));
+  run(names, 'S = null; setupMode = "classic"; setupCount = 3; render();');
+  await tick(60);
+  const boxes = names.__els["stage"] ? names.__els["stage"].innerHTML : "";
+  check("and the boxes come up filled in",
+    ["Ale", "Martijn", "Bram"].every(n => boxes.includes('value="' + n + '"')),
+    (boxes.match(/id="n\d" [^>]*value="[^"]*"/g) || []).join(" | "));
+
+  /* a fourth at the table is typed once, not every Friday night */
+  run(names, 'setupNames[0] = "Roberta"; rememberNames();');
+  const later = restart(names, "names-again");
+  await tick(300);
+  check("a name typed over the top survives the app closing",
+    ev(later, "JSON.stringify(loadNames())") === '["Roberta","Martijn","Bram"]', ev(later, "JSON.stringify(loadNames())"));
+  run(later, 'setupNames[0] = ""; rememberNames();');
+  const cleared = restart(later, "names-cleared");
+  await tick(300);
+  check("and an emptied box falls back to the regular",
+    ev(cleared, "JSON.stringify(loadNames())") === '["Ale","Martijn","Bram"]', ev(cleared, "JSON.stringify(loadNames())"));
+
   console.log(fails ? `\n${fails} FAILED` : "\nall good");
   process.exit(fails ? 1 : 0);
 })();

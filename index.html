@@ -4629,7 +4629,10 @@ let modesOpen = false; // the specialty-mode drawer on the menu
 const MODE_META = {written:["pencil","Written","#f0c98a"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
-function snapshotNames(){ for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; } }
+function snapshotNames(){
+  for(let i=0;i<3;i++){ const el=document.getElementById("n"+i); if(el) setupNames[i]=el.value; }
+  rememberNames();
+}
 function setCount(n){ snapshotNames(); setupCount=n; render(); }
 let setupRef = false;
 function setRef(v){ snapshotNames(); setupRef=v; render(); }
@@ -4652,7 +4655,21 @@ function modeDrawerHTML(){
   return btn+grid;
 }
 function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
-const setupNames = ["","",""];
+/* It is the same three people every time, so the boxes start filled in
+   rather than making them type it again on a Friday night. Anything typed
+   over the top is remembered, so a fourth at the table is typed once and a
+   cleared box falls back to the regular. */
+const NAMES_KEY = "ball-names";
+const REGULARS = ["Ale","Martijn","Bram"];
+function loadNames(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(NAMES_KEY));
+    if(Array.isArray(saved)) return REGULARS.map((d,i)=>String(saved[i]||"").trim() || d);
+  }catch(e){}
+  return [...REGULARS];
+}
+const setupNames = loadNames();
+function rememberNames(){ try{ localStorage.setItem(NAMES_KEY, JSON.stringify(setupNames)); }catch(e){} }
 let tickerHTML = null; // built once per session so the rows don't reshuffle on re-render
 function logoTicker(){
   if(tickerHTML) return tickerHTML;
@@ -4777,7 +4794,7 @@ function renderSetup(st){
       <button class="bigbtn ghost${setupTarget===200?" sel":""}" onclick="setTarget(200)">200</button>
       <button class="bigbtn ghost${!setupTarget?" sel":""}" onclick="setTarget(0)">No limit</button>
     </div>
-    ${Array.from({length:(setupRef?2:setupCount)},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="Player ${i+1}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
+    ${Array.from({length:(setupRef?2:setupCount)},(_,i)=>`<input class="nm-in" id="n${i}" placeholder="${esc(REGULARS[i]||("Player "+(i+1)))}" maxlength="12" autocomplete="off" value="${esc(setupNames[i]||"")}">`).join("")}
     ${setupRef?`<input class="nm-in" id="n2" placeholder="Referee 🟨" maxlength="12" autocomplete="off" value="${esc(setupNames[2]||"")}">`:""}
     <button class="bigbtn" onclick="startGame()"><img class="ballic" src="assets/ball.png" alt="">Kick off</button>`}
     ${books().length?`<div class="hint lastline">${(h=>{const m=h[h.length-1];return "Last match · "+m.players.map(p=>esc(p.name)+" "+p.score).join(" · ")+(m.winner?" · 🏆 "+esc(m.winner):" · draw");})(books())}</div>

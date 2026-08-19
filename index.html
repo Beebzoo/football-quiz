@@ -109,6 +109,22 @@
   @keyframes tickmove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   @media (prefers-reduced-motion:reduce){.tickrow{animation:none}}
   .celebimg{align-self:center;height:110px;filter:drop-shadow(0 6px 12px rgba(10,45,25,.35))}
+  /* the celebration cutout: sized off the short edge so a full-body shot and a
+     head-and-shoulders one both land about as big, and pinned low so it reads
+     as somebody running on rather than a picture appearing */
+  .stickpop{
+    position:fixed;left:50%;bottom:8vh;z-index:60;pointer-events:none;
+    transform:translateX(-50%);
+    animation:stickin .28s cubic-bezier(.2,1.6,.4,1) both, stickout .32s ease-in 1.18s both;
+  }
+  .stickpop img{
+    height:min(38vh,300px);max-width:86vw;object-fit:contain;display:block;
+    filter:drop-shadow(0 14px 26px rgba(0,0,0,.5));
+  }
+  @keyframes stickin{from{opacity:0;transform:translateX(-50%) translateY(26px) scale(.86)}
+                     to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+  @keyframes stickout{to{opacity:0;transform:translateX(-50%) translateY(14px) scale(.97)}}
+  @media (prefers-reduced-motion: reduce){ .stickpop{display:none} }
 
   /* guess the career */
   .clubgrid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
@@ -3566,6 +3582,12 @@ fetch("assets/wall/index.json").then(r=>r.json()).then(w=>{
 /* Mystery Man: one hidden player, and every guess reports back how close it
    was. The bank holds all thousand careers, because any of them may be
    guessed; only the 495 with a "t" are famous enough to be the answer. */
+/* The celebration cutouts. 37 of them, cut out of a Canva export by
+   _tools/build-stickers.py, so a right answer throws a different player up
+   every time instead of the same one. */
+let STICK=null;
+fetch("assets/stickers/index.json").then(r=>r.json()).then(x=>{ STICK=x; }).catch(()=>{});
+
 let BIDS=null;
 fetch("assets/bidding/index.json").then(r=>r.json()).then(b=>{
   BIDS=b;
@@ -4689,9 +4711,36 @@ function ballGoal(){
   document.body.appendChild(o);
   setTimeout(()=>o.remove(), 1400);
 }
+/* A right answer at any tier below BALL throws a cutout up instead. BALL keeps
+   the ball to itself, because if everything gets the big treatment then nothing
+   is the big treatment. */
+let lastStick = -1;
+/* The steal screen picks from the same set, but by the question rather than at
+   random: it re-renders on every buzz and a random pick would deal a new player
+   each time the screen redrew. */
+function stealSticker(){
+  if(!STICK || !STICK.length) return `<img class="celebimg" src="assets/players/taarabt.png" alt="">`;
+  const seed = (S.qi==null?0:S.qi) + (S.round||0)*7 + (S.tier?S.tier.length:0);
+  return `<img class="celebimg" src="assets/stickers/${STICK[Math.abs(seed)%STICK.length]}" alt="">`;
+}
+function stickerPop(){
+  if(!STICK || !STICK.length) return;                 // still loading, or offline
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.querySelectorAll(".stickpop").forEach(el=>el.remove());
+  /* never the same one twice running: with 37 of them a repeat is rare but it
+     is exactly the thing you notice */
+  let i = Math.floor(Math.random()*STICK.length);
+  if(STICK.length>1 && i===lastStick) i=(i+1)%STICK.length;
+  lastStick=i;
+  const o=document.createElement("div");
+  o.className="stickpop";
+  o.innerHTML=`<img src="assets/stickers/${STICK[i]}" alt="">`;
+  document.body.appendChild(o);
+  setTimeout(()=>o.remove(), 1500);
+}
 /* Everything else scales with what the answer was worth, because a +10 that
    celebrates exactly like a +1 is the app not paying attention. */
-const goalFx = (big, pts) => big ? ballGoal() : confetti(pts>=10 ? 110 : pts>=5 ? 85 : 65);
+const goalFx = (big, pts) => big ? ballGoal() : (stickerPop(), confetti(pts>=10 ? 110 : pts>=5 ? 85 : 65));
 
 function flashBad(){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -4962,7 +5011,7 @@ function render(){
     st.innerHTML = `
       <div class="kick">Question is loose!</div>
       <h1 class="title" style="font-size:clamp(1.7rem,8.5vw,2.2rem)">Who steals<br>for ${ptsLabel()}?</h1>
-      <img class="celebimg" src="assets/players/taarabt.png" alt="">
+      ${stealSticker()}
       <div class="hint">First to shout it claims the 5-second steal. Tap their name.${isHost()&&MP.claimed&&MP.claimed.size?" They can also hit STEAL IT on their own phone.":""}</div>
       <div class="whobar">
         ${others().map((i,ix)=>`<button class="stealbtn" onclick="claimSteal(${i})">${esc(S.players[i].name)}<kbd>${ix+1}</kbd></button>`).join("")}

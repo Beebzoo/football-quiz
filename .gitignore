@@ -9,3 +9,7 @@ __pycache__/
 
 # the badge fame cache: rebuildable, and 2,894 lookups nobody needs in git
 _tools/_models/
+
+# the Canva export the celebration cutouts come out of: 14MB of print-resolution
+# source for 1.1MB of shipped WebP. Keep it locally, run _tools/build-stickers.py
+Untitled design*.pdf

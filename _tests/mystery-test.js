@@ -157,6 +157,20 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
   await tick(30);
   check("a save from before this mode existed still opens", Array.isArray(ev(app, "S.usedY")), ev(app, "S.usedY"));
 
+
+  console.log("\n--- the whistle ---");
+  /* No limit is one of the setup options, so without a whistle on the mode's
+     own screen the match can never reach results and the night is never filed
+     in the record book. The advance has to look at the target too, or a table
+     that keeps giving up plays on past it forever. */
+  run(app, 'S = freshState(["Ale","Bram","Martijn"], false, "mys", 0); newMystery(); render();');
+  await tick(60);
+  check("Mystery Man opens on my_play with a full-time whistle",
+    ev(app, "S.phase") === "my_play" && stage(app).includes("askEnd()"), ev(app, "S.phase"));
+  run(app, 'S = freshState(["Ale","Bram","Martijn"], false, "mys", 10); S.players[0].score = 30; newMystery(); mysGiveUp(); mysAfter();');
+  await tick(60);
+  check("and a passed target ends the match on the next one", ev(app, "S.phase") === "results", ev(app, "S.phase"));
+  check("which files the night in the record book", ev(app, "history().length") > 0, "nothing filed");
   console.log(fails ? `\n${fails} FAILING CHECK(S)` : "\nAll checks passed.");
   process.exit(fails ? 1 : 0);
 })();

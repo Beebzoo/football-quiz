@@ -147,6 +147,20 @@ const stage = c => (c.__els["stage"] ? c.__els["stage"].innerHTML : "");
   const uncached = [...new Set(bank.flatMap(m => m.c))].filter(s => !cached.has(s));
   check("every manager crest is precached for offline", uncached.length === 0, uncached.slice(0, 5));
 
+
+  console.log("\n--- the whistle ---");
+  /* No limit is one of the setup options, so without a whistle on the mode's
+     own screen the match can never reach results and the night is never filed
+     in the record book. The advance has to look at the target too, or a table
+     that keeps giving up plays on past it forever. */
+  run(app, 'S = freshState(["Ale","Bram","Martijn"], false, "mgr", 0); newCareer(); render();');
+  await tick(60);
+  check("Manager Path opens on c_play with a full-time whistle",
+    ev(app, "S.phase") === "c_play" && stage(app).includes("askEnd()"), ev(app, "S.phase"));
+  run(app, 'S = freshState(["Ale","Bram","Martijn"], false, "mgr", 10); S.players[0].score = 30; newCareer(); cGiveUp(); cAfter();');
+  await tick(60);
+  check("and a passed target ends the match on the next one", ev(app, "S.phase") === "results", ev(app, "S.phase"));
+  check("which files the night in the record book", ev(app, "history().length") > 0, "nothing filed");
   console.log(fails ? `\n${fails} FAILED` : "\nall green");
   process.exit(fails ? 1 : 0);
 })();

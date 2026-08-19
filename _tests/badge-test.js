@@ -85,6 +85,34 @@ const stage = c => (c.__els["stage"] ? c.__els["stage"].innerHTML : "");
   check("pick screen does not still promise a silhouette", !/silhouette/i.test(hint),
         (hint.match(/[^."]*silhouette[^."]*/i) || [])[0]);
 
+
+  console.log("\n--- the bank on disk: does the crest match the answer? ---");
+  /* The mode shows the picture named by the slug and calls the name the
+     answer, so a row where the two disagree is unanswerable: the table looks
+     at a zoomed Eredivisie logo and the app insists it is PSV. Five of those
+     shipped, from the builder's search-rescue path taking the first hit
+     without checking it belonged to the slug it asked about. */
+  const BADGES = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "assets/badges/index.json"), "utf8"));
+  /* honest renames, where the slug and the answer are the same thing under
+     two names, plus two crests whose names are too short to share a word */
+  const RENAMED = new Set(["chance-liga", "parva-liga", "persha-liga", "ab", "b-93"]);
+  const words = t => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(w => w.length > 2);
+  const shares = (a, b) => a.some(w => b.some(v => v.startsWith(w.slice(0, 4)) || w.startsWith(v.slice(0, 4))));
+  const mismatched = [];
+  for (const [tier, rows] of Object.entries(BADGES))
+    rows.forEach((r, ix) => {
+      if (RENAMED.has(r.s)) return;
+      if (!shares(words(r.s), words(r.n))) mismatched.push(`${tier}[${ix}] ${r.s} -> ${r.n}`);
+    });
+  check("no crest shows one club and answers another", mismatched.length === 0, mismatched.slice(0, 6).join(" | "));
+  /* The other half of the same builder bug: a national side crest kept its own
+     slug and picked up a club name off the first search hit. The mode asks
+     "Name this club", so a national side has no business in here at all. */
+  const sides = [];
+  for (const [tier, rows] of Object.entries(BADGES))
+    rows.forEach((r, ix) => { if (/national-team/.test(r.s)) sides.push(`${tier}[${ix}] ${r.s} -> ${r.n}`); });
+  check("no national side is asked as a club", sides.length === 0, sides.slice(0, 6).join(" | "));
   console.log(fails ? `\n${fails} FAILING CHECK(S)` : "\nAll checks passed.");
   process.exit(fails ? 1 : 0);
 })().catch(e => { console.log("HARNESS ERROR:", e); process.exit(2); });

@@ -108,6 +108,28 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
   check("and costs nobody anything", ev(app, "S.players[0].score") === 0 && ev(app, "S.players[1].score") === 0,
     ev(app, "S.players.map(p=>p.score).join(',')"));
 
+  /* A lot with a bid on it is not nobody's lot any more. Withdrawing it once
+     someone has claimed a number let the bidder walk away from his own claim,
+     and on two players the phone came back round to him to do it himself. */
+  run(app, 'S = freshState(["Ale","Bram","Martijn"], false, "bid", 0); newBid(); render();');
+  await tick(30);
+  check("with no bid on the table, the pass button is offered", stage(app).includes("bidPass()"), "missing");
+  run(app, "bidRaise(); render();");
+  await tick(30);
+  const lot = ev(app, "S.bid.i");
+  check("once someone has bid, the pass button is gone", !stage(app).includes("bidPass()"), "still offered");
+  run(app, "bidPass();");
+  await tick(30);
+  check("and bidPass() itself refuses a live bid", ev(app, "S.bid.i") === lot && ev(app, "S.phase") === "b_bid",
+    ev(app, "S.phase") + " on lot " + ev(app, "S.bid.i"));
+  check("so nobody's score moved", ev(app, "S.players.every(p=>p.score===0)"), ev(app, "S.players.map(p=>p.score).join(',')"));
+
+  console.log("\n--- the whistle ---");
+  check("Prove It can be ended by hand", stage(app).includes("askEnd()"), "no full-time whistle on b_bid");
+  run(app, 'S = freshState(["Ale","Bram"], false, "bid", 10); S.players[0].score = 30; newBid(); bidAfter();');
+  await tick(30);
+  check("and a passed target ends the match on the next lot", ev(app, "S.phase") === "results", ev(app, "S.phase"));
+
   console.log("\n--- the deck and the resume ---");
   run(app, 'S = freshState(["Ale","Bram"], false, "bid", 0);');
   const seen = new Set();

@@ -687,7 +687,9 @@
      filled flat. The light catch and the darker underside are what stop it
      reading as a coloured rectangle with a number in it. */
   .diff .pts{
-    font:800 .84rem/1 var(--ui);letter-spacing:.02em;
+    /* Stadium's token carries a whole ladder (+20/12/6), and a slash is a place
+       a browser will happily break a line: keep it on one. */
+    font:800 .84rem/1 var(--ui);letter-spacing:.02em;white-space:nowrap;
     color:#fff;padding:8px 14px;border-radius:99px;
     background:var(--dc);
     background:linear-gradient(165deg,
@@ -3638,18 +3640,35 @@ function rushPick(li){
 function rushType(el){
   const L=LEAGUES[S.rush.li];
   const typed=rnorm(el.value);
-  if(typed.length<3) return;
+  if(typed.length<2) return;
   const left=(c,i)=>!S.rush.got.includes(i);
-  let hit=L.clubs.findIndex((c,i)=>left(c,i) && c.a.includes(typed));
+  /* The thumb may not have finished. While what is in the box is still the
+     opening of some other club left standing, nothing is awarded: the same
+     wait that holds "milan" back while both Milans are up. Without it "ol"
+     takes Lyon two letters into Olympique de Marseille, and "atleti" takes
+     Atletico most of the way through Club Atletico Osasuna. */
+  const growing = h => L.clubs.some((c,i)=>left(c,i) && i!==h && c.a.some(a=>a.length>typed.length && a.startsWith(typed)));
+  /* An alias typed out in full counts wherever it sits in the box, longest tail
+     first. A club scores the moment it is unmistakable and the box is wiped,
+     but the thumb that earned it is usually still mid-word, so the rest of
+     "feyenoord" lands in the fresh box, and reading only the whole box left it
+     sitting there making every club typed after it unmatchable for the rest of
+     the thirty seconds. Reading the tail ends means "noordajax" still finds
+     ajax. It is also what lets a two-letter club like AZ be named at all. */
+  let hit=-1;
+  for(let cut=0; cut<=typed.length-2 && hit<0; cut++)
+    hit=L.clubs.findIndex((c,i)=>left(c,i) && c.a.includes(typed.slice(cut)));
   /* Nobody types "Borussia Mönchengladbach". They type gladbach, and juve,
      and forest. So four letters or more that appear inside exactly one club
      still standing counts: exactly one, because "united" belongs to three of
-     them and awarding the first would be a lie. */
+     them and awarding the first would be a lie. This looser rule reads the
+     whole box and nothing shorter, or a leftover tail starts handing out
+     clubs nobody named. */
   if(hit<0 && typed.length>=4){
     const near=L.clubs.map((c,i)=>({c,i})).filter(({c,i})=>left(c,i) && c.a.some(a=>a.includes(typed)));
     if(near.length===1) hit=near[0].i;
   }
-  if(hit<0) return;
+  if(hit<0 || growing(hit)) return;
   S.rush.got.push(hit);
   el.value="";
   popfx(); ching();
@@ -4830,7 +4849,7 @@ function render(){
       ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t])=>`
         <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
           <span class="left">${tlabel(k)}</span>
-          <span class="pts">+${t.pts}</span>
+          <span class="pts">${stad && STAD_PTS[k] ? `+${STAD_PTS[k].name}/${STAD_PTS[k].city}/${STAD_PTS[k].country}` : "+"+t.pts}</span>
         </button>`).join("")}
       <div class="foot">
         <button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button>
@@ -5070,7 +5089,8 @@ function render(){
           ? `<button class="bigbtn" onclick="cNext()">Next club<kbd>Space</kbd></button>`
           : `<div class="hint" style="text-align:center">Full career on the table. Last chance…</div>`}
         <button class="bigbtn warn" onclick="cGuess()">${ico('hand')}Someone knows it!<kbd>G</kbd></button>
-        <button class="bigbtn ghost" onclick="cGiveUp()">Nobody knows, reveal it</button>`;
+        <button class="bigbtn ghost" onclick="cGiveUp()">Nobody knows, reveal it</button>
+        <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`;
       return;
     }
     if(S.phase==="c_who"){
@@ -5125,7 +5145,8 @@ function render(){
         <div class="spacer"></div>
         <button class="bigbtn" onclick="bidRaise()">I can name ${S.bid.claim+1}</button>
         ${held && S.bid.holder!==S.turn ? `<button class="bigbtn warn" onclick="bidCall()">Prove it</button>` : ""}
-        <button class="bigbtn ghost" onclick="bidPass()">Nobody fancies it, next lot</button>`;
+        ${!held ? `<button class="bigbtn ghost" onclick="bidPass()">Nobody fancies it, next lot</button>` : ""}
+        <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`;
       return;
     }
     if(S.phase==="b_call"){
@@ -5180,7 +5201,8 @@ function render(){
         <div class="hint" style="text-align:center">Guess anyone. You will be told his country, his position, whether the hidden man is older or younger, and any club the two of them share. ${MYS_TRIES-S.mys.g.length} guesses left.</div>
         ${rows}
         <div class="spacer"></div>
-        <button class="bigbtn ghost" onclick="mysGiveUp()">Nobody has him, give it up</button>`;
+        <button class="bigbtn ghost" onclick="mysGiveUp()">Nobody has him, give it up</button>
+        <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`;
       const el=document.getElementById("mysin"); if(el) el.focus();
       return;
     }
@@ -5217,7 +5239,8 @@ function render(){
         <div class="wlgrid">${grid}</div>
         <div class="hint" style="text-align:center">Four groups of four are hiding in there. Tap four that belong together.</div>
         <div class="spacer"></div>
-        <button class="bigbtn${S.wall.sel.length===4?"":" ghost"}" onclick="wlLock()">Lock in these four</button>`;
+        <button class="bigbtn${S.wall.sel.length===4?"":" ghost"}" onclick="wlLock()">Lock in these four</button>
+        <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`;
       return;
     }
     if(S.phase==="wl_award"){
@@ -5266,7 +5289,8 @@ function render(){
           ? `<button class="bigbtn" onclick="alNext()">Next player<kbd>Space</kbd></button>`
           : `<div class="hint" style="text-align:center">That is the lot. Last chance…</div>`}
         <button class="bigbtn warn" onclick="alGuess()">${ico('hand')}Someone knows it!<kbd>G</kbd></button>
-        <button class="bigbtn ghost" onclick="alGiveUp()">Nobody knows, reveal it</button>`;
+        <button class="bigbtn ghost" onclick="alGiveUp()">Nobody knows, reveal it</button>
+        <div class="foot"><button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button></div>`;
       return;
     }
     if(S.phase==="al_who"){
@@ -6024,7 +6048,7 @@ function cJudge(correct){
   }
 }
 function cGiveUp(){ S.phase="c_dead"; revealAnim=true; render(); }
-function cAfter(){ if(S.rr) return rrNext(); S.round++; newCareer(); render(); }
+function cAfter(){ if(maybeFinish()) return; if(S.rr) return rrNext(); S.round++; newCareer(); render(); }
 
 /* ---------------------------- ALUMNI ----------------------------
    Career Path with the roles swapped: the players come out one at a time and
@@ -6074,7 +6098,7 @@ function alJudge(correct){
     render();
   }
 }
-function alAfter(){ if(S.rr) return rrNext(); S.round++; newAlum(); render(); }
+function alAfter(){ if(maybeFinish()) return; if(S.rr) return rrNext(); S.round++; newAlum(); render(); }
 
 /* ---------------------------- THE WALL ----------------------------
    Sixteen names, four hidden fours, three lives. Tap four and lock them in.
@@ -6148,7 +6172,7 @@ function wlAward(p){
   if(solved && maybeFinish()) return;
   render();
 }
-function wlAfter(){ if(S.rr) return rrNext(); S.round++; newWall(); render(); }
+function wlAfter(){ if(maybeFinish()) return; if(S.rr) return rrNext(); S.round++; newWall(); render(); }
 
 /* ---------------------------- MYSTERY MAN ----------------------------
    One hidden player. Type any player you like and the app reports back on four
@@ -6281,19 +6305,22 @@ function bidFail(){
   render();
 }
 function bidPass(){
-  /* nobody fancies it: the lot is withdrawn and the next one comes up */
-  if(S.phase!=="b_bid") return;
+  /* Nobody fancies it: the lot is withdrawn and the next one comes up. Once
+     somebody has bid, the lot is no longer nobody's to withdraw, or the bidder
+     walks away from his own claim and the whole auction pays nothing. */
+  if(S.phase!=="b_bid" || S.bid.holder!==null) return;
   toast("Lot withdrawn");
   bidAfter();
 }
 function bidAfter(){
+  if(maybeFinish()) return;
   if(S.rr) return rrNext();
   S.round++;
   S.turn=(S.turn+1)%S.players.length;
   newBid(); render();
 }
 
-function mysAfter(){ if(S.rr) return rrNext(); S.round++; S.turn=(S.turn+1)%S.players.length; newMystery(); render(); }
+function mysAfter(){ if(maybeFinish()) return; if(S.rr) return rrNext(); S.round++; S.turn=(S.turn+1)%S.players.length; newMystery(); render(); }
 
 /* ============================== BOOKINGS ============================== */
 function askBook(i){

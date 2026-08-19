@@ -57,8 +57,14 @@ const SIZES = {
     Math.round(clubs.filter(c => c.s).length / clubs.length * 100) + "%");
   check("every club has something you could type", clubs.every(c => c.a && c.a.length),
     clubs.filter(c => !c.a || !c.a.length).map(c => c.n).join(", "));
-  check("no accepted answer is a bare initialism", clubs.every(c => c.a.every(a => a.length >= 3)),
-    clubs.flatMap(c => c.a.filter(a => a.length < 3)).slice(0, 5).join(", "));
+  /* Two letters used to be dead weight, because the matcher refused anything
+     shorter than three. It now lets a two-letter alias through on the exact
+     path only, so AZ, OM and OL can be typed the way they are said. Anything
+     else that short is a harvesting accident and would fire on a stray tail. */
+  const TWO = { "az": "AZ Alkmaar", "om": "Olympique de Marseille", "ol": "Olympique Lyonnais" };
+  const strays = clubs.flatMap(c => c.a.filter(a => a.length < 3 && TWO[a] !== c.n).map(a => a + " = " + c.n));
+  check("the only two-letter answers are the clubs that really are two letters",
+    strays.length === 0, strays.slice(0, 5).join(", "));
 
   /* Two clubs in one league answering to the same typed string would make one
      of them unreachable: the first match wins and the other can never be
@@ -107,7 +113,7 @@ const SIZES = {
   type("real madrid");
   check("a club from another league counts for nothing", ev(app, "S.rush.got.length") === 4, ev(app, "S.rush.got.length"));
   type("aj");
-  check("two letters is not an answer", ev(app, "S.rush.got.length") === 4, ev(app, "S.rush.got.length"));
+  check("two letters that are nobody's name count for nothing", ev(app, "S.rush.got.length") === 4, ev(app, "S.rush.got.length"));
 
   console.log("\n--- the shorthands people actually type ---");
   const named = () => JSON.parse(ev(app, "JSON.stringify(S.rush.got.map(i=>LEAGUES[S.rush.li].clubs[i].n))"));
@@ -130,6 +136,38 @@ const SIZES = {
   type("inter"); type("milan");
   check("and lands on AC Milan once Inter is taken", named().length === 2 && named().some(n => /^AC Milan/.test(n)), named().join(", "));
 
+  /* The two biggest names in Spain, both of which used to score nothing: the
+     harvest never gave Barcelona a bare "barcelona" and the substring rule
+     found Espanyol de Barcelona alongside it. */
+  play("La Liga");
+  type("barcelona");
+  check("barcelona is Barcelona", named().some(n => /^FC Barcelona/.test(n)), named().join(", "));
+  type("barca");
+  check("barca is Barcelona too", named().length === 1, named().join(", "));
+  play("La Liga");
+  type("atleti");
+  check("atleti is Atletico, the way the rules blurb promises", named().some(n => /Madrid/.test(n)), named().join(", "));
+  type("osasuna");
+  check("and Osasuna is still its own club", named().length === 2, named().join(", "));
+
+  /* Two-letter clubs are real clubs. They only count typed in full, and only
+     while nothing else could still be growing out of those two letters. */
+  play("Eredivisie");
+  type("az");
+  check("az is AZ Alkmaar", named().some(n => /AZ/.test(n)), named().join(", "));
+  play("Ligue 1");
+  type("psg");
+  check("psg is Paris Saint-Germain", named().some(n => /Paris/.test(n)), named().join(", "));
+  type("om");
+  check("om is Marseille", named().some(n => /Marseille/.test(n)), named().join(", "));
+  /* "ol" opens Olympique de Marseille and Olympique Gymnaste Club Nice as well
+     as Olympique Lyonnais, so it has to wait, exactly as "milan" does. */
+  play("Ligue 1");
+  type("ol");
+  check("ol waits while the other Olympiques are standing", ev(app, "S.rush.got.length") === 0, named().join(", "));
+  type("marseille"); type("nice"); type("ol");
+  check("and lands on Lyon once they are named", named().length === 3 && /Lyonnais/.test(named()[2]), named().join(", "));
+
   play("Bundesliga");
   type("gladbach");
   check("gladbach is Monchengladbach", named().some(n => /gladbach/i.test(n)), named().join(", "));
@@ -145,6 +183,18 @@ const SIZES = {
   check("spurs is Tottenham", named().some(n => /Tottenham/.test(n)), named().join(", "));
   type("nowrap");
   check("no template junk got in as a club", ev(app, "S.rush.got.length") === 2, named().join(", "));
+
+  /* The box is wiped the moment a club is unmistakable, but the thumb that
+     earned it is still mid-word, so the tail lands in the fresh box. It used
+     to sit there and make every club typed after it unmatchable. */
+  console.log("\n--- real thumbs, one character at a time ---");
+  play("Eredivisie");
+  const thumb = word => { let box = ev(app, "S.rush.__box || ''"); for (const ch of word) { box += ch;
+      run(app, `(function(){ const el={value:${JSON.stringify(box)}}; rushType(el); S.rush.__box = el.value; })()`);
+      box = ev(app, "S.rush.__box"); } };
+  ["feyenoord", "ajax", "psv eindhoven", "fc utrecht"].forEach(thumb);
+  check("typing four clubs out in full counts all four", ev(app, "S.rush.got.length") === 4, named().join(", "));
+  check("and the leftover tail did not poison the box", /Feyenoord/.test(named().join(",")) && /Ajax/.test(named().join(",")), named().join(", "));
 
   console.log("\n--- what it pays ---");
   play("Eredivisie");

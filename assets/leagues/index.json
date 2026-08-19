@@ -26,6 +26,7 @@
     "s": "az-alkmaar",
     "a": [
      "alkmaar zaanstreek",
+     "az",
      "az 67",
      "az alkmaar",
      "cheese farmers",
@@ -1045,6 +1046,7 @@
     "s": "atletico-madrid",
     "a": [
      "atl de madrid",
+     "atleti",
      "atleti de madrid",
      "atletico de madrid",
      "atletico madrid",
@@ -1062,6 +1064,8 @@
     "n": "FC Barcelona",
     "s": "barcelona",
     "a": [
+     "barca",
+     "barcelona",
      "barcelona fc",
      "barcelona football club",
      "f c b",
@@ -2166,6 +2170,7 @@
      "o l",
      "o lyon",
      "o lyonnais",
+     "ol",
      "olympique lyonnais"
     ]
    },
@@ -2178,7 +2183,8 @@
      "olympic marseille",
      "olympic of marseille",
      "olympique de marseille",
-     "olympique marseille"
+     "olympique marseille",
+     "om"
     ]
    },
    {
@@ -2222,6 +2228,7 @@
     "a": [
      "paris saint germain",
      "paris saint germain fc",
+     "psg",
      "psgfc"
     ]
    },

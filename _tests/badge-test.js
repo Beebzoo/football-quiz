@@ -95,8 +95,13 @@ const stage = c => (c.__els["stage"] ? c.__els["stage"].innerHTML : "");
   const BADGES = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "assets/badges/index.json"), "utf8"));
   /* honest renames, where the slug and the answer are the same thing under
      two names, plus two crests whose names are too short to share a word */
-  const RENAMED = new Set(["chance-liga", "parva-liga", "persha-liga", "ab", "b-93"]);
-  const words = t => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  const RENAMED = new Set(["chance-liga", "parva-liga", "persha-liga", "ab", "b-93", "crvena-zvezda", "zvezda"]);
+  /* ø, å, æ and ı are letters rather than accents, so stripping diacritics
+     leaves them alone and "brondby" never matched "Brøndby IF". Folding them
+     by hand keeps real clubs in the bank; the same fold is in the builder. */
+  const words = t => String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/ø/g, "o").replace(/æ/g, "ae").replace(/å/g, "a").replace(/ß/g, "ss")
+    .replace(/đ|ð/g, "d").replace(/ł/g, "l").replace(/ı/g, "i").replace(/þ/g, "th")
     .replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(w => w.length > 2);
   const shares = (a, b) => a.some(w => b.some(v => v.startsWith(w.slice(0, 4)) || w.startsWith(v.slice(0, 4))));
   const mismatched = [];

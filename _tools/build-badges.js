@@ -38,8 +38,11 @@ const CACHE = path.join(__dirname, "_models", "badge-fame.json");   // gitignore
 
 /* how many views a year before a crest is worth asking about at all */
 const FLOOR = 12000;
-/* the bands, in views per year */
-const BANDS = [["easy", 900000], ["normal", 250000], ["hard", 60000], ["ball", FLOOR]];
+/* Tier sizes, not view thresholds. Thresholds were guesswork and put
+   Aldershot Town in hard at +5, which is not hard, it is unanswerable for
+   three men in Maastricht. Sizes are honest about what this is: a ranking,
+   cut into four. */
+const BANDS = [["easy", 140], ["normal", 210], ["hard", 250], ["ball", Infinity]];
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const chunk = (a, n) => Array.from({ length: Math.ceil(a.length / n) }, (_, i) => a.slice(i * n, i * n + n));
@@ -59,6 +62,36 @@ async function getJSON(url, tries = 3) {
 
 /* slug -> a title to ask Wikipedia about. The library is flat slugs, so the
    name in the old bank is the better starting point where there is one. */
+/* A crest that is not a club's, whatever an article search says. The search
+   fallback is willing: it answered "chile-national-team" with Club
+   Universidad de Chile and "egypt-national-team" with National Bank of Egypt
+   SC, both real clubs, so the club test passed and a national badge nearly
+   shipped as a club to name. */
+const NOT_A_CLUB = /(^|-)(national-team|nationalteam|federation|fa|selection|league|cup|championship|liga|serie|eredivisie|bundesliga)(-|$)/;
+
+/* Does the answer belong to the crest? The search rescue is willing: it
+   answered "tau-calcio-altopascio" with Como 1907 and "1st-lig" with
+   Trabzonspor, and the mode would then show one badge and insist on another
+   club's name.
+
+   This is deliberately the SAME test _tests/badge-test.js runs on the shipped
+   bank, prefix-matched on four letters so Crvena Zvezda still answers to Red
+   Star and a rename is not treated as a mismatch. A stricter whole-word
+   version was tried first and took the bank from 1,493 to 613, because a club
+   is routinely filed under a name its crest file never used. Anything that
+   genuinely reads as two different clubs is listed at the end rather than
+   silently dropped. */
+const RENAMED = new Set(["chance-liga", "parva-liga", "persha-liga", "ab", "b-93", "crvena-zvezda", "zvezda"]);
+const wordsOf = t => String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/ø/g, "o").replace(/æ/g, "ae").replace(/å/g, "a").replace(/ß/g, "ss")
+    .replace(/đ|ð/g, "d").replace(/ł/g, "l").replace(/ı/g, "i").replace(/þ/g, "th")
+  .replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(w => w.length > 2);
+const answersToCrest = (slug, name) => {
+  if (RENAMED.has(slug)) return true;
+  const a = wordsOf(slug), b = wordsOf(name);
+  return a.some(w => b.some(v => v.startsWith(w.slice(0, 4)) || w.startsWith(v.slice(0, 4))));
+};
+
 function titleGuess(slug, name) {
   if (name) return name;
   return slug.split("-").map(w => w.length <= 3 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1)).join(" ");
@@ -132,8 +165,8 @@ async function views(title) {
      library that is almost entirely football clubs. Anything that failed the
      exact lookup gets searched for instead, once, and the answer is cached
      with how it was found so a re-run does not repeat the work. */
-  const todo = slugs.filter(s => !cache[s]);
-  const retry = slugs.filter(s => cache[s] && !cache[s].club && cache[s].how !== "search");
+  const todo = slugs.filter(s => !cache[s] && !NOT_A_CLUB.test(s));
+  const retry = slugs.filter(s => cache[s] && !cache[s].club && cache[s].how !== "search" && !NOT_A_CLUB.test(s));
   console.log(`${todo.length} to look up, ${retry.length} to search for again, ${slugs.length - todo.length - retry.length} settled`);
 
   if (retry.length) {
@@ -183,7 +216,11 @@ async function views(title) {
     for (const [asking, slug] of Object.entries(asked)) {
       const f = found[asking];
       const isClub = !!(f && clubs.has(f.qid));
-      cache[slug] = { title: f ? f.title : null, club: isClub, views: 0 };
+      /* the id is kept so a later change to what counts as a club can be
+         re-checked in place. The first version of this did not, and when the
+         club test turned out to be wrong there was no way to re-run it
+         without re-resolving 2,894 articles. */
+      cache[slug] = { title: f ? f.title : null, qid: f ? f.qid : null, club: isClub, views: 0 };
       if (isClub) cache[slug].views = await views(f.title);
       if (++n % 40 === 0) {
         process.stdout.write(`\r  ${n}/${todo.length}`);
@@ -195,6 +232,24 @@ async function views(title) {
     fs.mkdirSync(path.dirname(CACHE), { recursive: true });
     fs.writeFileSync(CACHE, JSON.stringify(cache));
     console.log(`\r  ${n}/${todo.length} done          `);
+  }
+
+  /* how many language editions write about each club, the second fame signal */
+  const needLinks = slugs.filter(s => cache[s] && cache[s].club && cache[s].qid && cache[s].links === undefined);
+  if (needLinks.length) {
+    process.stdout.write("sitelinks  ");
+    for (const batch of chunk(needLinks, 45)) {
+      const j = await getJSON("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json"
+        + "&props=sitelinks&ids=" + batch.map(s => cache[s].qid).join("|"));
+      for (const s of batch) {
+        const e = j && j.entities && j.entities[cache[s].qid];
+        cache[s].links = e && e.sitelinks ? Object.keys(e.sitelinks).length : 0;
+      }
+      process.stdout.write(".");
+      await sleep(180);
+    }
+    fs.writeFileSync(CACHE, JSON.stringify(cache));
+    console.log("");
   }
 
   /* ---------- who this table actually knows ----------
@@ -223,23 +278,73 @@ async function views(title) {
     console.log("");
   }
 
-  /* ---------- the bank ---------- */
-  const rows = slugs.map(s => ({ s, n: nameOf[s] || (cache[s] && cache[s].title) || s, ...(cache[s] || {}) }))
+  /* ---------- ranking ----------
+     TWO SIGNALS, AND THE BETTER OF THE TWO WINS.
+
+     English pageviews are an English audience: they put Aldershot Town at 536
+     and Ascoli at 890, true of England and no use to a table in Maastricht.
+     Sitelinks, the number of language editions that bother to write about a
+     club, are the opposite bias and inflate small European sides, which is
+     the trap the kit bank fell into.
+
+     Neither alone works and multiplying them punishes a club for one bad
+     number: Hertha BSC has a sitelink count that reads like a fourth-tier
+     side and dropped to 420 on a geometric mean. Taking the better rank is
+     forgiving of a broken signal and strict about genuine obscurity, and it
+     moves the ones that were wrong: Grasshopper 1080 to 223, Ascoli 890 to
+     324, Aldershot 536 down to 636. */
+  let rows = slugs.map(s => ({ s, n: nameOf[s] || (cache[s] && cache[s].title) || s, ...(cache[s] || {}) }))
     .filter(r => r.club && r.views >= FLOOR)
-    .map(r => ({ ...r, weight: r.views * (HOME[r.country] || 1) }));
-  rows.sort((a, b) => b.weight - a.weight);
+    .filter(r => !NOT_A_CLUB.test(r.s))
+    .filter(r => answersToCrest(r.s, r.n))
+    .map(r => ({ ...r, w: r.views * (HOME[r.country] || 1), l: (r.links || 0) * (HOME[r.country] || 1) }));
+
+  const rankBy = key => {
+    const order = [...rows].sort((a, b) => b[key] - a[key]);
+    const m = new Map();
+    order.forEach((r, i) => m.set(r.s, i + 1));
+    return m;
+  };
+  /* One club, one crest. Two logo files can resolve to the same article, and
+     then the same answer turns up at two difficulties: Real Zaragoza was easy
+     as "zaragoza" and normal as "real-zaragoza". Worse, some of those pairs
+     are a mis-map rather than a duplicate, and the slug that matches the name
+     least is the wrong one: "zurich" was answering Grasshopper Club Zurich,
+     which is the other club in that city. Keep the closest match, drop the
+     rest, and say how many went. */
+  const overlap = (slug, name) => {
+    const a = wordsOf(slug), b = wordsOf(name);
+    return a.filter(w => b.some(v => v.startsWith(w.slice(0, 4)) || w.startsWith(v.slice(0, 4)))).length;
+  };
+  const best = new Map();
+  for (const r of rows) {
+    const cur = best.get(r.n);
+    if (!cur || overlap(r.s, r.n) > overlap(cur.s, cur.n)) best.set(r.n, r);
+  }
+  const twins = rows.length - best.size;
+  rows = rows.filter(r => best.get(r.n) === r);
+
+  const byViews = rankBy("w"), byLinks = rankBy("l");
+  rows.forEach(r => r.rank = Math.min(byViews.get(r.s), byLinks.get(r.s)));
+  rows.sort((a, b) => a.rank - b.rank || b.w - a.w);
 
   const bank = { easy: [], normal: [], hard: [], ball: [] };
-  for (const r of rows) {
-    const band = BANDS.find(([, floor]) => r.weight >= floor);
-    bank[band[0]].push({ s: r.s, n: r.n });
+  let at = 0;
+  for (const [tier, size] of BANDS) {
+    for (const r of rows.slice(at, size === Infinity ? undefined : at + size)) bank[tier].push({ s: r.s, n: r.n });
+    at += size === Infinity ? rows.length : size;
   }
 
+  const wrongName = slugs.map(s => ({ s, n: nameOf[s] || (cache[s] && cache[s].title) || s, ...(cache[s] || {}) }))
+    .filter(r => r.club && r.views >= FLOOR && !NOT_A_CLUB.test(r.s) && !answersToCrest(r.s, r.n));
   const dropped = slugs.length - rows.length;
   const notClub = slugs.filter(s => cache[s] && !cache[s].club).length;
   console.log(`\n${rows.length} crests kept, ${dropped} dropped`);
   console.log(`  ${notClub} were not football clubs at all (cups, leagues, countries)`);
-  console.log(`  ${dropped - notClub} were clubs nobody could name`);
+  console.log(`  ${dropped - notClub - wrongName.length} were clubs nobody could name`);
+  console.log(`  ${wrongName.length} answered to a club that was not the one on the crest`);
+  console.log(`  ${twins} were a second crest for a club already in the bank`);
+  wrongName.slice(0, 8).forEach(r => console.log(`      ${r.s} -> ${r.n}`));
   console.log("\n" + Object.entries(bank).map(([t, r]) => `  ${t.padEnd(7)} ${String(r.length).padStart(4)}`).join("\n"));
   for (const [t, r] of Object.entries(bank)) {
     console.log(`\n${t}, hardest five:`);

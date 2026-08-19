@@ -174,6 +174,56 @@
   /* the second shelf sits inside the drawer, so it is set in a step from the
      rows above it rather than looking like another mode */
   .extratoggle{margin-top:2px;font-size:.95rem;opacity:.92}
+  /* ---- Special: the badge behind the glass ----
+     Everything here is transform and opacity so a five year old phone can
+     still run it, and the whole thing sits behind the card at z-index 0 with
+     pointer-events off, so it decorates the question without ever catching a
+     thumb meant for a button. */
+  .specsky{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;border-radius:18px}
+  .specglow{
+    position:absolute;inset:-30%;
+    background:radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--sa) 55%, transparent), transparent 62%),
+               radial-gradient(circle at 22% 82%, color-mix(in srgb, var(--sb) 45%, transparent), transparent 58%);
+    animation:specbreathe 7s ease-in-out infinite;
+  }
+  .specback{
+    position:absolute;left:50%;top:44%;width:min(74vw,330px);
+    transform:translate(-50%,-50%);opacity:.3;filter:drop-shadow(0 0 30px rgba(0,0,0,.55)) saturate(1.3);
+    animation:specturn 26s linear infinite;
+  }
+  .specdrift{position:absolute;width:54px;opacity:.5;filter:drop-shadow(0 6px 12px rgba(0,0,0,.45))}
+  .specdrift.d1{left:-70px;top:16%;animation:speccross 19s linear infinite}
+  .specdrift.d2{right:-70px;top:52%;animation:speccrossback 23s linear infinite 2s}
+  .specdrift.d3{left:-70px;top:78%;width:46px;border-radius:4px;animation:speccross 27s linear infinite 5s}
+  @keyframes specbreathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.9;transform:scale(1.08)}}
+  @keyframes specturn{from{transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+                      50%{transform:translate(-50%,-50%) rotate(180deg) scale(1.09)}
+                      to{transform:translate(-50%,-50%) rotate(360deg) scale(1)}}
+  @keyframes speccross{from{transform:translateX(0) rotate(-8deg)}to{transform:translateX(calc(100vw + 150px)) rotate(12deg)}}
+  @keyframes speccrossback{from{transform:translateX(0) rotate(8deg)}to{transform:translateX(calc(-100vw - 150px)) rotate(-12deg)}}
+
+  /* the furniture rides above the sky */
+  .speckick,.specbadge,.specpot,.speccard{position:relative;z-index:1}
+  .specbadge{
+    align-self:center;display:flex;align-items:center;gap:10px;padding:6px 16px 6px 8px;border-radius:99px;
+    background:rgba(0,0,0,.34);border:1px solid color-mix(in srgb, var(--sa,#e2453c) 60%, transparent);
+    font:800 .95rem var(--ui);color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);
+    animation:specpopin .5s cubic-bezier(.2,1.6,.4,1) both;
+  }
+  .specbadge img{width:34px;height:34px;object-fit:contain;border-radius:6px;animation:specnod 3.4s ease-in-out infinite}
+  .specpot{animation:specpopin .5s cubic-bezier(.2,1.6,.4,1) .06s both}
+  .speccard{animation:speccardin .5s cubic-bezier(.2,1.3,.35,1) .1s both}
+  .specans{margin-top:12px;padding-top:12px;border-top:2px dashed rgba(10,45,25,.18);animation:specansin .45s cubic-bezier(.2,1.4,.4,1) both}
+  .specans .anstext{font:800 1.35rem/1.25 var(--ui);color:#0a7a45;text-wrap:balance}
+  .specans .anslabel{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;color:#7c8c82;margin-bottom:2px}
+  @keyframes specpopin{from{opacity:0;transform:translateY(-10px) scale(.9)}to{opacity:1;transform:none}}
+  @keyframes speccardin{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+  @keyframes specansin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  @keyframes specnod{0%,100%{transform:rotate(-7deg) scale(1)}50%{transform:rotate(7deg) scale(1.12)}}
+  @media (prefers-reduced-motion: reduce){
+    .specglow,.specback,.specdrift,.specbadge,.specbadge img,.specpot,.speccard,.specans{animation:none}
+    .specdrift{display:none}
+  }
   .wllives{text-align:center;font-size:1.1rem;letter-spacing:4px}
   /* Mystery Man: one row per guess, newest on top, so the board reads like a
      case file being built rather than a list scrolling away. */
@@ -3587,6 +3637,21 @@ fetch("assets/wall/index.json").then(r=>r.json()).then(w=>{
 /* The celebration cutouts. 37 of them, cut out of a Canva export by
    _tools/build-stickers.py, so a right answer throws a different player up
    every time instead of the same one. */
+/* The Special deck: MVV, Las Palmas, Morocco, and the record books of the
+   three countries on the front of the app. Built by _tools/build-special.js
+   straight off Wikipedia, because this is the one mode where a wrong answer
+   would be spotted by the man it is about. */
+let SPEC=null;
+fetch("assets/special/index.json").then(r=>r.json()).then(x=>{ SPEC=x; if(!S||S.phase==="setup") render(); }).catch(()=>{});
+/* which badge turns behind each strand, and the two colours it lights */
+const SPEC_META = {
+  mvv:{n:"MVV Maastricht", img:"assets/logos/mvv-maastricht.png", a:"#e2453c", b:"#f3d982"},
+  lp: {n:"UD Las Palmas",  img:"assets/logos/las-palmas.png",     a:"#f2c400", b:"#3f7fd0"},
+  ma: {n:"Morocco",        img:"assets/flags/morocco.webp",       a:"#c1272d", b:"#0a9e5c"},
+  nl: {n:"the Netherlands",img:"assets/flags/nl.webp",            a:"#f36c21", b:"#3f7fd0"},
+  es: {n:"Spain",          img:"assets/natflags/es.png",          a:"#c60b1e", b:"#ffc400"},
+};
+
 let STICK=null;
 fetch("assets/stickers/index.json").then(r=>r.json()).then(x=>{ STICK=x; }).catch(()=>{});
 
@@ -3905,7 +3970,7 @@ function tlNext(){
    S.rrTurn exists because S.turn cannot be trusted across the roll: Name the XI
    parks it at -1 for a communal board, and Career Path never rotates it at all.
    The pointer that survives the mode change is the one that passes the phone. */
-const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush","alum","wall","mys","ord","bid"];
+const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush","alum","wall","mys","ord","bid","spec"];
 /* Same readiness the setup screen enforces, per mode: a bank that has not
    landed yet must not be rolled, or the deal comes up empty. */
 const RR_READY = {
@@ -3926,10 +3991,11 @@ const RR_READY = {
   mys:()=>MYS && MYS.filter(r=>r.t).length > (S.usedY||[]).length,
   ord:()=>ORDB && ORDB.length > (S.usedO||[]).length,
   bid:()=>BIDS && BIDS.length > (S.usedB||[]).length,
+  spec:()=>SPEC && SPEC.length > (S.usedS||[]).length,
 };
 /* Where each mode expects to start. The tier modes all open on the difficulty
    picker; the run-based ones each have their own first phase. */
-const RR_START = {career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick", alum:"al_play", wall:"wl_play", mys:"my_play", ord:"tl_play", bid:"b_bid"};
+const RR_START = {career:"c_play", mgr:"c_play", xi:"x_play", tline:"tl_play", duel:"d_play", rush:"g_pick", alum:"al_play", wall:"wl_play", mys:"my_play", ord:"tl_play", bid:"b_bid", spec:"sp_q"};
 function rrPool(){
   return RR_POOL.filter(m => { try{ return !!RR_READY[m](); }catch(e){ return false; } });
 }
@@ -3955,6 +4021,7 @@ function rrDeal(announce=true){
   else if(m==="wall") newWall();
   else if(m==="mys") newMystery();
   else if(m==="bid") newBid();
+  else if(m==="spec") newSpecial();
   else if(m==="rush") S.rush=null;         // the league is picked on the g_pick screen
 }
 /* Every mode's end-of-go funnels through here instead of its own handover. */
@@ -3984,6 +4051,7 @@ function freshState(names, timed=true, mode="classic", target=100){
     mys:null, usedY:[], // mystery man: the hidden player + the ones already hunted
     usedO:[], // order them: sets already dragged (the set itself lives in S.tl)
     bid:null, usedB:[], // the bidding round: the lot on the table + the ones already sold
+    spec:null, usedS:[], // special: the question on the table + the ones already asked
     xi:null, usedX:[], // name the XI: current board + finals already played
     tl:null, usedT:[], // timeline: current question + ones already asked
     ref:null, // referee mode: the non-playing quizmaster's name
@@ -4405,7 +4473,7 @@ const HIST_KEY = "ball-quiz-history-v1";
 /* classic is called Let's Ball on the outside: it is the flagship quiz and the
    thing the app is for, so it gets the name and the gold button. The mode that
    deals one of everything is Rainbow Road, which is where the idea came from. */
-const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", alum:"Alumni", wall:"The Wall", mys:"Mystery Man", ord:"Order Them", bid:"Prove It", rr:"Rainbow Road"};
+const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", alum:"Alumni", wall:"The Wall", mys:"Mystery Man", ord:"Order Them", bid:"Prove It", spec:"Special", rr:"Rainbow Road"};
 /* THE RECORD BOOK HAS TO SURVIVE THE APP BEING SHUT.
 
    It lives in localStorage, which already survives a close, but three things
@@ -5130,6 +5198,40 @@ function render(){
     return;
   }
 
+  if(["sp_q","sp_a"].includes(S.phase)){
+    const Qs=SPEC[S.spec.qi];
+    const M=SPEC_META[Qs.s] || SPEC_META.mvv;
+    const rev = S.phase==="sp_a";
+    /* the whole screen takes the strand's colours, and three badges drift
+       across it for as long as the mode is up */
+    const stage2 = `
+      <div class="specsky" style="--sa:${M.a};--sb:${M.b}">
+        <div class="specglow"></div>
+        <img class="specback" src="${M.img}" alt="">
+        <img class="specdrift d1" src="assets/logos/mvv-maastricht.png" alt="">
+        <img class="specdrift d2" src="assets/logos/las-palmas.png" alt="">
+        <img class="specdrift d3" src="assets/flags/morocco.webp" alt="">
+      </div>`;
+    st.innerHTML = `
+      ${stage2}
+      <div class="kick speckick">${ico('rainbow')}Special · ${esc(S.players[S.turn]?S.players[S.turn].name:"")}'s go · Round ${S.round}</div>
+      <div class="specbadge"><img src="${M.img}" alt=""><span>${esc(M.n)}</span></div>
+      <div class="potpill specpot">+${Qs.p}</div>
+      <div class="qcard speccard">
+        <div class="qtext">${esc(Qs.q)}</div>
+        ${rev?`<div class="specans"><div class="anslabel">Answer</div><div class="anstext">${esc(Qs.a)}</div>${Qs.note?`<div class="hint">${esc(Qs.note)}</div>`:""}</div>`:""}
+      </div>
+      <div class="spacer"></div>
+      ${rev
+        ? `<div class="row2">
+             <button class="bigbtn ok" onclick="specJudge(true)">Correct +${Qs.p}<kbd>C</kbd></button>
+             <button class="bigbtn bad" onclick="specJudge(false)">Wrong<kbd>W</kbd></button>
+           </div>`
+        : `<button class="bigbtn" onclick="specReveal()">Reveal the answer<kbd>Space</kbd></button>
+           <button class="bigbtn ghost" onclick="specNext()">Skip this one</button>`}`;
+    return;
+  }
+
   if(["b_bid","b_call","b_done"].includes(S.phase)){
     const B=BIDS[S.bid.i];
     const lot = `<div class="clubgrid"><div class="clubcard"><img src="assets/logos/${B.s}.png" alt=""></div></div>
@@ -5516,7 +5618,7 @@ let extraOpen = false; // the second shelf inside it
    rather than by default. Everything on the shelf still plays identically and
    still turns up in Rainbow Road's own roll. */
 const MODE_EXTRA = new Set(["rr","xi","tline","duel","rush"]);
-const MODE_META = {written:["pencil","Written","#f0c98a"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"], alum:["route","Alumni","#e8b0a0"], wall:["grid","The Wall","#c9a0e8"], mys:["eye","Mystery Man","#7fc4e8"], ord:["tl","Order Them","#a8c6b3"], bid:["hand","Prove It","#f0c98a"]};
+const MODE_META = {written:["pencil","Written","#f0c98a"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["shirt","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"], alum:["route","Alumni","#e8b0a0"], wall:["grid","The Wall","#c9a0e8"], mys:["eye","Mystery Man","#7fc4e8"], ord:["tl","Order Them","#a8c6b3"], bid:["hand","Prove It","#f0c98a"], spec:["rainbow","Special","#e2453c"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){
@@ -5738,6 +5840,7 @@ function startGame(){
   if(setupMode==="mys" && !MYS){ toast("The mystery deck is still loading, give it a second", true); return; }
   if(setupMode==="ord" && !ORDB){ toast("The ordering deck is still loading, give it a second", true); return; }
   if(setupMode==="bid" && !BIDS){ toast("The bidding deck is still loading, give it a second", true); return; }
+  if(setupMode==="spec" && !SPEC){ toast("The special deck is still loading, give it a second", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
@@ -5764,6 +5867,7 @@ function startGame(){
   if(S.mode==="mys") newMystery();
   if(S.mode==="ord") newTL();
   if(S.mode==="bid") newBid();
+  if(S.mode==="spec") newSpecial();
   render();
 }
 function resumeGame(){
@@ -5793,6 +5897,9 @@ function resumeGame(){
   if(!S.usedY) S.usedY=[];                 // saves from before the mystery man existed
   if(!S.usedO) S.usedO=[];                 // saves from before Order Them existed
   if(!S.usedB) S.usedB=[];                 // saves from before the bidding round existed
+  if(!S.usedS) S.usedS=[];                 // saves from before the special deck existed
+  if(S.mode==="spec" && !SPEC){ toast("The special deck is still loading, give it a second", true); return; }
+  if(S.mode==="spec" && !S.spec) newSpecial();
   if(S.mode==="bid" && !BIDS){ toast("The bidding deck is still loading, give it a second", true); return; }
   if(S.mode==="bid" && !S.bid) newBid();
   if(S.phase==="b_call") S.phase="b_bid";  // a half-delivered list cannot be resumed fairly
@@ -6312,6 +6419,45 @@ function bidPass(){
   toast("Lot withdrawn");
   bidAfter();
 }
+/* ---------------------------- SPECIAL ----------------------------
+   The one mode written for the three people who play it: Martijn's MVV,
+   Alejandro's Las Palmas, and Morocco, with the record books of the Dutch,
+   the Spanish and the Moroccans behind them.
+
+   Every question carries a strand, and the strand decides what turns behind
+   the card and what colour the whole screen is lit in, so a Las Palmas
+   question and an MVV question do not merely say something different, they
+   look different from across the table. */
+function newSpecial(){
+  if(!SPEC || !SPEC.length){ toast("The special deck is still loading, give it a second", true); return; }
+  if(!S.usedS) S.usedS=[];
+  let avail = SPEC.map((_,i)=>i).filter(i=>!S.usedS.includes(i));
+  if(!avail.length){ toast("Whole special deck played, reshuffling"); S.usedS.length=0; avail=SPEC.map((_,i)=>i); }
+  const qi = avail[Math.floor(Math.random()*avail.length)];
+  S.usedS.push(qi);
+  S.spec = {qi};
+  S.phase = "sp_q";
+  render();
+}
+function specReveal(){ if(S.phase==="sp_q"){ S.phase="sp_a"; render(); } }
+function specJudge(ok){
+  if(S.phase!=="sp_a") return;
+  const Qs=SPEC[S.spec.qi], who=S.players[S.turn];
+  if(ok && who){
+    who.score += Qs.p;
+    ching(); goalFx(false, Qs.p);
+    toast(`⚽ ${who.name} +${Qs.p}`);
+    if(maybeFinish()) return;
+  }else if(!ok){ buzzer(); flashBad(); }
+  specNext();
+}
+function specNext(){
+  if(S.rr) return rrNext();
+  S.turn=(S.turn+1)%S.players.length;
+  if(S.turn===0) S.round++;
+  newSpecial();
+}
+
 function bidAfter(){
   if(maybeFinish()) return;
   if(S.rr) return rrNext();
@@ -6415,6 +6561,7 @@ function rematch(){
   if(S.mode==="mys") newMystery();
   if(S.mode==="ord") newTL();
   if(S.mode==="bid") newBid();
+  if(S.mode==="spec") newSpecial();
   render();
 }
 function fullReset(){ clearSave(); S=null; render(); }
@@ -6488,6 +6635,11 @@ document.addEventListener("keydown", e=>{
     if(k===" "||k==="enter"){ e.preventDefault(); tlReveal(); }
   }else if(S.phase==="tl_reveal"){
     if(k===" "||k==="enter"){ e.preventDefault(); tlNext(); }
+  }else if(S.phase==="sp_q"){
+    if(k===" "||k==="enter"){ e.preventDefault(); specReveal(); }
+  }else if(S.phase==="sp_a"){
+    if(k==="c") specJudge(true);
+    if(k==="w"||k==="x") specJudge(false);
   }else if(S.phase==="b_call"){
     if(k==="c"){ e.preventDefault(); bidGot(); }
     if(k==="w"||k==="x") bidFail();

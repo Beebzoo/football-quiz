@@ -213,9 +213,9 @@
   .specbadge img{width:34px;height:34px;object-fit:contain;border-radius:6px;animation:specnod 3.4s ease-in-out infinite}
   .specpot{animation:specpopin .5s cubic-bezier(.2,1.6,.4,1) .06s both}
   .speccard{animation:speccardin .5s cubic-bezier(.2,1.3,.35,1) .1s both}
-  .specans{margin-top:12px;padding-top:12px;border-top:2px dashed rgba(10,45,25,.18);animation:specansin .45s cubic-bezier(.2,1.4,.4,1) both}
-  .specans .anstext{font:800 1.35rem/1.25 var(--ui);color:#0a7a45;text-wrap:balance}
-  .specans .anslabel{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;color:#7c8c82;margin-bottom:2px}
+  .specans{margin-top:12px;padding-top:12px;border-top:2px dashed rgba(255,255,255,.18);animation:specansin .45s cubic-bezier(.2,1.4,.4,1) both}
+  .specans .anstext{font:800 1.35rem/1.25 var(--ui);color:#8df0b8;text-wrap:balance}
+  .specans .anslabel{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;color:#9fb8a6;margin-bottom:2px}
   @keyframes specpopin{from{opacity:0;transform:translateY(-10px) scale(.9)}to{opacity:1;transform:none}}
   @keyframes speccardin{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
   @keyframes specansin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
@@ -247,7 +247,7 @@
   body.careermode .clock.hot .digits{color:#ff8a7a}
   body.careermode .sub{color:#9fb8a6}
   /* white cards keep dark ink even on the night pitch */
-  body.careermode .qcard, body.careermode .sheet, body.careermode .frow{color:var(--ink)}
+  body.careermode .sheet, body.careermode .frow{color:var(--ink)}
   body.careermode #pitchbg{
     background:
       radial-gradient(95% 55% at 50% -5%, rgba(255,255,215,.12), transparent 60%),
@@ -809,24 +809,60 @@
   @media (prefers-reduced-motion: reduce){ .lane,.lane .lnum{animation:none} }
 
 
-  /* question card */
+  /* The question card is the scoreboard's material: the pitch's own
+     green-black, translucent so the turf shows through it, lit by the same
+     floodlight. A white slab was the last thing in the app still fighting
+     the night, and it glared on a phone in a dark pub.
+     The tier colour arrives as a lit edge and as the lamp on the chip,
+     never as a band of paint. */
   .qcard{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    border-top:4px solid var(--dc,var(--turf));
-    padding:16px;display:flex;flex-direction:column;gap:12px;
-    box-shadow:var(--shadow);
+    position:relative;
+    background:
+      radial-gradient(120% 72% at 50% -12%, rgba(255,252,215,.075), transparent 62%),
+      linear-gradient(180deg, rgba(13,34,21,.90), rgba(6,17,10,.94) 58%, rgba(10,26,16,.92));
+    border:1px solid rgba(200,232,210,.15);
+    border-radius:var(--radius);
+    padding:18px 16px;display:flex;flex-direction:column;gap:12px;
+    color:#eef5ef;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 12px 30px rgba(0,0,0,.5);
+    overflow:hidden;
+  }
+  /* a hairline that blooms, which is the one thing a 4px solid border
+     could never do */
+  .qcard::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:2px;
+    background:linear-gradient(90deg, transparent,
+      var(--dc,var(--turf)) 18%, var(--dc,var(--turf)) 82%, transparent);
+    box-shadow:0 0 14px color-mix(in srgb, var(--dc,var(--turf)) 70%, transparent);
   }
   .qmeta{display:flex;justify-content:space-between;align-items:center}
+  /* the same lamp the picker lanes carry, so a tier looks like itself on
+     both screens */
   .tierchip{
-    font:700 .7rem/1 var(--ui);letter-spacing:.08em;text-transform:uppercase;
-    color:#fff;background:var(--dc,var(--turf));padding:6px 11px;border-radius:99px;
+    display:inline-flex;align-items:center;gap:7px;
+    font:800 .72rem/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;
+    color:color-mix(in srgb, var(--dc,var(--turf)) 68%, #fff);
+    background:none;padding:0;border-radius:0;
+    text-shadow:0 0 14px color-mix(in srgb, var(--dc,var(--turf)) 55%, transparent);
   }
-  .qtext{font:650 1.3rem/1.35 var(--ui);text-wrap:balance}
+  .tierchip::before{
+    content:"";flex:none;width:8px;height:8px;border-radius:99px;
+    background:currentColor;
+    box-shadow:0 0 4px currentColor,
+               0 0 12px color-mix(in srgb, var(--dc,var(--turf)) 70%, transparent);
+  }
+  .qtext{
+    font:650 1.32rem/1.36 var(--ui);color:#f2f8f3;text-wrap:balance;
+    text-shadow:0 1px 10px rgba(0,0,0,.35);
+  }
   .atext{
-    font:650 1.15rem/1.35 var(--ui);color:var(--turf-deep);
-    background:#f0faf5;border-radius:10px;padding:12px 14px;
+    font:650 1.15rem/1.35 var(--ui);color:#8df0b8;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    border-radius:10px;padding:12px 14px;
   }
-  .atext .lbl{display:block;font:700 .65rem/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:#7fa892;margin-bottom:6px}
+  .atext .lbl{display:block;font:700 .65rem/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:#9fb8a6;margin-bottom:6px}
 
   /* clock */
   .clock{display:flex;flex-direction:column;gap:8px}
@@ -852,7 +888,7 @@
      there, how many games. Reveal screens only, never the question. */
   .pfact{
     margin-top:7px;text-align:center;font:600 .8rem/1.35 var(--ui);
-    color:#4c6455;letter-spacing:.2px;
+    color:#bcd6c5;letter-spacing:.2px;text-shadow:0 1px 8px rgba(0,0,0,.5);
   }
   .qcard.natq .pfact{color:#bcd6c5;text-shadow:0 1px 8px rgba(0,0,0,.5)}
   /* one & only mode: no card, no props, the night pitch IS the stage */
@@ -860,6 +896,7 @@
     background:transparent;border:none;box-shadow:none;border-top:none;
     color:#eef5ef;padding:6px 0;
   }
+  .qcard.natq::before{display:none}
   .qcard.natq .qtext{
     color:#eef5ef;text-align:center;font-size:clamp(1.15rem,4.6vw,1.4rem);
     text-shadow:0 2px 14px rgba(0,0,0,.6);
@@ -1051,8 +1088,8 @@
     color:#f3d982;font:800 .82rem/1.3 var(--ui);letter-spacing:.07em;
     text-transform:uppercase;text-align:center;
   }
-  .atext.said{background:#fff6e0;color:#5b4108}
-  .atext.said .lbl{color:#b08a2e}
+  .atext.said{background:rgba(233,184,76,.12);border-color:rgba(233,184,76,.32);color:#f3d982}
+  .atext.said .lbl{color:#d9bd7a}
   .stealbig{
     width:100%;background:linear-gradient(160deg,#e9b84c,#c8963a);
     border:2px solid #f3d982;color:#2b1f04;font:900 1.6rem/1 var(--ui);

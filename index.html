@@ -723,12 +723,19 @@
     position:relative;display:flex;flex-direction:column;
     padding:12px 10px;
     border-radius:10px;                       /* hardware is less round than a card */
-    background:linear-gradient(180deg,#0a1710,#050c07 58%,#08130c);
-    border:1px solid #1d3324;
+    /* Not a black slab dropped on the grass. The panel is the pitch's own
+       green-black, two steps down, and it is translucent, so the mown stripes
+       and the centre arc ghost through it and the board reads as something
+       standing ON the ground. The top layer is the same floodlight the pitch
+       catches in #pitchbg, so one light source lights both. */
+    background:
+      radial-gradient(120% 72% at 50% -12%, rgba(255,252,215,.075), transparent 62%),
+      linear-gradient(180deg, rgba(13,34,21,.90), rgba(6,17,10,.94) 58%, rgba(10,26,16,.92));
+    border:1px solid rgba(200,232,210,.15);   /* a pitch line, not a metal edge */
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.07),    /* light catching the top lip */
-      inset 0 0 44px rgba(0,0,0,.9),          /* the middle sinks away */
-      0 10px 26px rgba(0,0,0,.55);
+      inset 0 1px 0 rgba(255,255,255,.08),    /* light catching the top lip */
+      inset 0 0 40px rgba(0,0,0,.55),         /* the middle sinks away */
+      0 12px 30px rgba(0,0,0,.5);
     overflow:hidden;
   }
   /* The dot grid and the scanlines are what make it a panel of lamps instead
@@ -748,7 +755,7 @@
     text-align:left;color:#dfe9e1;
     /* every lamp on this row burns the tier colour lifted towards white:
        #2563eb and #0a9e5c are both too dark to read as lit on black */
-    --lit:color-mix(in srgb, var(--dc) 74%, #fff);
+    --lit:color-mix(in srgb, var(--dc) 68%, #fff);
     transition:background .12s ease, transform .06s ease;
   }
   .lane + .lane{border-top:1px solid rgba(255,255,255,.05)}

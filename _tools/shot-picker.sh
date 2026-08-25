@@ -26,7 +26,7 @@ window.addEventListener("load",()=>{ setTimeout(()=>{
   save(); render();
   /* the app scrolls its own column, not the window, so ask the element */
   setTimeout(()=>{ if(${process.env.SHOT_SCROLL||0}){
-    const b=document.querySelector(".diff.ball");
+    const b=document.querySelector(".lane.ball");
     if(b) b.scrollIntoView({block:"end"});
   } }, 250);
 }, 900); });

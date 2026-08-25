@@ -246,7 +246,6 @@
   body.careermode .clock .digits{color:#eef5ef}
   body.careermode .clock.hot .digits{color:#ff8a7a}
   body.careermode .sub{color:#9fb8a6}
-  body.careermode .diff{box-shadow:0 6px 18px rgba(0,0,0,.4)}
   /* white cards keep dark ink even on the night pitch */
   body.careermode .qcard, body.careermode .sheet, body.careermode .frow{color:var(--ink)}
   body.careermode #pitchbg{
@@ -710,67 +709,97 @@
   input.nm-in::placeholder{color:#9fb8a6;font-weight:500}
   input.nm-in:focus{outline:2px solid #e9b84c;border-color:#e9b84c;background:rgba(255,255,255,.12)}
 
-  /* Difficulty buttons. The tier colour used to be a dot and a pill on a plain
-     white card; now it bleeds in from the left edge and gives out before the
-     middle, so the row reads as its own colour without becoming a coloured
-     slab. The 3px inset rule is the same gold-selection idiom used on the setup
-     chips, borrowed here in each tier's colour.
-     background is declared twice on purpose: a browser without color-mix keeps
-     the flat card rather than dropping to no background at all. */
-  .diff{
-    display:flex;align-items:center;justify-content:space-between;
-    width:100%;padding:18px 16px 18px 19px;border-radius:var(--radius);
-    border:1px solid var(--line);
-    background:var(--card);
-    background:linear-gradient(100deg,
-      color-mix(in srgb, var(--dc) 38%, var(--card)) 0%,
-      color-mix(in srgb, var(--dc) 16%, var(--card)) 46%,
-      var(--card) 84%);
-    font:700 1.1rem/1 var(--ui);
-    color:var(--ink);
-    box-shadow:inset 4px 0 0 var(--dc), var(--shadow);
-    transition:transform .06s ease, box-shadow .12s ease;
-  }
-  .diff:active{transform:scale(.98);box-shadow:inset 4px 0 0 var(--dc), 0 2px 6px rgba(0,0,0,.28)}
-  .diff .left{display:flex;align-items:center;text-align:left;letter-spacing:.01em}
-  /* The points token: lit from the top like a physical counter rather than
-     filled flat. The light catch and the darker underside are what stop it
-     reading as a coloured rectangle with a number in it. */
-  .diff .pts{
-    /* Stadium's token carries a whole ladder (+20/12/6), and a slash is a place
-       a browser will happily break a line: keep it on one. */
-    font:800 .84rem/1 var(--ui);letter-spacing:.02em;white-space:nowrap;
-    color:#fff;padding:8px 14px;border-radius:99px;
-    background:var(--dc);
-    background:linear-gradient(165deg,
-      color-mix(in srgb, var(--dc) 72%, #fff) 0%,
-      var(--dc) 46%,
-      color-mix(in srgb, var(--dc) 78%, #000) 100%);
-    border:1px solid color-mix(in srgb, var(--dc) 62%, #000);
+  /* The difficulty picker is a scoreboard, not a list of cards.
+
+     Five lanes on one dark board: a lamp in the tier's colour, the name in
+     wide condensed caps, a dotted leader running out to a two-digit number
+     in a fixed right-hand column. The tier colour is used as LIGHT and never
+     as fill, which is the whole trick: five filled rows read as five coloured
+     slabs, five lit ones read as one instrument.
+
+     Each lane is a single <button> so the tap target is the whole row, and
+     the board carries its own shadow rather than borrowing the card one. */
+  .board{
+    position:relative;display:flex;flex-direction:column;
+    padding:12px 10px;
+    border-radius:10px;                       /* hardware is less round than a card */
+    background:linear-gradient(180deg,#0a1710,#050c07 58%,#08130c);
+    border:1px solid #1d3324;
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.42),
-      inset 0 -2px 3px rgba(0,0,0,.16),
-      0 2px 7px color-mix(in srgb, var(--dc) 38%, transparent);
-    text-shadow:0 1px 1px rgba(0,0,0,.3);
+      inset 0 1px 0 rgba(255,255,255,.07),    /* light catching the top lip */
+      inset 0 0 44px rgba(0,0,0,.9),          /* the middle sinks away */
+      0 10px 26px rgba(0,0,0,.55);
+    overflow:hidden;
   }
-  /* BALL keeps its gold, deepened at both ends so the fade runs the same way
-     the other five do rather than sitting flat across the row */
-  .diff.ball{
-    background:#c9932e;
-    background:linear-gradient(100deg,#b8821f,#e3b453 52%,#cf9c33);
-    border-color:#b07f1e;color:#fff;
-    box-shadow:inset 3px 0 0 #f3d982, var(--shadow);
+  /* The dot grid and the scanlines are what make it a panel of lamps instead
+     of a black rectangle. Both are decoration painted over the lanes, so they
+     must not eat the taps. */
+  .board::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,.03) 0 1px, transparent 1px 3px),
+      radial-gradient(circle at center, rgba(255,255,255,.05) .5px, transparent .6px);
+    background-size:auto, 5px 5px;
   }
-  .diff.ball:active{box-shadow:inset 3px 0 0 #f3d982, 0 2px 6px rgba(0,0,0,.28)}
-  /* BALL's token goes parchment rather than translucent white, the same cream
-     the Resume button and the selected chips use. White on gold was the one
-     token on the screen with nothing holding it down. */
-  .diff.ball .pts{
-    background:linear-gradient(165deg,#fffaf0,#fdf6e6 45%,#f0e2c2);
-    border-color:#c9a45e;color:#7a5410;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.9), inset 0 -2px 3px rgba(138,100,20,.16), 0 2px 8px rgba(0,0,0,.28);
-    text-shadow:none;
+  .lane{
+    position:relative;display:flex;align-items:center;gap:10px;
+    width:100%;padding:16px 12px 16px 14px;
+    background:transparent;border:0;border-radius:6px;
+    text-align:left;color:#dfe9e1;
+    /* every lamp on this row burns the tier colour lifted towards white:
+       #2563eb and #0a9e5c are both too dark to read as lit on black */
+    --lit:color-mix(in srgb, var(--dc) 74%, #fff);
+    transition:background .12s ease, transform .06s ease;
   }
+  .lane + .lane{border-top:1px solid rgba(255,255,255,.05)}
+  .lane:active{transform:scale(.99);background:rgba(255,255,255,.05)}
+  .lane .lamp{
+    flex:none;width:9px;height:9px;border-radius:99px;background:var(--lit);
+    box-shadow:0 0 4px var(--lit), 0 0 13px color-mix(in srgb, var(--dc) 70%, transparent);
+  }
+  .lane .lname{
+    font:800 1.02rem/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;
+    color:var(--lit);text-shadow:0 0 14px color-mix(in srgb, var(--dc) 55%, transparent);
+  }
+  .lane .leader{
+    flex:1;height:2px;min-width:14px;opacity:.3;
+    background:repeating-linear-gradient(90deg, var(--lit) 0 2px, transparent 2px 8px);
+  }
+  .lane .lnum{
+    flex:none;min-width:2.4ch;text-align:right;display:inline-block;
+    font:800 1.7rem/1 var(--ui);font-variant-numeric:tabular-nums;
+    letter-spacing:.02em;white-space:nowrap;color:var(--lit);
+    text-shadow:0 0 6px color-mix(in srgb, var(--dc) 80%, transparent),
+                0 0 20px color-mix(in srgb, var(--dc) 45%, transparent);
+  }
+  /* the leading zero belongs to the board, not to the number */
+  .lane .lnum .z{opacity:.26}
+  /* a slash is somewhere a browser will happily break a line: keep the
+     stadium ladder on one */
+  .lane .lnum.ladder{font-size:1.15rem;letter-spacing:.04em}
+  .lane .lnum.ladder i{font-style:normal;opacity:.35;padding:0 1px}
+  /* BALL gets a backing plate rather than a bigger version of the same row */
+  .lane.ball{
+    margin-top:4px;border-top:1px solid rgba(233,184,76,.22);
+    background:linear-gradient(90deg, rgba(233,184,76,.14), rgba(233,184,76,.04) 62%, transparent);
+  }
+  .lane.ball .lname{letter-spacing:.28em}
+  .lane.ball .lnum{font-size:2rem}
+  /* except the stadium ladder, which is three numbers wide already */
+  .lane.ball .lnum.ladder{font-size:1.3rem}
+  /* Tier fished out: the lamp is simply off. This used to be an inline
+     opacity, on a second style attribute the parser threw away. */
+  .lane[disabled]{opacity:.32;filter:saturate(.2)}
+  .lane[disabled] .lamp{background:#4a584d;box-shadow:none}
+  .lane[disabled] .lname,.lane[disabled] .lnum{color:#8d9c91;text-shadow:none}
+  /* the board powers up a lane at a time and the digits flap in after the
+     lamp, which is the half-second that sells it as a board */
+  @keyframes lampon{from{opacity:0}60%{opacity:.4}to{opacity:1}}
+  @keyframes flapin{from{transform:rotateX(-88deg);opacity:0}to{transform:rotateX(0);opacity:1}}
+  .lane{animation:lampon .5s ease both;animation-delay:var(--d,0ms)}
+  .lane .lnum{transform-origin:50% 0;animation:flapin .42s cubic-bezier(.2,.9,.3,1.25) both;
+    animation-delay:calc(var(--d,0ms) + 90ms)}
+  @media (prefers-reduced-motion: reduce){ .lane,.lane .lnum{animation:none} }
 
 
   /* question card */
@@ -4914,11 +4943,22 @@ function render(){
         :"Pick your level. Someone else reads the question out loud."}</div>
       ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn. Pick your level</div>`:""}
       ${remotePlayer(S.turn)?`<div class="hint waitline">⌛ ${esc(P.name)} is picking on their own phone.</div>`:""}
-      ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t])=>`
-        <button class="diff${k==="ball"?" ball":""}" style="--dc:${t.color}" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled style='opacity:.35;--dc:"+t.color+"'":""}>
-          <span class="left">${tlabel(k)}</span>
-          <span class="pts">${stad && STAD_PTS[k] ? `+${STAD_PTS[k].name}/${STAD_PTS[k].city}/${STAD_PTS[k].country}` : "+"+t.pts}</span>
-        </button>`).join("")}
+      <div class="board">
+      ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t],i)=>{
+        /* Stadium pays on a ladder, so that one lane carries three numbers
+           at a smaller size rather than the board's two-digit column. */
+        const lad = stad && STAD_PTS[k];
+        const num = lad
+          ? `<span class="lnum ladder">${lad.name}<i>/</i>${lad.city}<i>/</i>${lad.country}</span>`
+          : `<span class="lnum">${t.pts<10?'<span class="z">0</span>':""}${t.pts}</span>`;
+        return `
+        <button class="lane${k==="ball"?" ball":""}" style="--dc:${t.color};--d:${i*80}ms" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled":""}>
+          <span class="lamp"></span>
+          <span class="lname">${tlabel(k)}</span>
+          <span class="leader"></span>
+          ${num}
+        </button>`;}).join("")}
+      </div>
       <div class="foot">
         <button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button>
       </div>`;

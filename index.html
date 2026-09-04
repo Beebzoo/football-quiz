@@ -36,6 +36,9 @@
     --serif:"Lora",Georgia,"Times New Roman",serif;
     --ui:"Barlow Semi Condensed",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     --radius:16px;
+    /* polished gold, the BALL wordmark's own metal. Anything that wears it is
+       claiming to be the gold thing on the screen, so there are only two. */
+    --gold-metal:linear-gradient(105deg,#b8860b 10%,#e9b84c 28%,#ffefad 45%,#e9b84c 60%,#b8860b 88%);
     --shadow:0 1px 2px rgba(16,24,40,.06),0 4px 14px rgba(16,24,40,.06);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -641,12 +644,26 @@
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
     border-radius:12px;font:800 1rem/1 var(--ui);
   }
+  /* Top of the table wears the wordmark's metal, which means the row itself has
+     to stop being a slab of gold or the name has nothing to be gold against.
+     Lit, the same way the BALL lane on the picker board is lit. */
   .lbrow.top{
-    background:linear-gradient(160deg,rgba(233,184,76,.38),rgba(168,127,44,.24));
-    border:1.5px solid #e9b84c;color:#ffeeb8;
-    box-shadow:0 0 14px rgba(233,184,76,.25);
+    background:
+      radial-gradient(120% 170% at 50% -36%, rgba(255,240,190,.13), transparent 66%),
+      linear-gradient(90deg, rgba(233,184,76,.20), rgba(233,184,76,.08) 55%, rgba(233,184,76,.16));
+    border:1px solid rgba(233,184,76,.5);color:#ffeeb8;
+    box-shadow:inset 0 1px 0 rgba(255,238,184,.26), 0 0 22px rgba(233,184,76,.14);
   }
   .lbrow.top .pos{opacity:.9;color:#f3d982}
+  /* the glow has to be a drop-shadow: a text-shadow behind a transparent fill
+     paints straight through the letters */
+  .lbrow.top .fn{
+    background:var(--gold-metal);background-size:250% 100%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    filter:drop-shadow(0 0 10px rgba(233,184,76,.5));
+    animation:goldshimmer 11s linear infinite;
+  }
   .lbrow .pos{opacity:.55;font-size:.85rem;text-align:center}
   .lbrow .fn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .lbrow .num{text-align:center;font-variant-numeric:tabular-nums}
@@ -727,7 +744,7 @@
   h1.title.ballhero{cursor:pointer;-webkit-tap-highlight-color:transparent}
   .ballhero .goldtext{
     display:inline-block;
-    background:linear-gradient(105deg,#b8860b 10%,#e9b84c 28%,#ffefad 45%,#e9b84c 60%,#b8860b 88%);
+    background:var(--gold-metal);
     background-size:250% 100%;
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;color:transparent;
@@ -750,7 +767,7 @@
     50%{opacity:1;transform:scale(1) rotate(45deg)}
   }
   @media (prefers-reduced-motion:reduce){
-    .ballhero .goldtext{animation:none;background-position:50% 0}
+    .ballhero .goldtext,.lbrow.top .fn{animation:none;background-position:50% 0}
     .ballhero .sp{animation:none;opacity:.7;transform:scale(.8)}
   }
   .sub{color:var(--chalk-dim);max-width:36ch}

@@ -1599,6 +1599,74 @@
   {
    "q": "Which club have both David de Gea and Paul Pogba played for?",
    "a": "Manchester United"
+  },
+  {
+   "q": "Who wore the armband for Brazil, World Cup final 1994?",
+   "a": "Dunga"
+  },
+  {
+   "q": "Who wore the armband for Manchester United, European Cup final 1968?",
+   "a": "Bobby Charlton"
+  },
+  {
+   "q": "Who wore the armband for Manchester United, Champions League final 1999?",
+   "a": "Peter Schmeichel"
+  },
+  {
+   "q": "Who wore the armband for Netherlands, Euro final 1988?",
+   "a": "Ruud Gullit"
+  },
+  {
+   "q": "Who wore the armband for Italy, World Cup final 1982?",
+   "a": "Dino Zoff"
+  },
+  {
+   "q": "Who wore number 2 for Brazil, World Cup final 2002?",
+   "a": "Cafu"
+  },
+  {
+   "q": "Who wore the armband for Germany, Euro final 1996?",
+   "a": "Jürgen Klinsmann"
+  },
+  {
+   "q": "Who wore number 2 for Netherlands, World Cup final 2010?",
+   "a": "Gregory van der Wiel"
+  },
+  {
+   "q": "Who wore the armband for AC Milan, European Cup final 1989?",
+   "a": "Franco Baresi"
+  },
+  {
+   "q": "Who wore the armband for Barcelona, Champions League final 2011?",
+   "a": "Xavi"
+  },
+  {
+   "q": "Who wore number 2 for Barcelona, Champions League final 2011?",
+   "a": "Dani Alves"
+  },
+  {
+   "q": "Who wore number 2 for France, World Cup final 2018?",
+   "a": "Benjamin Pavard"
+  },
+  {
+   "q": "Who wore the armband for Greece, Euro final 2004?",
+   "a": "Theodoros Zagorakis"
+  },
+  {
+   "q": "Who wore the armband for Celtic, European Cup final 1967?",
+   "a": "Billy McNeill"
+  },
+  {
+   "q": "Who wore number 2 for Ajax, Champions League final 1995?",
+   "a": "Michael Reiziger"
+  },
+  {
+   "q": "Who wore the armband for Ajax, Champions League final 1995?",
+   "a": "Danny Blind"
+  },
+  {
+   "q": "Who wore the armband for Brazil, World Cup final 1970?",
+   "a": "Carlos Alberto"
   }
  ],
  "ball": [
@@ -1701,10 +1769,6 @@
   {
    "q": "Which country won Euro 2004 at odds of 150-1?",
    "a": "Greece"
-  },
-  {
-   "q": "Who managed Greece to the Euro 2004 title?",
-   "a": "Otto Rehhagel"
   },
   {
    "q": "Which country did Greece beat in both the opening game and the final of Euro 2004?",
@@ -1869,10 +1933,6 @@
   {
    "q": "Which Hungarian forward joined Real Madrid in 1958 after fleeing the 1956 uprising?",
    "a": "Ferenc Puskás"
-  },
-  {
-   "q": "What was Ferenc Puskás nicknamed?",
-   "a": "The Galloping Major"
   },
   {
    "q": "Which award is named after Ferenc Puskás?",
@@ -2331,10 +2391,6 @@
    "a": "Internacional"
   },
   {
-   "q": "Who wore the armband for Brazil, World Cup final 1970?",
-   "a": "Carlos Alberto"
-  },
-  {
    "q": "Who kept goal for Brazil, World Cup final 1970?",
    "a": "Félix"
   },
@@ -2355,10 +2411,6 @@
    "a": "Arsenal"
   },
   {
-   "q": "Who wore number 2 for Brazil, World Cup final 1970?",
-   "a": "Brito"
-  },
-  {
    "q": "Sultan Qaboos Sports Complex is a ground in which city?",
    "a": "Muscat, Oman"
   },
@@ -2369,10 +2421,6 @@
   {
    "q": "Which club did Raúl García start his senior career at?",
    "a": "Osasuna"
-  },
-  {
-   "q": "Who wore the armband for Ajax, Champions League final 1995?",
-   "a": "Danny Blind"
   },
   {
    "q": "Who kept goal for Ajax, Champions League final 1995?",
@@ -2395,10 +2443,6 @@
    "a": "Roda JC"
   },
   {
-   "q": "Who wore number 2 for Ajax, Champions League final 1995?",
-   "a": "Michael Reiziger"
-  },
-  {
    "q": "Stadionul Dr. Constantin Rădulescu is a ground in which city?",
    "a": "Cluj-Napoca, Romania"
   },
@@ -2409,10 +2453,6 @@
   {
    "q": "Which club did Kevin De Bruyne play for between Chelsea and Manchester City?",
    "a": "Wolfsburg"
-  },
-  {
-   "q": "Who wore the armband for Celtic, European Cup final 1967?",
-   "a": "Billy McNeill"
   },
   {
    "q": "Who kept goal for Celtic, European Cup final 1967?",
@@ -2435,20 +2475,12 @@
    "a": "Roma"
   },
   {
-   "q": "Who wore number 2 for Celtic, European Cup final 1967?",
-   "a": "Jim Craig"
-  },
-  {
    "q": "Stadion Galgenwaard is a ground in which city?",
    "a": "Utrecht, Netherlands"
   },
   {
    "q": "Which club did Alan Shearer start his senior career at?",
    "a": "Southampton"
-  },
-  {
-   "q": "Who wore the armband for Greece, Euro final 2004?",
-   "a": "Theodoros Zagorakis"
   },
   {
    "q": "Who kept goal for Greece, Euro final 2004?",
@@ -2471,10 +2503,6 @@
    "a": "Vitesse"
   },
   {
-   "q": "Who wore number 2 for Greece, Euro final 2004?",
-   "a": "Giourkas Seitaridis"
-  },
-  {
    "q": "Aleppo International Stadium is a ground in which city?",
    "a": "Aleppo, Syria"
   },
@@ -2489,10 +2517,6 @@
   {
    "q": "Which club did Roy Makaay play for between Tenerife and Bayern München?",
    "a": "Deportivo LA Coruna"
-  },
-  {
-   "q": "Who wore the armband for France, World Cup final 2018?",
-   "a": "Hugo Lloris"
   },
   {
    "q": "Who kept goal for France, World Cup final 2018?",
@@ -2515,10 +2539,6 @@
    "a": "Lyon"
   },
   {
-   "q": "Who wore number 2 for France, World Cup final 2018?",
-   "a": "Benjamin Pavard"
-  },
-  {
    "q": "Accra Sports Stadium is a ground in which city?",
    "a": "Accra, Ghana"
   },
@@ -2533,10 +2553,6 @@
   {
    "q": "Which club did Gary Medel play for between Sevilla and Inter?",
    "a": "Cardiff City"
-  },
-  {
-   "q": "Who wore the armband for West Germany, World Cup final 1990?",
-   "a": "Lothar Matthäus"
   },
   {
    "q": "Who kept goal for West Germany, World Cup final 1990?",
@@ -2559,10 +2575,6 @@
    "a": "Heerenveen"
   },
   {
-   "q": "Who wore number 2 for Barcelona, Champions League final 2011?",
-   "a": "Dani Alves"
-  },
-  {
    "q": "Estadio Nacional de Costa Rica is a ground in which city?",
    "a": "San José, Costa Rica"
   },
@@ -2573,10 +2585,6 @@
   {
    "q": "Which club did David Villa start his senior career at?",
    "a": "Sporting Gijon"
-  },
-  {
-   "q": "Who wore the armband for Barcelona, Champions League final 2011?",
-   "a": "Xavi"
   },
   {
    "q": "Who kept goal for Barcelona, Champions League final 2011?",
@@ -2599,10 +2607,6 @@
    "a": "Lyon"
   },
   {
-   "q": "Who wore number 2 for AC Milan, European Cup final 1989?",
-   "a": "Mauro Tassotti"
-  },
-  {
    "q": "Estadio Municipal de Anduva is a ground in which city?",
    "a": "Miranda de Ebro, Spain"
   },
@@ -2613,10 +2617,6 @@
   {
    "q": "Which club did Boudewijn Zenden play for between Chelsea and Liverpool?",
    "a": "Middlesbrough"
-  },
-  {
-   "q": "Who wore the armband for AC Milan, European Cup final 1989?",
-   "a": "Franco Baresi"
   },
   {
    "q": "Who kept goal for AC Milan, European Cup final 1989?",
@@ -2639,10 +2639,6 @@
    "a": "FC Utrecht"
   },
   {
-   "q": "Who wore number 2 for Netherlands, World Cup final 2010?",
-   "a": "Gregory van der Wiel"
-  },
-  {
    "q": "Estadio Defensores del Chaco is a ground in which city?",
    "a": "Asunción, Paraguay"
   },
@@ -2657,10 +2653,6 @@
   {
    "q": "Which club did Mathieu Valbuena play for between Marseille and Lyon?",
    "a": "Dynamo Moscow"
-  },
-  {
-   "q": "Who wore the armband for Netherlands, World Cup final 2010?",
-   "a": "Giovanni van Bronckhorst"
   },
   {
    "q": "Who kept goal for Netherlands, World Cup final 2010?",
@@ -2683,10 +2675,6 @@
    "a": "Marseille"
   },
   {
-   "q": "Who wore number 2 for Netherlands, Euro final 1988?",
-   "a": "Adri van Tiggelen"
-  },
-  {
    "q": "Estadio Nueva Condomina is a ground in which city?",
    "a": "Murcia, Spain"
   },
@@ -2697,10 +2685,6 @@
   {
    "q": "Which club did Dani Alves play for between Paris Saint Germain and Barcelona?",
    "a": "Sao Paulo"
-  },
-  {
-   "q": "Who wore the armband for Germany, Euro final 1996?",
-   "a": "Jürgen Klinsmann"
   },
   {
    "q": "Who kept goal for Germany, Euro final 1996?",
@@ -2723,20 +2707,12 @@
    "a": "FC Twente"
   },
   {
-   "q": "Who wore number 2 for Brazil, World Cup final 2002?",
-   "a": "Cafu"
-  },
-  {
    "q": "Sportpaleis Alkmaar is a ground in which city?",
    "a": "Alkmaar, Netherlands"
   },
   {
    "q": "Which club did Lilian Thuram play for between AS Monaco and Juventus?",
    "a": "Parma"
-  },
-  {
-   "q": "Who wore the armband for Spain, World Cup final 2010?",
-   "a": "Iker Casillas"
   },
   {
    "q": "Who kept goal for Spain, World Cup final 2010?",
@@ -2759,20 +2735,12 @@
    "a": "Fenerbahçe"
   },
   {
-   "q": "Who wore number 2 for Netherlands, World Cup final 1974?",
-   "a": "Arie Haan"
-  },
-  {
    "q": "M-Scores Stadion is a ground in which city?",
    "a": "Dordrecht, Netherlands"
   },
   {
    "q": "Which club did Edwin van der Sar play for between Juventus and Manchester United?",
    "a": "Fulham"
-  },
-  {
-   "q": "Who wore the armband for Italy, World Cup final 1982?",
-   "a": "Dino Zoff"
   },
   {
    "q": "Who kept goal for Italy, World Cup final 1982?",
@@ -2795,20 +2763,12 @@
    "a": "AZ"
   },
   {
-   "q": "Who wore number 2 for Manchester United, Champions League final 1999?",
-   "a": "Gary Neville"
-  },
-  {
    "q": "Old Stadion is a ground in which city?",
    "a": "Amsterdam, Netherlands"
   },
   {
    "q": "Which club did Gennaro Gattuso play for between Rangers and Milan?",
    "a": "Salernitana"
-  },
-  {
-   "q": "Who wore the armband for Liverpool, Champions League final 2005?",
-   "a": "Steven Gerrard"
   },
   {
    "q": "Who kept goal for Liverpool, Champions League final 2005?",
@@ -2831,16 +2791,8 @@
    "a": "Porto"
   },
   {
-   "q": "Who wore number 2 for Manchester United, European Cup final 1968?",
-   "a": "Shay Brennan"
-  },
-  {
    "q": "Korman Stadium is a ground in which city?",
    "a": "Port Vila, Vanuatu"
-  },
-  {
-   "q": "Who wore the armband for Ajax, European Cup final 1972?",
-   "a": "Piet Keizer"
   },
   {
    "q": "Who kept goal for Ajax, European Cup final 1972?",
@@ -2863,20 +2815,12 @@
    "a": "Nottingham Forest"
   },
   {
-   "q": "Who wore number 2 for Brazil, World Cup final 1994?",
-   "a": "Jorginho"
-  },
-  {
    "q": "Stade Linité is a ground in which city?",
    "a": "Victoria, Seychelles"
   },
   {
    "q": "Which club did Daley Blind play for between Bayern München and Ajax?",
    "a": "Girona"
-  },
-  {
-   "q": "Who wore the armband for Portugal, Euro final 2016?",
-   "a": "Cristiano Ronaldo"
   },
   {
    "q": "Who kept goal for Portugal, Euro final 2016?",
@@ -2899,16 +2843,8 @@
    "a": "PSG"
   },
   {
-   "q": "Who wore number 2 for Real Madrid, Champions League final 2014?",
-   "a": "Raphaël Varane"
-  },
-  {
    "q": "Samuel Kanyon Doe Sports Complex is a ground in which city?",
    "a": "Monrovia, Liberia"
-  },
-  {
-   "q": "Who wore the armband for Netherlands, Euro final 1988?",
-   "a": "Ruud Gullit"
   },
   {
    "q": "Who kept goal for Netherlands, Euro final 1988?",
@@ -2931,16 +2867,8 @@
    "a": "Aston Villa"
   },
   {
-   "q": "Who wore number 2 for Barcelona, European Cup final 1992?",
-   "a": "Nando"
-  },
-  {
    "q": "Setsoto Stadium is a ground in which city?",
    "a": "Maseru, Lesotho"
-  },
-  {
-   "q": "Who wore the armband for Brazil, World Cup final 2002?",
-   "a": "Cafu"
   },
   {
    "q": "Who kept goal for Brazil, World Cup final 2002?",
@@ -2963,16 +2891,8 @@
    "a": "Benfica"
   },
   {
-   "q": "Who wore number 2 for Real Madrid, European Cup final 1960?",
-   "a": "Marquitos"
-  },
-  {
    "q": "Yanmar Stadion is a ground in which city?",
    "a": "Almere, Netherlands"
-  },
-  {
-   "q": "Who wore the armband for Netherlands, World Cup final 1974?",
-   "a": "Johan Cruyff"
   },
   {
    "q": "Who kept goal for Manchester United, Champions League final 1999?",
@@ -2995,20 +2915,12 @@
    "a": "Leeds United"
   },
   {
-   "q": "Who wore number 2 for Argentina, World Cup final 1986?",
-   "a": "Sergio Batista"
-  },
-  {
    "q": "Nicosia Atatürk Stadium is a ground in which city?",
    "a": "Nicosia, Northern Cyprus"
   },
   {
    "q": "Which club did Sol Campbell play for between Arsenal and Arsenal?",
    "a": "Portsmouth"
-  },
-  {
-   "q": "Who wore the armband for Manchester United, Champions League final 1999?",
-   "a": "Peter Schmeichel"
   },
   {
    "q": "Who kept goal for Manchester United, European Cup final 1968?",
@@ -3031,16 +2943,8 @@
    "a": "Celtic"
   },
   {
-   "q": "Who wore number 2 for PSV Eindhoven, European Cup final 1988?",
-   "a": "Eric Gerets"
-  },
-  {
    "q": "Cicero Stadium is a ground in which city?",
    "a": "Asmara, Eritrea"
-  },
-  {
-   "q": "Who wore the armband for Manchester United, European Cup final 1968?",
-   "a": "Bobby Charlton"
   },
   {
    "q": "Who kept goal for Spain, Euro final 2008?",
@@ -3063,10 +2967,6 @@
    "a": "Newcastle"
   },
   {
-   "q": "Who wore number 2 for Italy, Euro final 2020?",
-   "a": "Giovanni Di Lorenzo"
-  },
-  {
    "q": "Which club did Diego Costa join after leaving Botafogo?",
    "a": "Gremio"
   },
@@ -3077,10 +2977,6 @@
   {
    "q": "Which club did Claude Makélélé play for between Marseille and Real Madrid?",
    "a": "Celta"
-  },
-  {
-   "q": "Who wore the armband for Spain, Euro final 2008?",
-   "a": "Iker Casillas"
   },
   {
    "q": "Which side lined up with Rodrigo De Paul, Ángel Di María and Julián Álvarez?",
@@ -3107,10 +3003,6 @@
    "a": "Napoli"
   },
   {
-   "q": "Who wore number 2 for Denmark, Euro final 1992?",
-   "a": "John Sivebæk"
-  },
-  {
    "q": "Guillermo Prospero Trinidad Stadium is a ground in which city?",
    "a": "Oranjestad, Aruba"
   },
@@ -3125,10 +3017,6 @@
   {
    "q": "Which club did Roberto Baggio play for between Milan and Inter?",
    "a": "Bologna"
-  },
-  {
-   "q": "Who wore the armband for Argentina, World Cup final 2022?",
-   "a": "Lionel Messi"
   },
   {
    "q": "Which side lined up with Branco, Mauro Silva and Dunga?",
@@ -3151,10 +3039,6 @@
    "a": "Everton"
   },
   {
-   "q": "Who wore number 2 for Argentina, World Cup final 1978?",
-   "a": "Osvaldo Ardiles"
-  },
-  {
    "q": "Bairiki National Stadium is a ground in which city?",
    "a": "South Tarawa, Kiribati"
   },
@@ -3169,10 +3053,6 @@
   {
    "q": "Which club did Jordan Henderson play for between Liverpool and Ajax?",
    "a": "Al Ettifaq"
-  },
-  {
-   "q": "Who wore the armband for Brazil, World Cup final 1994?",
-   "a": "Dunga"
   },
   {
    "q": "Which side lined up with Fábio Coentrão, Sergio Ramos and Sami Khedira?",
@@ -3193,10 +3073,6 @@
   {
    "q": "Albert Guðmundsson is the only Iceland player ever to turn out for which club?",
    "a": "AC Milan"
-  },
-  {
-   "q": "Who wore number 2 for Real Madrid, Champions League final 2002?",
-   "a": "Míchel Salgado"
   },
   {
    "q": "Which club did Jay-Jay Okocha join after leaving Paris Saint Germain?",
@@ -5203,6 +5079,134 @@
   {
    "q": "Waldstadion is a ground in which city?",
    "a": "Frankfurt, Germany"
+  },
+  {
+   "q": "Who wore number 2 for Real Madrid, Champions League final 2002?",
+   "a": "Míchel Salgado"
+  },
+  {
+   "q": "Who wore number 2 for Argentina, World Cup final 1978?",
+   "a": "Osvaldo Ardiles"
+  },
+  {
+   "q": "Who wore number 2 for Denmark, Euro final 1992?",
+   "a": "John Sivebæk"
+  },
+  {
+   "q": "Who wore number 2 for Italy, Euro final 2020?",
+   "a": "Giovanni Di Lorenzo"
+  },
+  {
+   "q": "Who wore number 2 for PSV Eindhoven, European Cup final 1988?",
+   "a": "Eric Gerets"
+  },
+  {
+   "q": "Who wore number 2 for Argentina, World Cup final 1986?",
+   "a": "Sergio Batista"
+  },
+  {
+   "q": "Who wore number 2 for Real Madrid, European Cup final 1960?",
+   "a": "Marquitos"
+  },
+  {
+   "q": "Who wore number 2 for Barcelona, European Cup final 1992?",
+   "a": "Nando"
+  },
+  {
+   "q": "Who wore number 2 for Real Madrid, Champions League final 2014?",
+   "a": "Raphaël Varane"
+  },
+  {
+   "q": "Who wore number 2 for Brazil, World Cup final 1994?",
+   "a": "Jorginho"
+  },
+  {
+   "q": "Who wore the armband for Ajax, European Cup final 1972?",
+   "a": "Piet Keizer"
+  },
+  {
+   "q": "Who wore number 2 for Manchester United, European Cup final 1968?",
+   "a": "Shay Brennan"
+  },
+  {
+   "q": "Who wore number 2 for Netherlands, World Cup final 1974?",
+   "a": "Arie Haan"
+  },
+  {
+   "q": "Who wore number 2 for Netherlands, Euro final 1988?",
+   "a": "Adri van Tiggelen"
+  },
+  {
+   "q": "Who wore number 2 for AC Milan, European Cup final 1989?",
+   "a": "Mauro Tassotti"
+  },
+  {
+   "q": "Who wore number 2 for Greece, Euro final 2004?",
+   "a": "Giourkas Seitaridis"
+  },
+  {
+   "q": "Who wore number 2 for Celtic, European Cup final 1967?",
+   "a": "Jim Craig"
+  },
+  {
+   "q": "Who wore number 2 for Brazil, World Cup final 1970?",
+   "a": "Brito"
+  }
+ ],
+ "easy": [
+  {
+   "q": "Who wore the armband for Argentina, World Cup final 2022?",
+   "a": "Lionel Messi"
+  },
+  {
+   "q": "Who wore the armband for Portugal, Euro final 2016?",
+   "a": "Cristiano Ronaldo"
+  }
+ ],
+ "normal": [
+  {
+   "q": "Who wore the armband for Spain, Euro final 2008?",
+   "a": "Iker Casillas"
+  },
+  {
+   "q": "Who wore the armband for Netherlands, World Cup final 1974?",
+   "a": "Johan Cruyff"
+  },
+  {
+   "q": "Who wore the armband for Brazil, World Cup final 2002?",
+   "a": "Cafu"
+  },
+  {
+   "q": "Who wore the armband for Liverpool, Champions League final 2005?",
+   "a": "Steven Gerrard"
+  },
+  {
+   "q": "Who wore number 2 for Manchester United, Champions League final 1999?",
+   "a": "Gary Neville"
+  },
+  {
+   "q": "Who wore the armband for Spain, World Cup final 2010?",
+   "a": "Iker Casillas"
+  },
+  {
+   "q": "Who wore the armband for Netherlands, World Cup final 2010?",
+   "a": "Giovanni van Bronckhorst"
+  },
+  {
+   "q": "Who wore the armband for West Germany, World Cup final 1990?",
+   "a": "Lothar Matthäus"
+  },
+  {
+   "q": "Who wore the armband for France, World Cup final 2018?",
+   "a": "Hugo Lloris"
+  },
+  {
+   "q": "What was Ferenc Puskás nicknamed?",
+   "a": "The Galloping Major"
+  },
+  {
+   "q": "Who managed Greece to the Euro 2004 title?",
+   "a": "Otto Rehhagel"
   }
  ]
 }

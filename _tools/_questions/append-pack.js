@@ -7,7 +7,7 @@
 
    node append-pack.js in1.json in2.json ... [--write]  */
 const fs = require("fs"), path = require("path"), vm = require("vm");
-const REPO = "c:/dev/_Personal/Hobbies/Football Quiz";
+const REPO = path.resolve(__dirname, "..", "..");
 const PACK = path.join(REPO, "assets/extra/index.json");
 const TIERS = ["easy", "normal", "hard", "extreme", "ball"];
 const MAXQ = 150;                                   // the card cuts off past this

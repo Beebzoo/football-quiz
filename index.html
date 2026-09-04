@@ -860,15 +860,41 @@
      stadium ladder on one */
   .lane .lnum.ladder,.qmeta .lnum.ladder{font-size:1.15rem;letter-spacing:.04em}
   .lane .lnum.ladder i,.qmeta .lnum.ladder i{font-style:normal;opacity:.35;padding:0 1px}
-  /* BALL gets a backing plate rather than a bigger version of the same row */
+  /* BALL is the twenty pointer and it is also what the app is called, so it
+     stops being a slightly brighter row and becomes its own fixture bolted to
+     the bottom of the board: the match ball where the lamp goes, gold carried
+     the full width instead of fading out halfway, and a lit rule above and
+     below to break it off the four lanes above. */
   .lane.ball{
-    margin-top:4px;border-top:1px solid rgba(233,184,76,.22);
-    background:linear-gradient(90deg, rgba(233,184,76,.14), rgba(233,184,76,.04) 62%, transparent);
+    margin-top:8px;padding-top:19px;padding-bottom:19px;
+    border-top:1px solid rgba(233,184,76,.5);
+    border-bottom:1px solid rgba(233,184,76,.26);
+    background:
+      radial-gradient(120% 160% at 50% -34%, rgba(255,240,190,.15), transparent 66%),
+      linear-gradient(90deg, rgba(233,184,76,.22), rgba(233,184,76,.10) 55%, rgba(233,184,76,.19));
+    box-shadow:
+      inset 0 1px 0 rgba(255,238,184,.3),
+      0 0 26px rgba(233,184,76,.14);
   }
-  .lane.ball .lname{letter-spacing:.28em}
-  .lane.ball .lnum{font-size:2rem}
+  /* the ball sits in the lamp's slot and keeps the lamp's job of being the
+     thing that is lit, so it carries the glow rather than sitting flat */
+  .lane.ball .balllamp{
+    flex:none;width:21px;height:21px;display:block;margin:-3px 0;
+    filter:drop-shadow(0 0 7px rgba(233,184,76,.85)) drop-shadow(0 2px 4px rgba(0,0,0,.55));
+  }
+  .lane.ball .lname{
+    letter-spacing:.3em;font-size:1.12rem;color:#ffe9ad;
+    text-shadow:0 0 18px rgba(233,184,76,.8), 0 0 42px rgba(233,184,76,.35);
+  }
+  .lane.ball .leader{opacity:.5}
+  .lane.ball .lnum{
+    font-size:2.3rem;color:#ffeeb8;
+    text-shadow:0 0 10px rgba(233,184,76,.9), 0 0 32px rgba(233,184,76,.45);
+  }
   /* except the stadium ladder, which is three numbers wide already */
-  .lane.ball .lnum.ladder{font-size:1.3rem}
+  .lane.ball .lnum.ladder{font-size:1.45rem}
+  /* out of BALL questions: the ball goes dark with the rest of the lane */
+  .lane.ball[disabled] .balllamp{filter:grayscale(1) brightness(.6)}
   /* Tier fished out: the lamp is simply off. This used to be an inline
      opacity, on a second style attribute the parser threw away. */
   .lane[disabled]{opacity:.32;filter:saturate(.2)}
@@ -934,6 +960,34 @@
   /* the card is a narrower column than the board, so the lane steps down one
      size on it and nothing else changes */
   .qmeta .lnum{font-size:1.45rem}
+  /* A BALL question is worth twenty and is the thing the app is named after, so
+     its header is the fixture off the bottom of the picker board rather than a
+     fifth colour: the match ball where the lamp goes, and gold turned up until
+     it cannot be mistaken for the Hard one above it. */
+  .qmeta.ball .tierchip{
+    font-size:1.02rem;letter-spacing:.28em;color:#ffe9ad;
+    text-shadow:0 0 18px rgba(233,184,76,.8), 0 0 42px rgba(233,184,76,.35);
+  }
+  .qmeta.ball .tierchip::before{display:none}   /* the ball is the lamp now */
+  .qmeta.ball .balllamp{
+    flex:none;width:20px;height:20px;display:block;margin:-2px 2px -2px 0;
+    filter:drop-shadow(0 0 7px rgba(233,184,76,.85)) drop-shadow(0 2px 4px rgba(0,0,0,.55));
+  }
+  .qmeta.ball .leader{opacity:.5}
+  .qmeta.ball .lnum{
+    font-size:1.9rem;color:#ffeeb8;
+    text-shadow:0 0 10px rgba(233,184,76,.9), 0 0 32px rgba(233,184,76,.45);
+  }
+  .qmeta.ball .lnum.ladder{font-size:1.3rem}
+  /* and the card it sits on catches a little more of the same light. Not the
+     no-card modes: for those the night pitch is the stage and a panel is
+     exactly what they are built to do without. */
+  .qcard:not(.natq):has(.qmeta.ball){
+    background:
+      radial-gradient(120% 76% at 50% -12%, rgba(255,240,190,.13), transparent 64%),
+      linear-gradient(180deg, rgba(13,34,21,.90), rgba(6,17,10,.94) 58%, rgba(10,26,16,.92));
+    border-color:rgba(233,184,76,.3);
+  }
   .tierchip{
     display:inline-flex;align-items:center;gap:10px;
     font:800 .9rem/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;
@@ -3775,7 +3829,9 @@ function tierBar(pts){
   const num = p.includes("/")
     ? `<span class="lnum ladder">${p.split("/").join("<i>/</i>")}</span>`
     : `<span class="lnum">${+p<10?'<span class="z">0</span>':""}${p}</span>`;
-  return `<div class="qmeta" style="--dc:${TIERS[S.tier].color}"><span class="tierchip">${tlabel(S.tier)}</span>`
+  const isBall = S.tier==="ball";
+  return `<div class="qmeta${isBall?" ball":""}" style="--dc:${TIERS[S.tier].color}">`
+       + `<span class="tierchip">${isBall?`<img class="balllamp" src="assets/ball.png" alt="">`:""}${tlabel(S.tier)}</span>`
        + `<span class="leader"></span>${num}</div>`;
 }
 function badgeQ(){
@@ -5153,7 +5209,9 @@ function render(){
           : `<span class="lnum">${t.pts<10?'<span class="z">0</span>':""}${t.pts}</span>`;
         return `
         <button class="lane${k==="ball"?" ball":""}" style="--dc:${t.color};--d:${i*80}ms" onclick="pickTier('${k}')" ${remaining(k)===0?"disabled":""}>
-          <span class="lamp"></span>
+          ${k==="ball"
+            ? `<img class="balllamp" src="assets/ball.png" alt="">`
+            : `<span class="lamp"></span>`}
           <span class="lname">${tlabel(k)}</span>
           <span class="leader"></span>
           ${num}

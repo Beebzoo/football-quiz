@@ -1405,20 +1405,6 @@
   .rules .hint,.hint.waitline,.hint.lastline{font:500 .8rem/1.4 var(--ui);letter-spacing:0}
   .hint.blurb{font-size:.92rem;color:#c2d6c8}
   .spacer{flex:1}
-  /* Both screens were a clump at the top, a hole, and a clump at the bottom,
-     and the hole was a different size on each, so the eye had to re-find
-     everything between picking a level and reading the question. A short
-     spring above the content and the long one below sit the board and the
-     card at the same height. */
-  .spacer.up{flex:.4}
-  /* The picker keeps a title pinned under the score bar, so only its board
-     floats. The question screen has nothing pinned, so the kick line and the
-     card travel together and the spring can be longer. */
-  .spacer.up.tall{flex:.7}
-  /* .foot takes the free space with an auto margin, which beats flex-grow and
-     would leave the spring above with nothing. Screens that float use a real
-     spacer instead. */
-  .foot.free{margin-top:0}
 
   /* keyboard hints: only on devices with a real pointer + keyboard */
   kbd{
@@ -5157,7 +5143,6 @@ function render(){
         :"Pick your level. Someone else reads the question out loud."}</div>
       ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn. Pick your level</div>`:""}
       ${remotePlayer(S.turn)?`<div class="hint waitline">⌛ ${esc(P.name)} is picking on their own phone.</div>`:""}
-      <div class="spacer up"></div>
       <div class="board">
       ${Object.entries(TIERS).filter(([k])=>{ try{ return !!bankFor(k); }catch(e){ return false; } }).map(([k,t],i)=>{
         /* Stadium pays on a ladder, so that one lane carries three numbers
@@ -5174,8 +5159,7 @@ function render(){
           ${num}
         </button>`;}).join("")}
       </div>
-      <div class="spacer"></div>
-      <div class="foot free">
+      <div class="foot">
         <button class="bigbtn ghost" onclick="askEnd()">Full-time whistle</button>
       </div>`;
     return;
@@ -5187,7 +5171,6 @@ function render(){
     // half-typed in the host inputs instead of wiping it
     S.players.forEach((p,i)=>{ const el=document.getElementById("wa"+i); if(el && !(S.wsub&&S.wsub[i])) S.wans[i]=el.value; });
     st.innerHTML = `
-      <div class="spacer up tall"></div>
       <div class="kick">Round ${S.round} · everyone answers</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         ${tierBar("+"+t.pts)}
@@ -5211,7 +5194,6 @@ function render(){
   if(S.phase==="w_judge"){
     const t=TIERS[S.tier];
     st.innerHTML = `
-      <div class="spacer up tall"></div>
       <div class="kick">Round ${S.round} · who got it?</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         ${tierBar("+"+t.pts)}
@@ -5241,7 +5223,6 @@ function render(){
     const t=TIERS[S.tier];
     const sp = S.mode==="stadium" ? stadPts() : null;
     st.innerHTML = `
-      <div class="spacer up tall"></div>
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} answering</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         ${tierBar()}
@@ -5290,7 +5271,6 @@ function render(){
        there is nothing to tap. They are about to be offered the steal. */
     if(answerHidden()){
       st.innerHTML = `
-        <div class="spacer up tall"></div>
         <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · ${esc(who.name)} is calling it</div>
         <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
           ${tierBar()}
@@ -5316,7 +5296,6 @@ function render(){
     }
 
     st.innerHTML = `
-      <div class="spacer up tall"></div>
       <div class="kick">${stealing?"Steal attempt":"Round "+S.round} · judging ${esc(who.name)}</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         ${tierBar()}
@@ -5357,7 +5336,6 @@ function render(){
   if(S.phase==="steal_offer"){
     const t=TIERS[S.tier];
     st.innerHTML = `
-      <div class="spacer up tall"></div>
       <div class="kick">Question is loose!</div>
       ${tierBar()}
       <h1 class="title" style="font-size:clamp(1.7rem,8.5vw,2.2rem)">Who steals it?</h1>
@@ -5373,7 +5351,6 @@ function render(){
   if(S.phase==="deadq"){
     const t=TIERS[S.tier];
     st.innerHTML = `
-      <div class="spacer up tall"></div>
       <div class="kick">Nobody got it</div>
       <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
         ${tierBar()}

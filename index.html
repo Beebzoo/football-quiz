@@ -1457,7 +1457,6 @@
   /* the exceptions: a wall of rules is easier upright, and a waiting line is
      the game telling you something is happening rather than explaining it */
   .rules .hint,.hint.waitline,.hint.lastline{font:500 .8rem/1.4 var(--ui);letter-spacing:0}
-  .hint.blurb{font-size:.92rem;color:#c2d6c8}
   .spacer{flex:1}
 
   /* keyboard hints: only on devices with a real pointer + keyboard */
@@ -5180,23 +5179,13 @@ function render(){
   if(!S || S.phase==="setup"){ return showBoard ? renderBoard(st) : renderSetup(st); }
 
   if(S.phase==="pick"){
-    const written = S.mode==="written";
     const stad = S.mode==="stadium";
-    const nat = S.mode==="nations";
-    const bdg = S.mode==="badge";
-    const kit = S.mode==="kit";
-    /* No kick line here on purpose: the round, the mode and the target are all
-       already on the screen above this one, and the player's name is what the
-       table is looking at. */
+    /* No kick line and no blurb: the round, the mode and the target are all on
+       the screen above this one, the board says what every level pays, and the
+       mode was explained on the way in. What is left is whose go it is, over
+       the board, which is what the table is actually looking at. */
     st.innerHTML = `
-      <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem)">${esc(P.name)}</h1>
-      <div class="hint blurb">${written?"Everyone writes an answer to the same question. Pick how hard you want it."
-        :stad?"A photo of a ground comes up and you say where it is. Pick your level."
-        :nat?"A crest and a flag. Name the one player from that country who ever pulled on that shirt."
-        :bdg?"A crest, cropped to bits. Name the club. On BALL you can trade points for a wider shot."
-        :kit?"A home shirt comes up and you name whose it is. Say it out loud, the reader confirms."
-        :S.ref?`Pick your level. ${esc(S.ref)} reads it out and hands out the points.`
-        :"Pick your level. Someone else reads the question out loud."}</div>
+      <h1 class="title" style="font-size:clamp(1.8rem,9vw,2.4rem);text-align:center">${esc(P.name)}</h1>
       ${grole==="pick"?`<div class="yourturn" style="margin-bottom:4px">Your turn. Pick your level</div>`:""}
       ${remotePlayer(S.turn)?`<div class="hint waitline">⌛ ${esc(P.name)} is picking on their own phone.</div>`:""}
       <div class="board">

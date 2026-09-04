@@ -135,13 +135,13 @@ function restart(old, label) {
   console.log("\n--- the regulars are already in the boxes ---");
   const names = makeInstance("names");
   await tick(300);
-  check("it starts as Ale, Martijn and Bram",
-    ev(names, "JSON.stringify(setupNames)") === '["Ale","Martijn","Bram"]', ev(names, "JSON.stringify(setupNames)"));
+  check("it starts as Martijn, Bram and Ale",
+    ev(names, "JSON.stringify(setupNames)") === '["Martijn","Bram","Ale"]', ev(names, "JSON.stringify(setupNames)"));
   run(names, 'S = null; setupMode = "classic"; setupCount = 3; render();');
   await tick(60);
   const boxes = names.__els["stage"] ? names.__els["stage"].innerHTML : "";
   check("and the boxes come up filled in",
-    ["Ale", "Martijn", "Bram"].every(n => boxes.includes('value="' + n + '"')),
+    ["Martijn", "Bram", "Ale"].every(n => boxes.includes('value="' + n + '"')),
     (boxes.match(/id="n\d" [^>]*value="[^"]*"/g) || []).join(" | "));
 
   /* a fourth at the table is typed once, not every Friday night */
@@ -149,12 +149,26 @@ function restart(old, label) {
   const later = restart(names, "names-again");
   await tick(300);
   check("a name typed over the top survives the app closing",
-    ev(later, "JSON.stringify(loadNames())") === '["Roberta","Martijn","Bram"]', ev(later, "JSON.stringify(loadNames())"));
+    ev(later, "JSON.stringify(loadNames())") === '["Roberta","Bram","Ale"]', ev(later, "JSON.stringify(loadNames())"));
   run(later, 'setupNames[0] = ""; rememberNames();');
   const cleared = restart(later, "names-cleared");
   await tick(300);
   check("and an emptied box falls back to the regular",
-    ev(cleared, "JSON.stringify(loadNames())") === '["Ale","Martijn","Bram"]', ev(cleared, "JSON.stringify(loadNames())"));
+    ev(cleared, "JSON.stringify(loadNames())") === '["Martijn","Bram","Ale"]', ev(cleared, "JSON.stringify(loadNames())"));
+
+  /* the boxes were reordered once Martijn and Bram became the usual two, and a
+     saved name beats a default, so a phone still holding the old order has to
+     be moved across or it would never see the change */
+  run(cleared, 'localStorage.setItem("ball-names", JSON.stringify(["Ale","Martijn","Bram"]));');
+  const moved = restart(cleared, "names-old-order");
+  await tick(300);
+  check("a phone holding the old order is moved across",
+    ev(moved, "JSON.stringify(loadNames())") === '["Martijn","Bram","Ale"]', ev(moved, "JSON.stringify(loadNames())"));
+  run(moved, 'localStorage.setItem("ball-names", JSON.stringify(["Ale","Sander","Bram"]));');
+  const kept = restart(moved, "names-old-order-edited");
+  await tick(300);
+  check("but one with a name typed into it is left alone",
+    ev(kept, "JSON.stringify(loadNames())") === '["Ale","Sander","Bram"]', ev(kept, "JSON.stringify(loadNames())"));
 
   console.log(fails ? `\n${fails} FAILED` : "\nall good");
   process.exit(fails ? 1 : 0);

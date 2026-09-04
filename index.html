@@ -5913,11 +5913,23 @@ function setTarget(n){ snapshotNames(); setupTarget=n; render(); }
    over the top is remembered, so a fourth at the table is typed once and a
    cleared box falls back to the regular. */
 const NAMES_KEY = "ball-names";
-const REGULARS = ["Ale","Martijn","Bram"];
+/* Order matters, it is not just a list. Two players takes the first two boxes
+   and referee mode plays the first two with the third holding the phone, so
+   the pair who play most sit at the top and Ale gets the third box either way. */
+const REGULARS = ["Martijn","Bram","Ale"];
+/* The order these were in before. A phone that has played already has the old
+   one saved, and a saved name beats a default, so an untouched set of the old
+   regulars is moved across once. Anything typed over the top is left alone. */
+const OLD_REGULARS = ["Ale","Martijn","Bram"];
 function loadNames(){
   try{
     const saved=JSON.parse(localStorage.getItem(NAMES_KEY));
-    if(Array.isArray(saved)) return REGULARS.map((d,i)=>String(saved[i]||"").trim() || d);
+    if(Array.isArray(saved)){
+      const untouched = OLD_REGULARS.every((n,i)=>
+        String(saved[i]||"").trim().toLowerCase() === n.toLowerCase());
+      if(untouched) return [...REGULARS];
+      return REGULARS.map((d,i)=>String(saved[i]||"").trim() || d);
+    }
   }catch(e){}
   return [...REGULARS];
 }

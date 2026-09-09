@@ -209,6 +209,41 @@
  ],
  "normal": [
   {
+   "q": "Which anthem is sung before every Heerenveen home game?",
+   "a": "The Frisian anthem",
+   "sub": "A tradition since 1990, played by a Frisian brass band.",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Which club is nicknamed Het Andere Oranje, the other orange, because of its shirt?",
+   "a": "FC Volendam"
+  },
+  {
+   "q": "Vitesse's name is the French word for what?",
+   "a": "Speed",
+   "club": "vitesse"
+  },
+  {
+   "q": "Feyenoord take their name from what?",
+   "a": "The Rotterdam district of Feijenoord",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Excelsior Rotterdam's name is a Latin word meaning what?",
+   "a": "Higher",
+   "club": "excelsior-rotterdam"
+  },
+  {
+   "q": "Excelsior's fans and players are known as the Kralingers. Why?",
+   "a": "The club is based in the Kralingen district of Rotterdam",
+   "club": "excelsior-rotterdam"
+  },
+  {
+   "q": "Which fishing town produced the Ajax brothers Gerrie and Arnold Mühren?",
+   "a": "Volendam",
+   "club": "ajax"
+  },
+  {
    "q": "Steve McClaren's FC Twente clinched the 2009-10 title on the final day with a 2-0 win away at which club?",
    "a": "NAC Breda",
    "club": "twente"
@@ -882,6 +917,27 @@
   }
  ],
  "hard": [
+  {
+   "q": "PSV were champions on 8 April 1978, the earliest date in the league's history at the time. Which club did they beat that day?",
+   "a": "FC Twente",
+   "sub": "Kees Rijvers' side also won the UEFA Cup that spring.",
+   "club": "psv"
+  },
+  {
+   "q": "FC Groningen was created in 1971 out of the professional section of which older Groningen club?",
+   "a": "GVAV",
+   "club": "fc-groningen"
+  },
+  {
+   "q": "AZ carried a number in their name until 1986. Which number, and why?",
+   "a": "67, their founding year 1967",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "De Graafschap was founded in 1954, the year professional football arrived. What does the name mean?",
+   "a": "The county, after the old county of Zutphen in the Achterhoek",
+   "club": "de-graafschap"
+  },
   {
    "q": "Which Limburg club finished runners-up to Ajax in the very first Eredivisie season, 1956-57?",
    "a": "Fortuna '54",
@@ -1879,6 +1935,31 @@
   }
  ],
  "extreme": [
+  {
+   "q": "Alex Pastoor, sacked by NEC after three games in 2013, won promotion as champions in 2016 with which club?",
+   "a": "Sparta Rotterdam",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "How many matches did the KNVB ban Luis Suárez for after he bit Otman Bakkal in November 2010?",
+   "a": "Seven",
+   "sub": "Ajax had already suspended him for two."
+  },
+  {
+   "q": "Heracles' Polman Stadion was named after what kind of business?",
+   "a": "A real estate company",
+   "sub": "Renamed Erve Asito in 2019 after a cleaning firm.",
+   "club": "heracles-almelo"
+  },
+  {
+   "q": "Which goalkeeper scored seven Eredivisie goals between 1964 and 1967, all from the penalty spot?",
+   "a": "Nico van Zoghel"
+  },
+  {
+   "q": "Which striker won the Eredivisie golden boot five times, four with Ajax in the 1970s and once with Sparta in 1981?",
+   "a": "Ruud Geels",
+   "club": "ajax"
+  },
   {
    "q": "The 1957-58 title went to a play-off at the Goffert in Nijmegen. Which club lost it 1-0 to DOS after extra time?",
    "a": "Sportclub Enschede",
@@ -3040,6 +3121,418 @@
   }
  ],
  "ball": [
+  {
+   "q": "Nine months after the 10-0, Feyenoord's players held a vote on coach Mario Been. What was the outcome?",
+   "a": "Thirteen of eighteen had no confidence in him, and he left in July 2011",
+   "sub": "Captain Ron Vlaar called the meeting. Van Geel said Been felt betrayed.",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which PSV left-back was sent off after 29 seconds at NAC in February 2015, the fastest Eredivisie red card from kick-off?",
+   "a": "Jetro Willems",
+   "sub": "He never touched Gill Swerts. The KNVB later dropped the case.",
+   "club": "psv"
+  },
+  {
+   "q": "Philips came off the front of PSV's shirt in 2016 after 34 years. Which energy brand replaced it?",
+   "a": "energiedirect.nl",
+   "sub": "A three-year deal worth 18 million euros.",
+   "club": "psv"
+  },
+  {
+   "q": "FC Twente, champions in 2010, finished bottom in 2018. Their relegation was sealed by a 5-0 defeat at which club?",
+   "a": "Vitesse",
+   "sub": "Five wins all season. Gertjan Verbeek was sacked and Marino Pusic could not save them.",
+   "club": "twente"
+  },
+  {
+   "q": "A week after losing the 2011 cup final to Twente, Ajax hosted them in a title decider needing a win. What was the score?",
+   "a": "3-1 to Ajax",
+   "sub": "Siem de Jong twice and a Landzaat own goal. Ajax's 30th title and a third star.",
+   "club": "twente"
+  },
+  {
+   "q": "FC Twente's ground was called the Arke Stadion until 2008, after a travel company. Which brewer took over the name?",
+   "a": "Grolsch, De Grolsch Veste",
+   "club": "twente"
+  },
+  {
+   "q": "Which English manager gave a 2008 television interview in English with a thick Dutch accent, shortly after arriving at FC Twente?",
+   "a": "Steve McClaren",
+   "sub": "The clip has followed him around ever since, right up to the Jamaica job in 2024.",
+   "club": "twente"
+  },
+  {
+   "q": "In March 2008 Louis van Gaal announced he would leave AZ that summer. Why did he end up staying?",
+   "a": "The players asked him to stay",
+   "sub": "A year later he won them the title.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "AZ lost their first two league games of 2008-09, to NAC and at ADO. What happened next?",
+   "a": "A 28-match unbeaten run and the title",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "In November 2011 the Ajax supervisory board appointed which man as director general at a meeting Johan Cruyff was barely told about?",
+   "a": "Louis van Gaal",
+   "sub": "A judge suspended it in December 2011 and the appeal court upheld that ban in February 2012.",
+   "club": "ajax"
+  },
+  {
+   "q": "Feyenoord fans damaged which 17th-century fountain in Rome before a Europa League game in February 2015?",
+   "a": "The Barcaccia, at the foot of the Spanish Steps",
+   "sub": "Six fans were later convicted in their absence.",
+   "club": "feyenoord"
+  },
+  {
+   "q": "The 2010 cup final between Ajax and Feyenoord was played over two legs. Why?",
+   "a": "Safety and police costs, so neither leg had away fans",
+   "sub": "Ajax won 2-0 at home and 4-1 in De Kuip.",
+   "club": "ajax"
+  },
+  {
+   "q": "Feyenoord marked their centenary season in 2008 by winning the cup. Which Limburg club did they beat 2-0 in the final?",
+   "a": "Roda JC",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Chelsea loanee was voted Vitesse's player of the year in 2017-18 as a teenager?",
+   "a": "Mason Mount",
+   "sub": "Fourteen goals and ten assists in 39 games.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Which future Manchester United midfielder spent 2010-11 on loan at Vitesse from Chelsea?",
+   "a": "Nemanja Matić",
+   "club": "vitesse"
+  },
+  {
+   "q": "In August 2010 Vitesse became the first Dutch professional club in foreign hands. Which country was the buyer from?",
+   "a": "Georgia, Merab Jordania",
+   "sub": "He promised the title within three years, then sold to a Russian in 2013.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Which bird flew a lap of the GelreDome before every Vitesse home game from January 2010?",
+   "a": "A sea eagle called Hertog",
+   "sub": "He lands on his handler's glove for a turkey leg.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Which former Nigeria coach did Fortuna Sittard suspend in February 2018, months before they won promotion?",
+   "a": "Sunday Oliseh",
+   "sub": "He said he refused to join illegal activities. The club said he bullied staff.",
+   "club": "fortuna-sittard"
+  },
+  {
+   "q": "Fortuna Sittard were bought in 2016 by a former Galatasaray official from which country?",
+   "a": "Turkey, Işıtan Gün",
+   "sub": "85 percent of the club for a reported 870,000 euros.",
+   "club": "fortuna-sittard"
+  },
+  {
+   "q": "Roda JC's new investor Aleksei Korotaev was arrested in February 2017, a week after arriving at the club. Where?",
+   "a": "Dubai airport, over a bounced cheque",
+   "sub": "17.7 million euros. He was cleared years later, the signature had been forged.",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "In 2010 MVV were saved from bankruptcy when the city of Maastricht bought which asset for 1.85 million euros?",
+   "a": "De Geusselt stadium",
+   "sub": "The city also wrote off a debt of well over a million euros.",
+   "club": "mvv-maastricht"
+  },
+  {
+   "q": "Which Eredivisie club spent 2016 in court against its own Chinese owner over millions in promised money?",
+   "a": "ADO Den Haag",
+   "sub": "Wang Hui of United Vansen was suspended as chairman of the supervisory board."
+  },
+  {
+   "q": "Go Ahead Eagles ended seventeen years outside the top flight in 2013. Which club did they beat in the play-off final?",
+   "a": "FC Volendam",
+   "sub": "3-0 at home, then a 1-0 defeat in Volendam. Their coach was Erik ten Hag.",
+   "club": "go-ahead-eagles"
+  },
+  {
+   "q": "Which club went up in 2007, down in 2008, up in 2009, down in 2013 and up again in 2017?",
+   "a": "VVV-Venlo"
+  },
+  {
+   "q": "Which Japanese defender at VVV-Venlo scored a bicycle kick in September 2011 that was named Eredivisie goal of the season?",
+   "a": "Maya Yoshida",
+   "sub": "Southampton signed him a year later.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Besides Ajax, PSV and Feyenoord, which club had never been relegated from the Eredivisie by the end of 2017-18?",
+   "a": "FC Utrecht",
+   "club": "ajax"
+  },
+  {
+   "q": "Which top Dutch referee ran a Jumbo supermarket in Oldenzaal while taking charge of Eredivisie games?",
+   "a": "Björn Kuipers",
+   "sub": "It was voted the best Jumbo in the country."
+  },
+  {
+   "q": "PSV's mascot Phoxy is a fox wearing number 99. The odd Ph in his name is a nod to which former main sponsor?",
+   "a": "Philips",
+   "club": "psv"
+  },
+  {
+   "q": "Ajax's mascot Lucky, on duty since 2000, is what kind of animal?",
+   "a": "A lynx",
+   "sub": "Replaced by his son Lucky Junior in December 2015.",
+   "club": "ajax"
+  },
+  {
+   "q": "Feyenoord's mascot Coentje is named after which club legend?",
+   "a": "Coen Moulijn",
+   "club": "feyenoord"
+  },
+  {
+   "q": "FC Twente's loudest supporters stand in a section known by a single letter. Which letter?",
+   "a": "P, Vak-P",
+   "club": "twente"
+  },
+  {
+   "q": "What two-word phrase do Dutch fans use for a floodlit night game in Breda?",
+   "a": "Avondje NAC"
+  },
+  {
+   "q": "Zwolle's club played as FC Zwolle from 1990 until 2012, when it went back to which name?",
+   "a": "PEC Zwolle"
+  },
+  {
+   "q": "Deventer fans call Go Ahead Eagles 'Kowet'. Where does that come from?",
+   "a": "A local mangling of the English words Go Ahead",
+   "club": "go-ahead-eagles"
+  },
+  {
+   "q": "SC Cambuur's badge carries which animal, taken from the coat of arms of the Cammingha family?",
+   "a": "A deer",
+   "sub": "Cambuur is a contraction of Camminghaburen, the Leeuwarden neighbourhood named after the family.",
+   "club": "sc-cambuur"
+  },
+  {
+   "q": "Heerenveen's shirt copies which flag, complete with its red water-lily leaves?",
+   "a": "The Frisian flag",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "In August 2013 NEC sacked Alex Pastoor after how many league games of the new season?",
+   "a": "Three",
+   "sub": "At the time the quickest sacking in Eredivisie history.",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Which Brabant club, in the Eredivisie as recently as 2006, was declared bankrupt in June 2011?",
+   "a": "RBC Roosendaal",
+   "sub": "A debt of 5.2 million euros. The town refused to guarantee a loan."
+  },
+  {
+   "q": "Which Apeldoorn club went bankrupt in January 2013, two months before SC Veendam?",
+   "a": "AGOVV"
+  },
+  {
+   "q": "Which club was the first Dutch professional side to play home games on artificial grass, from 2003?",
+   "a": "Heracles Almelo",
+   "sub": "They took the plastic into the Eredivisie when they went up in 2005."
+  },
+  {
+   "q": "From 2006 onwards, which Ajax fixture was played without away supporters after an attack on the opponents' clubhouse?",
+   "a": "Ajax against ADO Den Haag",
+   "sub": "The mayor of The Hague renewed the ban season after season."
+  },
+  {
+   "q": "In November 2018 Feyenoord against VVV was abandoned after thirty seconds. Why?",
+   "a": "The floodlights failed",
+   "sub": "A broken transformer. The match was replayed in full on 6 December.",
+   "club": "feyenoord"
+  },
+  {
+   "q": "In November 2005 which Heracles goalkeeper went up for a corner and headed a stoppage-time equaliser against AZ?",
+   "a": "Martin Pieckenhagen",
+   "sub": "He was the first goalkeeper to score in the Eredivisie since 1999.",
+   "club": "heracles-almelo"
+  },
+  {
+   "q": "Which Ajax substitute was sent off nineteen seconds after coming on against PSV in December 1996?",
+   "a": "Márcio Santos",
+   "sub": "He brought down Luc Nilis. Referee Dick Jol did the rest.",
+   "club": "ajax"
+  },
+  {
+   "q": "Edwin van der Sar scored his only career goal in May 1998, a penalty with Ajax already 7-0 up. Against whom?",
+   "a": "De Graafschap",
+   "sub": "He had missed a penalty for Ajax against Sparta a few years earlier.",
+   "club": "ajax"
+  },
+  {
+   "q": "Which FC Den Bosch goalkeeper scored the Eredivisie's first goalkeeper goal from open play, in 1985?",
+   "a": "Jan van Grinsven",
+   "sub": "It made it 2-2 against Roda JC in the last minute, and he celebrated with a cartwheel.",
+   "club": "fc-den-bosch"
+  },
+  {
+   "q": "In 1975 Guus Hiddink's shot for De Graafschap went wide, a team-mate kicked the ball into the net as a joke, and what did the referee do?",
+   "a": "He gave the goal",
+   "sub": "Sietze Veen's joke, against Haarlem. The linesman backed the referee.",
+   "club": "de-graafschap"
+  },
+  {
+   "q": "Johan Cruyff's first Klassieker in a Feyenoord shirt, in September 1983, ended with what score?",
+   "a": "Ajax 8-2",
+   "sub": "Feyenoord still won the double that season.",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Marco van Basten's Ajax debut in April 1982 came as a substitute for which player?",
+   "a": "Johan Cruyff",
+   "sub": "He scored in a 5-0 win over NEC, aged 17.",
+   "club": "ajax"
+  },
+  {
+   "q": "The Amsterdam Arena opened in August 1996 with Ajax losing 0-3 to which club?",
+   "a": "AC Milan",
+   "sub": "Dejan Savićević scored the first goal in the stadium.",
+   "club": "ajax"
+  },
+  {
+   "q": "De Kuip opened in March 1937 with a 5-2 friendly win over a club from which country?",
+   "a": "Belgium, Beerschot",
+   "sub": "A friendly was chosen so the entrances and buffets could be tested first."
+  },
+  {
+   "q": "Ajax's last match at De Meer, in April 1996, ended 5-1 against which club?",
+   "a": "Willem II",
+   "sub": "Finidi George scored a hat-trick. Willem II's Jack de Gier got the last goal at the ground.",
+   "club": "ajax"
+  },
+  {
+   "q": "Before the Arena, Ajax played their big European nights at which Amsterdam ground rather than De Meer?",
+   "a": "The Olympic Stadium",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax won the 1972 European Cup final against Inter in which Dutch stadium?",
+   "a": "De Kuip in Rotterdam",
+   "club": "ajax"
+  },
+  {
+   "q": "Sparta's ground is called Het Kasteel. Why?",
+   "a": "A small castle-like building with two towers, left from the 1916 ground",
+   "club": "sparta-rotterdam"
+  },
+  {
+   "q": "NEC's Goffert stadium was built in the 1930s as what kind of project?",
+   "a": "A work-relief scheme for the unemployed",
+   "sub": "It took 202,417 working days. NEC only moved in after the war.",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "FC Groningen's Euroborg, opened in 2006, was built with which extras inside the stadium?",
+   "a": "A cinema, a casino and a supermarket",
+   "club": "fc-groningen"
+  },
+  {
+   "q": "Who were the first champions of Dutch professional football, in 1955?",
+   "a": "Willem II",
+   "sub": "Sealed on 20 July with a 3-2 win at Eindhoven."
+  },
+  {
+   "q": "Which Eindhoven club, not PSV, were Dutch champions in 1954, the last title of the amateur era?",
+   "a": "EVV Eindhoven",
+   "club": "psv"
+  },
+  {
+   "q": "Which club, later famous for its plastic pitch, were Dutch champions in 1927 and 1941?",
+   "a": "Heracles"
+  },
+  {
+   "q": "Which club won back-to-back Dutch championships in 1942 and 1943, during the occupation?",
+   "a": "ADO Den Haag"
+  },
+  {
+   "q": "Which Hague club had won ten Dutch championships by 1914, at a time when Ajax had none?",
+   "a": "HVV",
+   "club": "ajax"
+  },
+  {
+   "q": "In 1969-70 Ajax lost 2-1 to AZ '67 in the cup and still went through to the quarter-final. How?",
+   "a": "As a lucky loser, the best beaten team went through",
+   "sub": "Rinus Michels called it a crazy business. Ajax went on to beat PSV 2-0 in the final.",
+   "club": "ajax"
+  },
+  {
+   "q": "The phrase Lucky Ajax first appeared in De Telegraaf in 1958, copied from a nickname for which English club?",
+   "a": "Arsenal, Lucky Arsenal",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Amsterdam merger club knocked Inter out of the 1974-75 UEFA Cup and was dissolved seven years later?",
+   "a": "FC Amsterdam",
+   "sub": "Blauw-Wit plus DWS. Cologne beat them in the quarter-final."
+  },
+  {
+   "q": "PEC Zwolle are 'de Blauwvingers'. According to legend, how did the people of Zwolle get blue fingers?",
+   "a": "Counting the copper coins Kampen paid them for their church bells",
+   "club": "pec-zwolle"
+  },
+  {
+   "q": "PSV's Coen Dillen, 43 goals in 1956-57, was known by which nickname?",
+   "a": "Het Kanon, the cannon",
+   "club": "psv"
+  },
+  {
+   "q": "At Barcelona, Johan Neeskens was nicknamed after the more famous team-mate he had also played with at Ajax. What was it?",
+   "a": "Johan Segundo, Johan the Second",
+   "club": "ajax"
+  },
+  {
+   "q": "De Graafschap's most fanatical fans stand on a terrace named after a famous Liverpool one. What is it called?",
+   "a": "De Spinnekop",
+   "sub": "A Dutch corruption of Anfield's Spion Kop, nothing to do with spiders.",
+   "club": "de-graafschap"
+  },
+  {
+   "q": "NAC Breda's hardcore stand is known by which single letter?",
+   "a": "B, the B-Side",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Sparta were relegated for the first time in their history in 2002. Which famous name was their coach?",
+   "a": "Frank Rijkaard",
+   "sub": "Within eighteen months he was managing Barcelona.",
+   "club": "sparta-rotterdam"
+  },
+  {
+   "q": "Which Dutch pop singer became chairman of FC Volendam in 2022 and was removed by the supervisory board in 2023?",
+   "a": "Jan Smit",
+   "sub": "The board he led was dismissed as a whole in November 2023.",
+   "club": "volendam"
+  },
+  {
+   "q": "Which Ajax midfielder stood juggling the ball in the middle of a 1973 European Cup semi-final at the Bernabéu?",
+   "a": "Gerrie Mühren",
+   "club": "ajax"
+  },
+  {
+   "q": "What was Rinus Michels' day job when Ajax hired him in January 1965?",
+   "a": "PE teacher at a school for deaf children",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Welsh coach gave a 16-year-old Ruud Gullit his debut at Haarlem in 1979?",
+   "a": "Barry Hughes",
+   "sub": "The same man who added Eagles to Go Ahead's name."
+  },
+  {
+   "q": "Johan Cruyff came back to Ajax in December 1981, aged 34. What did the club win in 1982 and 1983?",
+   "a": "Two league titles, and the 1983 KNVB Cup as well",
+   "sub": "Then they let him go, and he did the double at Feyenoord.",
+   "club": "ajax"
+  },
   {
    "q": "Which club won the 1963 KNVB Cup and was relegated from the Eredivisie in the same season?",
    "a": "Willem II",

@@ -42,7 +42,7 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
 
   console.log("--- the roll ---");
   const POOL = JSON.parse(ev(app, "JSON.stringify(RR_POOL)"));
-  check("eighteen modes in the pool", POOL.length === 18, POOL.length);
+  check("nineteen modes in the pool", POOL.length === 19, POOL.length);
   check("opens on a real mode", POOL.includes(ev(app, "S.mode")), ev(app, "S.mode"));
   check("every pooled mode has a label",
     POOL.every(m => !!ev(app, `MODE_LABEL[${JSON.stringify(m)}]`)),

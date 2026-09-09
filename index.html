@@ -227,6 +227,29 @@
     .specglow,.specback,.specdrift,.specbadge,.specbadge img,.specpot,.speccard,.specans{animation:none}
     .specdrift{display:none}
   }
+  /* ---- Eredivisie: the old striped mark behind the glass ----
+     Same recipe as Special, but carried by two pseudo-elements on the stage
+     instead of markup, so every Classic screen (picker, question, judge,
+     steal, dead question) gets it without touching a template. The mark sways
+     rather than turns: a wordmark upside down reads as a mistake. */
+  body.eremode #stage{position:relative;isolation:isolate}
+  body.eremode #stage::before,body.eremode #stage::after{content:"";position:absolute;pointer-events:none;z-index:-1}
+  body.eremode #stage::before{
+    inset:-30%;
+    background:radial-gradient(circle at 50% 36%, rgba(245,130,32,.40), transparent 58%),
+               radial-gradient(circle at 16% 84%, rgba(0,87,168,.42), transparent 56%),
+               radial-gradient(circle at 86% 80%, rgba(0,160,80,.30), transparent 52%);
+    animation:specbreathe 8s ease-in-out infinite;
+  }
+  body.eremode #stage::after{
+    left:50%;top:56%;width:min(78vw,340px);aspect-ratio:271/144;
+    background:url("assets/eredivisie/logo.png") center/contain no-repeat;
+    opacity:.26;   /* no filter: an animated drop-shadow re-rasterises every frame and starved the lane entrance on the picker */
+    transform:translate(-50%,-50%) rotate(-6deg);
+    animation:eresway 34s ease-in-out infinite;
+  }
+  @keyframes eresway{0%,100%{transform:translate(-50%,-50%) rotate(-6deg) scale(1)}50%{transform:translate(-50%,-50%) rotate(6deg) scale(1.07)}}
+  @media (prefers-reduced-motion: reduce){ body.eremode #stage::before,body.eremode #stage::after{animation:none} }
   .wllives{text-align:center;font-size:1.1rem;letter-spacing:4px}
   /* Mystery Man: one row per guess, newest on top, so the board reads like a
      case file being built rather than a list scrolling away. */
@@ -2493,7 +2516,7 @@ extreme: [
  {q:"Which Rotterdam club plays in the country's smallest top-flight stadium?", a:"Excelsior"},
  {q:"Which Dutch club did Jaap Stam join PSV from in 1996?", a:"Willem II"},
  {q:"Which Dutch club did Georginio Wijnaldum become the youngest ever player for?", a:"Feyenoord"},
- {q:"Which Feyenoord striker scored a final-day hat-trick to clinch the 2017 title?", a:"Nicolai Jørgensen"},
+ {q:"Which Feyenoord striker scored a final-day hat-trick to clinch the 2017 title?", a:"Dirk Kuyt"},
  {q:"Which Dutch club did Rafael van der Vaart captain as its youngest ever captain?", a:"Ajax"},
  {q:"Which Brazilian club did Antony join Ajax from in 2020?", a:"São Paulo"},
  {q:"Who scored Greece's winning goal in the Euro 2004 final?", a:"Angelos Charisteas"},
@@ -2647,7 +2670,7 @@ ball: [
  {q:"Which goalkeeper holds the record for most Eredivisie appearances?", a:"Sander Boschker"},
  {q:"Against which club did a young Zlatan score his famous solo wonder-goal for Ajax in 2004?", a:"NAC Breda"},
  {q:"Which club did Nwankwo Kanu win Olympic gold while registered to in 1996?", a:"Ajax"},
- {q:"Which Feyenoord striker scored a final-day hat-trick to win the 2017 title?", a:"Nicolai Jørgensen"},
+ {q:"Which Feyenoord striker scored a final-day hat-trick to win the 2017 title?", a:"Dirk Kuyt"},
  {q:"The 2007 Eredivisie title was decided on goal difference between three clubs. Which one won?", a:"PSV"},
  {q:"Which Dutch club did the Suárez 'bite' victim Otman Bakkal play for?", a:"PSV"},
  {q:"Which Amsterdam club won the Eredivisie in 1964 but later dropped from the top flight?", a:"DWS"},
@@ -3952,6 +3975,13 @@ const SPEC_META = {
   es: {n:"Spain",          img:"assets/natflags/es.png",          a:"#c60b1e", b:"#ffc400"},
 };
 
+/* The Eredivisie deck: the Dutch top flight with 2007-08 to 2017-18 at its
+   heart, played on the Classic engine (picker, clock, steals, bookings all
+   work untouched). Written and then fact-checked the way the extra pack was;
+   the sources and verdicts live in _tools/_questions/eredivisie/. */
+let ERE=null; // {easy,normal,hard,extreme,ball} once index.json is in
+fetch("assets/eredivisie/index.json").then(r=>r.json()).then(b=>{ ERE=b; if(!S||S.phase==="setup") render(); }).catch(()=>{});
+
 let STICK=null;
 fetch("assets/stickers/index.json").then(r=>r.json()).then(x=>{ STICK=x; }).catch(()=>{});
 
@@ -4270,7 +4300,7 @@ function tlNext(){
    S.rrTurn exists because S.turn cannot be trusted across the roll: Name the XI
    parks it at -1 for a communal board, and Career Path never rotates it at all.
    The pointer that survives the mode change is the one that passes the phone. */
-const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush","alum","wall","mys","ord","bid","spec"];
+const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush","alum","wall","mys","ord","bid","spec","ere"];
 /* Same readiness the setup screen enforces, per mode: a bank that has not
    landed yet must not be rolled, or the deal comes up empty. */
 const RR_READY = {
@@ -4292,6 +4322,7 @@ const RR_READY = {
   ord:()=>ORDB && ORDB.length > (S.usedO||[]).length,
   bid:()=>BIDS && BIDS.length > (S.usedB||[]).length,
   spec:()=>SPEC && SPEC.length > (S.usedS||[]).length,
+  ere:()=>!!ERE,
 };
 /* Where each mode expects to start. The tier modes all open on the difficulty
    picker; the run-based ones each have their own first phase. */
@@ -4774,7 +4805,7 @@ const HIST_KEY = "ball-quiz-history-v1";
 /* classic is called Let's Ball on the outside: it is the flagship quiz and the
    thing the app is for, so it gets the name and the gold button. The mode that
    deals one of everything is Rainbow Road, which is where the idea came from. */
-const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", alum:"Alumni", wall:"The Wall", mys:"Mystery Man", ord:"Order Them", bid:"Prove It", spec:"Special", rr:"Rainbow Road"};
+const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", alum:"Alumni", wall:"The Wall", mys:"Mystery Man", ord:"Order Them", bid:"Prove It", spec:"Special", ere:"Eredivisie", rr:"Rainbow Road"};
 /* THE RECORD BOOK HAS TO SURVIVE THE APP BEING SHUT.
 
    It lives in localStorage, which already survives a close, but three things
@@ -5042,6 +5073,8 @@ const IPATHS = {
   clipboard:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/>',
   rewind:'<polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/>',
   cam:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  /* the old Eredivisie mark: three bars running into a ball */
+  stripes:'<line x1="2.5" y1="7" x2="12.5" y2="7"/><line x1="2.5" y1="12" x2="11" y2="12"/><line x1="2.5" y1="17" x2="12.5" y2="17"/><circle cx="17.5" cy="12" r="4.5"/>',
   trophy:'<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3"/><path d="M7 5H4v2a3 3 0 0 0 3 3"/>',
 };
 const ico = n => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IPATHS[n]}</svg>`;
@@ -5137,8 +5170,8 @@ function flashBad(){
   setTimeout(()=>f.remove(),600);
 }
 function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
-function bankFor(t){ return S.mode==="kit" ? KIT[t] : S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : S.mode==="badge" ? BADGE[t] : BANK[t]; }
-function q(){ return S.mode==="kit" ? kitQ() : S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : S.mode==="badge" ? badgeQ() : BANK[S.tier][S.qi]; }
+function bankFor(t){ return S.mode==="ere" ? ERE[t] : S.mode==="kit" ? KIT[t] : S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : S.mode==="badge" ? BADGE[t] : BANK[t]; }
+function q(){ return S.mode==="ere" ? ERE[S.tier][S.qi] : S.mode==="kit" ? kitQ() : S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : S.mode==="badge" ? badgeQ() : BANK[S.tier][S.qi]; }
 function remaining(t){ return bankFor(t).length - S.used[t].length; }
 async function wakeLock(){ try{ if(navigator.wakeLock) await navigator.wakeLock.request("screen"); }catch(e){} }
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wakeLock(); });
@@ -5184,6 +5217,12 @@ function render(){
   /* A guest's own phone drives their turn. Roles the host screen already
      covers (picking, judging, playing on) fall through to the shared markup
      and just get unlocked; these two need a screen of their own. */
+  /* Eredivisie dresses the stage from CSS (the striped mark and its glow ride
+     on #stage's pseudo-elements), so the templates need nothing but a class
+     on the body while a match in that mode is on screen. */
+  const ereOn = !!S && S.mode==="ere" && S.phase!=="setup" && S.phase!=="results";
+  document.body.classList[ereOn?"add":"remove"]("eremode");
+
   const grole=guestRole();
   if(grole==="wans"){ st.innerHTML=mpGuestAnswerHTML(); return; }
   if(grole==="answer"){
@@ -5924,7 +5963,7 @@ let extraOpen = false; // the second shelf inside it
    rather than by default. Everything on the shelf still plays identically and
    still turns up in Rainbow Road's own roll. */
 const MODE_EXTRA = new Set(["rr","xi","tline","duel","rush"]);
-const MODE_META = {written:["pencil","Written","#f0c98a"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["trophy","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"], alum:["users","Alumni","#e8b0a0"], wall:["grid","The Wall","#c9a0e8"], mys:["eye","Mystery Man","#7fc4e8"], ord:["rewind","Order Them","#a8c6b3"], bid:["mic","Prove It","#f0c98a"], spec:["book","Special","#e2453c"]};
+const MODE_META = {written:["pencil","Written","#f0c98a"], ere:["stripes","Eredivisie","#f5a35c"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["trophy","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"], alum:["users","Alumni","#e8b0a0"], wall:["grid","The Wall","#c9a0e8"], mys:["eye","Mystery Man","#7fc4e8"], ord:["rewind","Order Them","#a8c6b3"], bid:["mic","Prove It","#f0c98a"], spec:["book","Special","#e2453c"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){
@@ -5954,7 +5993,7 @@ function modeDrawerHTML(){
     ? `<button class="bigbtn ghost sel modestoggle" style="--ac:${m[2]}" onclick="toggleModes()"><span class="mico">${ico(m[0])}</span><span class="mlab">${m[1]}</span>${chev}</button>`
     : `<button class="bigbtn ghost modestoggle" onclick="toggleModes()"><span class="mico">${ico('grid')}</span><span class="mlab">More game modes</span>${chev}</button>`;
   const off = {kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, mgr:!MGRS, xi:!XI, tline:!TLINE,
-               duel:!DUEL, rush:!LEAGUES, alum:!ALUM, wall:!WALL, mys:!MYS, ord:!ORDB, bid:!BIDS};
+               duel:!DUEL, rush:!LEAGUES, alum:!ALUM, wall:!WALL, mys:!MYS, ord:!ORDB, bid:!BIDS, ere:!ERE};
   /* The accent rides on the button as --ac so the tile can light its edge and
      its icon from one value. A disabled mode dims the whole thing, lamp and
      all, exactly as an exhausted tier does on the picker board. */
@@ -6162,6 +6201,7 @@ function startGame(){
   if(setupMode==="ord" && !ORDB){ toast("The ordering deck is still loading, give it a second", true); return; }
   if(setupMode==="bid" && !BIDS){ toast("The bidding deck is still loading, give it a second", true); return; }
   if(setupMode==="spec" && !SPEC){ toast("The special deck is still loading, give it a second", true); return; }
+  if(setupMode==="ere" && !ERE){ toast("The Eredivisie deck is still loading, give it a second", true); return; }
   S=freshState(names, setupTimed, setupMode, setupTarget);
   if(setupRef){
     const el=document.getElementById("n2");
@@ -6207,6 +6247,7 @@ function resumeGame(){
   if(S.mode==="stadium" && !STAD){ toast("Stadium photos still loading, give it a second", true); return; }
   if(S.mode==="nations" && !NAT){ toast("Nationality bank still loading, give it a second", true); return; }
   if(S.mode==="badge" && !BADGE){ toast("Badge bank still loading, give it a second", true); return; }
+  if(S.mode==="ere" && !ERE){ toast("The Eredivisie deck is still loading, give it a second", true); return; }
   if(S.mode==="mgr" && !MGRS){ toast("Manager deck still loading, give it a second", true); return; }
   if(S.mode==="xi" && !XI){ toast("The finals are still loading, give it a second", true); return; }
   if(S.mode==="tline" && !TLINE){ toast("Timeline deck still loading, give it a second", true); return; }

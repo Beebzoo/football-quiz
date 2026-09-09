@@ -65,6 +65,46 @@ const TIERS = ["easy", "normal", "hard", "extreme", "ball"];
   check("nothing from the writers' tooling leaked into the shipped rows",
     all.every(r => !("src" in r) && !("conf" in r) && !("verdict" in r) && !("note" in r)), "found a src/conf/verdict/note key");
 
+  console.log("\n--- the club crests ---");
+  /* The crest exists to give the table something to look at while they think.
+     The moment it can answer the question it is worse than nothing, so the
+     rule is checked here with its own alias list rather than by asking the
+     build tool whether it agrees with itself. */
+  const NAMES = {
+    ajax: ["Ajax"], psv: ["PSV"], feyenoord: ["Feyenoord"], "az-alkmaar": ["AZ"],
+    twente: ["Twente"], "fc-utrecht": ["FC Utrecht"], vitesse: ["Vitesse"],
+    "sc-heerenveen": ["Heerenveen"], "fc-groningen": ["FC Groningen"], "willem-ii": ["Willem II"],
+    "nac-breda": ["NAC"], "nec-nijmegen": ["NEC", "N.E.C."], "go-ahead-eagles": ["Go Ahead Eagles"],
+    "roda-jc-kerkrade": ["Roda JC", "Roda"], "vvv-venlo": ["VVV"], "mvv-maastricht": ["MVV"],
+    "fortuna-sittard": ["Fortuna Sittard", "Fortuna '54"], "de-graafschap": ["De Graafschap"],
+    "rkc-waalwijk": ["RKC"], "pec-zwolle": ["PEC Zwolle", "FC Zwolle"], "ado-den-haag": ["ADO"],
+    "sparta-rotterdam": ["Sparta"], "excelsior-rotterdam": ["Excelsior"],
+    "heracles-almelo": ["Heracles"], "sc-cambuur": ["Cambuur"], volendam: ["Volendam"],
+    "fc-emmen": ["FC Emmen"], "fc-dordrecht": ["FC Dordrecht"], "helmond-sport": ["Helmond Sport"],
+    telstar: ["Telstar"], "top-oss": ["TOP Oss"], "almere-city": ["Almere City"],
+    "fc-den-bosch": ["FC Den Bosch", "Den Bosch"], "fc-eindhoven": ["FC Eindhoven"], "rbc-roosendaal": ["RBC Roosendaal"],
+  };
+  const crested = all.filter(r => r.club);
+  const named = (text, n) => new RegExp("(^|[^A-Za-z0-9])" + n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "($|[^A-Za-z0-9])", n.length <= 4 ? "" : "i").test(text);
+  check("a good share of questions carry a crest", crested.length > all.length * 0.4,
+    `${crested.length} of ${all.length}`);
+  check("every crest is a club the test knows", crested.every(r => NAMES[r.club]),
+    [...new Set(crested.filter(r => !NAMES[r.club]).map(r => r.club))].join(", "));
+  const leaks = crested.filter(r => (NAMES[r.club] || []).some(n => named(r.a, n)));
+  check("no crest gives away its own answer", leaks.length === 0,
+    leaks.slice(0, 3).map(r => r.club + " => " + r.a).join(" | "));
+  check("every crest is named in its own question",
+    crested.every(r => (NAMES[r.club] || []).some(n => named(r.q, n))),
+    (crested.find(r => !(NAMES[r.club] || []).some(n => named(r.q, n))) || {}).q);
+  check("every crest file is on disk",
+    crested.every(r => fs.existsSync(path.join(REPO, "assets/logos", r.club + ".png"))),
+    [...new Set(crested.filter(r => !fs.existsSync(path.join(REPO, "assets/logos", r.club + ".png"))).map(r => r.club))].join(", "));
+  const swCrests = (sw.match(/assets\/logos\/[a-z0-9-]+\.png/g) || []);
+  check("every crest the deck uses is precached",
+    [...new Set(crested.map(r => r.club))].every(c => swCrests.includes("assets/logos/" + c + ".png")),
+    [...new Set(crested.map(r => r.club))].filter(c => !swCrests.includes("assets/logos/" + c + ".png")).join(", "));
+  console.log(`      ${crested.length} of ${all.length} questions, ${new Set(crested.map(r => r.club)).size} clubs`);
+
   console.log("\n--- the wiring ---");
   const app = makeInstance("ere");
   await tick(400);
@@ -95,6 +135,24 @@ const TIERS = ["easy", "normal", "hard", "extreme", "ball"];
   const qq = ev(app, "q()");
   check("the question is on screen", stage(app).includes(qq.q.slice(0, 24).replace(/&/g, "&amp;")), "missing");
   check("the answer is NOT", !stage(app).includes(qq.a), qq.a);
+  /* drive a crested question onto every screen a question can appear on */
+  const ci = bank.hard.findIndex(r => r.club);
+  run(app, `S.tier="hard"; S.qi=${ci}; S.phase="question"; render();`);
+  await tick(30);
+  check("a crested question shows its crest", stage(app).includes(`assets/logos/${bank.hard[ci].club}.png`), "no crest");
+  run(app, 'S.phase="judge"; render();');
+  await tick(30);
+  check("and still shows it on the reveal", stage(app).includes(`assets/logos/${bank.hard[ci].club}.png`), "crest vanished");
+  run(app, 'S.phase="deadq"; render();');
+  await tick(30);
+  check("and on the dead question", stage(app).includes(`assets/logos/${bank.hard[ci].club}.png`), "crest vanished");
+  const ni = bank.hard.findIndex(r => !r.club);
+  if (ni >= 0) {
+    run(app, `S.tier="hard"; S.qi=${ni}; S.phase="question"; render();`);
+    await tick(30);
+    check("a question with no club shows no crest", !stage(app).includes("qcrest"), "drew an empty crest");
+  }
+  run(app, `S.tier="hard"; S.qi=${ev(app, "S.used.hard[0]")}; S.phase="question"; render();`);
   run(app, "reveal()");
   await tick(30);
   check("revealing shows the answer", ev(app, "S.phase") === "judge" && stage(app).includes(qq.a.replace(/&/g, "&amp;")), ev(app, "S.phase"));

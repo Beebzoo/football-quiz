@@ -8,6 +8,7 @@
    from Wikimedia Commons under CC terms that require credit. */
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const REPO = path.join(__dirname, "..");
 let fails = 0;
@@ -101,6 +102,25 @@ const sw = fs.readFileSync(path.join(REPO, "sw.js"), "utf8");
 check("faces index is precached", sw.includes("assets/faces/index.json"));
 check("the 221 face images are NOT precached", !/assets\/faces\/[a-z0-9-]+\.jpg/.test(sw),
       "a portrait is listed in the service worker, which would bloat the install");
+
+/* The one check that would have caught the three weeks the app shipped with no
+   cache at all. Two generated lists are spliced into this file by build tools,
+   and one of them landed BELOW the array that spreads it. const is not hoisted,
+   so every install from v111 to v123 threw a ReferenceError before registering
+   and nothing was ever precached. Nothing in the app breaks visibly when the
+   service worker dies, which is exactly why it went unnoticed: it just quietly
+   stops working offline. So: actually run the file. */
+{
+  const sandbox = { self: { addEventListener() {} }, caches: {}, clients: {}, fetch: () => {} };
+  let threw = null;
+  try {
+    vm.runInNewContext(sw, sandbox);
+  } catch (e) { threw = e.message; }
+  check("the service worker evaluates without throwing", threw === null, threw);
+  check("and it lists something to precache",
+    Array.isArray(sandbox.EXTRA_ASSETS) ? sandbox.EXTRA_ASSETS.length > 20 : "EXTRA_ASSETS did not survive evaluation",
+    sandbox.EXTRA_ASSETS && sandbox.EXTRA_ASSETS.length);
+}
 
 console.log(fails ? `\n${fails} FAILING CHECK(S)` : "\nAll checks passed.");
 process.exit(fails ? 1 : 0);

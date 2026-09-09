@@ -61,8 +61,25 @@ reacts to belongs in extreme, not ball.
   season articles, club articles, UEFA, KNVB, Transfermarkt) and `conf` as
   "sure" or "likely". Everything gets fact-checked by a second agent before it
   ships, so honesty in `conf` saves everyone time.
-- Do not repeat or reword anything in already-shipping-dutch.txt.
+- Do not repeat or reword anything in already-shipping-dutch.txt (the Dutch
+  questions in the main Classic bank) or in already-shipping-ere.txt (the
+  Eredivisie deck as it already ships). Both are in this folder.
 - Do not repeat yourself: one question per fact.
+
+## Naming the club is worth doing
+
+The app now puts a club's crest under the question whenever the question
+names a club that is not the answer. So "Which coach did Giovanni van
+Bronckhorst succeed at Feyenoord in 2015?" shows the Feyenoord crest, and the
+table gets a picture to look at while they think. Where a question reads
+naturally either way, name the club:
+
+- better: "Which striker did PSV sign from Heerenveen in 2013?"
+- worse:  "Which striker moved from Heerenveen to Eindhoven in 2013?"
+
+Never name the club whose name is the answer, obviously, and do not contort a
+question to fit a crest in. The detection is automatic at build time, you do
+not tag anything.
 
 ## Format
 

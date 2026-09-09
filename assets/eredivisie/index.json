@@ -1841,6 +1841,41 @@
   {
    "q": "Which club finished bottom in 2014-15 with 20 points, one season after coming up through the play-offs?",
    "a": "FC Dordrecht"
+  },
+  {
+   "q": "Which Russian club did Keisuke Honda leave VVV-Venlo for at the end of 2009?",
+   "a": "CSKA Moscow",
+   "sub": "Yoshida followed him from Nagoya Grampus to Venlo that same month.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Which Costa Rican scored 24 league goals for Twente in 2009-10 and opened the scoring at NAC on the day the title was won?",
+   "a": "Bryan Ruiz",
+   "sub": "Twente won 2-0 in Breda on 2 May 2010, Stoch adding the second.",
+   "club": "twente"
+  },
+  {
+   "q": "Which Ivorian scored 31 goals in 30 league games for Vitesse in 2012-13 and joined Swansea for a club record 12 million pounds?",
+   "a": "Wilfried Bony",
+   "sub": "He was also named Dutch Footballer of the Year.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Which Icelander was Eredivisie top scorer in 2013-14 with 29 goals for Heerenveen?",
+   "a": "Alfred Finnbogason",
+   "sub": "Real Sociedad paid 7.5 million euros for him that summer.",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Which AZ winger was the 2017-18 Eredivisie top scorer with 21 goals, the first Asian to top the charts in a major European league?",
+   "a": "Alireza Jahanbakhsh",
+   "sub": "Brighton paid a club record fee for him that summer.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "Utrecht beat Celtic 4-0 in August 2010 to reach the Europa League group stage. Who scored a hat-trick?",
+   "a": "Ricky van Wolfswinkel",
+   "sub": "Celtic had won the first leg 2-0."
   }
  ],
  "extreme": [
@@ -2617,6 +2652,391 @@
    "q": "Who opened the scoring for Excelsior in the 3-0 win over Feyenoord in May 2017 that delayed the title?",
    "a": "Nigel Hasselbaink",
    "club": "excelsior-rotterdam"
+  },
+  {
+   "q": "Which club finished third in the 2007-08 Eredivisie, behind PSV and Ajax?",
+   "a": "NAC Breda",
+   "sub": "A club record 63 points under Ernie Brandts, told in January his contract would not be renewed.",
+   "club": "psv"
+  },
+  {
+   "q": "Which Limburg club lost the 2008 KNVB Cup final 2-0 to Feyenoord, with goals from Denny Landzaat and Jonathan de Guzman?",
+   "a": "Roda JC",
+   "sub": "Played at De Kuip on 27 April 2008 in front of 51,177, Feyenoord's eleventh cup.",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which club won the 2007-08 Eerste Divisie under Stanley Menzo, then finished bottom of the Eredivisie the very next season?",
+   "a": "FC Volendam",
+   "sub": "Frans Adelaar was the coach for the relegation season, Menzo having left."
+  },
+  {
+   "q": "Roda JC finished 16th in 2008-09 and had to play the play-offs. Which Frisian club did they beat to stay up?",
+   "a": "SC Cambuur",
+   "sub": "It went to a third match and a penalty shoot-out before Roda survived.",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "VVV won the 2008-09 Eerste Divisie with Keisuke Honda as the star, but who was their top scorer, with 25 goals?",
+   "a": "Sandro Calabro",
+   "sub": "Honda took the first Gouden Stier as the division's best player.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "From which Japanese club did VVV-Venlo sign Keisuke Honda in January 2008?",
+   "a": "Nagoya Grampus",
+   "sub": "His first six months in Venlo ended in relegation, the first of his career.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Mounir El Hamdaoui was Eredivisie top scorer with AZ in 2008-09. Which club had he joined AZ from in 2007?",
+   "a": "Willem II",
+   "sub": "He was also named Dutch Footballer of the Year that season.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "Which Twente player scored in the 118th minute of the 2009 KNVB Cup final and then missed in the shoot-out?",
+   "a": "Youssouf Hersi",
+   "sub": "Gerald Sibon converted the winning penalty for Heerenveen, 5-4.",
+   "club": "twente"
+  },
+  {
+   "q": "Heracles finished sixth in 2009-10, then their best ever. Who was the coach, who left for AZ that summer?",
+   "a": "Gertjan Verbeek",
+   "sub": "He opened that season by beating champions AZ 3-2.",
+   "club": "heracles-almelo"
+  },
+  {
+   "q": "RKC Waalwijk went down in 2009-10 with 15 points from five wins. How many draws did they manage all season?",
+   "a": "None, 29 defeats",
+   "sub": "They conceded 80 goals and went straight back to the Eerste Divisie.",
+   "club": "rkc-waalwijk"
+  },
+  {
+   "q": "Who did AZ appoint to follow Louis van Gaal in 2009, and sack on 5 December that year after seven league defeats in sixteen games?",
+   "a": "Ronald Koeman",
+   "sub": "Dick Advocaat took over the reigning champions.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "Excelsior stayed up in 2011 by winning a play-off final 5-1 away and 4-2 at home. Who were the opponents?",
+   "a": "Helmond Sport",
+   "sub": "Nine goals over two legs against a club that had not been in the top flight since 1984.",
+   "club": "excelsior-rotterdam"
+  },
+  {
+   "q": "Which Dane scored NEC's winner away at Spartak Moscow in December 2008 and left for Ajax on a free in 2012?",
+   "a": "Lasse Schone",
+   "sub": "He had come to Nijmegen from De Graafschap in 2008.",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "NEC came through a 2008-09 UEFA Cup group with Tottenham, Udinese, Spartak and Dinamo Zagreb. Who beat them 3-0 in Nijmegen in the next round?",
+   "a": "Hamburger SV",
+   "sub": "Hamburg won the return 1-0 as well.",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Which Frisian club won the 2012-13 Eerste Divisie, returning to the Eredivisie after thirteen years away?",
+   "a": "SC Cambuur",
+   "sub": "Cambuur had not been in the top flight since 1999-2000."
+  },
+  {
+   "q": "FC Zwolle clinched the 2011-12 Eerste Divisie title on Friday 13 April 2012 with a 0-0 draw against which club?",
+   "a": "FC Eindhoven",
+   "sub": "The next day the club announced it would go back to the name PEC Zwolle.",
+   "club": "pec-zwolle"
+  },
+  {
+   "q": "Which American scored AZ's second goal in the 2013 KNVB Cup final against PSV, two minutes after Adam Maher had opened the scoring?",
+   "a": "Jozy Altidore",
+   "sub": "AZ won 2-1, their first cup since 1982.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "Go Ahead Eagles won the 2013 play-off final 3-0 at home and lost the return 1-0. Who were the opponents?",
+   "a": "FC Volendam",
+   "sub": "Erik ten Hag's Eagles ended seventeen years outside the top flight.",
+   "club": "go-ahead-eagles"
+  },
+  {
+   "q": "Roda JC stayed up in 2013 by winning the play-off second leg 6-1 at home. Which club did they beat?",
+   "a": "De Graafschap",
+   "sub": "The first leg in Doetinchem had been 1-1.",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "Which Rotterdam club relegated NEC in the 2014 play-offs, winning 1-0 at home and 3-1 in Nijmegen?",
+   "a": "Sparta Rotterdam",
+   "sub": "It ended twenty straight NEC seasons in the Eredivisie.",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Who scored twice in the first half of the 2014 KNVB Cup final for PEC Zwolle against Ajax, a nineteen-year-old New Zealander?",
+   "a": "Ryan Thomas",
+   "sub": "Guyon Fernandez also scored twice and Bram van Polen made it 5-1.",
+   "club": "pec-zwolle"
+  },
+  {
+   "q": "Which Slovak scored both goals when Groningen beat PEC Zwolle 2-0 in the 2015 KNVB Cup final?",
+   "a": "Albert Rusnak",
+   "sub": "Jarchinio Antonia set up the second one.",
+   "club": "pec-zwolle"
+  },
+  {
+   "q": "NEC won the 2014-15 Eerste Divisie with 101 points and 100 goals. Who was the coach?",
+   "a": "Ruud Brood",
+   "sub": "Sjoerd Ars scored 28 of the goals.",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Roda JC went straight back up in 2015 with a 110th-minute winner at NAC in the play-off final. Who scored it?",
+   "a": "Tom van Hyfte",
+   "sub": "Roda lost the first leg 1-0 at home and won 2-1 in Breda after extra time.",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "Which Rotterdam club won the 2015-16 Eerste Divisie under Alex Pastoor, sealing it with a 3-1 win over Jong Ajax?",
+   "a": "Sparta Rotterdam",
+   "sub": "Six years after going down on away goals to Excelsior.",
+   "club": "ajax"
+  },
+  {
+   "q": "Heracles played their first ever European tie in 2016 and went out on away goals after 1-1 and 0-0. Who were the opponents?",
+   "a": "Arouca, from Portugal",
+   "sub": "Third qualifying round of the Europa League.",
+   "club": "heracles-almelo"
+  },
+  {
+   "q": "Which Turkish businessman, a former Galatasaray executive, took control of Fortuna Sittard in 2016?",
+   "a": "Isitan Gun",
+   "sub": "Fortuna had been in the Eerste Divisie since 2002.",
+   "club": "fortuna-sittard"
+  },
+  {
+   "q": "Which Nigerian, a former Ajax midfielder, coached Fortuna Sittard from December 2016 until his suspension in February 2018?",
+   "a": "Sunday Oliseh",
+   "sub": "Fortuna went up three months after he was removed.",
+   "club": "ajax"
+  },
+  {
+   "q": "Fortuna Sittard sealed promotion in 2018 with a 1-0 win over which reserve side?",
+   "a": "Jong PSV",
+   "sub": "Fortuna finished second, one point behind Jong Ajax, who could not go up.",
+   "club": "fortuna-sittard"
+  },
+  {
+   "q": "Which Portuguese interim coach, with Kevin Hofland as assistant, took Fortuna Sittard over the line to promotion in 2018?",
+   "a": "Claudio Braga",
+   "sub": "He took over after Sunday Oliseh was suspended on 14 February.",
+   "club": "fortuna-sittard"
+  },
+  {
+   "q": "Which Belgian striker scored a hat-trick as NAC won 4-1 at NEC in the 2017 play-off final to go up?",
+   "a": "Cyriel Dessers",
+   "sub": "He also scored the only goal of the first leg in Breda.",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Which Chelsea loanee was Vitesse's player of the year in 2017-18 and scored in the European play-off final against Utrecht?",
+   "a": "Mason Mount",
+   "sub": "He got a booking in that game that ruled him out of the second leg.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Which club reached the Eredivisie for the first time ever by winning 3-1 at Sparta's Het Kasteel in May 2018?",
+   "a": "FC Emmen",
+   "sub": "The first Drenthe club in the top flight. Sparta went down.",
+   "club": "sparta-rotterdam"
+  },
+  {
+   "q": "Sparta sacked Alex Pastoor on 17 December 2017 after a 7-0 home defeat by Feyenoord. Which veteran coach took over?",
+   "a": "Dick Advocaat",
+   "sub": "Advocaat could not save them, Sparta went down in the play-offs.",
+   "club": "sparta-rotterdam"
+  },
+  {
+   "q": "Roda JC went down in 2018 after 0-0 away and 1-2 at home in the play-offs. Who beat them?",
+   "a": "Almere City",
+   "sub": "Almere then lost the final to De Graafschap.",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "VVV-Venlo clinched promotion on 14 April 2017 with a 2-1 win away at which club?",
+   "a": "RKC Waalwijk",
+   "sub": "Maurice Steijn's side took the title a week later.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Who coached VVV-Venlo from 2014 to 2019, winning the 2017 Eerste Divisie title, and later had eleven games in charge of Ajax?",
+   "a": "Maurice Steijn",
+   "sub": "He won the Rinus Michels Award for that title season.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Willem II stayed up in 2016 by winning a play-off final 4-3 on aggregate, Erik Falkenburg scoring twice in the return. Who did they beat?",
+   "a": "NAC Breda",
+   "sub": "NAC won the first leg 2-1, Willem II the second 3-1.",
+   "club": "willem-ii"
+  },
+  {
+   "q": "Which English club knocked Twente out of the 2008-09 Champions League third qualifying round, winning 2-0 in Enschede and 4-0 at home?",
+   "a": "Arsenal",
+   "sub": "Twente dropped into the UEFA Cup and beat Rennes on away goals.",
+   "club": "twente"
+  },
+  {
+   "q": "Which Spanish club beat NAC Breda 3-1 and then 6-1 in the 2009-10 Europa League play-off round?",
+   "a": "Villarreal",
+   "sub": "NAC had earned Europe by beating Groningen in the 2009 play-offs.",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Which Turkish coach, the first from Turkey to hold a UEFA Pro Licence, was MVV's head coach from 2008 to 2010?",
+   "a": "Fuat Capa",
+   "sub": "He succeeded Robert Maaskant.",
+   "club": "mvv-maastricht"
+  },
+  {
+   "q": "MVV reached the 2017 play-off final by beating which Frisian club 3-2 on aggregate, with a stoppage-time goal from Thomas Verheydt?",
+   "a": "SC Cambuur",
+   "sub": "1-1 in Maastricht, then 2-1 in Leeuwarden.",
+   "club": "mvv-maastricht"
+  },
+  {
+   "q": "FC Dordrecht went up in 2014 by winning the play-off final second leg 3-1 at the Krommedijk after a 2-2 first leg. Who did they beat?",
+   "a": "Sparta Rotterdam",
+   "sub": "Dordrecht's first Eredivisie season since 1994-95, and they went straight back down.",
+   "club": "fc-dordrecht"
+  },
+  {
+   "q": "Who was Heracles' head coach from September 2014 to 2018, taking them into Europe for the first time?",
+   "a": "John Stegeman",
+   "sub": "He later coached Go Ahead Eagles and PEC Zwolle.",
+   "club": "heracles-almelo"
+  },
+  {
+   "q": "Which coach left Groningen in 2010 after eight years and went straight to Heerenveen, to the fury of Groningen fans?",
+   "a": "Ron Jans",
+   "sub": "He later won the 2014 cup with PEC Zwolle.",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "AZ's stadium opened in 2006 under which name, dropped in November 2009 when the sponsor bank collapsed?",
+   "a": "DSB Stadion",
+   "sub": "It became the AFAS Stadion in 2010.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "Roda JC's Parkstad Limburg Stadion opened on 15 August 2000 with a 2-2 friendly against which Spanish club?",
+   "a": "Real Zaragoza",
+   "sub": "It replaced the old Kaalheide ground.",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "Which club was the first in Dutch professional football to lay an artificial pitch in its stadium, in 2003?",
+   "a": "Heracles Almelo",
+   "sub": "The plastic pitch lasted until 2024, when hybrid grass went in."
+  },
+  {
+   "q": "Twente were relegated on 29 April 2018 after 34 years in the top flight. Which club beat them 5-0 that day?",
+   "a": "Vitesse",
+   "sub": "Eight years after the title.",
+   "club": "twente"
+  },
+  {
+   "q": "Groningen won the club's first major trophy in the 2015 KNVB Cup final. Who was their coach?",
+   "a": "Erwin van de Looi",
+   "sub": "Groningen were the third club from the city to win a major honour."
+  },
+  {
+   "q": "Which coach won one of his eleven games as Cambuur went down in 2016, and was still handed the Ajax job in 2017?",
+   "a": "Marcel Keizer",
+   "sub": "Ajax sacked him in December 2017 after a cup exit at Twente.",
+   "club": "sc-cambuur"
+  },
+  {
+   "q": "Which Japanese forward, scorer of the winner against Spain at the 2012 Olympics, joined VVV-Venlo that August?",
+   "a": "Yuki Otsu",
+   "sub": "He came from Borussia Moenchengladbach.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Which coach quit Willem II in April 2011, four games from the end with the club bottom, after being told he would not be kept on?",
+   "a": "Gert Heerkes",
+   "sub": "John Feskens and Raymond Vissers finished the season. Willem II ended on 15 points.",
+   "club": "willem-ii"
+  },
+  {
+   "q": "RKC's run of nineteen straight Eredivisie seasons ended in 2007 with a play-off defeat to which Limburg club?",
+   "a": "VVV-Venlo",
+   "sub": "VVV won the decider 3-0 and went straight back down a year later.",
+   "club": "rkc-waalwijk"
+  },
+  {
+   "q": "Which Brazilian scored seventy goals in seven seasons for Heracles and left Almelo for Al-Nassr in 2013?",
+   "a": "Everton",
+   "sub": "He became Heracles' all-time Eredivisie top scorer back in March 2010.",
+   "club": "heracles-almelo"
+  },
+  {
+   "q": "Which club did Vitesse beat 6-2 away on 7 December 2013 during Peter Bosz's first season?",
+   "a": "PSV",
+   "sub": "Vitesse were top of the table that November.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Which English club agreed in 2016 to loan NAC Breda four to six players a season for five years?",
+   "a": "Manchester City",
+   "sub": "Angelino spent the 2017-18 season in Breda under that deal.",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Which coach relegated Roda JC in 2014 after being appointed in January, winning three of seventeen games?",
+   "a": "Jon Dahl Tomasson",
+   "sub": "Roda's first relegation after 41 years in the top flight.",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "Which club did Willem II beat in the 2012 play-off final to go up, having already knocked out Sparta?",
+   "a": "FC Den Bosch",
+   "sub": "Jurgen Streppel's first season in Tilburg.",
+   "club": "willem-ii"
+  },
+  {
+   "q": "Which German coach was sacked by NEC on 24 April 2017, two games from the end, after refusing to have a senior coach put alongside him?",
+   "a": "Peter Hyballa",
+   "sub": "He called the board's plan panic football. NEC went down to NAC.",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Which Japanese defender left VVV-Venlo for Southampton in August 2012 for about three million pounds?",
+   "a": "Maya Yoshida",
+   "sub": "He had followed Honda from Nagoya Grampus to Venlo in 2009.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Who coached Go Ahead Eagles to the 2016 promotion after arriving in February that year, and was sacked in March 2017 with the club bottom?",
+   "a": "Hans de Koning",
+   "sub": "Robert Maaskant saw out the relegation season.",
+   "club": "go-ahead-eagles"
+  },
+  {
+   "q": "Which Georgian businessman bought all the shares in Vitesse in August 2010?",
+   "a": "Merab Jordania",
+   "sub": "He bought out Maasbert Schouten and said he planned to spend all his money.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Cyriel Dessers played four play-off matches for NAC in 2017. How many goals did he score in them?",
+   "a": "Seven, including a hat-trick in the 4-1 win at NEC",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Why is Twente's ground called a Veste, a fortress?",
+   "a": "Grolsch comes from Groenlo, an old fortified town",
+   "sub": "Until 2008 it was the Arke Stadion, after a travel company.",
+   "club": "twente"
   }
  ],
  "ball": [
@@ -2667,6 +3087,301 @@
    "q": "In May 2016 the KNVB licensing committee ordered which club relegated for financial mismanagement, a decision overturned on appeal?",
    "a": "FC Twente",
    "sub": "The appeal committee overturned it on 17 June 2016. Twente went down on the pitch two years later anyway."
+  },
+  {
+   "q": "Go Ahead Eagles are called Kowet. Where does the name come from?",
+   "a": "Deventer workers mangling the English name Go Ahead in their dialect",
+   "sub": "The posh rival club UD laughed at the pronunciation, so the fans kept it as a badge of honour.",
+   "club": "go-ahead-eagles"
+  },
+  {
+   "q": "Which shirt number do Go Ahead Eagles refuse to give to a player, and why?",
+   "a": "Number 12, it belongs to the supporters as the twelfth man",
+   "club": "go-ahead-eagles"
+  },
+  {
+   "q": "Go Ahead's biggest ever win, 11-1 in October 1962, came against which Limburg club?",
+   "a": "Roda JC",
+   "sub": "Roda had only been formed that summer from Rapid JC and Roda Sport."
+  },
+  {
+   "q": "A former Ajax, Arsenal and Barcelona winger came out of retirement at 35 to play the 2008-09 season for Go Ahead Eagles. Who?",
+   "a": "Marc Overmars",
+   "sub": "24 games, no goals, and his knee gave up again after one season.",
+   "club": "ajax"
+  },
+  {
+   "q": "De Graafschap won the 2010 Eerste Divisie title at home to Go Ahead after being 2-0 down. How did it end?",
+   "a": "3-2, with goals in the 86th and 89th minutes",
+   "sub": "Muslu Nalbantoglu scored the winner in the 89th minute.",
+   "club": "de-graafschap"
+  },
+  {
+   "q": "Johan Voskamp made his Sparta debut on 20 August 2010 against Almere City. What did he do?",
+   "a": "Scored eight goals in a 12-1 win",
+   "sub": "He had joined from Helmond Sport that summer. The 12-1 equalled a Dutch record.",
+   "club": "sparta-rotterdam"
+  },
+  {
+   "q": "In the 2010 Rotterdam play-off at Sparta, Excelsior's Guyon Fernandez missed a late penalty and Sparta scored in stoppage time. Then what?",
+   "a": "Fernandez equalised in the 94th minute, Excelsior went up on away goals and Sparta went down"
+  },
+  {
+   "q": "In 1974 Excelsior played with a large letter A on the shirt when shirt sponsors were banned. What was the A for?",
+   "a": "Akai, the electronics firm paying them, though the club claimed it meant A-team",
+   "sub": "Shirt sponsors were legal from 1982, and Akai went straight back on.",
+   "club": "excelsior-rotterdam"
+  },
+  {
+   "q": "Excelsior named a stand at Woudestein after a striker who spent two years in their youth academy before Feyenoord. Who?",
+   "a": "Robin van Persie",
+   "club": "excelsior-rotterdam"
+  },
+  {
+   "q": "In November 1970 Feyenoord keeper Eddy Treijtel killed a seagull with a goal kick at Het Kasteel. Why does that still annoy Sparta fans?",
+   "a": "The stuffed bird is in Feyenoord's museum, not Sparta's"
+  },
+  {
+   "q": "Which Rotterdam club had Georginio Wijnaldum, Memphis Depay and Kevin Strootman in its youth ranks before they became famous elsewhere?",
+   "a": "Sparta Rotterdam",
+   "sub": "Strootman is the one who actually made the Sparta first team."
+  },
+  {
+   "q": "Heerenveen won 5-0 at Excelsior on 10 December 2011. What was remarkable about the scoring?",
+   "a": "Bas Dost scored all five",
+   "sub": "He finished the season as top scorer with 32 and left for Wolfsburg.",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Trond Sollied won Heerenveen their first ever major trophy, the 2009 KNVB Cup, in May. What happened to him on 31 August?",
+   "a": "He was sacked, three months after winning the cup",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Bonaventure Kalou scored in Heerenveen's 2009 cup final win. What did he get himself elected as in Ivory Coast in 2018?",
+   "a": "Mayor of Vavoua",
+   "sub": "His younger brother Salomon also played for Feyenoord.",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "The Abe Lenstra Stadion opened in August 1994 with Heerenveen against PSV. Which teenager made his European debut for PSV that day?",
+   "a": "Ronaldo, the Brazilian",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "AZ became champions on 19 April 2009 without playing. What had happened?",
+   "a": "PSV beat Ajax 6-2, so nobody could catch AZ anymore",
+   "sub": "AZ had lost 2-1 at Vitesse the day before."
+  },
+  {
+   "q": "Why did the letters DSB come down off AZ's stadium in November 2009?",
+   "a": "DSB Bank, the sponsor owned by chairman Dirk Scheringa, had gone bankrupt",
+   "sub": "For that autumn's Champions League games it was called the Dirk Scheringa Stadion.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "AZ beat PSV 2-1 on Saturday 28 September 2013. What did the club do to coach Gertjan Verbeek on the Sunday morning?",
+   "a": "Sacked him, citing a lack of chemistry with the players",
+   "sub": "Verbeek had won them the cup four months earlier.",
+   "club": "az-alkmaar"
+  },
+  {
+   "q": "Vitesse captain Guram Kashia wore a rainbow armband against Heracles in October 2017. What was the reaction back home in Georgia?",
+   "a": "Protests outside the federation and calls to drop him from the national team",
+   "sub": "UEFA gave him its first ever EqualGame award for it.",
+   "club": "vitesse"
+  },
+  {
+   "q": "Vitesse waited 125 years for a first major trophy. Who scored both goals in the 2017 cup final, both in the last ten minutes?",
+   "a": "Ricky van Wolfswinkel",
+   "sub": "2-0 against AZ, on 30 April 2017, under Henk Fraser.",
+   "club": "vitesse"
+  },
+  {
+   "q": "In May 2016 the KNVB licensing committee took Twente's Eredivisie licence away and put them in the Eerste Divisie. How did Twente stay up?",
+   "a": "They won on appeal in June and got a fine of 181,000 euros instead",
+   "club": "twente"
+  },
+  {
+   "q": "Twente trailed Ajax 2-1 early in the second half of the 2011 KNVB Cup final. How did it finish?",
+   "a": "3-2 to Twente after extra time, Marc Janko scoring in the 117th minute",
+   "sub": "Nacer Chadli and Roy Beerens got the other Twente goals.",
+   "club": "ajax"
+  },
+  {
+   "q": "Twente sold Ola John to Benfica in 2012. Which investment fund was reported to have taken about 80 percent of the fee?",
+   "a": "Doyen Sports, an investment fund that part-owned the player",
+   "sub": "The fund part-owned the player. The Doyen deals fed the crisis that nearly sank Twente.",
+   "club": "twente"
+  },
+  {
+   "q": "The 2014 KNVB Cup final was stopped in the fifth minute with Ajax 1-0 up against PEC Zwolle. Why, and how did it end?",
+   "a": "Ajax fans threw fireworks on the pitch, and after a half-hour break PEC won 5-1",
+   "club": "pec-zwolle"
+  },
+  {
+   "q": "Where does the name Cambuur come from?",
+   "a": "The Camminghaburg, a castle of the Van Cammingha family that stood where the stadium was built",
+   "sub": "The combs on the badge are a pun on the family name Cammingha.",
+   "club": "sc-cambuur"
+  },
+  {
+   "q": "FC Dordrecht fans are the Schapenkoppen, the sheep heads. What is the story behind it?",
+   "a": "Two men tried to smuggle a dressed-up sheep past the city gates in 1866 and it bleated",
+   "club": "fc-dordrecht"
+  },
+  {
+   "q": "De Graafschap put seats on the Spinnekop terrace in the late 1990s. What did the club do in 2008?",
+   "a": "Took the seats out again after supporter protests",
+   "sub": "The name comes from the Spion Kop, the Boer War hill.",
+   "club": "de-graafschap"
+  },
+  {
+   "q": "NAC's stadium is named after Antoon Verlegh. How did he get the nickname Rat?",
+   "a": "He played like a ratje, sly and hard to knock off the ball",
+   "sub": "His mother hated the nickname.",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Alireza Jahanbakhsh scored two late goals at Ajax on the last day of 2013-14 to keep NEC out of the automatic relegation places. And then?",
+   "a": "NEC lost the play-off and went down anyway",
+   "club": "ajax"
+  },
+  {
+   "q": "Roda JC took on a Dubai-based investor in January 2017 who brought Nicolas Anelka in as adviser. What happened to the investor within weeks?",
+   "a": "Aleksei Korotaev was arrested in Dubai over an uncovered cheque of 17.7 million euros",
+   "club": "roda-jc-kerkrade"
+  },
+  {
+   "q": "Daryl Werker scored for MVV in the 2016 play-offs while on loan from Roda. What did he do in the 2017 play-off final?",
+   "a": "Headed the only goal of the tie for Roda JC against MVV",
+   "sub": "0-0 in Maastricht, 1-0 in Kerkrade, Roda stayed up."
+  },
+  {
+   "q": "MVV lost 3-1 at home to Almere City in the 2018 play-offs. What was odd about Almere's hat-trick hero Damon Mirani?",
+   "a": "A central defender, he scored with his left foot, his right foot and his head",
+   "club": "mvv-maastricht"
+  },
+  {
+   "q": "In 2010 MVV changed what the M stands for. It had been Maastrichtse. What did it become?",
+   "a": "Maatschappelijke, the socially responsible football club",
+   "sub": "The full name became Maatschappelijke Voetbal Vereniging Maastricht.",
+   "club": "mvv-maastricht"
+  },
+  {
+   "q": "MVV's hardcore stand is the Angel Side. Which angel?",
+   "a": "The angel in the coat of arms of the city of Maastricht",
+   "sub": "The city arms show an armed angel holding a red shield with a white star.",
+   "club": "mvv-maastricht"
+  },
+  {
+   "q": "VVV-Venlo play at De Koel. What does koel mean in Venlo dialect, and why is it apt?",
+   "a": "A pit or hollow, the ground is literally built in one, with the stands on its sides",
+   "sub": "Players walk down a long staircase from the dressing rooms to the pitch.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "On 11 September 2011 a VVV-Venlo defender scored a spectacular bicycle kick against PSV in a 3-3 draw. Who was he?",
+   "a": "Maya Yoshida",
+   "sub": "He went to Southampton a year later.",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "What did VVV-Venlo fans nickname Keisuke Honda in his 2008-09 promotion season?",
+   "a": "Keizer Keisuke, Emperor Keisuke",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Fortuna Sittard suspended coach Sunday Oliseh in February 2018 while second in the table. What was his explanation?",
+   "a": "He said he was removed for refusing to take part in illegal activities at the club",
+   "sub": "The club only said he had been put on non-active. Fortuna went up anyway.",
+   "club": "fortuna-sittard"
+  },
+  {
+   "q": "In 2016 the KNVB confirmed match-fixing in a 2009 Eredivisie game, a Willem II defeat at Utrecht. Which player made the deal?",
+   "a": "Ibrahim Kargbo, with fixer Wilson Raj Perumal",
+   "sub": "Utrecht won that match 1-0 on 9 August 2009.",
+   "club": "willem-ii"
+  },
+  {
+   "q": "In 2016 ADO Den Haag took its own majority owner to court over unpaid promised money. Who was he?",
+   "a": "Wang Hui of United Vansen, the Chinese company that took over the club in 2015",
+   "sub": "The Enterprise Chamber suspended him as supervisory board chairman in December 2016.",
+   "club": "ado-den-haag"
+  },
+  {
+   "q": "ADO beat Groningen 5-1 at home in the 2011 play-off final for a Europa League place. What happened in the return?",
+   "a": "Groningen won 5-1 too, and ADO won the shoot-out with ten men",
+   "sub": "ADO had Mitchell Pique sent off in the 88th minute of the second leg."
+  },
+  {
+   "q": "Utrecht lost the first leg of the 2017 European play-off final 3-0 at AZ. How did the second leg go?",
+   "a": "Utrecht won 3-0, AZ keeper Tim Krul saved a stoppage-time penalty, and Utrecht won the shoot-out 4-3"
+  },
+  {
+   "q": "What is wrong with the city coat of arms on FC Utrecht's badge?",
+   "a": "The diagonal runs the wrong way, it is mirrored",
+   "sub": "It happened in September 1982 and has never been properly explained.",
+   "club": "fc-utrecht"
+  },
+  {
+   "q": "Frans van Seumeren bought 63 percent of FC Utrecht in April 2008. Which Feyenoord legend did he sack as coach that December?",
+   "a": "Willem van Hanegem",
+   "club": "fc-utrecht"
+  },
+  {
+   "q": "What does Galgenwaard, the name of FC Utrecht's ground, mean?",
+   "a": "Gallows field",
+   "sub": "The rebuilt 1982 stadium was famous for the dry moats around the pitch.",
+   "club": "fc-utrecht"
+  },
+  {
+   "q": "After a 0-0 at Aberdeen in 2014, Groningen's Filip Kostic said they had done 80 percent of the job. What happened in the return?",
+   "a": "Groningen lost 2-1 at home and went out",
+   "sub": "Aberdeen's Jonny Hayes said he enjoyed ramming the words down their throats."
+  },
+  {
+   "q": "Besides football, what can you find inside Groningen's Euroborg complex?",
+   "a": "A casino, a cinema, a school, a supermarket and a gym"
+  },
+  {
+   "q": "Volendam finished bottom of the Eredivisie in 2008-09, yet reached the cup semi-finals. Which giant did they beat 1-0 in round three?",
+   "a": "Ajax",
+   "sub": "Jack Tuijp scored in the 111th minute at the Kras Stadion.",
+   "club": "volendam"
+  },
+  {
+   "q": "Which striker scored 176 goals for Volendam and, in a later spell at Helmond Sport, finished a match in goal?",
+   "a": "Jack Tuijp",
+   "sub": "Helmond had used all their subs and their keeper had been sent off.",
+   "club": "volendam"
+  },
+  {
+   "q": "NEC sacked Alex Pastoor on 19 August 2013, the earliest sacking in an Eredivisie season. What had just happened?",
+   "a": "A 5-1 home defeat to PEC Zwolle",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Marinus Dijkhuizen took Excelsior up in 2014 and kept them up. How long did his next job, at Brentford in 2015, last?",
+   "a": "Nine matches, and he was gone by the end of September",
+   "sub": "Two wins, two draws and five defeats.",
+   "club": "excelsior-rotterdam"
+  },
+  {
+   "q": "Dwight Lodeweges coached Cambuur in the Eredivisie in 2013-14. Where did he go on 1 April 2014, with the season still running?",
+   "a": "To Heerenveen, the Frisian derby rivals",
+   "club": "sc-cambuur"
+  },
+  {
+   "q": "Willem II's Spanish striker Fran Sol, a Real Madrid youth product, published something unusual in 2020. What?",
+   "a": "A science fiction novel, Madrid 2035",
+   "sub": "He also learned French, Dutch, English and Russian.",
+   "club": "willem-ii"
+  },
+  {
+   "q": "Heracles trailed Groningen 3-1 on aggregate with eight minutes left in the 2016 European play-off semi-final. Final aggregate?",
+   "a": "6-3 to Heracles, after a 5-1 second leg in extra time",
+   "sub": "Zomer, Gladon, Weghorst, Darri and Pelupessy scored."
   }
  ]
 }

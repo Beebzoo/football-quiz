@@ -1,6 +1,6 @@
 /* BALL quiz service worker: network-first so updates land instantly,
    cache fallback so the pub's dead wifi can't stop the game. */
-const CACHE = "ball-quiz-v125";
+const CACHE = "ball-quiz-v126";
 const NATFLAGS = "ad,ae,af,ag,al,am,ao,ar,at,au,az,ba,be,bf,bg,bi,bj,bm,bn,bo,br,by,ca,cd,cf,cg,ch,ci,cl,cm,cn,co,cr,cu,cv,cy,cz,de,dk,do,dz,ec,ee,eg,es,et,fi,fr,ga,gb,gd,ge,gh,gm,gn,gq,gr,gt,gw,gy,hn,hr,ht,hu,id,ie,il,in,iq,ir,is,it,jm,jo,jp,ke,kn,kr,kw,kz,lb,lc,li,lk,lr,lt,lu,lv,ly,ma,md,me,mg,mk,ml,mr,mt,mu,mw,mx,my,mz,na,ne,ng,nl,no,nz,pa,pe,ph,pk,pl,pt,py,qa,ro,rs,ru,rw,sa,sc,sd,se,si,sk,sl,sm,sn,so,sr,st,sv,sy,sz,td,tg,th,tl,tm,tn,tr,tt,tz,ua,ug,us,uy,uz,ve,vn,ws,xk,za,zm,zw".split(",");
 /* These two lists are generated, by _tools/build-stickers.py and by the
    Eredivisie build-ere.js, and they are declared HERE, above EXTRA_ASSETS,
@@ -12,7 +12,7 @@ const NATFLAGS = "ad,ae,af,ag,al,am,ao,ar,at,au,az,ba,be,bf,bg,bi,bj,bm,bn,bo,br
    Small, and a question that shows a broken crest looks broken, so they go in
    the install rather than being fetched on first sight like the portraits. */
 /* ERECRESTS:BEGIN */
-const ERECRESTS = ["assets/logos/ado-den-haag.png", "assets/logos/ajax.png", "assets/logos/almere-city.png", "assets/logos/az-alkmaar.png", "assets/logos/de-graafschap.png", "assets/logos/excelsior-rotterdam.png", "assets/logos/fc-den-bosch.png", "assets/logos/fc-groningen.png", "assets/logos/fc-utrecht.png", "assets/logos/feyenoord.png", "assets/logos/fortuna-sittard.png", "assets/logos/go-ahead-eagles.png", "assets/logos/heracles-almelo.png", "assets/logos/mvv-maastricht.png", "assets/logos/nac-breda.png", "assets/logos/nec-nijmegen.png", "assets/logos/pec-zwolle.png", "assets/logos/psv.png", "assets/logos/rkc-waalwijk.png", "assets/logos/roda-jc-kerkrade.png", "assets/logos/sc-cambuur.png", "assets/logos/sc-heerenveen.png", "assets/logos/sparta-rotterdam.png", "assets/logos/twente.png", "assets/logos/vitesse.png", "assets/logos/vvv-venlo.png", "assets/logos/willem-ii.png"];
+const ERECRESTS = ["assets/logos/ado-den-haag.png", "assets/logos/ajax.png", "assets/logos/almere-city.png", "assets/logos/az-alkmaar.png", "assets/logos/de-graafschap.png", "assets/logos/excelsior-rotterdam.png", "assets/logos/fc-den-bosch.png", "assets/logos/fc-dordrecht.png", "assets/logos/fc-groningen.png", "assets/logos/fc-utrecht.png", "assets/logos/feyenoord.png", "assets/logos/fortuna-sittard.png", "assets/logos/go-ahead-eagles.png", "assets/logos/heracles-almelo.png", "assets/logos/mvv-maastricht.png", "assets/logos/nac-breda.png", "assets/logos/nec-nijmegen.png", "assets/logos/pec-zwolle.png", "assets/logos/psv.png", "assets/logos/rkc-waalwijk.png", "assets/logos/roda-jc-kerkrade.png", "assets/logos/sc-cambuur.png", "assets/logos/sc-heerenveen.png", "assets/logos/sparta-rotterdam.png", "assets/logos/twente.png", "assets/logos/vitesse.png", "assets/logos/volendam.png", "assets/logos/vvv-venlo.png", "assets/logos/willem-ii.png"];
 /* ERECRESTS:END */
 /* The celebration cutouts, all of them. 37 WebP files come to 1.1MB, which is
    worth carrying: a right answer that silently fails to celebrate on the pub's

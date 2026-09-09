@@ -39,14 +39,10 @@ const TIERS = ["easy", "normal", "hard", "extreme", "ball"];
 
   console.log("--- the deck ---");
   check("all five tiers are there", TIERS.every(t => Array.isArray(bank[t])), Object.keys(bank).join(","));
-  /* Every lane on the picker has to be able to deal. BALL is deliberately thin
-     at first ship: the stories were still being fact-checked when the deck
-     went out, and they append later (build-ere.js --append), so the bar here
-     is "can deal a match" rather than the 25 the other tiers clear easily. */
-  check("every tier can deal", TIERS.every(t => (bank[t] || []).length >= 5),
-    TIERS.map(t => t + ":" + (bank[t] || []).length).join(" "));
-  check("the four stocked tiers are properly stocked",
-    ["easy", "normal", "hard", "extreme"].every(t => (bank[t] || []).length >= 25),
+  /* Every lane on the picker has to hold a night's worth. BALL shipped thin
+     for one version while its stories were still being checked; it is stocked
+     now, so the bar is back where it belongs for all five. */
+  check("every tier is properly stocked", TIERS.every(t => (bank[t] || []).length >= 25),
     TIERS.map(t => t + ":" + (bank[t] || []).length).join(" "));
   check("a proper deck, not a handful", all.length >= 300, all.length);
   check("every row has a question and an answer", all.every(r => r.q && r.a), all.filter(r => !(r.q && r.a)).length + " broken");

@@ -264,6 +264,83 @@
    "a": "FC Twente",
    "sub": "He had just been the league's top scorer.",
    "club": "feyenoord"
+  },
+  {
+   "q": "In which month does the Eredivisie normally take its winter break?",
+   "a": "January"
+  },
+  {
+   "q": "The Eredivisie changed its relegation rules for 2019-20. How many clubs went down automatically from then on?",
+   "a": "Two, the bottom two",
+   "sub": "The club finishing 16th still had to go into the play-offs."
+  },
+  {
+   "q": "Which Dutch referee took charge of the Euro 2020 final between Italy and England at Wembley?",
+   "a": "Björn Kuipers",
+   "sub": "The first Dutchman to referee a European Championship final."
+  },
+  {
+   "q": "The world's first live video referee decision came in the Netherlands in 2016. Was it in the Eredivisie or the KNVB Cup?",
+   "a": "The KNVB Cup"
+  },
+  {
+   "q": "Which Dutch club did the goalkeeper Hans van Breukelen win six league titles and the 1988 European Cup with?",
+   "a": "PSV"
+  },
+  {
+   "q": "A crowd of 65,150 watched an Eredivisie match in 1969-70, the biggest the league had seen. Which two clubs were playing?",
+   "a": "Feyenoord and Ajax"
+  },
+  {
+   "q": "Which club led the Eredivisie table from the first round to the last in 2016-17?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "What is the Dutch name for the play-offs held after the regular Eredivisie season?",
+   "a": "The nacompetitie"
+  },
+  {
+   "q": "Which club won 30 of its 34 matches in 1971-72, losing only once?",
+   "a": "Ajax",
+   "sub": "They also conceded just 20 goals all season."
+  },
+  {
+   "q": "From which season was the video assistant referee used in every Eredivisie match?",
+   "a": "2018-19"
+  },
+  {
+   "q": "Which Dutch club did the goalkeeper Ed de Goey leave to join Chelsea in 1997?",
+   "a": "Feyenoord"
+  },
+  {
+   "q": "How many league matches does each Eredivisie club play in a normal season?",
+   "a": "34"
+  },
+  {
+   "q": "Which club scored 112 league goals in 1997-98?",
+   "a": "Ajax",
+   "sub": "They conceded just 22 goals in the same season."
+  },
+  {
+   "q": "Which club was Luis Suárez playing for when he scored 35 Eredivisie goals in 2009-10?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which club had André Onana in goal when he was voted the least beaten keeper of both 2016-17 and 2017-18?",
+   "a": "Ajax"
+  },
+  {
+   "q": "In which month does an Eredivisie season normally finish?",
+   "a": "May"
+  },
+  {
+   "q": "Which club did Heinz Stuy keep three straight European Cup final clean sheets for?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which Amsterdam club did the goalkeeper Piet Schrijvers join from FC Twente in 1974?",
+   "a": "Ajax",
+   "club": "twente"
   }
  ],
  "normal": [
@@ -941,6 +1018,109 @@
    "q": "Which trophy did Dirk Kuyt win in his first season back at Feyenoord, 2015-16?",
    "a": "The KNVB Cup",
    "club": "feyenoord"
+  },
+  {
+   "q": "Vincent Janssen was Eredivisie top scorer in 2015-16 with 27 goals. Which club was he playing for?",
+   "a": "AZ"
+  },
+  {
+   "q": "Ajax won 5-0 in the KNVB Cup in September 2016 in the first match anywhere with a live video referee. Who were the opponents?",
+   "a": "Willem II",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Dutch club did the goalkeeper Michel Vorm leave for Swansea City in 2011?",
+   "a": "FC Utrecht"
+  },
+  {
+   "q": "Which club did the goalkeeper Kenneth Vermeer join from Ajax in the summer of 2014?",
+   "a": "Feyenoord",
+   "sub": "Ajax felt tricked into selling him cheaply to a direct rival.",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Dutch club did the goalkeeper Jasper Cillessen join Ajax from in 2011?",
+   "a": "NEC",
+   "club": "ajax"
+  },
+  {
+   "q": "Which referee handed out thirteen yellow cards in ADO Den Haag against Feyenoord in August 2014?",
+   "a": "Danny Makkelie",
+   "sub": "No Eredivisie match had brought more.",
+   "club": "ado-den-haag"
+  },
+  {
+   "q": "Which club won 22 league matches in a row between May and December 1987?",
+   "a": "PSV"
+  },
+  {
+   "q": "Which club did Feyenoord beat 9-5 in 1960-61 on the way to their first Eredivisie title?",
+   "a": "Ajax",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Dutch referee took charge of the 2013 Europa League final between Chelsea and Benfica in Amsterdam?",
+   "a": "Björn Kuipers"
+  },
+  {
+   "q": "Which Dutch coach had won the Eredivisie six times by the end of 2017-18, more than any other?",
+   "a": "Guus Hiddink"
+  },
+  {
+   "q": "A video referee ruled out a late Stijn Wuytens header in the 2017 KNVB Cup semi-final. Which club did he play for?",
+   "a": "AZ",
+   "sub": "The video referee spotted a push by his team-mate Levi Garcia."
+  },
+  {
+   "q": "Between 2006 and 2019, how many Eredivisie clubs went down automatically each season?",
+   "a": "One, the bottom club",
+   "sub": "The clubs finishing 16th and 17th went into the play-offs."
+  },
+  {
+   "q": "Which club's defence went 1159 minutes without conceding across 2004-05, setting an Eredivisie record?",
+   "a": "PSV",
+   "sub": "Two keepers shared the run, Heurelho Gomes and Edwin Zoetebier."
+  },
+  {
+   "q": "Which Feyenoord striker scored in the 99th minute against FC Utrecht in November 2016, the latest goal the league had seen?",
+   "a": "Michiel Kramer",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which 17-year-old scored a hat-trick for PSV against NEC in August 2013?",
+   "a": "Zakaria Bakkali",
+   "sub": "He was 17 years and 196 days old, the youngest to do it at the time.",
+   "club": "psv"
+  },
+  {
+   "q": "Which Dutch club did the goalkeeper Hans van Breukelen play for before Nottingham Forest?",
+   "a": "FC Utrecht"
+  },
+  {
+   "q": "Which two clubs drew 6-6 in the Eredivisie in 1990-91?",
+   "a": "RKC Waalwijk and FC Twente",
+   "sub": "No Eredivisie draw had produced more goals."
+  },
+  {
+   "q": "Which club was Klaas-Jan Huntelaar at when he started the 2005-06 season, before joining Ajax in January and taking the golden boot?",
+   "a": "sc Heerenveen",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Brazilian was Eredivisie top scorer in 2006-07 with 34 goals for Heerenveen?",
+   "a": "Afonso Alves",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Which Enschede club lost only three of 34 matches in 1971-72 but drew fourteen of them?",
+   "a": "FC Twente",
+   "sub": "They finished third, fifteen points behind Ajax."
+  },
+  {
+   "q": "Which Ajax forward scored six goals in one Eredivisie match, an 8-1 win over AZ '67 in 1970-71?",
+   "a": "Johan Cruyff",
+   "sub": "It happened on 29 November 1970.",
+   "club": "ajax"
   },
   {
    "q": "Which striker scored 33 Eredivisie goals for Ajax in 2007-08, far more than anyone else in the league that season?",
@@ -1951,6 +2131,177 @@
    "q": "Which second-tier club did AZ sign Vincent Janssen from in 2015?",
    "a": "Almere City",
    "club": "az-alkmaar"
+  },
+  {
+   "q": "Which club conceded only 13 goals in 1971-72, the fewest in an Eredivisie season up to 2017-18?",
+   "a": "FC Twente",
+   "sub": "Their keeper Piet Schrijvers won the least beaten goalkeeper trophy for it."
+  },
+  {
+   "q": "In which season did Ajax collect 89 points, the most in an Eredivisie season under three points for a win up to 2017-18?",
+   "a": "1997-98",
+   "club": "ajax"
+  },
+  {
+   "q": "Which club did Ajax beat 8-1 away in 1997-98?",
+   "a": "De Graafschap",
+   "club": "ajax"
+  },
+  {
+   "q": "NAC's Koos Waslander scored after 8 seconds in March 1982. Which club were the opponents?",
+   "a": "PEC Zwolle",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Which PSV defender was sent off after 29 seconds at NAC Breda in 2014-15?",
+   "a": "Jetro Willems",
+   "sub": "The fastest red card the Eredivisie had seen.",
+   "club": "psv"
+  },
+  {
+   "q": "Which Dutch referee took charge of 541 Eredivisie matches before retiring in 2010?",
+   "a": "Roelof Luinge"
+  },
+  {
+   "q": "Which Dutch referee was voted referee of the year for 2007-08 and then quit in July 2008 after a row with the KNVB?",
+   "a": "Dick Jol"
+  },
+  {
+   "q": "Which Dutch referee, one of the first openly gay officials in the game, later ran refereeing at the KNVB?",
+   "a": "John Blankenstein"
+  },
+  {
+   "q": "Which Dutch referee called on video assistants for the first time in an international, Italy against France in September 2016?",
+   "a": "Björn Kuipers"
+  },
+  {
+   "q": "FC Utrecht were playing in January 2017 when a referee in the Netherlands first used a pitchside monitor. Who were the opponents?",
+   "a": "Cambuur",
+   "club": "fc-utrecht"
+  },
+  {
+   "q": "In August 2018 a video referee ruled out an Eredivisie goal for the first time. Which club was denied?",
+   "a": "Willem II",
+   "sub": "Fran Sol had punched it in, Maradona style, against VVV-Venlo."
+  },
+  {
+   "q": "Between 2009 and 2014, which four league positions played the Eredivisie play-offs for a European ticket?",
+   "a": "Fifth to eighth"
+  },
+  {
+   "q": "From 2015 the Eredivisie European play-offs were opened to which four league positions?",
+   "a": "Fourth to seventh"
+  },
+  {
+   "q": "In which season did the Eredivisie bring back play-offs for European tickets, taking in the clubs from second to thirteenth?",
+   "a": "2005-06"
+  },
+  {
+   "q": "Which Alkmaar club won the Eredivisie in 1980-81 with six rounds still to play?",
+   "a": "AZ '67"
+  },
+  {
+   "q": "Which Belgian striker was Eredivisie top scorer in 2010-11 with 23 goals for NEC?",
+   "a": "Björn Vleminckx",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Which Breda club did Pierre van Hooijdonk score for in eleven league matches in a row in 1993-94?",
+   "a": "NAC Breda"
+  },
+  {
+   "q": "Which Ajax goalkeeper set an Eredivisie record in 1971 by going 1082 minutes without conceding?",
+   "a": "Heinz Stuy",
+   "club": "ajax"
+  },
+  {
+   "q": "Which trophy for the least beaten goalkeeper in Dutch professional football did Voetbal International launch in 1972?",
+   "a": "The Tonny van Leeuwen trophy"
+  },
+  {
+   "q": "Which Tilburg club lost fourteen league matches in a row between March and September 2010?",
+   "a": "Willem II"
+  },
+  {
+   "q": "Which Utrecht club won the first of the two Dutch play-offs for a UEFA Cup place, in 1987?",
+   "a": "FC Utrecht"
+  },
+  {
+   "q": "Which northern club won the 1988 Dutch play-off for a UEFA Cup place after finishing only eleventh in the league?",
+   "a": "FC Groningen",
+   "sub": "UEFA refused to let the winner in again, so the KNVB scrapped it."
+  },
+  {
+   "q": "Which club were the first winners of the Dutch promotion play-offs, in 1973?",
+   "a": "De Graafschap",
+   "sub": "A young Guus Hiddink was in that side."
+  },
+  {
+   "q": "Which club scored only 16 goals in the whole of 1971-72, the fewest in an Eredivisie season up to 2017-18?",
+   "a": "FC Volendam"
+  },
+  {
+   "q": "Which club won just one of its 34 matches in 1970-71?",
+   "a": "Haarlem"
+  },
+  {
+   "q": "Which Dutch goalkeeper won the least beaten keeper trophy with PSV in both 1985-86 and 1986-87?",
+   "a": "Hans van Breukelen",
+   "club": "psv"
+  },
+  {
+   "q": "Which Rotterdam club did the goalkeeper Ed de Goey play for before joining Feyenoord in 1990?",
+   "a": "Sparta Rotterdam",
+   "club": "feyenoord"
+  },
+  {
+   "q": "How many points did Ajax take in 1971-72, the most in any Eredivisie season under two points for a win?",
+   "a": "63",
+   "club": "ajax"
+  },
+  {
+   "q": "Which PSV defender was named Player of the Year at the first Eredivisie Awards, for 2017-18?",
+   "a": "Santiago Arias",
+   "club": "psv"
+  },
+  {
+   "q": "Which Ajax winger was named Talent of the Year at the first Eredivisie Awards, for 2017-18?",
+   "a": "David Neres",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Dutch referee had been a serving police officer in Rotterdam alongside his refereeing career?",
+   "a": "Danny Makkelie"
+  },
+  {
+   "q": "Which club was relegated from the Eredivisie in 1959-60 with 29 points, the biggest haul by a relegated club up to 2017-18?",
+   "a": "Blauw-Wit"
+  },
+  {
+   "q": "Which club conceded 111 goals in 1958-59, the most in any Eredivisie season up to 2017-18?",
+   "a": "Holland Sport, the club known as SHS"
+  },
+  {
+   "q": "Which Dutch referee made his Eredivisie debut in 2009-10 aged 24, the youngest debutant the league had had?",
+   "a": "Serdar Gözübüyük"
+  },
+  {
+   "q": "Which two clubs did Björn Kuipers referee in his last match, the 2021 Johan Cruijff Schaal?",
+   "a": "Ajax and PSV"
+  },
+  {
+   "q": "Which Dutch referee lost a Champions League final and Euro 2000 to six months out with throat cancer in 1999?",
+   "a": "Mario van der Ende"
+  },
+  {
+   "q": "Which Ajax teenager scored on his Eredivisie debut in 2013-14, aged 17 years and 104 days?",
+   "a": "Jaïro Riedewald",
+   "club": "ajax"
+  },
+  {
+   "q": "Which club took four penalties in one Eredivisie match against RBC Roosendaal in February 2005?",
+   "a": "PSV",
+   "club": "rbc-roosendaal"
   },
   {
    "q": "Who scored the only goal at Vitesse on 20 April 2008, the final-day win that clinched PSV's fourth straight title?",
@@ -3335,6 +3686,188 @@
    "club": "vvv-venlo"
   },
   {
+   "q": "Which Heerenveen team-mate scored the other two goals in the 9-0 win over Heracles Almelo in October 2007?",
+   "a": "Gerald Sibon",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Which coach took Afonso Alves off near the end of the 9-0 against Heracles so he could be applauded?",
+   "a": "Gertjan Verbeek",
+   "sub": "Heerenveen finished with ten men because all three subs were used.",
+   "club": "heracles-almelo"
+  },
+  {
+   "q": "Which Ajax substitute was sent off 19 seconds after coming on in 1996-97?",
+   "a": "Márcio Santos",
+   "club": "ajax"
+  },
+  {
+   "q": "Which NEC defender collected 84 Eredivisie yellow cards, more than any other player up to 2017-18?",
+   "a": "Patrick Pothuizen",
+   "club": "nec-nijmegen"
+  },
+  {
+   "q": "Which ADO Den Haag defender scored three own goals in the 2014-15 Eredivisie season?",
+   "a": "Timothy Derijck",
+   "club": "ado-den-haag"
+  },
+  {
+   "q": "Which defender put eight own goals past his own keepers in the Eredivisie for Feyenoord, Willem II and Heerenveen?",
+   "a": "Sven van Beek",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which referee gave a penalty after 8 seconds in Heerenveen against Cambuur in 2014?",
+   "a": "Richard Liesveld",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Which Feyenoord midfielder was booked after 3 seconds against Ajax in 2008, equalling the Eredivisie record?",
+   "a": "Diego Biseswar",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Dordrecht '90 player was booked after 3 seconds at Feyenoord in 1992?",
+   "a": "Hans Kraay junior",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Rotterdam club went eleven matches and 1045 minutes without scoring across 1970-71 and 1971-72?",
+   "a": "Excelsior"
+  },
+  {
+   "q": "Which Eredivisie season averaged 3.88 goals a match, more than any other up to 2017-18?",
+   "a": "1958-59"
+  },
+  {
+   "q": "Which club went the whole of 1972-73 without drawing a single Eredivisie match?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which Rotterdam club drew eighteen of its 34 matches in 1974-75?",
+   "a": "Sparta Rotterdam",
+   "sub": "PEC Zwolle in 1978-79 and FC Twente in 1988-89 later matched it."
+  },
+  {
+   "q": "Which club won its first seventeen matches of the 1987-88 Eredivisie?",
+   "a": "PSV"
+  },
+  {
+   "q": "Which club won nineteen Eredivisie matches in a row inside the 1971-72 season?",
+   "a": "Ajax"
+  },
+  {
+   "q": "Which Brazilian was Eredivisie top scorer with PSV in 1994-95, aged just 18?",
+   "a": "Ronaldo",
+   "club": "psv"
+  },
+  {
+   "q": "Which 39-year-old scored an Eredivisie hat-trick for Sportclub Enschede in 1959-60?",
+   "a": "Abe Lenstra"
+  },
+  {
+   "q": "Which VVV forward scored an Eredivisie goal in 1961-62 aged 40 years and 255 days?",
+   "a": "Gijs Nass",
+   "club": "vvv-venlo"
+  },
+  {
+   "q": "Which Volendam player scored an Eredivisie goal in 1959-60 aged 16 years and 100 days?",
+   "a": "Wim Kras",
+   "club": "volendam"
+  },
+  {
+   "q": "Which Iranian striker came off the bench on his PEC Zwolle debut in 2019 and scored four goals?",
+   "a": "Reza Ghoochannejhad",
+   "sub": "It was 15 September 2019, against RKC Waalwijk.",
+   "club": "pec-zwolle"
+  },
+  {
+   "q": "Dick Jol showed his 1000th Eredivisie yellow card in October 2007. A player of which club received it?",
+   "a": "Vitesse",
+   "sub": "The unlucky man was Civard Sprockel."
+  },
+  {
+   "q": "Which award did Dick Jol receive as Dutch referee of the year for 2007-08?",
+   "a": "The Gouden Kaart, the Golden Card"
+  },
+  {
+   "q": "Which two Dutch clubs did Dick Jol play for as a professional before he took up refereeing?",
+   "a": "NEC and KV Kortrijk"
+  },
+  {
+   "q": "Which Englishman replaced John Blankenstein as referee of the 1994 Champions League final days before the game?",
+   "a": "Philip Don"
+  },
+  {
+   "q": "Which Eredivisie club's coach did Roelof Luinge send to the stands twice for calling him names?",
+   "a": "sc Heerenveen",
+   "sub": "The coach was Foppe de Haan."
+  },
+  {
+   "q": "In which Eredivisie match did Roelof Luinge make his professional debut as a referee, in October 1983?",
+   "a": "NAC against VVV"
+  },
+  {
+   "q": "Which Dutch referee sat in a van outside the Philips Stadion as the first live video assistant, in a friendly in July 2016?",
+   "a": "Danny Makkelie"
+  },
+  {
+   "q": "Which referee used the pitchside monitor for the first time in the Netherlands, in a cup tie in January 2017?",
+   "a": "Pol van Boekel"
+  },
+  {
+   "q": "In a 2017 play-off between NAC and NEC a referee used video to take a red card back. Which NEC defender was reprieved?",
+   "a": "Wojciech Golla",
+   "club": "nac-breda"
+  },
+  {
+   "q": "Which referee took a red card back after a video review in the NAC against NEC play-off of May 2017?",
+   "a": "Dennis Higler",
+   "club": "nac-breda"
+  },
+  {
+   "q": "How many yellow cards did Björn Kuipers show in the 2014 Champions League final, a record for that match?",
+   "a": "Twelve"
+  },
+  {
+   "q": "Which club won the Eredivisie play-offs for a European ticket in 2019?",
+   "a": "FC Utrecht"
+  },
+  {
+   "q": "Which club won the second edition of the Dutch promotion play-offs, in 1974?",
+   "a": "FC Wageningen"
+  },
+  {
+   "q": "How many clubs took part in the Eredivisie promotion and relegation play-offs each year between 2006 and 2019?",
+   "a": "Ten"
+  },
+  {
+   "q": "Which PSV goalkeeper won the least beaten keeper trophy in 1977-78?",
+   "a": "Jan van Beveren",
+   "club": "psv"
+  },
+  {
+   "q": "Which Feyenoord goalkeeper won the least beaten keeper trophy in 1978-79?",
+   "a": "Eddy Treijtel",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Ajax goalkeeper won the least beaten keeper trophy in 1972-73?",
+   "a": "Heinz Stuy",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Feyenoord goalkeeper won the least beaten keeper trophy in 1983-84?",
+   "a": "Joop Hiele",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Who scored the Feyenoord goal against ADO Den Haag in September 2020 that won the first Eredivisie Goal of the Year?",
+   "a": "Marcos Senesi",
+   "sub": "An overhead kick, voted the best goal of 2020-21.",
+   "club": "feyenoord"
+  },
+  {
    "q": "Which interim coach, fetched back from Nagoya Grampus in Japan, guided PSV to the 2007-08 title after Koeman left?",
    "a": "Sef Vergoossen",
    "club": "psv"
@@ -4285,6 +4818,85 @@
    "q": "Erik Pieters was sent off on his PSV comeback in January 2013 and then hurt his arm badly. How?",
    "a": "He punched a window",
    "club": "psv"
+  },
+  {
+   "q": "Which Heerenveen striker scored seven goals in one Eredivisie match in October 2007?",
+   "a": "Afonso Alves",
+   "sub": "It came in a 9-0 win over Heracles Almelo on 7 October 2007.",
+   "club": "sc-heerenveen"
+  },
+  {
+   "q": "Luis Suárez was banned for seven matches in 2010 for biting an opponent in Ajax against PSV. Who did he bite?",
+   "a": "Otman Bakkal",
+   "sub": "The Dutch press christened him the Cannibal of Ajax.",
+   "club": "ajax"
+  },
+  {
+   "q": "What did the Feyenoord goalkeeper Eddy Treijtel hit with a goal kick at Sparta in November 1970?",
+   "a": "A seagull, which fell dead on the pitch",
+   "sub": "Both clubs claim to have the stuffed bird in their museum.",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which goalkeeper scored seven Eredivisie goals, more than any other keeper up to 2017-18?",
+   "a": "Nico van Zoghel",
+   "sub": "Six of them came for Go Ahead, and he added two in the second tier."
+  },
+  {
+   "q": "The trophy for the least beaten keeper in Dutch football is named after a GVAV goalkeeper. What happened to him in June 1971?",
+   "a": "He died in a car crash driving home from the KNVB ceremony",
+   "sub": "Tonny van Leeuwen was 28."
+  },
+  {
+   "q": "Which Ajax goalkeeper of the European Cup years was nicknamed Heinz Kroket for the way he fumbled high balls?",
+   "a": "Heinz Stuy",
+   "sub": "Fans said he dropped them like a hot croquette.",
+   "club": "ajax"
+  },
+  {
+   "q": "Which goalkeeper answered to De Beer van de Meer, De Bolle van Zwolle and Het Lek van PEC?",
+   "a": "Piet Schrijvers"
+  },
+  {
+   "q": "Which Vitesse defender scored his first Eredivisie goal in 2017, after 303 matches without one?",
+   "a": "Arnold Kruiswijk",
+   "sub": "It came against Sparta Rotterdam on 10 March 2017.",
+   "club": "vitesse"
+  },
+  {
+   "q": "An FC Twente player set a grim Eredivisie record in 1987-88 by getting injured after how long?",
+   "a": "15 seconds",
+   "sub": "The unlucky man was Freddy ten Caat.",
+   "club": "twente"
+  },
+  {
+   "q": "Which club scored three own goals in one match at PSV in October 1989?",
+   "a": "MVV",
+   "sub": "Hans Linders got two of them on his own.",
+   "club": "psv"
+  },
+  {
+   "q": "Roelof Luinge's last professional match was a cup tie between Feyenoord and Ajax in May 2010. How did it end for him?",
+   "a": "He was substituted in the 88th minute so the crowd could applaud him",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Ajax won 12-1 at home to Vitesse in 1972 and 13-0 away in October 2020. Which club shipped the 13-0?",
+   "a": "VVV-Venlo",
+   "sub": "It finished 0-13 in Venlo.",
+   "club": "ajax"
+  },
+  {
+   "q": "Johan Cruyff, Johan Neeskens and Dick van Dijk all did the same thing in Ajax's 12-1 win over Vitesse in 1972. What?",
+   "a": "They each scored a hat-trick",
+   "sub": "Cruyff actually took four, in Dick van Dijk's farewell match.",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Dutch keeper was still turning out in the Eredivisie for Go Ahead Eagles at the age of 44, in 1985?",
+   "a": "Jan Jongbloed",
+   "sub": "He was 44 years, 9 months and 14 days old.",
+   "club": "go-ahead-eagles"
   },
   {
    "q": "Which Ajax coach resigned in December 2010, making way for Frank de Boer?",

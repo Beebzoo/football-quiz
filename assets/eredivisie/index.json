@@ -1,6 +1,76 @@
 {
  "easy": [
   {
+   "q": "What is the name of Ajax's reserve team, which has played in the Eerste Divisie since 2013?",
+   "a": "Jong Ajax",
+   "sub": "It plays its home games at the club's training complex, De Toekomst."
+  },
+  {
+   "q": "The Ajax club museum is housed inside which building?",
+   "a": "The Johan Cruyff Arena, Ajax's own stadium"
+  },
+  {
+   "q": "Which African country does the former Ajax goalkeeper Andre Onana play for?",
+   "a": "Cameroon",
+   "club": "ajax"
+  },
+  {
+   "q": "Danny Blind captained Ajax through the 1990s. Which Ajax defender is his son?",
+   "a": "Daley Blind",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax lost the 2017 Europa League final. In which Scandinavian capital was it played?",
+   "a": "Stockholm",
+   "sub": "At the Friends Arena in Solna, just outside the city.",
+   "club": "ajax"
+  },
+  {
+   "q": "What is the name of PSV's reserve team, which joined the Eerste Divisie in 2013?",
+   "a": "Jong PSV"
+  },
+  {
+   "q": "PSV's training ground and academy is called De Herdgang. In which city is it?",
+   "a": "Eindhoven",
+   "club": "psv"
+  },
+  {
+   "q": "PSV keep the number 12 shirt out of use. Who is it reserved for?",
+   "a": "The supporters, as the twelfth man",
+   "club": "psv"
+  },
+  {
+   "q": "PSV's home city of Eindhoven lies in which Dutch province?",
+   "a": "North Brabant",
+   "club": "psv"
+  },
+  {
+   "q": "Which English club did Feyenoord beat 1-0 at De Kuip in the Europa League in September 2016?",
+   "a": "Manchester United",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Feyenoord are named after the Rotterdam district they were founded in. What is the district called?",
+   "a": "Feijenoord",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which country was Ernst Happel, the coach who won Feyenoord the 1970 European Cup, from?",
+   "a": "Austria",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Feyenoord's supporters call themselves Het Legioen. What does that mean in English?",
+   "a": "The Legion",
+   "club": "feyenoord"
+  },
+  {
+   "q": "In which season did Feyenoord celebrate their hundredth birthday?",
+   "a": "2008-09",
+   "sub": "The old golden logo came back for the anniversary.",
+   "club": "feyenoord"
+  },
+  {
    "q": "Which club won the 2007-08 Eredivisie, a fourth straight title for the Eindhoven side?",
    "a": "PSV",
    "sub": "Sef Vergoossen finished the job after Ronald Koeman walked out for Valencia in October."
@@ -377,6 +447,176 @@
   {
    "q": "Which fishing town produced the Ajax brothers Gerrie and Arnold Mühren?",
    "a": "Volendam",
+   "club": "ajax"
+  },
+  {
+   "q": "Which striker was Ajax's leading Eredivisie scorer in the 2010-11 title season, with 13 goals?",
+   "a": "Mounir El Hamdaoui",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax sealed the 2012-13 title on 5 May 2013 with a 5-0 home win over which Tilburg club?",
+   "a": "Willem II",
+   "club": "ajax"
+  },
+  {
+   "q": "Who officially opened the Amsterdam ArenA, Ajax's new home, in August 1996?",
+   "a": "Queen Beatrix",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax played the first match at their new Amsterdam ArenA in 1996 against which Italian club?",
+   "a": "AC Milan, who won 3-0",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Uruguayan wore the Ajax captain's armband from 2009 until his move to Liverpool in 2011?",
+   "a": "Luis Suarez",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Ajax coach resigned in May 2016 after two straight runner-up finishes behind PSV?",
+   "a": "Frank de Boer",
+   "club": "ajax"
+  },
+  {
+   "q": "Which former Ajax goalkeeper became the club's chief executive in late 2016?",
+   "a": "Edwin van der Sar",
+   "sub": "He had joined the Ajax board as marketing director in 2012.",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax's 2013-14 championship was a first in the club's long history. Why?",
+   "a": "It was their fourth Eredivisie title in a row",
+   "club": "ajax"
+  },
+  {
+   "q": "Which two former Ajax players were put on the board after Johan Cruyff won the 2011 power struggle?",
+   "a": "Edwin van der Sar and Marc Overmars",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Danish playmaker, a former Barcelona and Real Madrid star, joined Ajax in 1997?",
+   "a": "Michael Laudrup",
+   "club": "ajax"
+  },
+  {
+   "q": "In which year did Ajax open their training and academy complex De Toekomst?",
+   "a": "1996",
+   "sub": "The same year the club moved into the Amsterdam ArenA.",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Italian club beat Ajax 6-1 in Amsterdam in 2022, the club's heaviest European defeat?",
+   "a": "Napoli",
+   "club": "ajax"
+  },
+  {
+   "q": "Which goalkeeper saved the decisive penalty as PSV won the 1988 European Cup shoot-out?",
+   "a": "Hans van Breukelen",
+   "club": "psv"
+  },
+  {
+   "q": "Which Belgian defender captained PSV in the 1988 European Cup final?",
+   "a": "Eric Gerets",
+   "club": "psv"
+  },
+  {
+   "q": "Which Belgian midfielder captained PSV from 2007 to 2010?",
+   "a": "Timmy Simons",
+   "club": "psv"
+  },
+  {
+   "q": "Which Swedish forward captained PSV in the 2011-12 season?",
+   "a": "Ola Toivonen",
+   "club": "psv"
+  },
+  {
+   "q": "Short of money in 2011, PSV sold the land under the Philips Stadion. Who bought it?",
+   "a": "The city of Eindhoven",
+   "club": "psv"
+  },
+  {
+   "q": "Philips gave up the PSV shirt sponsorship in 2016. Which Dutch energy company took over?",
+   "a": "energiedirect.nl",
+   "club": "psv"
+  },
+  {
+   "q": "In which year did Philips first appear on the PSV shirt, the year shirt sponsors arrived in Dutch football?",
+   "a": "1982",
+   "club": "psv"
+  },
+  {
+   "q": "Which PSV forward played 528 league matches and scored 308 league goals between 1964 and 1981?",
+   "a": "Willy van der Kuijlen",
+   "club": "psv"
+  },
+  {
+   "q": "Which PSV midfielder wore the captain's armband in 2010, the year he left for Barcelona?",
+   "a": "Ibrahim Afellay",
+   "club": "psv"
+  },
+  {
+   "q": "Which Feyenoord defender captained the club from 2010 to 2012 before joining Aston Villa?",
+   "a": "Ron Vlaar",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Italian striker scored 27 goals in 29 matches on loan at Feyenoord in 2012-13?",
+   "a": "Graziano Pelle",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which former Netherlands coach was Feyenoord's technical director from 2009 until he resigned in January 2011?",
+   "a": "Leo Beenhakker",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Italian club did Feyenoord sign the striker Graziano Pelle from?",
+   "a": "Parma",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which manager turned Feyenoord down in 2011 before Ronald Koeman took the job?",
+   "a": "Louis van Gaal",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Taking the Feyenoord job in 2011 made Ronald Koeman unique in Dutch football. Why?",
+   "a": "He had now played for and managed all three of Ajax, PSV and Feyenoord"
+  },
+  {
+   "q": "Feyenoord made the worst start in their history in 2013-14, losing the first three. Name any of the three winners.",
+   "a": "PEC Zwolle, FC Twente or Ajax",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Feyenoord played their 2016-17 European home matches in a half empty De Kuip. Why?",
+   "a": "To avoid fresh UEFA punishment after crowd trouble",
+   "club": "feyenoord"
+  },
+  {
+   "q": "In 2016-17 Feyenoord became only the second club ever to do what in the Eredivisie?",
+   "a": "Lead the table from the first day to the last",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Feyenoord coach resigned in October 2019 straight after a 4-0 defeat at Ajax?",
+   "a": "Jaap Stam",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which club ended PSV's run of thirteen straight wins at the start of the 2018-19 Eredivisie?",
+   "a": "Feyenoord",
+   "club": "psv"
+  },
+  {
+   "q": "Ajax ran a feeder club in South Africa for many years. What was it called?",
+   "a": "Ajax Cape Town"
+  },
+  {
+   "q": "What is the Ajax against PSV fixture known as in the Netherlands?",
+   "a": "De Topper",
    "club": "ajax"
   },
   {
@@ -1368,6 +1608,202 @@
    "q": "De Graafschap was founded in 1954, the year professional football arrived. What does the name mean?",
    "a": "The county, after the old county of Zutphen in the Achterhoek",
    "club": "de-graafschap"
+  },
+  {
+   "q": "Which Ajax defender took over the captaincy from Davy Klaassen in 2017?",
+   "a": "Joel Veltman",
+   "club": "ajax"
+  },
+  {
+   "q": "On 14 May 2017 Ajax fielded the youngest team in Eredivisie history. Who were the opponents?",
+   "a": "Willem II",
+   "sub": "Peter Bosz picked a side averaging 20 years and 139 days.",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Romanian defender captained Ajax from 2001 to 2003?",
+   "a": "Cristian Chivu",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Finnish defender captained Ajax in the 2014-15 season?",
+   "a": "Niklas Moisander",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Ajax and Netherlands defender wore the captain's armband from 1974 to 1980?",
+   "a": "Ruud Krol",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Spanish midfielder was the last player to wear the number 14 shirt for Ajax?",
+   "a": "Roger, in the 2006-07 season",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax retired the number 14 shirt on 25 April 2007. What was the occasion?",
+   "a": "Johan Cruyff's 60th birthday",
+   "club": "ajax"
+  },
+  {
+   "q": "The Ajax academy teaches a model called TIPS. What do the four letters stand for?",
+   "a": "Technique, Insight, Personality and Speed",
+   "club": "ajax"
+  },
+  {
+   "q": "In 2011 Ajax opened their first youth academy outside the Netherlands. In which country?",
+   "a": "Greece",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Englishman won eight Dutch championships as Ajax coach, the last of them in 1946-47?",
+   "a": "Jack Reynolds",
+   "club": "ajax"
+  },
+  {
+   "q": "Jong Ajax won the 2017-18 Eerste Divisie. Which Moroccan international full-back played in that side?",
+   "a": "Noussair Mazraoui",
+   "club": "ajax"
+  },
+  {
+   "q": "Which English club knocked Ajax out of the 2011-12 Europa League despite losing 2-1 at Old Trafford?",
+   "a": "Manchester United",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Icelandic striker did Ajax sign in the summer of 2011, only for injury to cost him five months?",
+   "a": "Kolbeinn Sigthorsson",
+   "club": "ajax"
+  },
+  {
+   "q": "The main stand at Ajax's De Toekomst is named after which long serving assistant coach?",
+   "a": "Bobby Haarms",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax run an under-17 tournament named after their training complex. What is it called?",
+   "a": "The Future Cup",
+   "club": "ajax"
+  },
+  {
+   "q": "Which PSV midfielder captained the club in 2010-11, between Ibrahim Afellay and Ola Toivonen?",
+   "a": "Orlando Engelaar",
+   "club": "psv"
+  },
+  {
+   "q": "Which Belgian striker captained PSV from 1998 to 2000?",
+   "a": "Luc Nilis",
+   "club": "psv"
+  },
+  {
+   "q": "Which PSV defender captained the club from 1995 to 1998 and then joined Rangers?",
+   "a": "Arthur Numan",
+   "club": "psv"
+  },
+  {
+   "q": "How much did the city of Eindhoven pay PSV in 2011 for the land under the stadium and training ground?",
+   "a": "48.4 million euros",
+   "club": "psv"
+  },
+  {
+   "q": "PSV switched on their new floodlights in 1958 with an exhibition match against which Belgian club?",
+   "a": "Anderlecht",
+   "club": "psv"
+  },
+  {
+   "q": "PSV opened their rebuilt main stand in 1988 with a friendly against which Italian club?",
+   "a": "AC Milan",
+   "club": "psv"
+  },
+  {
+   "q": "PSV's record home crowd of 35,200 came in November 2002 against which club?",
+   "a": "Feyenoord",
+   "club": "psv"
+  },
+  {
+   "q": "In which year was De Herdgang, PSV's training ground, built?",
+   "a": "1952",
+   "club": "psv"
+  },
+  {
+   "q": "Which PSV manager pushed through the rebuilding of the youth facilities at De Herdgang in 2003?",
+   "a": "Guus Hiddink",
+   "club": "psv"
+  },
+  {
+   "q": "PSV's oldest local rivalry, going back to the 1910s, is with which other club from their own city?",
+   "a": "FC Eindhoven",
+   "club": "psv"
+  },
+  {
+   "q": "Which former PSV captain came back to Eindhoven in 2012 and took the armband again?",
+   "a": "Mark van Bommel",
+   "club": "psv"
+  },
+  {
+   "q": "Which architect designed De Kuip, Feyenoord's stadium?",
+   "a": "Leendert van der Vlugt, of the firm Brinkman en Van der Vlugt",
+   "club": "feyenoord"
+  },
+  {
+   "q": "De Kuip opened on 27 March 1937 with a 5-2 Feyenoord win over which Belgian club?",
+   "a": "Beerschot",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Who scored the first goal at De Kuip, in the opening match of 1937?",
+   "a": "Leen Vente"
+  },
+  {
+   "q": "What is the club museum inside De Kuip called?",
+   "a": "The Home of History"
+  },
+  {
+   "q": "Two stands at De Kuip carry the names of club figures. Name either of them.",
+   "a": "Gerard Meijer or Willem van Hanegem"
+  },
+  {
+   "q": "Which former Feyenoord striker was the stadium announcer at De Kuip from 1998 to 2025?",
+   "a": "Peter Houtman",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Feyenoord's first team left Varkenoord in the summer of 2018 for a new base. What is it called?",
+   "a": "Trainingscomplex 1908",
+   "club": "feyenoord"
+  },
+  {
+   "q": "The main stand at the rebuilt Varkenoord is named after which former Feyenoord captain and coach?",
+   "a": "Giovanni van Bronckhorst",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which group of wealthy supporters bought into Feyenoord in October 2010 to steady the club?",
+   "a": "The Vrienden van Feyenoord, the Friends of Feyenoord"
+  },
+  {
+   "q": "How big was Feyenoord's debt in 2010, when the KNVB put them in its worst financial category?",
+   "a": "About 40 million euros",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which defender took the Feyenoord armband when Ron Vlaar left for Aston Villa in 2012?",
+   "a": "Stefan de Vrij",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Dutch defender did Feyenoord sign from Malaga in August 2012?",
+   "a": "Joris Mathijsen",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Feyenoord's heaviest Klassieker defeat came in September 1983. What was the score?",
+   "a": "Ajax 8-2 Feyenoord"
+  },
+  {
+   "q": "Which goalkeeper crossed from Ajax to Feyenoord in 2014, to the fury of both sets of fans?",
+   "a": "Kenneth Vermeer",
+   "club": "ajax"
   },
   {
    "q": "Which Limburg club finished runners-up to Ajax in the very first Eredivisie season, 1956-57?",
@@ -2777,6 +3213,214 @@
    "q": "Which striker won the Eredivisie golden boot five times, four with Ajax in the 1970s and once with Sparta in 1981?",
    "a": "Ruud Geels",
    "club": "ajax"
+  },
+  {
+   "q": "Which Ajax player scored the club's first goal in the Amsterdam ArenA, against NAC Breda in August 1996?",
+   "a": "Kiki Musampa",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax beat which Luxembourg club 14-0 in the 1984-85 UEFA Cup, the biggest win in their history?",
+   "a": "Red Boys Differdange",
+   "club": "ajax"
+  },
+  {
+   "q": "At the opening of Ajax's Amsterdam ArenA the queen unveiled the world's largest painting. What was it called?",
+   "a": "De Zee, The Sea",
+   "club": "ajax"
+  },
+  {
+   "q": "A torch relay ended at the opening of Ajax's new stadium in 1996. Cruyff ran first. Who ran the last leg?",
+   "a": "Frank Rijkaard",
+   "club": "ajax"
+  },
+  {
+   "q": "The grass under Ajax's retractable roof would not grow. How many times was it replaced in the first ten years?",
+   "a": "45 times",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Ajax winger wore the number 14 shirt in the 1978-79 season?",
+   "a": "Tscheu La Ling",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Ajax shirt number has not been handed out since Abdelhak Nouri collapsed in a friendly in 2017?",
+   "a": "34",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Ajax winger started the club's veterans charity side, Lucky Ajax, in the 1970s?",
+   "a": "Sjaak Swart",
+   "club": "ajax"
+  },
+  {
+   "q": "To be invited to play for Lucky Ajax you must belong to which Ajax list?",
+   "a": "The Club van 100, players with 100 or more official Ajax appearances"
+  },
+  {
+   "q": "Ajax's 2017 Europa League final side set a record for a European final. What was the average age?",
+   "a": "22 years and 282 days",
+   "club": "ajax"
+  },
+  {
+   "q": "In March 2011 an entire Ajax body quit rather than carry out Johan Cruyff's plans. Which one?",
+   "a": "The board of directors",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax were sixth and ten points off the top in February 2012, then won the title. How did they do it?",
+   "a": "By winning their last 14 matches of the season",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Ajax defender scored a late winner at Old Trafford in the 2012 Europa League?",
+   "a": "Toby Alderweireld",
+   "club": "ajax"
+  },
+  {
+   "q": "Which reserve league did Jong Ajax leave in 2013, having won it a record eight times?",
+   "a": "The Beloften Eredivisie",
+   "club": "ajax"
+  },
+  {
+   "q": "Who scored the winning penalty for PSV in the 1988 European Cup shoot-out against Benfica?",
+   "a": "Anton Janssen",
+   "club": "psv"
+  },
+  {
+   "q": "Jong PSV were only offered the last Eerste Divisie place in 2013 after which amateur club turned it down?",
+   "a": "VV Katwijk",
+   "club": "psv"
+  },
+  {
+   "q": "Where did Jong PSV play their home matches when they first joined the Eerste Divisie in 2013?",
+   "a": "The Philips Stadion",
+   "club": "psv"
+  },
+  {
+   "q": "Under the KNVB rules, PSV players with how many first-team appearances were barred from Jong PSV?",
+   "a": "150 or more",
+   "club": "psv"
+  },
+  {
+   "q": "Who chose PSV's red and white in 1913, inspired by his raspberry drink next to his white notepad?",
+   "a": "Jan Willem Hofkes, the first chairman",
+   "club": "psv"
+  },
+  {
+   "q": "PSV's forerunner, the Philips Elftal, played its first match in January 1911 against which club from Woensel?",
+   "a": "Hollandia",
+   "club": "psv"
+  },
+  {
+   "q": "The word herdgang, which names PSV's training ground, originally described what?",
+   "a": "The open squares at the end of dirt roads where sheep were grazed",
+   "club": "psv"
+  },
+  {
+   "q": "How much a year was Philips paying to sponsor the PSV shirt by the time the deal ended in 2016?",
+   "a": "7.5 million euros",
+   "club": "psv"
+  },
+  {
+   "q": "PSV's first wooden stand went up in 1916, paid for by Philips to mark what?",
+   "a": "The company's 25th anniversary",
+   "club": "psv"
+  },
+  {
+   "q": "PSV celebrated the reopening of their rebuilt ground in 1977 with a match against which English club?",
+   "a": "Leeds United",
+   "club": "psv"
+  },
+  {
+   "q": "PSV briefly added a laurel wreath and a golden 100 to their crest. In which year?",
+   "a": "2013",
+   "sub": "The club's centenary season.",
+   "club": "psv"
+  },
+  {
+   "q": "Which Feyenoord captain headed the equaliser in the 1970 European Cup final?",
+   "a": "Rinus Israel",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Who kept goal for Feyenoord in the 1970 European Cup final?",
+   "a": "Eddy Pieters Graafland",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Austrian completed Feyenoord's 1970 European Cup midfield alongside Van Hanegem and Wim Jansen?",
+   "a": "Franz Hasil",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Feyenoord's centenary tournament in 2008 brought in their three European final opponents. Name any one.",
+   "a": "Borussia Dortmund, Tottenham Hotspur or Celtic",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which singer put both a Feyenoord and an Ajax version of Hand in Hand on record in the 1960s?",
+   "a": "Jaap Valkhoff",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which song is played at De Kuip whenever Feyenoord score at home?",
+   "a": "I Will Survive, in the Hermes House Band version",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Feyenoord keep the number 12 for the fans. Which Hungarian goalkeeper was the last player given it, in 1997-98?",
+   "a": "Zsolt Petry",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Ronald Koeman stopped Feyenoord's players walking to training. What was the problem?",
+   "a": "They had to cross the busy Coen Moulijnweg, so he had them driven in vans",
+   "club": "feyenoord"
+  },
+  {
+   "q": "The square at Feyenoord's rebuilt Varkenoord is named after which 1970 European Cup winner?",
+   "a": "Wim Jansen",
+   "club": "feyenoord"
+  },
+  {
+   "q": "In which year did Feyenoord finally drop both the new stadium and the big renovation of De Kuip?",
+   "a": "2022",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which PSV goalkeeper put through his own net in a 2-1 Feyenoord win in 2016-17, given by goal-line technology?",
+   "a": "Jeroen Zoet",
+   "club": "psv"
+  },
+  {
+   "q": "Which Sparta Rotterdam player scored inside a minute in March 2017 to give Feyenoord their first loss of the year?",
+   "a": "Mathias Pogba",
+   "club": "sparta-rotterdam"
+  },
+  {
+   "q": "Feyenoord beat which holders 2-0 at De Kuip in the 2014-15 Europa League group stage?",
+   "a": "Sevilla",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Which Ukrainian club knocked Feyenoord out of Champions League qualifying in August 2012?",
+   "a": "Dynamo Kyiv",
+   "club": "feyenoord"
+  },
+  {
+   "q": "Ajax and PSV met for the first time in April 1931. What was the score?",
+   "a": "Ajax 4-2 PSV"
+  },
+  {
+   "q": "The mayors of Amsterdam and Rotterdam banned away fans from the Klassieker in February 2009. For how long?",
+   "a": "Five seasons"
+  },
+  {
+   "q": "Feyenoord beat Ajax 6-0 in April 2024. What record did that set?",
+   "a": "It was Ajax's biggest defeat of the whole Eredivisie era",
+   "club": "feyenoord"
   },
   {
    "q": "The 1957-58 title went to a play-off at the Goffert in Nijmegen. Which club lost it 1-0 to DOS after extra time?",
@@ -4729,6 +5373,58 @@
    "a": "Two league titles, and the 1983 KNVB Cup as well",
    "sub": "Then they let him go, and he did the double at Feyenoord.",
    "club": "ajax"
+  },
+  {
+   "q": "In 2011 Johan Cruyff took Ajax, his own club, to court. What was he so angry about?",
+   "a": "He had not been told the board was making Louis van Gaal chief executive",
+   "sub": "The judge agreed and voided the appointment.",
+   "club": "ajax"
+  },
+  {
+   "q": "Which Ajax goalkeeper scored a penalty to complete an 8-1 win over De Graafschap in 1997-98?",
+   "a": "Edwin van der Sar",
+   "club": "ajax"
+  },
+  {
+   "q": "Ajax retired the number 14 in Johan Cruyff's honour in 2007. What did Cruyff himself say about it?",
+   "a": "That the club should let its best player wear it",
+   "club": "ajax"
+  },
+  {
+   "q": "PSV have retired two shirt numbers. The 12 belongs to the fans. Who has the 99?",
+   "a": "Phoxy, the club mascot",
+   "club": "psv"
+  },
+  {
+   "q": "Which Brabant singer has filled PSV's Philips Stadion with concerts every summer since 2006?",
+   "a": "Guus Meeuwis",
+   "club": "psv"
+  },
+  {
+   "q": "For decades a playing contract at PSV came with something extra attached. What was it?",
+   "a": "A job at Philips",
+   "club": "psv"
+  },
+  {
+   "q": "An Eros Ramazzotti concert in 1994 put PSV's board off staging events for years. What had gone wrong?",
+   "a": "The crowd trampled the pitch to ruin",
+   "club": "psv"
+  },
+  {
+   "q": "A gorilla that escaped from Rotterdam zoo in 2007 became an unofficial Feyenoord mascot. What was he called?",
+   "a": "Bokito",
+   "club": "feyenoord"
+  },
+  {
+   "q": "In 2013 Feyenoord's shirt carried a Rotterdam attraction that was short of money. Which one?",
+   "a": "Diergaarde Blijdorp, the Rotterdam zoo",
+   "sub": "Its elephant Olli became an unofficial mascot.",
+   "club": "feyenoord"
+  },
+  {
+   "q": "How are Feyenoord's new signings delivered onto the pitch at the club's traditional open day?",
+   "a": "By helicopter",
+   "club": "feyenoord"
   },
   {
    "q": "Which club won the 1963 KNVB Cup and was relegated from the Eredivisie in the same season?",

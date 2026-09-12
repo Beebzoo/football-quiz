@@ -1,0 +1,2204 @@
+{
+ "hard": [
+  {
+   "q": "Which Dutch club did Arjen Robben start his professional career with?",
+   "a": "Groningen",
+   "o": [
+    "NEC Nijmegen",
+    "Groningen",
+    "Willem II",
+    "Ajax"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which Dutch club is the oldest professional club in the country, founded in 1888?",
+   "a": "Sparta Rotterdam",
+   "o": [
+    "Excelsior Rotterdam",
+    "Groningen",
+    "Sparta Rotterdam",
+    "Telstar"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which Dutch coach won an Eredivisie title with Ajax in 2004?",
+   "a": "Ronald Koeman",
+   "o": [
+    "Dennis Bergkamp",
+    "Phillip Cocu",
+    "Ronald Koeman",
+    "Michael Laudrup"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who scored that stoppage-time hat-trick goal for Spurs against Ajax in 2019?",
+   "a": "Lucas Moura",
+   "o": [
+    "Lucas Moura",
+    "Adel Taarabt",
+    "Julian Draxler",
+    "Leandro Paredes"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who scored Barcelona's headed winner in the 2009 Champions League final against Man Utd?",
+   "a": "Lionel Messi",
+   "o": [
+    "Edinson Cavani",
+    "Carlos Tevez",
+    "Éric Maxim Choupo-Moting",
+    "Lionel Messi"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who scored England's stoppage-time winner against the Netherlands in that semi-final?",
+   "a": "Ollie Watkins",
+   "o": [
+    "Marcus Rashford",
+    "Ollie Watkins",
+    "Leon Bailey",
+    "Dominic Solanke"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Ruud Gullit win the FA Cup with as player-manager in 1997?",
+   "a": "Chelsea",
+   "o": [
+    "Everton",
+    "Manchester United",
+    "Chelsea",
+    "Manchester City"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which coach led PSV to the dramatic 2006-07 title, won on goal difference?",
+   "a": "Ronald Koeman",
+   "o": [
+    "Ronald Koeman",
+    "Frank Rijkaard",
+    "Ronald de Boer",
+    "Dennis Bergkamp"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which Dutch club did Arjen Robben join PSV from in 2002?",
+   "a": "Groningen",
+   "o": [
+    "Willem II",
+    "Groningen",
+    "Telstar",
+    "Sparta Rotterdam"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who captained the Netherlands in the 2010 World Cup final, a left-back?",
+   "a": "Giovanni van Bronckhorst",
+   "o": [
+    "Ronald de Boer",
+    "Robert Pirès",
+    "Giovanni van Bronckhorst",
+    "Rivaldo"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which Dutch club did Virgil van Dijk make his professional debut for?",
+   "a": "Groningen",
+   "o": [
+    "Groningen",
+    "Ajax",
+    "Telstar",
+    "NEC Nijmegen"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which Dutch club did Arjen Robben make his professional debut for?",
+   "a": "Groningen",
+   "o": [
+    "Groningen",
+    "Ajax",
+    "Willem II",
+    "Cambuur"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who won the 2006 Ballon d'Or, an Italian defender?",
+   "a": "Fabio Cannavaro",
+   "o": [
+    "Roberto Carlos",
+    "Fabio Cannavaro",
+    "Lilian Thuram",
+    "Cafu"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which English club was the first to win the European Cup, in 1968?",
+   "a": "Manchester United",
+   "o": [
+    "Chelsea",
+    "Manchester United",
+    "Leeds United",
+    "Everton"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which English club won back-to-back European Cups in 1979 and 1980?",
+   "a": "Nottingham Forest",
+   "o": [
+    "Nottingham Forest",
+    "Leeds United",
+    "Arsenal",
+    "Liverpool"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club won the first Premier League title, in 1992/93?",
+   "a": "Manchester United",
+   "o": [
+    "Manchester United",
+    "Chelsea",
+    "Liverpool",
+    "Newcastle United"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who managed France to the 2018 World Cup, having captained them in 1998?",
+   "a": "Didier Deschamps",
+   "o": [
+    "Christian Karembeu",
+    "Didier Deschamps",
+    "Marcel Desailly",
+    "Pavel Nedvěd"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who overtook Pelé to become Brazil's all-time top scorer in 2023?",
+   "a": "Neymar",
+   "o": [
+    "Casemiro",
+    "Neymar",
+    "Julian Draxler",
+    "Georginio Wijnaldum"
+   ],
+   "k": 1
+  },
+  {
+   "q": "At the 1990 World Cup, which Dutchman was sent off for spitting at Rudi Völler?",
+   "a": "Frank Rijkaard",
+   "o": [
+    "Carlo Ancelotti",
+    "Ruud Gullit",
+    "Marcel Desailly",
+    "Frank Rijkaard"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which Yorkshire club is nicknamed 'the Whites'?",
+   "a": "Leeds United",
+   "o": [
+    "Leeds United",
+    "Nottingham Forest",
+    "Everton",
+    "Arsenal"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who scored five goals in a single Champions League match for Barcelona in 2012?",
+   "a": "Lionel Messi",
+   "o": [
+    "Alexis Sánchez",
+    "Lionel Messi",
+    "Sergio Agüero",
+    "Mauro Icardi"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who won La Liga in 1999/00?",
+   "a": "Deportivo de A Coruña",
+   "o": [
+    "Celta de Vigo",
+    "Elche",
+    "Levante UD",
+    "Deportivo de A Coruña"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who won the Premier League in 2007/08?",
+   "a": "Manchester United",
+   "o": [
+    "Manchester City",
+    "Aston Villa",
+    "Manchester United",
+    "Chelsea"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who won the Premier League in 2006/07?",
+   "a": "Manchester United",
+   "o": [
+    "Newcastle United",
+    "Nottingham Forest",
+    "Manchester United",
+    "Arsenal"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who won the Premier League in 2005/06?",
+   "a": "Chelsea",
+   "o": [
+    "Manchester United",
+    "Manchester City",
+    "Arsenal",
+    "Chelsea"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who won the Premier League in 2004/05?",
+   "a": "Chelsea",
+   "o": [
+    "Chelsea",
+    "Manchester United",
+    "Liverpool",
+    "Everton"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who won the Premier League in 2002/03?",
+   "a": "Manchester United",
+   "o": [
+    "Manchester City",
+    "Aston Villa",
+    "Manchester United",
+    "Chelsea"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who won the Premier League in 2000/01?",
+   "a": "Manchester United",
+   "o": [
+    "Manchester United",
+    "Newcastle United",
+    "Tottenham Hotspur",
+    "Arsenal"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who won the Premier League in 1999/00?",
+   "a": "Manchester United",
+   "o": [
+    "Nottingham Forest",
+    "Everton",
+    "Manchester United",
+    "Aston Villa"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who won the Champions League in 2004/05?",
+   "a": "Liverpool",
+   "o": [
+    "Everton",
+    "Manchester United",
+    "Liverpool",
+    "Newcastle United"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who won the Copa del Rey in 2005/06?",
+   "a": "RCD Espanyol de Barcelona",
+   "o": [
+    "Deportivo Alavés",
+    "Málaga",
+    "Rayo Vallecano",
+    "Espanyol de Barcelona"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who won the Copa del Rey in 2002/03?",
+   "a": "RCD Mallorca",
+   "o": [
+    "Almería",
+    "Eldense",
+    "Cádiz",
+    "Mallorca"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club plays its home games at Asito Stadion?",
+   "a": "Heracles Almelo",
+   "o": [
+    "Den Bosch",
+    "Roda JC Kerkrade",
+    "Almere City",
+    "Heracles Almelo"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club plays its home games at Stadion de Goffert?",
+   "a": "N.E.C.",
+   "o": [
+    "N.E.C.",
+    "Cambuur",
+    "Willem II",
+    "Sparta Rotterdam"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club plays its home games at MAC³PARK stadion?",
+   "a": "PEC Zwolle",
+   "o": [
+    "PEC Zwolle",
+    "Cambuur",
+    "NEC Nijmegen",
+    "ADO Den Haag"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club plays its home games at Mandemakers Stadion?",
+   "a": "RKC Waalwijk",
+   "o": [
+    "Den Bosch",
+    "Roda JC Kerkrade",
+    "Emmen",
+    "RKC Waalwijk"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club plays its home games at Stadion Woudestein?",
+   "a": "Excelsior Rotterdam",
+   "o": [
+    "Feyenoord",
+    "Groningen",
+    "NEC Nijmegen",
+    "Excelsior Rotterdam"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club plays its home games at Parkstad Limburg Stadion?",
+   "a": "Roda JC Kerkrade",
+   "o": [
+    "Roda JC Kerkrade",
+    "Dordrecht",
+    "Emmen",
+    "De Graafschap"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club plays its home games at De Vijverberg?",
+   "a": "De Graafschap",
+   "o": [
+    "Heracles Almelo",
+    "NAC Breda",
+    "Roda JC Kerkrade",
+    "De Graafschap"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club plays its home games at Rat Verlegh Stadion?",
+   "a": "NAC Breda",
+   "o": [
+    "NAC Breda",
+    "Eindhoven",
+    "Helmond Sport",
+    "RKC Waalwijk"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club plays its home games at De Oude Meerdijk?",
+   "a": "Emmen",
+   "o": [
+    "Roda JC Kerkrade",
+    "Den Bosch",
+    "Helmond Sport",
+    "Emmen"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club plays its home games at Kras Stadion?",
+   "a": "Volendam",
+   "o": [
+    "Eindhoven",
+    "Dordrecht",
+    "De Graafschap",
+    "Volendam"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club plays its home games at Yanmar Stadion?",
+   "a": "Almere City",
+   "o": [
+    "Almere City",
+    "Den Bosch",
+    "Roda JC Kerkrade",
+    "Helmond Sport"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club plays its home games at Estadio Nuevo Arcángel?",
+   "a": "Córdoba CF",
+   "o": [
+    "Cádiz",
+    "Eldense",
+    "Córdoba",
+    "Girona"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club plays its home games at Estadio Carlos Belmonte?",
+   "a": "Albacete Balompié",
+   "o": [
+    "Albacete Balompié",
+    "Eldense",
+    "Córdoba",
+    "Castellón"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club plays its home games at Nou Estadi Castalia?",
+   "a": "CD Castellón",
+   "o": [
+    "Córdoba",
+    "Eibar",
+    "Castellón",
+    "Almería"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club plays its home games at Estadio El Plantío?",
+   "a": "Burgos CF",
+   "o": [
+    "Burgos",
+    "Castellón",
+    "Eibar",
+    "Eldense"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who scored the last-minute goal against Argentina in the 1998 World Cup quarter-final?",
+   "a": "Dennis Bergkamp",
+   "o": [
+    "Giovanni van Bronckhorst",
+    "David Platt",
+    "Roberto Baggio",
+    "Dennis Bergkamp"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who crossed for Bergkamp's famous goal against Argentina in 1998?",
+   "a": "Frank de Boer",
+   "o": [
+    "Laurent Blanc",
+    "Michael Reiziger",
+    "Lilian Thuram",
+    "Frank de Boer"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who scored the winning goal for Ajax in the 1995 Champions League final?",
+   "a": "Patrick Kluivert",
+   "o": [
+    "Thierry Henry",
+    "Patrick Kluivert",
+    "Nwankwo Kanu",
+    "Christian Vieri"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which English club won the European Cup in 1979 and 1980?",
+   "a": "Nottingham Forest",
+   "o": [
+    "Everton",
+    "Tottenham Hotspur",
+    "Nottingham Forest",
+    "Aston Villa"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club won the Champions League in 2005 after being 3-0 down at half time?",
+   "a": "Liverpool",
+   "o": [
+    "Newcastle United",
+    "Liverpool",
+    "Everton",
+    "Leeds United"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club knocked Ajax out in the 2019 Champions League semi-final, with a last-minute goal?",
+   "a": "Tottenham",
+   "o": [
+    "Tottenham",
+    "Newcastle United",
+    "Manchester City",
+    "Liverpool"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who scored the hat-trick that took Tottenham past Ajax in 2019?",
+   "a": "Lucas Moura",
+   "o": [
+    "Georginio Wijnaldum",
+    "Neymar",
+    "Lucas Moura",
+    "Philippe Coutinho"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which Dutch club plays at the Euroborg?",
+   "a": "FC Groningen",
+   "o": [
+    "Willem II",
+    "Groningen",
+    "Telstar",
+    "Excelsior Rotterdam"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which Dutch club is nicknamed 'de Superboeren'?",
+   "a": "De Graafschap",
+   "o": [
+    "Emmen",
+    "De Graafschap",
+    "Helmond Sport",
+    "Den Bosch"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who scored the free kick that won Barcelona their first European Cup, in 1992?",
+   "a": "Ronald Koeman",
+   "o": [
+    "Robert Prosinečki",
+    "Ruud Gullit",
+    "Bernd Schuster",
+    "Ronald Koeman"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which Dutch striker was known as 'the Non-Flying Dutchman' for his fear of flying?",
+   "a": "Dennis Bergkamp",
+   "o": [
+    "Emmanuel Petit",
+    "Dennis Bergkamp",
+    "David Platt",
+    "Edgar Davids"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Michel Vorm join after leaving Swansea City?",
+   "a": "Tottenham",
+   "o": [
+    "Chelsea",
+    "Tottenham",
+    "Everton",
+    "Nottingham Forest"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Steven Bergwijn join after leaving PSV?",
+   "a": "Tottenham",
+   "o": [
+    "Tottenham",
+    "Aston Villa",
+    "Newcastle United",
+    "Leeds United"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Bruno Martins Indi join after leaving AZ Alkmaar?",
+   "a": "Sparta Rotterdam",
+   "o": [
+    "Feyenoord",
+    "Telstar",
+    "Sparta Rotterdam",
+    "Cambuur"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Bas Dost join after leaving FC Utrecht?",
+   "a": "NEC Nijmegen",
+   "o": [
+    "NEC Nijmegen",
+    "Cambuur",
+    "ADO Den Haag",
+    "Groningen"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Patrick Kluivert join after leaving PSV?",
+   "a": "Lille",
+   "o": [
+    "Lille",
+    "Stade Brestois 29",
+    "Le Havre",
+    "OGC Nice"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Cláudio Taffarel join after leaving Galatasaray?",
+   "a": "Parma",
+   "o": [
+    "Como 1907",
+    "Parma",
+    "US Lecce",
+    "Frosinone Calcio"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Axel Witsel join after leaving Atletico Madrid?",
+   "a": "Girona",
+   "o": [
+    "Girona",
+    "Albacete Balompié",
+    "Burgos",
+    "AD Ceuta"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Rubén Castro join after leaving Cartagena?",
+   "a": "Malaga",
+   "o": [
+    "Rayo Vallecano",
+    "Deportivo de A Coruña",
+    "Malaga",
+    "Osasuna"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Nwankwo Kanu join after leaving West Bromwich Albion?",
+   "a": "Portsmouth",
+   "o": [
+    "Portsmouth",
+    "Blackburn Rovers",
+    "Burnley",
+    "Bristol City"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Mario Götze join after leaving PSV?",
+   "a": "Eintracht Frankfurt",
+   "o": [
+    "Borussia Mönchengladbach",
+    "Augsburg",
+    "TSG 1899 Hoffenheim",
+    "Eintracht Frankfurt"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club did Blaise Matuidi join after leaving Juventus?",
+   "a": "Inter Miami CF",
+   "o": [
+    "Chicago Fire",
+    "Inter Miami",
+    "Nashville",
+    "Charlotte"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Diego Milito leave to sign for Inter?",
+   "a": "Genoa",
+   "o": [
+    "US Lecce",
+    "Genoa",
+    "Monza",
+    "US Sassuolo Calcio"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Jarrod Bowen leave to sign for West Ham?",
+   "a": "Hull City",
+   "o": [
+    "Crystal Palace",
+    "Sunderland",
+    "Hull City",
+    "Aston Villa"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Michel Vorm leave to sign for Tottenham?",
+   "a": "Swansea City",
+   "o": [
+    "Swansea City",
+    "Derby County",
+    "Lincoln City",
+    "Cardiff City"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Bruno Martins Indi leave to sign for AZ Alkmaar?",
+   "a": "Stoke City",
+   "o": [
+    "Stoke City",
+    "Bristol City",
+    "Lincoln City",
+    "Blackburn Rovers"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Jermain Defoe leave to sign for Tottenham?",
+   "a": "Portsmouth",
+   "o": [
+    "Portsmouth",
+    "Bolton Wanderers",
+    "Charlton Athletic",
+    "Middlesbrough"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Damien Duff leave to sign for Chelsea?",
+   "a": "Blackburn Rovers",
+   "o": [
+    "Derby County",
+    "Bolton Wanderers",
+    "Blackburn Rovers",
+    "Burnley"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Jude Bellingham leave to sign for Borussia Dortmund?",
+   "a": "Birmingham",
+   "o": [
+    "Birmingham",
+    "Charlton Athletic",
+    "Blackburn Rovers",
+    "Derby County"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Dominik Szoboszlai leave to sign for Liverpool?",
+   "a": "RB Leipzig",
+   "o": [
+    "RB Leipzig",
+    "1. FC Köln",
+    "Paderborn 07",
+    "1. FSV Mainz 05"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Niklas Süle leave to sign for Bayern München?",
+   "a": "Hoffenheim",
+   "o": [
+    "Augsburg",
+    "Eintracht Frankfurt",
+    "Hoffenheim",
+    "Borussia Mönchengladbach"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Marc Overmars leave to sign for Ajax?",
+   "a": "Willem Ii",
+   "o": [
+    "Willem Ii",
+    "Sparta Rotterdam",
+    "Telstar",
+    "ADO Den Haag"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Nathan Aké leave to sign for Manchester City?",
+   "a": "Bournemouth",
+   "o": [
+    "Hull City",
+    "Aston Villa",
+    "Bournemouth",
+    "Liverpool"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Christian Ziege leave to sign for Liverpool?",
+   "a": "Middlesbrough",
+   "o": [
+    "Middlesbrough",
+    "Cardiff City",
+    "Burnley",
+    "Blackburn Rovers"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Bas Dost leave to sign for SC Heerenveen?",
+   "a": "Heracles",
+   "o": [
+    "Heracles",
+    "Den Bosch",
+    "Roda JC Kerkrade",
+    "Helmond Sport"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Fernando Hierro leave to sign for Real Madrid?",
+   "a": "Valladolid",
+   "o": [
+    "Valladolid",
+    "Cádiz",
+    "Castellón",
+    "Burgos"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Bryan Mbeumo leave to sign for Manchester United?",
+   "a": "Brentford",
+   "o": [
+    "Crystal Palace",
+    "Coventry City",
+    "Brentford",
+    "Brighton & Hove Albion"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Ashley Young join after leaving Everton?",
+   "a": "Ipswich",
+   "o": [
+    "Bournemouth",
+    "Fulham",
+    "Aston Villa",
+    "Ipswich"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club did Boudewijn Zenden join after leaving Marseille?",
+   "a": "Sunderland",
+   "o": [
+    "Coventry City",
+    "Fulham",
+    "Bournemouth",
+    "Sunderland"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club did Victor Osimhen leave to sign for Napoli?",
+   "a": "Lille",
+   "o": [
+    "Lille",
+    "Le Mans",
+    "Angers SCO",
+    "AJ Auxerre"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who wore number 10 for France, World Cup final 2018?",
+   "a": "Kylian Mbappé",
+   "o": [
+    "Randal Kolo Muani",
+    "Hugo Ekitike",
+    "Kingsley Coman",
+    "Kylian Mbappé"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club did Cesc Fàbregas join after leaving AS Monaco?",
+   "a": "Como 1907",
+   "o": [
+    "Como 1907",
+    "Bologna FC 1909",
+    "Torino",
+    "Parma Calcio 1913"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Rui Patrício leave to sign for Roma?",
+   "a": "Wolves",
+   "o": [
+    "Charlton Athletic",
+    "Wolves",
+    "Lincoln City",
+    "Bristol City"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who wore number 10 for Barcelona, Champions League final 2011?",
+   "a": "Lionel Messi",
+   "o": [
+    "Javier Saviola",
+    "Lionel Messi",
+    "Luis Suárez",
+    "Robert Lewandowski"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club have both Gary Lineker and John Heitinga played for?",
+   "a": "Everton",
+   "o": [
+    "Manchester United",
+    "Everton",
+    "Manchester City",
+    "Liverpool"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Nick Pope leave to sign for Newcastle?",
+   "a": "Burnley",
+   "o": [
+    "Derby County",
+    "Blackburn Rovers",
+    "Burnley",
+    "Lincoln City"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Marcos Alonso join after leaving Barcelona?",
+   "a": "Celta",
+   "o": [
+    "Celta",
+    "Getafe",
+    "Racing de Santander",
+    "Elche"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club have both Carlo Ancelotti and Liam Rosenior managed?",
+   "a": "Chelsea",
+   "o": [
+    "Nottingham Forest",
+    "Aston Villa",
+    "Chelsea",
+    "Liverpool"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Nicolò Barella leave to sign for Inter?",
+   "a": "Cagliari",
+   "o": [
+    "Cagliari",
+    "Frosinone Calcio",
+    "Torino",
+    "Monza"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Axel Witsel leave to sign for Benfica?",
+   "a": "Standard Liege",
+   "o": [
+    "Standard Liege",
+    "Royal Charleroi",
+    "RAAL La Louvière",
+    "Beveren"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Wayne Rooney join after leaving DC United?",
+   "a": "Derby County",
+   "o": [
+    "Derby County",
+    "Lincoln City",
+    "Cardiff City",
+    "Millwall"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Olivier Giroud join after leaving Los Angeles FC?",
+   "a": "Lille",
+   "o": [
+    "OGC Nice",
+    "Angers SCO",
+    "Stade Rennais",
+    "Lille"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who wore number 10 for Argentina, World Cup final 2022?",
+   "a": "Lionel Messi",
+   "o": [
+    "Lionel Messi",
+    "Edinson Cavani",
+    "Alexis Sánchez",
+    "Javier Saviola"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Kieran Trippier join after leaving Newcastle?",
+   "a": "Wolves",
+   "o": [
+    "Bristol City",
+    "Lincoln City",
+    "Middlesbrough",
+    "Wolves"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who wore number 10 for France, Euro final 2000?",
+   "a": "Zinedine Zidane",
+   "o": [
+    "Luis Enrique",
+    "Zinedine Zidane",
+    "Claude Makélélé",
+    "David Beckham"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who wore number 10 for Barcelona, Champions League final 2006?",
+   "a": "Ronaldinho",
+   "o": [
+    "Rafael Márquez",
+    "Ronaldinho",
+    "Kaká",
+    "Yaya Touré"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did Emile Heskey join after leaving Newcastle Jets?",
+   "a": "Bolton",
+   "o": [
+    "Derby County",
+    "Blackburn Rovers",
+    "Birmingham City",
+    "Bolton"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club did Pepe leave to sign for FC Porto?",
+   "a": "Maritimo",
+   "o": [
+    "Maritimo",
+    "Estoril Praia",
+    "Alverca",
+    "Arouca"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Wilson Palacios is the only Honduras player ever to turn out for which club?",
+   "a": "Tottenham",
+   "o": [
+    "Aston Villa",
+    "Tottenham",
+    "Newcastle United",
+    "Manchester City"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club did James Milner join after leaving Liverpool?",
+   "a": "Brighton",
+   "o": [
+    "Fulham",
+    "Hull City",
+    "Aston Villa",
+    "Brighton"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club have both Clint Dempsey and Son Heung-min played for?",
+   "a": "Tottenham",
+   "o": [
+    "Manchester United",
+    "Chelsea",
+    "Tottenham",
+    "Everton"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Emile Heskey join after leaving Leicester?",
+   "a": "Liverpool",
+   "o": [
+    "Liverpool",
+    "Everton",
+    "Manchester United",
+    "Nottingham Forest"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club did Simon Mignolet leave to sign for Liverpool?",
+   "a": "Sunderland",
+   "o": [
+    "Coventry City",
+    "Brentford",
+    "Sunderland",
+    "Ipswich Town"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who wore number 10 for Argentina, Copa América final 2021?",
+   "a": "Lionel Messi",
+   "o": [
+    "Pierre-Emerick Aubameyang",
+    "Lionel Messi",
+    "Edinson Cavani",
+    "Zlatan Ibrahimović"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who wore number 10 for France, World Cup final 1998?",
+   "a": "Zinedine Zidane",
+   "o": [
+    "Emmanuel Petit",
+    "David Beckham",
+    "Edgar Davids",
+    "Zinedine Zidane"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who wore number 2 for Ajax, Champions League final 1995?",
+   "a": "Michael Reiziger",
+   "o": [
+    "Christian Panucci",
+    "John Heitinga",
+    "Jaap Stam",
+    "Michael Reiziger"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club is nicknamed \"The Rave Green\"?",
+   "a": "Seattle Sounders FC",
+   "o": [
+    "Charlotte",
+    "New England Revolution",
+    "Seattle Sounders",
+    "Columbus Crew"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club is nicknamed \"Le CFM\"?",
+   "a": "CF Montreal",
+   "o": [
+    "Montreal",
+    "Inter Miami",
+    "Chicago Fire",
+    "D.C. United"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club is nicknamed \"The Men in Red\"?",
+   "a": "Chicago Fire FC",
+   "o": [
+    "Chicago Fire",
+    "Inter Miami",
+    "New England Revolution",
+    "Cincinnati"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club is nicknamed \"The Blue-and-White\"?",
+   "a": "Vancouver Whitecaps FC",
+   "o": [
+    "Inter Miami",
+    "Columbus Crew",
+    "New England Revolution",
+    "Vancouver Whitecaps"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club is nicknamed \"Os Conquistadores\"?",
+   "a": "Vitoria De Guimaraes",
+   "o": [
+    "Casa Pia",
+    "Gil Vicente",
+    "Estoril Praia",
+    "Vitoria De Guimaraes"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club is nicknamed \"The Quakes\"?",
+   "a": "San Jose Earthquakes",
+   "o": [
+    "Cincinnati",
+    "San Jose Earthquakes",
+    "Nashville",
+    "D.C. United"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club is nicknamed \"Les Rouches\"?",
+   "a": "Standard Liege",
+   "o": [
+    "Beveren",
+    "Standard Liege",
+    "Club Brugge KV",
+    "RAAL La Louvière"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club is nicknamed \"PTFC\"?",
+   "a": "Portland Timbers",
+   "o": [
+    "Cincinnati",
+    "Columbus Crew",
+    "Inter Miami",
+    "Portland Timbers"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club is nicknamed \"Trots van het Noorden\"?",
+   "a": "FC Groningen",
+   "o": [
+    "Groningen",
+    "PEC Zwolle",
+    "Feyenoord",
+    "NEC Nijmegen"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club is nicknamed \"Blauwvingers\"?",
+   "a": "Pec Zwolle",
+   "o": [
+    "ADO Den Haag",
+    "Sparta Rotterdam",
+    "Pec Zwolle",
+    "Feyenoord"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club is nicknamed \"Le Club Doyen\"?",
+   "a": "Le Havre AC",
+   "o": [
+    "AJ Auxerre",
+    "Angers SCO",
+    "Le Havre",
+    "Stade Rennais"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club is nicknamed \"Vilacondenses\"?",
+   "a": "Rio Ave",
+   "o": [
+    "Famalicão",
+    "Rio Ave",
+    "C.S. Marítimo",
+    "Estoril Praia"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club is nicknamed \"Pids\"?",
+   "a": "Colorado Rapids",
+   "o": [
+    "Colorado Rapids",
+    "Inter Miami",
+    "Columbus Crew",
+    "New England Revolution"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club is nicknamed \"De Kasteelheren\"?",
+   "a": "Sparta Rotterdam",
+   "o": [
+    "Telstar",
+    "Feyenoord",
+    "NEC Nijmegen",
+    "Sparta Rotterdam"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club is nicknamed \"De Residentieclub\"?",
+   "a": "Ado Den Haag",
+   "o": [
+    "Ado Den Haag",
+    "Groningen",
+    "PEC Zwolle",
+    "NEC Nijmegen"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club is nicknamed \"Racinguistas\"?",
+   "a": "Racing Santander",
+   "o": [
+    "Rayo Vallecano",
+    "Deportivo de A Coruña",
+    "Racing Santander",
+    "Deportivo Alavés"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club is nicknamed \"Parel van het Zuiden\"?",
+   "a": "NAC Breda",
+   "o": [
+    "Helmond Sport",
+    "NAC Breda",
+    "Emmen",
+    "Dordrecht"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club is nicknamed \"Maritimistas\"?",
+   "a": "Maritimo",
+   "o": [
+    "Arouca",
+    "Moreirense",
+    "Maritimo",
+    "Estrela da Amadora"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club is nicknamed \"The Yellow-Blues\"?",
+   "a": "SC Cambuur",
+   "o": [
+    "PEC Zwolle",
+    "Cambuur",
+    "Telstar",
+    "Groningen"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club is nicknamed \"Superboeren\"?",
+   "a": "De Graafschap",
+   "o": [
+    "Almere City",
+    "Den Bosch",
+    "Emmen",
+    "De Graafschap"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who won FIFA World Player of the Year in 1998?",
+   "a": "Zinedine Zidane",
+   "o": [
+    "Emmanuel Petit",
+    "Fernando Redondo",
+    "Robert Prosinečki",
+    "Zinedine Zidane"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who won FIFA World Player of the Year in 2000?",
+   "a": "Zinedine Zidane",
+   "o": [
+    "Zinedine Zidane",
+    "Pavel Nedvěd",
+    "Patrick Vieira",
+    "Edgar Davids"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who won FIFA World Player of the Year in 2003?",
+   "a": "Zinedine Zidane",
+   "o": [
+    "Fernando Redondo",
+    "Robert Pirès",
+    "Zinedine Zidane",
+    "Pavel Nedvěd"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who won FIFA World Player of the Year in 2004?",
+   "a": "Ronaldinho",
+   "o": [
+    "Deco",
+    "Juan Román Riquelme",
+    "Ronaldinho",
+    "Alexander Hleb"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who won FIFA World Player of the Year in 2005?",
+   "a": "Ronaldinho",
+   "o": [
+    "Ronaldinho",
+    "Antonio Cassano",
+    "Rafael Márquez",
+    "Yaya Touré"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who won FIFA World Player of the Year in 2006?",
+   "a": "Fabio Cannavaro",
+   "o": [
+    "Walter Samuel",
+    "Jaap Stam",
+    "Sol Campbell",
+    "Fabio Cannavaro"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who won the European Golden Shoe in 2004?",
+   "a": "Thierry Henry",
+   "o": [
+    "Ludovic Giuly",
+    "Ronaldo",
+    "Robin van Persie",
+    "Thierry Henry"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who won the European Golden Shoe in 2010?",
+   "a": "Thomas Müller",
+   "o": [
+    "Thomas Müller",
+    "Bastian Schweinsteiger",
+    "İlkay Gündoğan",
+    "Arturo Vidal"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which Dutch club did Frank Rijkaard manage before joining Barcelona?",
+   "a": "Sparta Rotterdam",
+   "o": [
+    "Sparta Rotterdam",
+    "Willem II",
+    "Groningen",
+    "Excelsior Rotterdam"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which Dutch club did Pierre van Hooijdonk leave for Celtic in 1995?",
+   "a": "NAC Breda",
+   "o": [
+    "Almere City",
+    "De Graafschap",
+    "Den Bosch",
+    "NAC Breda"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which Belgian club made Marc Overmars their technical director in 2022?",
+   "a": "Royal Antwerp",
+   "o": [
+    "KV Kortrijk",
+    "KRC Genk",
+    "Beveren",
+    "Royal Antwerp"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Who captained the Netherlands at the 1998 World Cup?",
+   "a": "Frank de Boer",
+   "o": [
+    "Marco Materazzi",
+    "Michael Reiziger",
+    "Frank de Boer",
+    "Cafu"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which Spain and Manchester City midfielder was born in Gran Canaria?",
+   "a": "David Silva",
+   "o": [
+    "Andrés Iniesta",
+    "Nigel de Jong",
+    "David Silva",
+    "Yaya Touré"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Whose disallowed goal against Germany at the 2010 World Cup pushed FIFA towards goal-line technology?",
+   "a": "Frank Lampard",
+   "o": [
+    "Andrea Pirlo",
+    "Frank Lampard",
+    "Michael Carrick",
+    "David Beckham"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club won the 2024-25 Europa League?",
+   "a": "Tottenham Hotspur",
+   "o": [
+    "Nottingham Forest",
+    "Newcastle United",
+    "Manchester City",
+    "Tottenham Hotspur"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club won the 2024-25 Conference League, completing a clean sweep of European trophies?",
+   "a": "Chelsea",
+   "o": [
+    "Tottenham Hotspur",
+    "Chelsea",
+    "Everton",
+    "Leeds United"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Royal Antwerp lost the 1993 Cup Winners' Cup final to which Italian club?",
+   "a": "Parma",
+   "o": [
+    "Torino",
+    "Udinese Calcio",
+    "Como 1907",
+    "Parma"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Belgium won Olympic football gold in 1920. Which Belgian city hosted those Games?",
+   "a": "Antwerp",
+   "o": [
+    "RSC Anderlecht",
+    "Antwerp",
+    "Cercle Brugge KSV",
+    "Lommel"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which Belgian club won its first league title in 2015, under Hein Vanhaezebrouck?",
+   "a": "KAA Gent",
+   "o": [
+    "RAAL La Louvière",
+    "Club Brugge KV",
+    "KAA Gent",
+    "KRC Genk"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which English club did Bayern Munich beat in the 1975 European Cup final?",
+   "a": "Leeds United",
+   "o": [
+    "Tottenham Hotspur",
+    "Leeds United",
+    "Newcastle United",
+    "Chelsea"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which Uruguayan club did Luis Suárez play for before joining Groningen?",
+   "a": "Nacional",
+   "o": [
+    "Alverca",
+    "Famalicão",
+    "Nacional",
+    "Gil Vicente"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which French club did Eden Hazard play for before Chelsea signed him in 2012?",
+   "a": "Lille",
+   "o": [
+    "Angers SCO",
+    "Lille",
+    "Lorient",
+    "Stade Brestois 29"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which English club did Atlético Madrid beat in the 2010 Europa League final?",
+   "a": "Fulham",
+   "o": [
+    "Coventry City",
+    "Bournemouth",
+    "Fulham",
+    "Aston Villa"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Brian Clough win the English title with in 1972, before Nottingham Forest?",
+   "a": "Derby County",
+   "o": [
+    "Charlton Athletic",
+    "Birmingham City",
+    "Derby County",
+    "Cardiff City"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club did Alexis Sánchez join Barcelona from in 2011?",
+   "a": "Udinese",
+   "o": [
+    "Cagliari Calcio",
+    "Udinese",
+    "Frosinone Calcio",
+    "US Lecce"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which Chelsea player slipped taking his penalty in the 2008 Champions League shoot-out?",
+   "a": "John Terry",
+   "o": [
+    "Jamie Carragher",
+    "Jonathan Woodgate",
+    "John Terry",
+    "Sol Campbell"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which Spanish club did Ronaldo Nazário buy a controlling stake in, in 2018?",
+   "a": "Real Valladolid",
+   "o": [
+    "AD Ceuta",
+    "Real Valladolid",
+    "Castellón",
+    "Eibar"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which England striker performed a robot dance as a goal celebration in the 2000s?",
+   "a": "Peter Crouch",
+   "o": [
+    "Fernando Torres",
+    "Peter Crouch",
+    "Rickie Lambert",
+    "Shaun Wright-Phillips"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which MLS club did Thierry Henry play for from 2010?",
+   "a": "New York Red Bulls",
+   "o": [
+    "New York Red Bulls",
+    "New England Revolution",
+    "Chicago Fire",
+    "Cincinnati"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which Belgian club plays at Sclessin?",
+   "a": "Standard Liège",
+   "o": [
+    "Cercle Brugge KSV",
+    "Royal Charleroi",
+    "Standard Liège",
+    "Royal Antwerp"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which Dutch club is based in Almelo?",
+   "a": "Heracles",
+   "o": [
+    "Den Bosch",
+    "Almere City",
+    "Eindhoven",
+    "Heracles"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club beat Tottenham 3-2 in the 1987 FA Cup final?",
+   "a": "Coventry City",
+   "o": [
+    "Bournemouth",
+    "Ipswich Town",
+    "Sunderland",
+    "Coventry City"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club won the First Division in 1977-78, the season after being promoted?",
+   "a": "Nottingham Forest",
+   "o": [
+    "Manchester United",
+    "Leeds United",
+    "Arsenal",
+    "Nottingham Forest"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club fielded the first all-foreign starting eleven in the Premier League, in 1999?",
+   "a": "Chelsea",
+   "o": [
+    "Chelsea",
+    "Nottingham Forest",
+    "Leeds United",
+    "Arsenal"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club were the first Bundesliga champions, in 1963-64?",
+   "a": "1. FC Köln",
+   "o": [
+    "1. FC Köln",
+    "1. FC Union Berlin",
+    "Paderborn 07",
+    "Borussia Mönchengladbach"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club sold Gianluigi Lentini to AC Milan for a world record fee in 1992?",
+   "a": "Torino",
+   "o": [
+    "Torino",
+    "US Lecce",
+    "Bologna FC 1909",
+    "Frosinone Calcio"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Who scored Belgium's winning goal in their 2-1 quarter-final victory over Brazil in 2018?",
+   "a": "Kevin De Bruyne",
+   "o": [
+    "İlkay Gündoğan",
+    "Yannick Carrasco",
+    "Christian Eriksen",
+    "Kevin De Bruyne"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which Spanish club did Luis Enrique manage before Barcelona?",
+   "a": "Celta Vigo",
+   "o": [
+    "Celta Vigo",
+    "Espanyol",
+    "Osasuna",
+    "Elche"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which coach led Feyenoord to the 2016-17 Eredivisie title?",
+   "a": "Giovanni van Bronckhorst",
+   "o": [
+    "Rivaldo",
+    "Giovanni van Bronckhorst",
+    "Deco",
+    "Robert Pirès"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which Premier League club did Bob Bradley become the first American to manage, in 2016?",
+   "a": "Swansea City",
+   "o": [
+    "Blackburn Rovers",
+    "Swansea City",
+    "Derby County",
+    "Birmingham City"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which club won MLS Cup 2024?",
+   "a": "LA Galaxy",
+   "o": [
+    "Montréal",
+    "Charlotte",
+    "D.C. United",
+    "LA Galaxy"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club won the Supporters' Shield and MLS Cup double in 2022?",
+   "a": "Los Angeles FC",
+   "o": [
+    "New England Revolution",
+    "Los Angeles",
+    "Inter Miami",
+    "Atlanta United"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Eden Hazard was sent off in 2013 for kicking a ball boy who was lying on the ball. Which club were Chelsea playing?",
+   "a": "Swansea City",
+   "o": [
+    "Bristol City",
+    "Cardiff City",
+    "Swansea City",
+    "Bolton Wanderers"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Who scored Ajax's late winner against AC Milan in the 1995 Champions League final?",
+   "a": "Patrick Kluivert",
+   "o": [
+    "Thierry Henry",
+    "Jon Dahl Tomasson",
+    "Michael Owen",
+    "Patrick Kluivert"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Monaco knocked out which English club in the 2004 Champions League semi-final?",
+   "a": "Chelsea",
+   "o": [
+    "Tottenham Hotspur",
+    "Manchester United",
+    "Chelsea",
+    "Nottingham Forest"
+   ],
+   "k": 2
+  },
+  {
+   "q": "One defender won the European Cup in consecutive years, with Marseille then AC Milan. Who?",
+   "a": "Marcel Desailly",
+   "o": [
+    "Ruud Gullit",
+    "Emmanuel Petit",
+    "Marcel Desailly",
+    "Zvonimir Boban"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Sevilla beat which club on penalties in the all-Spanish 2007 UEFA Cup final?",
+   "a": "Espanyol",
+   "o": [
+    "Deportivo de A Coruña",
+    "Espanyol",
+    "Racing de Santander",
+    "Deportivo Alavés"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which German club did Real Madrid beat 7-3 in the 1960 European Cup final?",
+   "a": "Eintracht Frankfurt",
+   "o": [
+    "1. FC Union Berlin",
+    "RB Leipzig",
+    "1. FSV Mainz 05",
+    "Eintracht Frankfurt"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club won the FA Cup in 1901 while playing outside the Football League?",
+   "a": "Tottenham Hotspur",
+   "o": [
+    "Manchester United",
+    "Tottenham Hotspur",
+    "Nottingham Forest",
+    "Manchester City"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which English club did Flamengo beat 3-0 in the 1981 Intercontinental Cup?",
+   "a": "Liverpool",
+   "o": [
+    "Manchester United",
+    "Liverpool",
+    "Nottingham Forest",
+    "Tottenham Hotspur"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Juventus paid a world record goalkeeper fee in 2001 for Gianluigi Buffon, bought from which club?",
+   "a": "Parma",
+   "o": [
+    "Cagliari Calcio",
+    "US Sassuolo Calcio",
+    "Torino",
+    "Parma"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Whose 36 goals for Napoli in 2015-16 set a Serie A record for a 38 game season?",
+   "a": "Gonzalo Higuain",
+   "o": [
+    "Arjen Robben",
+    "Lionel Messi",
+    "Sergio Agüero",
+    "Gonzalo Higuain"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which German club is nicknamed Die Fohlen, the foals?",
+   "a": "Borussia Monchengladbach",
+   "o": [
+    "TSG 1899 Hoffenheim",
+    "Freiburg",
+    "1. FC Köln",
+    "Borussia Monchengladbach"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club from the north of France won Ligue 1 in 1997-98?",
+   "a": "Lens",
+   "o": [
+    "Lens",
+    "OGC Nice",
+    "Stade Rennais",
+    "Angers SCO"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which Alsace club won the French league title in 1978-79?",
+   "a": "RC Strasbourg",
+   "o": [
+    "Paris",
+    "Lille OSC",
+    "Strasbourg",
+    "Lens"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which French club is known as Les Dogues?",
+   "a": "Lille",
+   "o": [
+    "AJ Auxerre",
+    "Lille",
+    "Le Mans",
+    "OGC Nice"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Who coached Marseille to their first French title since 1992, in 2010?",
+   "a": "Didier Deschamps",
+   "o": [
+    "Ruud Gullit",
+    "Roberto Baggio",
+    "Pavel Nedvěd",
+    "Didier Deschamps"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which Portuguese club's stadium is cut into the face of a quarry?",
+   "a": "Braga",
+   "o": [
+    "Braga",
+    "Gil Vicente",
+    "Moreirense",
+    "Estoril Praia"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Rio and Anton Ferdinand have a cousin who also played for England. Who?",
+   "a": "Les Ferdinand",
+   "o": [
+    "Teddy Sheringham",
+    "Romário",
+    "Les Ferdinand",
+    "Andy Cole"
+   ],
+   "k": 2
+  },
+  {
+   "q": "West Ham were fined a record 5.5 million pounds in 2007 over Carlos Tevez's registration. Which relegated club sued them?",
+   "a": "Sheffield United",
+   "o": [
+    "Bolton Wanderers",
+    "Birmingham City",
+    "Sheffield United",
+    "Middlesbrough"
+   ],
+   "k": 2
+  },
+  {
+   "q": "English clubs were banned from Europe for five years after Heysel. Which club had to serve an extra season?",
+   "a": "Liverpool",
+   "o": [
+    "Tottenham Hotspur",
+    "Nottingham Forest",
+    "Liverpool",
+    "Leeds United"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club were relegated from the First Division in the same season they reached the 1983 FA Cup final?",
+   "a": "Brighton and Hove Albion",
+   "o": [
+    "Bournemouth",
+    "Ipswich Town",
+    "Brentford",
+    "Brighton and Hove Albion"
+   ],
+   "k": 3
+  },
+  {
+   "q": "Which club, bottom of the whole Football League the season before, knocked Arsenal out of the FA Cup in January 1992?",
+   "a": "Wrexham",
+   "o": [
+    "Blackburn Rovers",
+    "Wrexham",
+    "Middlesbrough",
+    "Cardiff City"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Which non-league club reached the FA Cup quarter-finals in 2017, having beaten Burnley in the fifth round?",
+   "a": "Lincoln City",
+   "o": [
+    "Bristol City",
+    "Blackburn Rovers",
+    "Lincoln City",
+    "Bolton Wanderers"
+   ],
+   "k": 2
+  },
+  {
+   "q": "Which club became the first Premier League side to go into administration, in 2010?",
+   "a": "Portsmouth",
+   "o": [
+    "Portsmouth",
+    "Bolton Wanderers",
+    "Derby County",
+    "Charlton Athletic"
+   ],
+   "k": 0
+  },
+  {
+   "q": "Which club played their last match at Roker Park in 1997?",
+   "a": "Sunderland",
+   "o": [
+    "Ipswich Town",
+    "Sunderland",
+    "Fulham",
+    "Hull City"
+   ],
+   "k": 1
+  },
+  {
+   "q": "Everton came from 2-0 down to beat Wimbledon 3-2 on the last day of 1993-94 and stay up. Which club went down instead?",
+   "a": "Sheffield United",
+   "o": [
+    "Derby County",
+    "Sheffield United",
+    "Burnley",
+    "Charlton Athletic"
+   ],
+   "k": 1
+  }
+ ]
+}

@@ -266,12 +266,43 @@ const score    = (ctx, i) => ev(ctx, `S.players[${i}].score`);
   check("play on from the guest phone worked", phase(host) === "pick", phase(host));
   check("the dead answer was cleared", ev(host, "S.ans") === "", JSON.stringify(ev(host, "S.ans")));
 
-  console.log("\n--- written mode still routes to its own screen ---");
-  run(host, 'S = freshState(["Martijn","Alejandro"], false, "written", 0); render();'); await tick();
-  run(host, 'pickTier("easy")'); await tick();
-  check("guest gets the secret written screen", ev(guest, "guestRole()") === "wans", ev(guest, "guestRole()"));
-  check("written answers stay hidden in the mirror", ev(guest, "JSON.stringify(S.wans)") === '["",""]', ev(guest, "JSON.stringify(S.wans)"));
-  check("guest can type there", canInput(guest));
+  /* Written had a screen of its own here, because everybody answered at once
+     and the typed answers had to be stripped out of the mirror. Multiple
+     Choice replaced it and works the other way round: one player is on the
+     hook, the same as classic, so it reuses the answer role rather than
+     needing a role of its own. What is worth checking is that the options
+     reach the guest phone and that a tap there scores on the host. */
+  console.log("\n--- multiple choice routes to the answering guest ---");
+  /* The harness answers every fetch with a rejection, so MC never lands on its
+     own here. A dozen real rows off disk are enough and keep the check honest:
+     the shape being driven is the shape that ships. */
+  const mcRows = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "assets/mc/index.json"), "utf8"));
+  const mcSlice = JSON.stringify({ hard: mcRows.hard.slice(0, 12) });
+  run(host, "MC = " + mcSlice); run(guest, "MC = " + mcSlice); run(guest2, "MC = " + mcSlice);
+  // guest is Alejandro, player 1, so the turn is parked on him rather than
+  // left wherever the last block finished
+  run(host, 'S = freshState(["Martijn","Alejandro"], false, "mc", 0); S.turn=1; render();'); await tick(260);
+  run(host, 'pickTier("hard")'); await tick(260);
+  check("the guest on the hook gets the answer role", ev(guest, "guestRole()") === "answer", ev(guest, "guestRole()"));
+  check("all four options reached the guest phone",
+    ev(guest, "(q().o||[]).length") === 4, ev(guest, "JSON.stringify(q().o)"));
+  check("the guest screen shows them", stage(guest).includes("mcopt"), "no options on screen");
+  check("the other phone is only watching", ev(guest2, "guestRole()") === null, ev(guest2, "guestRole()"));
+  const rightIdx = ev(host, "q().k");
+  run(guest, `mcAnswer(${rightIdx})`); await tick(260);
+  check("a right tap on the guest phone scores on the host",
+    score(host, 1) === ev(host, "TIERS.hard.pts"), score(host, 1));
+
+  // and a wrong one puts it out to be stolen, with the burned option struck off
+  run(host, 'S = freshState(["Martijn","Alejandro"], false, "mc", 0); S.turn=1; render();'); await tick(260);
+  run(host, 'pickTier("hard")'); await tick(260);
+  const wrongIdx = (ev(host, "q().k") + 1) % 4;
+  run(guest, `mcAnswer(${wrongIdx})`); await tick(260);
+  check("a wrong tap goes out to the steal", phase(host) === "steal_offer", phase(host));
+  check("and the burned option is remembered", ev(host, "S.mcpick") === wrongIdx, ev(host, "S.mcpick"));
+  run(guest2, `claimSteal(0)`); await tick(260);
+  check("the stealer sees the burned one struck off",
+    /mcopt burned/.test(stage(host)) || /mcopt burned/.test(stage(guest2)), "not struck off");
 
   console.log("\n--- one phone, no room: nothing changed ---");
   const solo = makeInstance("solo"); await tick();

@@ -3,7 +3,7 @@
      node _tests/rr-test.js
 
    The risk here is not the rolling, it is the handover. Every mode ends its go
-   somewhere different (nextTurn, wNext, tlNext, rushNextPlayer,
+   somewhere different (nextTurn, tlNext, rushNextPlayer,
    duelNextPlayer, cAfter, cJudge, xiAfter) and each one had to learn to give
    the ball back. Miss one and that mode becomes a dead end: the match sits on
    its last screen and never rolls again, which no error would tell you about.
@@ -102,7 +102,10 @@ const check = (n, c, x) => { console.log((c ? "  PASS  " : "  FAIL  ") + n + (c 
   console.log("\n--- every mode gives the ball back ---");
   /* Drive each handover directly: this is the check that would have caught a
      mode whose ending was never wired up. */
-  for (const [fn, mode] of [["nextTurn", "classic"], ["wNext", "written"], ["tlNext", "tline"],
+  /* Multiple Choice has no ending of its own on purpose: it runs on the
+     classic question phase and hands over through nextTurn, so it is listed
+     against that rather than against a function of its own. */
+  for (const [fn, mode] of [["nextTurn", "classic"], ["nextTurn", "mc"], ["tlNext", "tline"],
                             ["rushNextPlayer", "rush"], ["duelNextPlayer", "duel"],
                             ["cAfter", "career"], ["xiAfter", "xi"]]) {
     run(app, `S = freshState(["Ale","Bram"], false, ${JSON.stringify(mode)}, 0);

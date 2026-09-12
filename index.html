@@ -1390,25 +1390,34 @@
   }
   .stealbtn:active{transform:scale(.97)}
 
-  /* written-mode answer rows */
-  .answrow{
-    display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;
-    padding:13px 15px;border-radius:var(--radius);
+  /* multiple choice: the four lanes under the question.
+     Tighter padding than .bigbtn because four of these plus the question card
+     have to sit on a phone without scrolling, and the text wraps rather than
+     shrinking: a club name ellipsed into "Borussia Mönchengladb..." is a
+     different question from the one that was written. */
+  .mcopts{display:flex;flex-direction:column;gap:8px;width:100%}
+  .mcopt{
+    display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+    padding:12px 14px;border-radius:var(--radius);
     border:1px solid var(--line);background:var(--card);
-    box-shadow:var(--shadow);transition:transform .06s ease;
+    box-shadow:var(--shadow);cursor:pointer;
+    transition:transform .06s ease,border-color .12s ease;
   }
-  .answrow:active{transform:scale(.99)}
-  .answrow.got{border-color:var(--turf);background:#effaf4}
-  .answrow .an-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .answrow .an-nm{font:700 .95rem/1 var(--ui);color:var(--chalk-dim)}
-  .answrow.got .an-nm{color:var(--turf-deep)}
-  .answrow .an-pts{
-    font:700 .72rem/1 var(--ui);color:var(--chalk-dim);white-space:nowrap;
-    background:#eef2f6;padding:6px 10px;border-radius:99px;
+  .mcopt:active:not(:disabled){transform:scale(.99)}
+  .mcopt:not(:disabled):hover{border-color:var(--dc,var(--turf))}
+  .mcopt .mck{
+    flex:0 0 auto;display:grid;place-items:center;
+    width:26px;height:26px;border-radius:8px;
+    font:800 .8rem/1 var(--ui);color:#fff;background:var(--dc,var(--turf));
   }
-  .answrow.got .an-pts{background:var(--turf);color:#fff}
-  .answrow .an-ans{font:650 1.1rem/1.3 var(--ui);color:var(--ink);word-break:break-word}
-  .answrow .an-ans.empty{color:#9aa7b5;font-weight:500;font-style:italic}
+  .mcopt .mctext{font:650 1.02rem/1.25 var(--ui);color:var(--ink);word-break:break-word}
+  /* The one the player on the hook already burned, struck through rather than
+     taken away. Three lanes where there were four reads as a bug; four with
+     one crossed off reads as a game, and tells the stealer what it cost. */
+  .mcopt.burned{opacity:.45;cursor:not-allowed}
+  .mcopt.burned .mctext{text-decoration:line-through}
+  .mcopt.burned .mck{background:#9aa7b5}
+  @media (prefers-reduced-motion: reduce){ .mcopt{transition:none} }
 
   .toast{
     position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
@@ -3763,6 +3772,25 @@ const PACKS = ["assets/facts/index.json", "assets/deep/index.json", "assets/nick
   if(n && (!S || S.phase==="setup")) render(); // refresh the "n left" counts
 })();
 
+/* ============================== MULTIPLE CHOICE ==============================
+   The same classic questions with three wrong answers bolted on, built by
+   _tools/build-mc.js out of the league, nations and mystery data the app
+   already ships. Rows are {q, a, o:[four options], k:index of the right one}.
+
+   It is its own pack rather than a flag on BANK because only about half the
+   bank can be surrounded tightly: "The Zarra Trophy" has no near neighbours
+   and never will, so those questions stay where they work, in the modes where
+   somebody reads them out.
+
+   ONLY THE TIERS THAT EXIST SHOW UP. The difficulty board is built by
+   filtering on bankFor(), so a pack holding only hard puts only Hard on the
+   board. Build another tier and its lane appears on its own. */
+let MC=null;
+fetch("assets/mc/index.json").then(r=>r.json()).then(b=>{
+  MC=b;
+  if(!S || S.phase==="setup") render(); // un-grey the Multiple Choice button
+}).catch(()=>{ /* offline first visit: the mode stays disabled */ });
+
 /* ============================== STADIUM BANK ==============================
    300 photos in assets/stadiums/, curated from Wikimedia Commons (see
    ATTRIBUTION.csv there). Tiers: 100 easy / 100 hard / 100 ball. */
@@ -4314,12 +4342,12 @@ function tlNext(){
    S.rrTurn exists because S.turn cannot be trusted across the roll: Name the XI
    parks it at -1 for a communal board, and Career Path never rotates it at all.
    The pointer that survives the mode change is the one that passes the phone. */
-const RR_POOL = ["classic","written","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush","alum","wall","mys","ord","bid","spec","ere"];
+const RR_POOL = ["classic","mc","career","mgr","stadium","nations","badge","kit","xi","tline","duel","rush","alum","wall","mys","ord","bid","spec","ere"];
 /* Same readiness the setup screen enforces, per mode: a bank that has not
    landed yet must not be rolled, or the deal comes up empty. */
 const RR_READY = {
   classic:()=>true,
-  written:()=>true,
+  mc:()=>!!MC,
   career:()=>CAREERS.length > (S.usedC||[]).length,
   mgr:()=>MGRS && MGRS.length > (S.usedM||[]).length,
   stadium:()=>!!STAD,
@@ -4355,7 +4383,7 @@ function rrDeal(announce=true){
   S.mode = m;
   S.turn = S.rrTurn;
   S.tier=null; S.qi=null; S.stealer=null; S.timeUp=false; S.ans=""; S.asub=false;
-  S.wans=[]; S.wgot=[]; S.wsub=[];
+  S.mcpick=null;
   S.phase = RR_START[m] || "pick";
   if(announce) modeIntro(MODE_LABEL[m]);   // first, so anything that deals waits for it
   if(m==="career" || m==="mgr") newCareer();
@@ -4385,7 +4413,7 @@ function freshState(names, timed=true, mode="classic", target=100){
     turn:0, round:1, phase:"pick",
     tier:null, qi:null, stealer:null, timeUp:false, timed:timed, mode:mode,
     target:target, // first to this score wins; 0 = no limit
-    wans:[], wgot:[], // written mode: typed answers + who was marked correct
+    mcpick:null, // multiple choice: the option the player on the hook burned, so a stealer sees it struck out
     ans:"", asub:false, // the answer the player on the hook locked in from their own phone
     career:null, usedC:[], // career mode: current round + careers already played
     usedM:[], // manager career path: dugout careers already played
@@ -4498,7 +4526,6 @@ function guestRole(){
   if(!isGuest() || !S) return null;
   const me=myIdx(); if(me<0) return null;
   switch(S.phase){
-    case "w_answer":   return S.mode==="written" ? "wans" : null;
     case "pick":       return me===S.turn ? "pick" : null;
     case "question":
     case "steal_q":    return me===answerIdx() ? "answer" : null;
@@ -4525,6 +4552,7 @@ function mpDoAct(p){
   const allowed =
     p.fn==="pickTier"     ? ph==="pick" && i===S.turn && !!TIERS[args[0]] :
     p.fn==="lockAns"      ? (ph==="question"||ph==="steal_q") && i===a :
+    p.fn==="mcAnswer"     ? (ph==="question"||ph==="steal_q") && i===a && S.mode==="mc" :
     p.fn==="skipQuestion" ? (ph==="question"||ph==="steal_q") && i===a :
     p.fn==="bzPull"       ? (ph==="question"||ph==="steal_q") && i===a :
     p.fn==="judge"        ? (ph==="judge"||ph==="steal_judge") && i===a :
@@ -4539,6 +4567,7 @@ function mpDoAct(p){
       ching(); toast(`🔒 ${S.players[i].name}: "${S.ans}"`);
       reveal();
       break;
+    case "mcAnswer": mcAnswer(Number(args[0])); break;
     case "skipQuestion": skipQuestion(); break;
     case "bzPull": bzPull(); break;
     case "judge": judge(!!args[0], ["name","city","country"].includes(args[1]) ? args[1] : undefined); break;
@@ -4547,10 +4576,7 @@ function mpDoAct(p){
     case "nextTurn": nextTurn(); break;
   }
 }
-function mpStatePayload(){
-  // while everyone is typing, the answers stay secret: strip them from the mirror
-  return (S && S.phase==="w_answer") ? {...S, wans:S.players.map(()=>"")} : S;
-}
+function mpStatePayload(){ return S; }
 function mpQueueState(){
   if(!MP || MP.role!=="host" || !MP.ch) return;
   clearTimeout(mpTimer);
@@ -4566,16 +4592,6 @@ function hostRoom(){
     ching(); toast(`🔔 ${payload&&payload.name?payload.name:"Someone"} BUZZED!`);
   });
   ch.on("broadcast", {event:"hello"}, ()=>{ if(S){ try{ ch.send({type:"broadcast", event:"state", payload:mpStatePayload()}); }catch(e){} } });
-  ch.on("broadcast", {event:"wans"}, ({payload})=>{
-    if(!S || S.phase!=="w_answer" || S.mode!=="written" || !payload) return;
-    const i=S.players.findIndex(p=>nameKey(p.name)===nameKey(payload.name||""));
-    if(i<0) return;
-    if(!S.wsub) S.wsub=S.players.map(()=>false);
-    S.wans[i]=String(payload.text||"").slice(0,60);
-    S.wsub[i]=true;
-    ching(); toast(`🔒 ${S.players[i].name} locked their answer`);
-    render();
-  });
   ch.on("broadcast", {event:"act"}, ({payload})=>mpDoAct(payload));
   ch.on("presence", {event:"sync"}, ()=>{
     if(!MP) return;
@@ -4610,7 +4626,7 @@ function joinRoom(code){
     if(payload.qi!==MP.lastQi || payload.tier!==MP.lastTier){
       MP.draft=""; MP.locked=false; MP.lastQi=payload.qi; MP.lastTier=payload.tier;
     }
-    if(payload.phase!=="w_answer") MP.locked=false;
+    MP.locked=false;
     const sameQ = S && S.phase===payload.phase && S.qi===payload.qi && S.tier===payload.tier;
     const typing = document.activeElement && document.activeElement.id==="mpans";
     S=payload;
@@ -4706,13 +4722,16 @@ function mpAnswerHTML(){
       <div class="digits">${stealing?"5.0":"15.0"}</div>
       <div class="bar"><i style="width:100%"></i></div>
     </div>`:``}
+    ${S.mode==="mc" ? mcOptionsHTML() : `
     <input class="nm-in" id="mpans" placeholder="Type it if you like, it is optional" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
     <button class="bigbtn" onclick="mpLockAnswer()">Say it out loud, then reveal</button>
-    <div class="hint" style="text-align:center">Nobody else's phone shows the answer until you have called it right or wrong.</div>
+    <div class="hint" style="text-align:center">Nobody else's phone shows the answer until you have called it right or wrong.</div>`}
     ${isBadgeBall() && bzStep()<BADGE_BALL.length-1
       ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back, drops to +${BADGE_BALL[bzStep()+1].pts}</button>`:""}
     ${stealing?"":`<button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip, give me a new one</button>`}
-    <div class="hint">Type your answer and lock it in. The real answer then shows on every phone and you call it yourself: got it or not.${isBadgeBall()?" Stuck on the crest? Pull the camera back for a wider shot and fewer points.":""}</div>`;
+    <div class="hint">${S.mode==="mc"
+      ? "Tap the one you think is right. It counts the moment you tap it, on every phone, and nobody has to judge it."
+      : `Type your answer and lock it in. The real answer then shows on every phone and you call it yourself: got it or not.${isBadgeBall()?" Stuck on the crest? Pull the camera back for a wider shot and fewer points.":""}`}</div>`;
 }
 function mpLockAnswer(){
   const el=document.getElementById("mpans");
@@ -4732,37 +4751,6 @@ function mpStealHTML(){
     <div class="spacer"></div>
     <button class="stealbig" onclick="claimSteal(${myIdx()})">STEAL IT</button>
     <button class="bigbtn ghost" style="margin-top:10px" onclick="noSteal()">Not a clue</button>`;
-}
-function mpGuestAnswerHTML(){
-  const t=TIERS[S.tier];
-  const my=(localStorage.getItem("ball-mp-name")||"").trim();
-  const idx=S.players.findIndex(p=>nameKey(p.name)===nameKey(my));
-  const qcard=`
-    <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
-      ${tierBar("+"+t.pts)}
-      <div class="qtext">${esc(q().q)}</div>${crestHTML(q())}
-    </div>`;
-  if(idx<0) return `
-    <div class="kick">Round ${S.round} · written question</div>
-    ${qcard}
-    <div class="hint" style="text-align:center">Your name "${esc(my||"?")}" doesn't match a player on the host phone (${S.players.map(p=>esc(p.name)).join(", ")}). Leave the room via ✕, fix your name, rejoin, or just answer out loud like it's 2025.</div>`;
-  const locks=S.players.map((p,i)=>`<span class="lockchip${S.wsub&&S.wsub[i]?" on":""}">${esc(p.name)}${S.wsub&&S.wsub[i]?" ✓":""}</span>`).join("");
-  return `
-    <div class="kick">Round ${S.round} · your answer, in secret · +${t.pts}</div>
-    ${qcard}
-    <input class="nm-in" id="mpans" placeholder="${esc(S.players[idx].name)}'s answer" maxlength="60" autocomplete="off" value="${esc(MP.draft||"")}" oninput="MP.draft=this.value">
-    <button class="bigbtn" onclick="mpSendAns()">${MP.locked?"Update answer":"Lock it in"}</button>
-    ${MP.locked?`<div class="hint" style="text-align:center">Locked ✓. You can still change it until the reveal.</div>`:""}
-    <div class="lockrow">${locks}</div>`;
-}
-function mpSendAns(){
-  const el=document.getElementById("mpans");
-  const text=el?el.value.trim():"";
-  if(!text){ toast("Type something first!", true); return; }
-  MP.draft=text; MP.locked=true;
-  const name=(localStorage.getItem("ball-mp-name")||"");
-  try{ MP.ch.send({type:"broadcast", event:"wans", payload:{name, text}}); }catch(e){}
-  popfx(); render();
 }
 /* ---------- install as an app ---------- */
 let installEv=null;
@@ -4819,7 +4807,7 @@ const HIST_KEY = "ball-quiz-history-v1";
 /* classic is called Let's Ball on the outside: it is the flagship quiz and the
    thing the app is for, so it gets the name and the gold button. The mode that
    deals one of everything is Rainbow Road, which is where the idea came from. */
-const MODE_LABEL = {classic:"Let's Ball", written:"Written", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", alum:"Alumni", wall:"The Wall", mys:"Mystery Man", ord:"Order Them", bid:"Prove It", spec:"Special", ere:"Eredivisie", rr:"Rainbow Road"};
+const MODE_LABEL = {classic:"Let's Ball", mc:"Multiple Choice", career:"Career Path", stadium:"Stadium", nations:"One & Only", badge:"Badge Zoom", kit:"Guess the Kit", mgr:"Manager Path", xi:"Name the XI", tline:"Timeline", duel:"Older or Taller", rush:"League Rush", alum:"Alumni", wall:"The Wall", mys:"Mystery Man", ord:"Order Them", bid:"Prove It", spec:"Special", ere:"Eredivisie", rr:"Rainbow Road"};
 /* THE RECORD BOOK HAS TO SURVIVE THE APP BEING SHUT.
 
    It lives in localStorage, which already survives a close, but three things
@@ -5076,6 +5064,8 @@ const IPATHS = {
   card:'<rect x="7.5" y="3.5" width="9" height="14" rx="1.5" fill="#f0c419" stroke="none" transform="rotate(8 12 10.5)"/>',
   mic:'<path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/>',
   pencil:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  /* four lanes, one of them filled: the mode in one glyph */
+  choice:'<circle cx="5" cy="6" r="2"/><line x1="10" y1="6" x2="21" y2="6"/><circle cx="5" cy="13" r="2" fill="currentColor"/><line x1="10" y1="13" x2="21" y2="13"/><circle cx="5" cy="20" r="2"/><line x1="10" y1="20" x2="21" y2="20"/>',
   route:'<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
   clock:'<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>',
   inf:'<path d="M18.5 8.5a3.5 3.5 0 1 1 0 7c-3.5 0-6.5-7-10-7a3.5 3.5 0 1 0 0 7c3.5 0 6.5-7 10-7z"/>',
@@ -5136,9 +5126,10 @@ function confetti(n){
 function ballGoal(){
   confetti(120);
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  /* Written mode awards each player with their own tap, so three right
-     answers on a BALL question would stack three balls on top of each other.
-     The newest one wins. */
+  /* Written used to award each player with their own tap, so three right
+     answers on a BALL question could stack three balls on top of each other.
+     Written is gone, but a steal still pays twice in quick succession and the
+     guard costs nothing. The newest one wins. */
   document.querySelectorAll(".ballgoal").forEach(el=>el.remove());
   const o=document.createElement("div");
   o.className="ballgoal";
@@ -5184,8 +5175,11 @@ function flashBad(){
   setTimeout(()=>f.remove(),600);
 }
 function others(){ return S.players.map((p,i)=>i).filter(i=>i!==S.turn); }
-function bankFor(t){ return S.mode==="ere" ? ERE[t] : S.mode==="kit" ? KIT[t] : S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : S.mode==="badge" ? BADGE[t] : BANK[t]; }
-function q(){ return S.mode==="ere" ? ERE[S.tier][S.qi] : S.mode==="kit" ? kitQ() : S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : S.mode==="badge" ? badgeQ() : BANK[S.tier][S.qi]; }
+/* MC is guarded rather than indexed blind: the pack is the only bank that can
+   legitimately be missing a tier, so a lane that does not exist has to come
+   back empty instead of throwing on the way to the difficulty board. */
+function bankFor(t){ return S.mode==="mc" ? (MC ? MC[t] : null) : S.mode==="ere" ? ERE[t] : S.mode==="kit" ? KIT[t] : S.mode==="stadium" ? STAD[t] : S.mode==="nations" ? NAT[t] : S.mode==="badge" ? BADGE[t] : BANK[t]; }
+function q(){ return S.mode==="mc" ? MC[S.tier][S.qi] : S.mode==="ere" ? ERE[S.tier][S.qi] : S.mode==="kit" ? kitQ() : S.mode==="stadium" ? stadQ() : S.mode==="nations" ? natQ() : S.mode==="badge" ? badgeQ() : BANK[S.tier][S.qi]; }
 function remaining(t){ return bankFor(t).length - S.used[t].length; }
 async function wakeLock(){ try{ if(navigator.wakeLock) await navigator.wakeLock.request("screen"); }catch(e){} }
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S) wakeLock(); });
@@ -5238,7 +5232,6 @@ function render(){
   document.body.classList[ereOn?"add":"remove"]("eremode");
 
   const grole=guestRole();
-  if(grole==="wans"){ st.innerHTML=mpGuestAnswerHTML(); return; }
   if(grole==="answer"){
     st.innerHTML=mpAnswerHTML();
     if(S.timed) startTimer(S.phase==="steal_q"?5:15, onTimeUp, clockKey());
@@ -5282,58 +5275,6 @@ function render(){
     return;
   }
 
-  if(S.phase==="w_answer"){
-    const t=TIERS[S.tier];
-    // a guest locking in mid-round triggers a re-render: keep whatever is
-    // half-typed in the host inputs instead of wiping it
-    S.players.forEach((p,i)=>{ const el=document.getElementById("wa"+i); if(el && !(S.wsub&&S.wsub[i])) S.wans[i]=el.value; });
-    st.innerHTML = `
-      <div class="kick">Round ${S.round} · everyone answers</div>
-      <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
-        ${tierBar("+"+t.pts)}
-        <div class="qtext">${esc(q().q)}</div>${crestHTML(q())}
-      </div>
-      ${S.players.map((p,i)=> S.wsub&&S.wsub[i]
-        ? `<div class="lockedrow">🔒 ${esc(p.name)} locked their answer in from their phone</div>`
-        : `<input class="nm-in" id="wa${i}" placeholder="${esc(p.name)}'s answer" maxlength="60" autocomplete="off" value="${esc(S.wans[i]||"")}">`).join("")}
-      ${S.timed?`<div class="clock" id="clock">
-        <div class="digits">15.0</div>
-        <div class="bar"><i style="width:100%"></i></div>
-      </div>`:``}
-      <div class="spacer"></div>
-      <button class="bigbtn" onclick="wReveal()">Reveal answer<kbd>Space</kbd></button>
-      <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip, give me a new one</button>
-      <div class="hint">${S.timed?"Fifteen seconds. Type an answer for each player before the buzzer.":"Type an answer for each player, then hit Reveal."} Seen it before? Skip for a fresh one.</div>`;
-    if(S.timed) startTimer(15, wTimeUp, clockKey());
-    return;
-  }
-
-  if(S.phase==="w_judge"){
-    const t=TIERS[S.tier];
-    st.innerHTML = `
-      <div class="kick">Round ${S.round} · who got it?</div>
-      <div class="qcard${(q().duo||q().badge||q().kit)?" natq":""}" style="--dc:${t.color}">
-        ${tierBar("+"+t.pts)}
-        <div class="qtext">${esc(q().q)}</div>${crestHTML(q())}
-        <div class="atext"><span class="lbl">Answer</span>${esc(q().a)}</div>
-        ${q().sub?`<div class="pfact">${esc(q().sub)}</div>`:""}
-      </div>
-      <div class="whobar">
-        ${S.players.map((p,i)=>`
-          <button class="answrow${S.wgot[i]?" got":""}" onclick="wToggle(${i})">
-            <span class="an-top">
-              <span class="an-nm">${esc(p.name)}<kbd>${i+1}</kbd></span>
-              <span class="an-pts">${S.wgot[i]?"✓ +"+t.pts:"tap if right"}</span>
-            </span>
-            <span class="an-ans${S.wans[i]?"":" empty"}">${S.wans[i]?esc(S.wans[i]):"no answer"}</span>
-          </button>`).join("")}
-      </div>
-      <div class="spacer"></div>
-      <button class="bigbtn" onclick="wNext()">Next question<kbd>Space</kbd></button>
-      <div class="hint">Tap everyone who got it right. They score +${t.pts} each. Tap again to undo.</div>`;
-    return;
-  }
-
   if(S.phase==="question" || S.phase==="steal_q"){
     const stealing = S.phase==="steal_q";
     const who = stealing ? S.players[S.stealer] : P;
@@ -5360,13 +5301,19 @@ function render(){
         <div class="bar"><i style="width:100%"></i></div>
       </div>`:``}
       <div class="spacer"></div>
-      <button class="bigbtn" onclick="reveal()">Reveal answer<kbd>Space</kbd></button>
+      ${S.mode==="mc"
+        ? mcOptionsHTML()
+        : `<button class="bigbtn" onclick="reveal()">Reveal answer<kbd>Space</kbd></button>`}
       ${isBadgeBall() && bzStep()<BADGE_BALL.length-1
         ? `<button class="bigbtn ghost" style="padding:11px" onclick="bzPull()">${ico('zoom')}Pull the camera back, drops to +${BADGE_BALL[bzStep()+1].pts}<kbd>Z</kbd></button>`:""}
       <button class="bigbtn ghost" style="padding:11px" onclick="skipQuestion()">↻ Skip, give me a new one<kbd>S</kbd></button>
       ${remotePlayer(stealing?S.stealer:S.turn)
-        ? `<div class="hint waitline">⌛ ${esc(who.name)} is typing their answer in on their own phone. Only reveal here if they'd rather shout it.</div>`
-        : `<div class="hint">${S.timed
+        ? `<div class="hint waitline">⌛ ${esc(who.name)} is ${S.mode==="mc"?"picking on their own phone":"typing their answer in on their own phone"}. ${S.mode==="mc"?"Only tap for them":"Only reveal here"} if they'd rather shout it.</div>`
+        : S.mode==="mc"
+          ? `<div class="hint">${stealing
+              ? "One of the four is already gone. Tap the one you think is right."
+              : `Tap an answer. ${S.timed?"Fifteen seconds.":"No timer, so take your time."} Get it wrong and the others can steal it.`} Nobody has to judge anything: the phone knows. Seen it before? Skip for a fresh one at the same difficulty, no points lost.</div>`
+          : `<div class="hint">${S.timed
             ? "Fifteen seconds to read the question and answer. Then hit Reveal to show the answer, which stops the clock."
             : "No timer, so take your time. Read the question, let them answer, then hit Reveal to show the answer."} Seen it before? Skip for a fresh one at the same difficulty, no points lost.${isBadgeBall()?" Nobody recognising it? Pull the camera back for a wider shot, at the cost of points, and the clock starts again.":""}</div>`}`;
     if(S.timed) startTimer(stealing?5:15, onTimeUp, clockKey());
@@ -5966,10 +5913,11 @@ let setupTimed = false;
 let setupMode = null; // nothing chosen yet: the setup unfolds after a mode is picked
 let modesOpen = false; // the specialty-mode drawer on the menu
 let extraOpen = false; // the second shelf inside it
-/* Everything except the flagship lives in the drawer. Written leads it because
-   it is the one people reach for next, and Rainbow Road sits second: it is the
-   showpiece, but it is still a mode you go looking for rather than the one the
-   app opens on. */
+/* Everything except the flagship lives in the drawer. Multiple Choice leads it,
+   in the slot Written used to hold, because it is the one people reach for
+   next: it is Let's Ball without needing anybody to referee it. Rainbow Road
+   sits second, the showpiece you go looking for rather than the one the app
+   opens on. */
 /* Seventeen modes is more than anyone wants to read down on a Friday night, so
    the drawer has a second shelf. What sits on it is not what is worst, it is
    what gets reached for least: Rainbow Road is the showpiece but you go looking
@@ -5977,7 +5925,7 @@ let extraOpen = false; // the second shelf inside it
    rather than by default. Everything on the shelf still plays identically and
    still turns up in Rainbow Road's own roll. */
 const MODE_EXTRA = new Set(["rr","xi","tline","duel","rush"]);
-const MODE_META = {written:["pencil","Written","#f0c98a"], ere:["stripes","Eredivisie","#f5a35c"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["trophy","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"], alum:["users","Alumni","#e8b0a0"], wall:["grid","The Wall","#c9a0e8"], mys:["eye","Mystery Man","#7fc4e8"], ord:["rewind","Order Them","#a8c6b3"], bid:["mic","Prove It","#f0c98a"], spec:["book","Special","#e2453c"]};
+const MODE_META = {mc:["choice","Multiple Choice","#f0c98a"], ere:["stripes","Eredivisie","#f5a35c"], rr:["rainbow","Rainbow Road","#e9b84c"], career:["route","Career Path","#e9b84c"], mgr:["clipboard","Manager Path","#7fd4a3"], stadium:["cam","Stadium","#7fc4e8"], nations:["flag","One &amp; Only","#e8907f"], badge:["zoom","Badge Zoom","#b9a0e8"], kit:["shirt","Guess the Kit","#8fd8c4"], xi:["trophy","Name the XI","#f3d982"], tline:["tl","Timeline","#a8c6b3"], duel:["hand","Older or Taller","#d8a8c4"], rush:["clock","League Rush","#7fd4a3"], alum:["users","Alumni","#e8b0a0"], wall:["grid","The Wall","#c9a0e8"], mys:["eye","Mystery Man","#7fc4e8"], ord:["rewind","Order Them","#a8c6b3"], bid:["mic","Prove It","#f0c98a"], spec:["book","Special","#e2453c"]};
 let setupTarget = 100;
 // keep whatever names are already typed when flipping a toggle
 function snapshotNames(){
@@ -6006,7 +5954,7 @@ function modeDrawerHTML(){
   const btn = m && !modesOpen
     ? `<button class="bigbtn ghost sel modestoggle" style="--ac:${m[2]}" onclick="toggleModes()"><span class="mico">${ico(m[0])}</span><span class="mlab">${m[1]}</span>${chev}</button>`
     : `<button class="bigbtn ghost modestoggle" onclick="toggleModes()"><span class="mico">${ico('grid')}</span><span class="mlab">More game modes</span>${chev}</button>`;
-  const off = {kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, mgr:!MGRS, xi:!XI, tline:!TLINE,
+  const off = {mc:!MC, kit:!KIT, stadium:!STAD, nations:!NAT, badge:!BADGE, mgr:!MGRS, xi:!XI, tline:!TLINE,
                duel:!DUEL, rush:!LEAGUES, alum:!ALUM, wall:!WALL, mys:!MYS, ord:!ORDB, bid:!BIDS, ere:!ERE};
   /* The accent rides on the button as --ac so the tile can light its edge and
      its icon from one value. A disabled mode dims the whole thing, lamp and
@@ -6183,7 +6131,7 @@ function renderSetup(st){
     <button class="bigbtn ghost" style="padding:10px;font-size:.95rem" onclick="openBoard()">${ico('trophy')}The Table · ${books().length} match${books().length===1?"":"es"}${crewName()?" · "+esc(crewName()):""}</button>`:""}
     <details class="rules">
       <summary>${ico('book')}Rules</summary>
-      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points, and the ref's word is final. <b>Let's Ball:</b> the quiz itself, and the one the app opens on. One player picks a difficulty and answers out loud, the rest can steal. 3,800 questions across five levels, from one pointers to the BALL tier nobody sensible gets. <b>Written:</b> everyone types an answer to the same question, then you reveal it and award the points. <b>Career Path:</b> club logos revealed one by one, in career order, and you shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Let's Ball. <b>One &amp; Only:</b> a club crest and a country flag appear, and you name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in, and you name the club, 1,437 crests deep. Easy +1 · Normal +2 · Hard +5. BALL crops in hard on clubs you have heard of and cannot place, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Let's Ball. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart, though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts, and the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history. Drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins, or pick "No limit" and end with the full-time whistle. <b>Rainbow Road:</b> all twelve modes in one match, and you do not get to choose. Each go the app rolls a mode, throws its name up on the screen and deals it, so a career of crests can be followed by a shirt, a crest cropped to bits, five events to drag into order or thirty seconds of typing out a league. Every mode keeps its own scoring, so the same go can be worth one point or twenty, and the same mode never lands twice in a row. Play it to the target and the night decides itself. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone: pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. <b>The Table:</b> every finished match is filed on the phone that played it and survives the app being closed. Type the same shared table name on all three phones and you keep one table between you, with everybody's matches in it. Leave it empty and the phone keeps its own. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
+      <div class="hint"><b>Referee mode:</b> two play, the third holds the phone, reads everything and hands out the points, and the ref's word is final. <b>Let's Ball:</b> the quiz itself, and the one the app opens on. One player picks a difficulty and answers out loud, the rest can steal. 3,800 questions across five levels, from one pointers to the BALL tier nobody sensible gets. <b>Multiple Choice:</b> the same quiz with four answers on screen instead of none. Tap the one you think is right and the phone settles it on the spot, so nobody has to judge whether "Gullit" was close enough. Get it wrong and it goes out to be stolen, with the one you burned crossed off. <b>Career Path:</b> club logos revealed one by one, in career order, and you shout the player's name whenever you dare. Guess on the first logo for +15; every extra logo costs 3 (never below +3). Wrong guess: −2 and you're locked out of that career. <b>Stadium:</b> a photo of a ground appears and you climb as high up the ladder as you can. Name the ground for the full points, the city for a good chunk, the country for a consolation. Easy 3/2/1 · Hard 8/5/3 · BALL 20/12/6, and the reader pays the best rung you reached. 342 grounds from Camp Nou to places only true BALL knowers recognise, steals work like Let's Ball. <b>One &amp; Only:</b> a club crest and a country flag appear, and you name the only player of that nationality ever to play there, from 1,311 real one-offs (Wikidata-sourced; citizenship counts, so the odd surprise is part of the game). The reveal also says what he played, the years he was there and how many games he got, so a name nobody recognised still tells you something. Easy +1 · Medium +2 · Hard +5 · BALL +20. <b>Badge Zoom:</b> a crest appears zoomed right in, and you name the club, 1,437 crests deep. Easy +1 · Normal +2 · Hard +5. BALL crops in hard on clubs you have heard of and cannot place, so it pays on a ladder instead: answer on the tight shot for +20, or pull the camera back for a wider one at +12, and the whole crest at +6. Once you have pulled back you cannot go back in, so decide as a table. <b>Manager Path:</b> the same game as Career Path, played with the men in the dugout: crests appear one by one in the order he took the jobs, and you shout the manager. 227 careers from Ajax to Al-Ettifaq, national teams included, so a run of clubs ending at a country flag is a strong hint. Same scoring as Career Path. <b>League Rush:</b> pick a league and type as many of its clubs as you can in thirty seconds. Type it how you say it: Atleti, Spurs and PSV all count, and accents and full stops never cost you. +1 per club and +10 for naming the whole league, and at the end you see the ones you missed. Thirteen leagues, current season, from the Eredivisie and the Eerste Divisie to MLS. <b>Guess the Kit:</b> a home shirt appears and you name whose it is, from 1,021 kits including 174 national sides. Easy +1 · Normal +2 · Hard +5 · BALL +20, steals work like Let's Ball. Shirts carry less to go on than crests do, so the bank is built to keep any two of them tellable apart, though a few of the originals really are near enough identical, and a plain white one could fairly be Valencia or Marseille. <b>Name the XI:</b> a famous final's line-up appears as eleven shirts on the pitch and the whole table shouts, and the reader taps a shirt when someone names its player and hands out the point, +1 per shirt. <b>Older or Taller:</b> two players's faces appear and you tap the one who is older, or the taller one, whichever it asks. The app knows, so there is nothing to argue about until afterwards. +1 each time, and five in a row pays +10 on top; the first one you get wrong ends your run and passes the phone. 471 players, nobody twice in a run, and no pair closer than two years or three centimetres, because a coin toss is not a question. <b>Timeline:</b> five moments from football history. Drag them into chronological order, earliest on top, and lock it in. The years are revealed and the app pays +1 per event in the right spot, +5 for a perfect five. First to the target score wins, or pick "No limit" and end with the full-time whistle. <b>Rainbow Road:</b> all twelve modes in one match, and you do not get to choose. Each go the app rolls a mode, throws its name up on the screen and deals it, so a career of crests can be followed by a shirt, a crest cropped to bits, five events to drag into order or thirty seconds of typing out a league. Every mode keeps its own scoring, so the same go can be worth one point or twenty, and the same mode never lands twice in a row. Play it to the target and the night decides itself. <b>Play together (beta):</b> one phone hosts and keeps the score, the others join with the room code and play their own turn from their own phone: pick the difficulty, say your answer out loud, then reveal it on your own phone and call it right or wrong yourself. The answer stays hidden on everybody else's phone while you do, because they are the ones about to be offered the steal. Miss it and their phones race for a STEAL IT button, and the phone that steals gets the answer the same way. Once a question is dead every phone shows it. In Written mode everyone types secretly on their own phone. Join with exactly the name the host gave you, otherwise you just watch and buzz. The host's buttons still work for anything if a phone freezes. Internet needed on every phone; the pub's single-phone ritual stays the default. Easy +1 · Normal +2 · Hard +5 · Extreme +10 · BALL +20. <b>The Table:</b> every finished match is filed on the phone that played it and survives the app being closed. Type the same shared table name on all three phones and you keep one table between you, with everybody's matches in it. Leave it empty and the phone keeps its own. Tap ✏️ on a scoreboard tab to fix a score, or the yellow card to book a player.</div>
     </details>
     ${/* Bottom of the page on purpose: you install an app you have already
          decided you like, so it belongs after the rules rather than above the
@@ -6251,7 +6199,7 @@ function resumeGame(){
   if(S.timed===undefined) S.timed=true; // saves from before the timer toggle existed
   if(S.mode===undefined) S.mode="classic"; // saves from before written mode existed
   if(S.target===undefined) S.target=0; // saves from before the win target existed
-  if(!S.wans) S.wans=[]; if(!S.wgot) S.wgot=[]; if(!S.wsub) S.wsub=[];
+  if(S.mcpick===undefined) S.mcpick=null; // saves from before multiple choice existed
   if(!S.usedC) S.usedC=[]; // saves from before career mode existed
   if(S.ref===undefined) S.ref=null; // saves from before referee mode existed
   if(!S.usedM) S.usedM=[]; // saves from before manager path existed
@@ -6297,7 +6245,13 @@ function resumeGame(){
   // never resume mid-clock; fall back to a safe phase
   if(["question","steal_q"].includes(S.phase)) S.phase = S.phase==="question" ? "pick" : "steal_offer";
   if(S.phase==="g_play"){ S.phase="g_pick"; S.rush=null; }   // the thirty seconds are gone
-  if(S.phase==="w_answer") S.phase="pick"; // typed answers + clock are lost on resume
+  /* Written was replaced by Multiple Choice, so a match parked in it cannot be
+     resumed: its phases and its typed answers no longer exist anywhere. Same
+     treatment the retired Higher or Lower gets, a few lines up. */
+  if(S.mode==="written" || S.phase==="w_answer" || S.phase==="w_judge"){
+    toast("Written has been replaced by Multiple Choice. Pick a mode.");
+    S=null; render(); return;
+  }
   if(["judge","steal_judge","deadq","steal_offer"].includes(S.phase) && S.qi==null) S.phase="pick";
   if(["c_who","c_judge"].includes(S.phase)) S.phase="c_play";
   if(S.mode==="career" && !S.career) newCareer();
@@ -6315,19 +6269,13 @@ function pickTier(t){
   S.used[t].push(S.qi);
   S.timeUp=false; S.stealer=null; S.ans=""; S.asub=false; S.bz=0;
   if(S.mode==="nations"){ natAnim=true; slamfx(); }
-  if(S.mode==="written"){
-    S.wans=S.players.map(()=>"");
-    S.wgot=S.players.map(()=>false);
-    S.wsub=S.players.map(()=>false); // answers locked in from other phones
-    S.phase="w_answer";
-  }else{
-    S.phase="question";
-  }
+  S.mcpick=null; // nothing burned yet on a fresh question
+  S.phase="question";
   render();
 }
 // swap the current question for another fresh one in the same tier (e.g. a repeat)
 function skipQuestion(){
-  if(!["question","steal_q","w_answer"].includes(S.phase)) return;
+  if(!["question","steal_q"].includes(S.phase)) return;
   if(isGuest()) return mpAct("skipQuestion",[]);
   const t=S.tier;
   const avail=bankFor(t).map((_,i)=>i).filter(i=>!S.used[t].includes(i));
@@ -6335,43 +6283,59 @@ function skipQuestion(){
   S.qi=avail[Math.floor(Math.random()*avail.length)];
   S.used[t].push(S.qi);
   S.timeUp=false; S.ans=""; S.asub=false; S.bz=0; // fresh crest, camera back to the tight shot
-  if(S.phase==="w_answer"){ S.wans=S.players.map(()=>""); S.wsub=S.players.map(()=>false); } // clear typed answers for the new question
+  S.mcpick=null; // a fresh question has nothing burned on it yet
   if(S.mode==="nations" && S.phase==="question") natAnim=true;
   tick();
   render(); // re-render restarts the clock on the fresh question
 }
-/* ----- written mode ----- */
-function wReveal(){
-  stopTimer();
-  S.wans=S.players.map((_,i)=>{
-    if(S.wsub && S.wsub[i]) return S.wans[i]; // locked in from another phone, keep it
-    const el=document.getElementById("wa"+i); return el?el.value.trim():(S.wans[i]||"");
-  });
-  S.phase="w_judge";
-  render();
+/* ----- multiple choice -----
+   This mode does not have a phase machine of its own. It runs on the classic
+   question/steal_q phases and hands its verdict to judge(), which already
+   knows how to pay out, throw the ball up on a BALL question, offer the steal
+   and kill the question when the steal fails. The only thing that is actually
+   different is what the bottom of the screen looks like: four buttons instead
+   of a Reveal, and nobody has to decide whether "Gullit" was close enough.
+
+   S.mcpick remembers what the player on the hook chose, so that when it goes
+   out to be stolen the wrong one they already burned is shown as burned. The
+   stealer is choosing from three, which is the point of getting there second. */
+function mcOptionsHTML(){
+  const stealing = S.phase==="steal_q";
+  const Q=q();
+  // the lane colour rides down from the tier, same as the question card above it
+  return `<div class="mcopts" style="--dc:${TIERS[S.tier].color}">` + Q.o.map((o,i)=>{
+    const burned = stealing && S.mcpick===i;
+    return `<button class="mcopt${burned?" burned":""}" ${burned?"disabled":""} onclick="mcAnswer(${i})">
+      <span class="mck">${"ABCD"[i]}</span><span class="mctext">${esc(o)}</span>
+    </button>`;
+  }).join("") + `</div>`;
 }
-function wTimeUp(){ if(isGuest()){ flashBad(); return; } if(S.phase==="w_answer") wReveal(); }
-function wToggle(i){
-  const pts=TIERS[S.tier].pts;
-  S.wgot[i]=!S.wgot[i];
-  if(S.wgot[i]){ S.players[i].score+=pts; ching(); goalFx(S.tier==="ball", pts); }
-  else{ S.players[i].score-=pts; }
-  render();
-}
-function wNext(){
-  if(maybeFinish()) return; // someone hit the win target this round
-  if(S.rr) return rrNext();
+function mcAnswer(i){
+  if(!S || !["question","steal_q"].includes(S.phase)) return;
+  if(isGuest()) return mpAct("mcAnswer",[i]);
+  const Q=q();
+  if(S.phase==="steal_q" && S.mcpick===i) return; // the burned one is not on offer
   stopTimer();
-  S.turn=(S.turn+1)%S.players.length;
-  if(S.turn===0) S.round++;
-  S.tier=null; S.qi=null; S.wans=[]; S.wgot=[]; S.timeUp=false;
-  S.phase="pick";
-  render();
+  if(S.phase==="question") S.mcpick=i;
+  /* Move to the judging phase BEFORE handing over. judge() works out who it is
+     paying from the phase it finds itself in, so calling it while the screen
+     still said steal_q paid the player whose turn it was instead of the one
+     who actually stole it, and sent a failed steal back out to be stolen
+     again. This is the same hop reveal() makes, minus the repaint nobody
+     needs: judge() renders on its way out. */
+  S.phase = S.phase==="steal_q" ? "steal_judge" : "judge";
+  /* judge() does the rest: score and goal on a right one, steal_offer on a
+     wrong one, deadq when the steal misses too. */
+  judge(i===Q.k);
 }
 function onTimeUp(){
   flashBad();
   if(isGuest()) return; // the host owns the clock; the new phase arrives by broadcast
   S.timeUp=true;
+  /* Multiple Choice has nobody to judge a steal that ran out of time: there is
+     no answer to mark, the player simply never tapped. It dies on the spot
+     instead of landing on a judge screen with nothing to decide. */
+  if(S.phase==="steal_q" && S.mode==="mc"){ S.phase="deadq"; render(); return; }
   if(S.phase==="question"){ S.phase="steal_offer"; render(); }
   else if(S.phase==="steal_q"){ S.phase="steal_judge"; render(); }
 }
@@ -6969,15 +6933,17 @@ document.addEventListener("keydown", e=>{
     const order=Object.keys(TIERS);
     if(k>="1" && k<="5") pickTier(order[+k-1]);
   }else if(S.phase==="question" || S.phase==="steal_q"){
+    /* Multiple choice has no Reveal to hit, so space does nothing and the
+       option letters do the work instead. */
+    if(S.mode==="mc"){
+      const n = k>="1"&&k<="4" ? +k-1 : "abcd".indexOf(k);
+      if(n>=0 && n<4) mcAnswer(n);
+      else if(k==="s") skipQuestion();
+      return;
+    }
     if(k===" "||k==="r"){ e.preventDefault(); reveal(); }
     else if(k==="s") skipQuestion();
     else if(k==="z") bzPull();
-  }else if(S.phase==="w_answer"){
-    if(k===" "||k==="r"){ e.preventDefault(); wReveal(); }
-    else if(k==="s") skipQuestion();
-  }else if(S.phase==="w_judge"){
-    if(k===" "||k==="enter"){ e.preventDefault(); wNext(); }
-    else if(k>="1" && k<="3" && +k<=S.players.length) wToggle(+k-1);
   }else if(S.phase==="judge" || S.phase==="steal_judge"){
     if(k==="c") judge(true,"name");
     if(S.mode==="stadium" && k==="2" && q().stad?.city) judge(true,"city");

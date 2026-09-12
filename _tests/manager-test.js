@@ -115,7 +115,7 @@ const stage = c => (c.__els["stage"] ? c.__els["stage"].innerHTML : "");
   const labelKeys = JSON.parse(ev(app, "JSON.stringify(Object.keys(MODE_LABEL))"));
   const unnamed = metaKeys.filter(k => !labelKeys.includes(k));
   check("no mode in the drawer is missing a label", unnamed.length === 0, unnamed.join(", "));
-  check("the label list also covers the two on the front", ["classic", "written"].every(k => labelKeys.includes(k)),
+  check("the label list also covers the two on the front", ["classic", "mc"].every(k => labelKeys.includes(k)),
     labelKeys.join(","));
   const blank = labelKeys.filter(k => !ev(app, `MODE_LABEL[${JSON.stringify(k)}]`));
   check("and no label is empty", blank.length === 0, blank.join(", "));

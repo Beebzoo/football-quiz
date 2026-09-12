@@ -150,10 +150,14 @@ const SPELL = /^(?:from \d{4}|\d{4}(?: to \d{4})?)$/;
     console.log("  SKIP  every row has detail, nothing to check for the empty case");
   }
 
-  console.log("\n--- written mode reveals it as well ---");
-  run(app, 'S = freshState(["A","B"], false, "nations", 0); S.written = true; pickTier("easy"); S.qi = ' + idx + '; S.phase = "w_judge"; render();');
+  /* Written used to get its own check here, because its judge screen was a
+     second place the detail line had to be printed. Written is gone and
+     Multiple Choice does not have a judge screen of its own: it runs on the
+     classic question/judge phases, so the reveal above already covers it. */
+  console.log("\n--- the dead question reveals it as well ---");
+  run(app, 'S = freshState(["A","B"], false, "nations", 0); pickTier("easy"); S.qi = ' + idx + '; S.phase = "deadq"; render();');
   await tick(60);
-  check("w_judge shows the detail", stage(app).indexOf(line) > -1, ev(app, "S.phase"));
+  check("deadq shows the detail", stage(app).indexOf(line) > -1, ev(app, "S.phase"));
 
   console.log(fails ? `\n${fails} FAILED` : "\nall good");
   process.exit(fails ? 1 : 0);

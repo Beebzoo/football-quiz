@@ -390,8 +390,17 @@ function build(row) {
      the title to whom?", because the full name is not a substring of the
      question even though the half that identifies the club is. Anyone can
      strike that one out without knowing a thing. Generic club words are
-     skipped or every question mentioning a City would lose its distractors. */
-  for (const o of opts.slice(1)) {
+     skipped or every question mentioning a City would lose its distractors.
+
+     THE ANSWER GETS CHECKED HERE TOO, NOT ONLY THE DISTRACTORS. The check up
+     at the top of build() runs on the answer BEFORE disp() has been over it,
+     and disp is what shortens "RCD Mallorca" to "Mallorca". So
+     "Which club plays its home games at Estadi Mallorca Son Moix?" passed the
+     early check, because "rcdmallorca" is not in the question, and then
+     shipped an option reading Mallorca underneath a question with Mallorca in
+     it. This loop used to skip opts[0] and let that through. Whatever is a
+     giveaway in a wrong answer is a bigger one in the right answer. */
+  for (const o of opts) {
     if (norm(o).length > 3 && norm(q).includes(norm(o))) return null;
     if (distinctive(o).some(w => norm(q).includes(w))) return null;
   }

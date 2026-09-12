@@ -326,11 +326,21 @@ function yearDistractors(ans, q, rnd) {
   return { opts: pick(pool, 3, rnd).map(String), score: cycle ? 0.9 : 0.7 };
 }
 
-function numberDistractors(ans, rnd) {
+function numberDistractors(ans, q, rnd) {
   const n = Number(strip(ans));
   if (!Number.isFinite(n)) return null;
-  const mag = n > 30 ? Math.max(1, Math.round(Math.abs(n) * 0.25)) : 1;
-  const pool = [...new Set([-3, -2, -1, 1, 2, 3].map(s => n + s * mag))].filter(v => v >= 0 && v !== n);
+  /* The step used to be a QUARTER of the answer, applied up to three times, so
+     an option could sit anywhere between a quarter of the true number and
+     nearly twice it. On a goal tally that is survivable. On an age it is
+     nonsense: Roger Milla at 42 was offered against 9, 20 and 64, Stanley
+     Matthews at 50 against 11, 24 and 89, Dino Zoff at 40 against 10, 50 and
+     70. You do not need to know any football to rule out a nine year old, and
+     the Milla one is a BALL question, so it was paying 20 points for reading.
+     An eighth keeps every option in the same world as the answer. */
+  const mag = n > 30 ? Math.max(1, Math.round(Math.abs(n) * 0.12)) : 1;
+  let pool = [...new Set([-3, -2, -1, 1, 2, 3].map(s => n + s * mag))].filter(v => v >= 0 && v !== n);
+  /* An age has a range whatever the arithmetic makes of it. */
+  if (/\bhow old\b|\baged?\b/i.test(String(q || ""))) pool = pool.filter(v => v >= 15 && v <= 60);
   if (pool.length < 3) return null;
   return { opts: pick(pool, 3, rnd).map(String), score: 0.6 };
 }
@@ -364,7 +374,7 @@ function build(row) {
   const built =
     yearDistractors(full, q, rnd) ||
     scoreDistractors(full, rnd) ||
-    numberDistractors(full, rnd) ||
+    numberDistractors(full, q, rnd) ||
     clubDistractors(full, rnd) ||
     countryDistractors(full, rnd) ||
     playerDistractors(full, rnd);
